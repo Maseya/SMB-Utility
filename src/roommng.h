@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -38,10 +38,10 @@ extern int g_iWorld;
 extern int g_iArea;
 extern int g_iArea2;
 
-//uRoomID�Ƃ��Ďw�肷��ƌ��݃G�f�B�b�g���Ă���A�h���X���Ԃ��Ă���
-// ��
+//uRoomIDとして指定すると現在エディットしているアドレスが返ってくる
+// 旧
 #define GETADDRESS_CURRENT_EDITTING 0x100
-// �V
+// 新
 #define CURRENT_ROOMID GETADDRESS_CURRENT_EDITTING
 
 /**************************************
@@ -67,7 +67,7 @@ WORD BadGuysGetAllDataLength(UINT uRoomID);
 /**************************************
 
 **************************************/
-//���ݕҏW���Ă��郋�[���̃��[��ID�𓾂�
+//現在編集しているルームのルームIDを得る
 BYTE GetRoomID();
 BYTE rm_GetStartPage();
 BYTE rm_GetWorld();
@@ -97,7 +97,7 @@ BOOL IsRoomIDValid(BYTE bRoomID);
 
 /**************************************
 
-  ٰт�V���ɊJ�������̏��������s��
+  ﾙｰﾑを新たに開いた時の初期化を行う
 
 **************************************/
 void OpenNewRoomProcess();

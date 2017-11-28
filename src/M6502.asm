@@ -1,4 +1,4 @@
-; For assembly by NASM only
+﻿; For assembly by NASM only
 bits 32
 ;
 ; m6502zp - V1.6 - Copyright 1998, Neil Bradley (neil@synthcom.com)

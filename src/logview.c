@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -32,7 +32,7 @@ HFONT g_hEditFont;
 HWND g_hEditWnd;
 WORD g_nLogViewBorderPos;
 BOOL g_fShowLogView;
-// ƒoƒbƒtƒ@ŠÇ—
+// ãƒãƒƒãƒ•ã‚¡ç®¡ç†
 TCHAR g_szLogBuffer[LOGVIEW_BUFSIZ];
 
 static BOOL AdjustLogView(WORD wBorderPos)
@@ -296,25 +296,25 @@ BOOL lv_OutputString(LPTSTR szText, DWORD dwFlag)
 
 	if (!szText || szText[0] == 0) return FALSE;
 
-	// ’PˆÊ‚ÍAbyte
+	// å˜ä½ã¯ã€byte
 	nNewLen = lstrlen(szText);
 	nValidLen = lstrlen(g_szLogBuffer) + 1;
 
 	nCR = (dwFlag & LOGVIEW_OUTPUTSTRING_CR) ? 2 : 0;
 	
-	// V‚µ‚¢•¶š—ñ‚ªÅ‘åƒoƒbƒtƒ@‚ğ’´‚¦‚Ä‚¢‚éê‡
+	// æ–°ã—ã„æ–‡å­—åˆ—ãŒæœ€å¤§ãƒãƒƒãƒ•ã‚¡ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆ
 	if (nNewLen + nCR + 1 >= LOGVIEW_BUFSIZ){
 		g_szLogBuffer[0] = 0;
 		nNewLen = LOGVIEW_BUFSIZ - nCR;//
 		lstrcpyn(g_szLogBuffer, szText, nNewLen);
 	}
-	// V‚µ‚¢•¶š—ñ‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚ª‘«‚è‚È‚¢ê‡
+	// æ–°ã—ã„æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ãŒè¶³ã‚Šãªã„å ´åˆ
 	else if (nValidLen + nNewLen + nCR > LOGVIEW_BUFSIZ) {
 		nNeedLen = (nNewLen + nCR) - (LOGVIEW_BUFSIZ - nValidLen);		
 		MoveMemory(g_szLogBuffer, g_szLogBuffer + nNeedLen, nValidLen - nNeedLen);
 		lstrcpyn(g_szLogBuffer + nValidLen - nNeedLen - 1, szText, nNewLen + 1);
 	}
-	// V‚µ‚¢•¶š—ñ‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚ª‘«‚è‚Ä‚¢‚éê‡
+	// æ–°ã—ã„æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ãŒè¶³ã‚Šã¦ã„ã‚‹å ´åˆ
 	else{
 		lstrcat(g_szLogBuffer, szText);
 	}

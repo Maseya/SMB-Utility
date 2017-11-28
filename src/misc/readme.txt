@@ -1,32 +1,32 @@
-
+﻿
 
  SMB Utility ver.1.08
 
 
 
-�@���̃e�L�X�g�́A��������[�ҏW]-[�E�[�Ő܂�Ԃ�]���`�F�b�N����Ɠǂ݂₷���Ȃ�܂��B
+　このテキストは、メモ帳の[編集]-[右端で折り返す]をチェックすると読みやすくなります。
 
 
-��1 �T�v
-�@SMB Utility �́ASuper Mario Bros.(TM)�̃I���W�i���}�b�v���쐬���邽�߂�Windows(R)�p�A�v���P�[�V�����ł��BSMB Utility�Ƃ��̍�҂́ASuper Mario Bros.(TM)�̊J�����ł���Nintendo(R)�Ƃ́A��؊֌W����܂���B
+§1 概要
+　SMB Utility は、Super Mario Bros.(TM)のオリジナルマップを作成するためのWindows(R)用アプリケーションです。SMB Utilityとその作者は、Super Mario Bros.(TM)の開発元であるNintendo(R)とは、一切関係ありません。
 
-��2 �t�@�C���̐���
- smbutil.exe: SMB Utility�̎��s�\�t�@�C���ł��B
- smbutil.ini: SMB Utility�̏������t�@�C���ł��B
- readme.txt: ���݁A�J���Ă���t�@�C���ł��B
- howto.htm: �g�p��̃q���g��������Ă��܂��B
- history.txt: SMB Utility�̃o�[�W�����A�b�v�����ł��B
- delreg.exe: SMB Utility �̃��W�X�g���L�[(�ݒ�)���폜����v���O�����ŁA�A���C���X�g�[�����Ɏ��s���܂��B
- sample/: M.K.H���ɂ����SMB Utility�ō쐬���ꂽ�T���v�����x���pIPS�t�@�C���ł��B
+§2 ファイルの説明
+ smbutil.exe: SMB Utilityの実行可能ファイルです。
+ smbutil.ini: SMB Utilityの初期化ファイルです。
+ readme.txt: 現在、開いているファイルです。
+ howto.htm: 使用上のヒントが書かれています。
+ history.txt: SMB Utilityのバージョンアップ履歴です。
+ delreg.exe: SMB Utility のレジストリキー(設定)を削除するプログラムで、アンインストール時に実行します。
+ sample/: M.K.H氏によってSMB Utilityで作成されたサンプルレベル用IPSファイルです。
 
-��3 ���C�Z���X
-�@SMB Utility�i�ȉ��A�{�\�t�g�E�G�A�Ƃ��܂��B�j�́A�t���[�E�F�A�ł��B�{�\�t�g�E�G�A�̒��쌠�́AM.K.S�i�ȉ��A��҂Ƃ��܂��B�j�ɋA�����܂��B�{�\�t�g�E�G�A�̓]�ځE�z�z�́A(�����Ŏg�p���Ă���Multi-6502 CPU emulator�̃��C�Z���X�̊֌W��)�񏤗p�Ɍ��莩�R�ɍs���Ă悢���̂Ƃ��A�Q�[��ROM�t�@�C���𓯍����邱�Ƃ͌ł��֎~���܂��B�܂��A�{�\�t�g�E�G�A���g�p�������Ƃɂ���Đ��������ׂĂ̑��Q�ɑ΂��āA��҂͕⏞�̋`���𕉂��܂���B
+§3 ライセンス
+　SMB Utility（以下、本ソフトウエアとします。）は、フリーウェアです。本ソフトウエアの著作権は、M.K.S（以下、作者とします。）に帰属します。本ソフトウエアの転載・配布は、(内部で使用しているMulti-6502 CPU emulatorのライセンスの関係上)非商用に限り自由に行ってよいものとし、ゲームROMファイルを同梱することは固く禁止します。また、本ソフトウエアを使用したことによって生じたすべての損害に対して、作者は補償の義務を負いません。
 
-��4 �v��
-�@Multi-6502 CPU emulator by Neil Bradley (neil@synthcom.com)
-�@Chezzman1����Ƃ킢�킢����́A1.00 International beta3�̉p��ɋ��͂��Ă��������܂����B
-�@1.08 International�̉p��ɂ����āAInsectduel����̍쐬���ꂽISD SMB Util�ɓ�������Ă���ReadMe.txt�̒���What's added in ISD SMB Util?�̍��ڂ��Q�l�ɂ����Ă��������܂����B
-�@1.08 International�̉p��ɂ����āAMirracleMXX����̍쐬���ꂽSMB Utility English Version 1.07���Q�l�ɂ����Ă��������܂����B
+§4 貢献
+　Multi-6502 CPU emulator by Neil Bradley (neil@synthcom.com)
+　Chezzman1さんとわいわいさんは、1.00 International beta3の英訳に協力してくださいました。
+　1.08 Internationalの英訳において、Insectduelさんの作成されたISD SMB Utilに同梱されているReadMe.txtの中のWhat's added in ISD SMB Util?の項目を参考にさせていただきました。
+　1.08 Internationalの英訳において、MirracleMXXさんの作成されたSMB Utility English Version 1.07を参考にさせていただきました。
 
-��5 ���̑�
-�@���̃e�L�X�g���ɓo�ꂷ���Ж��E���i���́A�e�Ђ̏��W�܂��͓o�^���W�ł��B
+§5 その他
+　このテキスト内に登場する会社名・商品名は、各社の商標または登録商標です。

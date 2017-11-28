@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -14,11 +14,11 @@
 #include "objlist.h"
 #include "objview.h"
 #include "tools.h"
-//�v���p�e�B�V�[�g�̖߂�l
+//プロパティシートの戻り値
 BOOL g_blOK;
 /****************
 
-  ������̕ҏW
+  文字列の編集
 
 *****************/
 typedef struct
@@ -304,7 +304,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 
 /********************
 
-  ���[�v�R�}���h
+  ループコマンド
 
 *********************/
 
@@ -394,7 +394,7 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lPa
 
 /*******************
 
-  �Q�[���S�ʂ̐ݒ�
+  ゲーム全般の設定
 
 ********************/
 
@@ -425,15 +425,15 @@ LRESULT CALLBACK GameSettingDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM
 			   BYTE bNewFlower[]="\xEA\xEA\xEA\xEA\xEA";
 			   int n,i;
 
-			   //�c��}���I�̐ݒ�
+			   //残りマリオの設定
 			   SendDlgItemMessage(hDlg,IDC_MARIOLEFTSPIN,UDM_SETRANGE,0,MAKEWPARAM(128,1));
 			   SetDlgItemInt(hDlg,IDC_MARIOLEFT,bPRGROM[SMB_MARIO_LEFT]+1,FALSE);
 			   
-			   //�p�b�N���t�����[
+			   //パックンフラワー
 			   if(!memcmp(bPRGROM+SMB_FLOWER,bNewFlower,5))
 				   CheckDlgButton(hDlg,IDC_FLOWER,BST_CHECKED);
 
-			   //�|�[���̃O���t�B�b�N�X
+			   //ポールのグラフィックス
 			   	n=GetPoleGfxDatas()-1;
 				for(i=0;i<GetPoleGfxDatas();i++)
 				{
@@ -489,7 +489,7 @@ LRESULT CALLBACK GameSettingDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM
 						   g_blOK=TRUE;
 					   }
 					   
-					   //�c��}���I
+					   //残りマリオ
 					   iRet=GetDlgItemInt(hDlg,IDC_MARIOLEFT,&blSuccess,FALSE)-1;
 					   if(!blSuccess || (iRet<0 || iRet>127)){
 						   SetWindowLong(hDlg,DWL_MSGRESULT,TRUE);
@@ -497,16 +497,16 @@ LRESULT CALLBACK GameSettingDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM
 					   }
 					   bPRGROM[SMB_MARIO_LEFT]=iRet;
 
-					   //�p�b�N���t�����[
+					   //パックンフラワー
 					   if(BST_CHECKED&IsDlgButtonChecked(hDlg,IDC_FLOWER))
 						   memset(bPRGROM+SMB_FLOWER,0xEA,5);
 					   else if(!memcmp(bPRGROM+SMB_FLOWER,bNewFlower,5))
 						   memcpy(bPRGROM+SMB_FLOWER,bFlower,5);
 
-					   //�|�[���̃O���t�B�b�N�X
+					   //ポールのグラフィックス
 					   iPoleGfx=SendDlgItemMessage(hDlg,IDC_POLEGFX,CB_GETCURSEL,0,0);
 					   if(iPoleGfx==CB_ERR)return TRUE;
-					   if(iPoleGfx!=GetPoleGfxDatas()-1)//���̑��łȂ���΁c
+					   if(iPoleGfx!=GetPoleGfxDatas()-1)//その他でなければ…
 					   {
 						   memcpy(bPRGROM+SMB_POLEGFX,PoleGfxInfo[iPoleGfx].bGfxData,4);
 					   }
@@ -545,7 +545,7 @@ LRESULT CALLBACK GameSetting1upDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 			   //lpbBuf=Malloc(GetNumWorlds());
 			   if(lpbBuf){
 				   ADDRESSDATA_LOAD(ad1up, SMB_COINSFOR1UP_ADDRESS);
-				   //�Pup�ɺ�̂��߂̺�݂̖���
+				   //１upｷﾉｺのためのｺｲﾝの枚数
 				   memcpy(lpbBuf, bPRGROM + ADDRESSDATA_GET(ad1up), GetNumWorlds());
 				   
 				   for(n = 0; n < GetNumWorlds(); n++){
@@ -626,7 +626,7 @@ LRESULT CALLBACK GameSettingWarpZoneDlgProc( HWND hDlg,UINT message,WPARAM wPara
    {
        case WM_INITDIALOG:
 		   {
-				//���[�v�]�[��
+				//ワープゾーン
 				SendDlgItemMessage(hDlg,IDC_WARPASPIN1,UDM_SETRANGE,0,MAKEWPARAM(255,0));
 				SendDlgItemMessage(hDlg,IDC_WARPASPIN2,UDM_SETRANGE,0,MAKEWPARAM(255,0));
 				SendDlgItemMessage(hDlg,IDC_WARPASPIN3,UDM_SETRANGE,0,MAKEWPARAM(255,0));
@@ -647,7 +647,7 @@ LRESULT CALLBACK GameSettingWarpZoneDlgProc( HWND hDlg,UINT message,WPARAM wPara
 				SetDlgItemInt(hDlg,IDC_WARPC2,bPRGROM[SMB_WARPZONE_WORLD_ADDRESS+9],FALSE);
 				SetDlgItemInt(hDlg,IDC_WARPC3,bPRGROM[SMB_WARPZONE_WORLD_ADDRESS+10],FALSE);
 				
-				//�v���p�e�C�V�[�g�𒆉��Ɏ����Ă���
+				//プロパテイシートを中央に持ってくる
 				CenterPropatySheet(hDlg);
 
 				return TRUE;
@@ -710,7 +710,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc( HWND hDlg,UINT message,WPARAM wParam,L
 			   ADDRESSDATA_LOAD(adKoopa,SMB_KOOPAREALCHARCTER_ADDRESS);
 			   //lpbBuf = Malloc(GetNumWorlds());
 			   if(lpbBuf){
-				   //�Pup�ɺ�̂��߂̺�݂̖���
+				   //１upｷﾉｺのためのｺｲﾝの枚数
 				   memcpy(lpbBuf, bPRGROM + ADDRESSDATA_GET(adKoopa), GetNumWorlds());
 				   
 				   for(n=0;n<GetNumWorlds();n++){

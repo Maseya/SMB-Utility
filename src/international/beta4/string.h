@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
 
                                   smb Utility
@@ -113,7 +113,7 @@
 #define STRING_STRINGDATA_15 "we present you a new quest."
 #define STRING_STRINGDATA_16 "push button b"
 #define STRING_STRINGDATA_17 "to select a world"
-#define STRING_STRINGDATA_18 "�1985 Nintendo"
+#define STRING_STRINGDATA_18 "ｩ1985 Nintendo"
 #define STRING_STRINGDATA_19 "1 player game"
 #define STRING_STRINGDATA_20 "2 player game"
 
@@ -215,10 +215,10 @@
 #define STRING_OBJDATA_MAP_B_23 "pipe(Player can't enter.)"
 #define STRING_OBJDATA_MAP_B_24 "pipe(Player can enter.)"
 
-#define STRING_OBJDATA_HELP_B12 ""//"��׸��̂P�B��׸����ް�ŕ\������Ȃ��Ȃ�ƁA�ص�����܂��ďo��Ȃ��Ȃ�̂Œ��ӁB"
-#define STRING_OBJDATA_HELP_B13 ""//"����9�Œ�B������ł��ォ��ł������B(���ʒu�{2)����2��ו��́A��Ɏw�肳�ꂽ��Q���������B"
-#define STRING_OBJDATA_HELP_B14 ""//"�₽��Ǝg�p���Ȃ����ƁB1ٰт�2��ȏ�g�p����Ɩ\�����₷���Ȃ�̂Œ��ӁB"
-#define STRING_OBJDATA_HELP_B23 ""//"������1�ɂ��Ă��K��2�ɂȂ�B"
+#define STRING_OBJDATA_HELP_B12 ""//"ｷｬﾗｸﾀの１つ。ｷｬﾗｸﾀｵｰﾊﾞｰで表示されなくなると、ﾏﾘｵが挟まって出れなくなるので注意。"
+#define STRING_OBJDATA_HELP_B13 ""//"高さ9固定。横からでも上からでも入れる。(横位置＋2)から2ｷｬﾗ分は、先に指定された障害物を消す。"
+#define STRING_OBJDATA_HELP_B14 ""//"やたらと使用しないこと。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。"
+#define STRING_OBJDATA_HELP_B23 ""//"長さを1にしても必ず2になる。"
 
 #define STRING_OBJDATA_MAP_C_01 "Hole"
 #define STRING_OBJDATA_MAP_C_02 "Balance's horizontal rope"
@@ -229,9 +229,9 @@
 #define STRING_OBJDATA_MAP_C_07 "Horizontal ?Block(coin, V=3)"
 #define STRING_OBJDATA_MAP_C_08 "Horizontal ?Block(coin, V=7)"
 
-#define STRING_OBJDATA_HELP_C01 ""//"�c�ʒu8����12�̐�w�肵�����ׂĂ�ϯ�߷�ׂ������B"
-#define STRING_OBJDATA_HELP_C02 ""//"�c�ʒu0�Œ�"
-#define STRING_OBJDATA_HELP_C06 ""//"�c�ʒu10����12�̐�w�肵�����ׂĂ�ϯ�߷�ׂ������B"
+#define STRING_OBJDATA_HELP_C01 ""//"縦位置8から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
+#define STRING_OBJDATA_HELP_C02 ""//"縦位置0固定"
+#define STRING_OBJDATA_HELP_C06 ""//"縦位置10から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
 
 #define STRING_OBJDATA_MAP_D_01 "Page skip"
 #define STRING_OBJDATA_MAP_D_02 "Reverse L pipe"
@@ -249,12 +249,12 @@
 #define STRING_OBJDATA_MAP_D_15 "*Freeze"
 
 #define STRING_OBJDATA_HELP_D01 "Skip page"
-#define STRING_OBJDATA_HELP_D03 ""//"�₽��Ǝg�p���Ȃ����B1ٰт�2��ȏ�g�p����Ɩ\�����₷���Ȃ�̂Œ��ӁB"
-#define STRING_OBJDATA_HELP_D04 ""//"�c�ʒu6�Œ�"
-#define STRING_OBJDATA_HELP_D05 ""//"�c�ʒu7�Œ�"
-#define STRING_OBJDATA_HELP_D06 ""//"�c�ʒu8�A����13�Œ�"
-#define STRING_OBJDATA_HELP_D12 ""//"�A���o����ׂ��o������A�\����h�����߂��߰ق��o���O�Ɏw��B"
-#define STRING_OBJDATA_HELP_D13 ""//"�߰�ޑ������ނƾ�Ă�ٰ�߂��`������B"
+#define STRING_OBJDATA_HELP_D03 ""//"やたらと使用しない事。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。"
+#define STRING_OBJDATA_HELP_D04 ""//"縦位置6固定"
+#define STRING_OBJDATA_HELP_D05 ""//"縦位置7固定"
+#define STRING_OBJDATA_HELP_D06 ""//"縦位置8、長さ13固定"
+#define STRING_OBJDATA_HELP_D12 ""//"連続出現ｷｬﾗを出した後、暴走を防ぐためにﾎﾟｰﾙを出す前に指定。"
+#define STRING_OBJDATA_HELP_D13 ""//"ﾍﾟｰｼﾞ送りｺﾏﾝﾄﾞとｾｯﾄでﾙｰﾌﾟを形成する。"
 
 #define STRING_OBJDATA_MAP_E_01 "Basic brick & scenery"
 #define STRING_OBJDATA_MAP_E_02 "Change background"
@@ -268,11 +268,11 @@
 #define STRING_OBJDATA_MAP_F_07 "vertical balls"
 #define STRING_OBJDATA_MAP_F_08 "Nothing"
 
-#define STRING_OBJDATA_HELP_F01 ""//"�c�ʒu0�A����13�Œ�B�w�艡�ʒu�ɂ����āA��w�肵�����ׂĂ�ϯ�߷�ׂ������B"
-#define STRING_OBJDATA_HELP_F02 ""//"�c�ʒu1�Œ�B�w�艡�ʒu�ɂ����āA��w�肵�����ׂĂ�ϯ�߷�ׂ������B"
-#define STRING_OBJDATA_HELP_F03 ""//"�₽��Ǝg�p���Ȃ����ƁB�����g�p����Ɩ\�����₷���Ȃ�B"
-#define STRING_OBJDATA_HELP_F05 ""//"����0�`3 ���Ȃ��B\n����4�`6 ���̨������ׂ��B����7 ���̨������ׂ��B(���ʒu+16)�̈ʒu�ɏc�ʒu7�̉󂹂Ȃ���ۯ�1�B"
-#define STRING_OBJDATA_HELP_F07 ""//"���̂悤�ɂ��܂��ď㉺�ړ����\�B�c�ʒu2�Œ�"
+#define STRING_OBJDATA_HELP_F01 ""//"縦位置0、長さ13固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
+#define STRING_OBJDATA_HELP_F02 ""//"縦位置1固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
+#define STRING_OBJDATA_HELP_F03 ""//"やたらと使用しないこと。多く使用すると暴走しやすくなる。"
+#define STRING_OBJDATA_HELP_F05 ""//"長さ0～3 問題なし。\n長さ4～6 ｸﾞﾗﾌｨｯｸｽが潰れる。長さ7 ｸﾞﾗﾌｨｯｸｽが潰れる。(横位置+16)の位置に縦位置7の壊せないﾌﾞﾛｯｸ1個。"
+#define STRING_OBJDATA_HELP_F07 ""//"ﾂﾀのようにつかまって上下移動が可能。縦位置2固定"
 
 #define STRING_OBJDATA_BB_01 "Brick: None"
 #define STRING_OBJDATA_BB_02 "Brick: Surface"

@@ -1,9 +1,9 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
   File: emuengine.c
-  Description: ƒGƒ~ƒ…ƒŒ[ƒ^‚Ì’†S“I‚Èƒ‹[ƒ`ƒ“
+  Description: ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã®ä¸­å¿ƒçš„ãªãƒ«ãƒ¼ãƒãƒ³
   History:
 
  ************************************************************************************/
@@ -63,10 +63,10 @@ BOOL             gblDemoRecord = FALSE;
 BOOL             g_fUseMMX = FALSE;
 BOOL             g_fSkipJoyRead = FALSE;
 BOOL             g_fUseJoyPOV = FALSE;
-// A, B, SELECT, START, UP, DOWN, LEFT, RIGHT‚Ì‡
-// NOTE : A, B, SELECT, START‚ªÅ‰‚É‚­‚é‚±‚Æ‚ğ‘O’ñ‚É‚µ‚ÄA
-//        ƒWƒ‡ƒCƒXƒeƒBƒbƒN‚Ìƒ{ƒ^ƒ“İ’è‚ğÀ‘•‚µ‚Ä‚¢‚é
-//        (UP, DOWN, LEFT, RIGHT‚Í–¢g—p)
+// A, B, SELECT, START, UP, DOWN, LEFT, RIGHTã®é †
+// NOTE : A, B, SELECT, STARTãŒæœ€åˆã«ãã‚‹ã“ã¨ã‚’å‰æã«ã—ã¦ã€
+//        ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®ãƒœã‚¿ãƒ³è¨­å®šã‚’å®Ÿè£…ã—ã¦ã„ã‚‹
+//        (UP, DOWN, LEFT, RIGHTã¯æœªä½¿ç”¨)
 BYTE             g_EmuKey[EMULATOR_NUM_BUTTONS] = {0};
 DWORD            g_EmuJoyButton[EMULATOR_NUM_JOYBUTTONS] = {0};
 UINT             g_uEmuJoyID = JOYSTICKID1;
@@ -77,7 +77,7 @@ DWORD            g_dwEmuJoyYDown;
 HWND             ghEmuWnd = NULL;
 UINT             g_nTimerID = 0;
 DWORD            dwThreadID = 0;
-CRITICAL_SECTION CriticalSection;//ƒGƒ~ƒ…ƒŒ[ƒ^‚ÌƒXƒŒƒbƒh‚ğ•¡”ì¬‚µ‚È‚¢‚½‚ß‚ÌƒNƒŠƒeƒCƒJƒ‹ƒZƒNƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg
+CRITICAL_SECTION CriticalSection;//ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’è¤‡æ•°ä½œæˆã—ãªã„ãŸã‚ã®ã‚¯ãƒªãƒ†ã‚¤ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 HDC              ghMemdcOffScreen = NULL;
 HBITMAP          ghBmOffScreen = NULL;
 HBITMAP          ghOldBmOffScreen = NULL;
@@ -92,10 +92,10 @@ HPALETTE         g_hPal = NULL;
 **********************/
 
 // 
-// 0: –³Œø‚Æ‚İ‚È‚µAƒZƒbƒg‚³‚ê‚È‚¢B
-// ‚»‚êˆÈŠO: —LŒø‚È’l‚Æ‚İ‚È‚·
-// —v‘f”8‚Â‚Ì”z—ñ
-// A, B, SELECT, START, UP, DOWN, LEFT, RIGHT‚Ì‡
+// 0: ç„¡åŠ¹ã¨ã¿ãªã—ã€ã‚»ãƒƒãƒˆã•ã‚Œãªã„ã€‚
+// ãã‚Œä»¥å¤–: æœ‰åŠ¹ãªå€¤ã¨ã¿ãªã™
+// è¦ç´ æ•°8ã¤ã®é…åˆ—
+// A, B, SELECT, START, UP, DOWN, LEFT, RIGHTã®é †
 BOOL SetEmulatorKeys(WORD aEmuKeys[])
 {
 	int i;
@@ -122,7 +122,7 @@ BOOL SetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 
 BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[])
 {
-	// A, B, SELECT, START, UP, DOWN, LEFT, RIGHT‚Ì‡
+	// A, B, SELECT, START, UP, DOWN, LEFT, RIGHTã®é †
 	aEmuKeys[0] = 'N';
 	aEmuKeys[1] = 'B';
 	aEmuKeys[2] = VK_BACK;
@@ -136,7 +136,7 @@ BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[])
 
 BOOL GetDefaultEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 {
-	// A, B, SELECT, START‚Ì‡
+	// A, B, SELECT, STARTã®é †
 	aEmuJoyButtons[0] = JOY_BUTTON2;
 	aEmuJoyButtons[1] = JOY_BUTTON1;
 	aEmuJoyButtons[2] = JOY_BUTTON3;
@@ -144,7 +144,7 @@ BOOL GetDefaultEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 	return TRUE;
 }
 
-// ŒÄ‚Ño‚·‘O‚Ég_uEmuJoyID‚ğJOYSTICKID1‚©JOYSTICKID2‚Å‰Šú‰»‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
+// å‘¼ã³å‡ºã™å‰ã«g_uEmuJoyIDã‚’JOYSTICKID1ã‹JOYSTICKID2ã§åˆæœŸåŒ–ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„ã€‚
 BOOL InitJoystick()
 {
 //	JOYINFO joyInfo;
@@ -215,7 +215,7 @@ BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 	return TRUE;
 }
 
-// NOTE : ƒŒƒWƒXƒgƒŠ‚Ö‚Ì‘‚«‚İ‚ÍAkeys.c‚Ìƒ_ƒCƒAƒƒOƒR[ƒ‹ƒoƒbƒNŠÖ”“à‚ÅOKƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚És‚í‚ê‚éB
+// NOTE : ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã¸ã®æ›¸ãè¾¼ã¿ã¯ã€keys.cã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°å†…ã§OKãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸæ™‚ã«è¡Œã‚ã‚Œã‚‹ã€‚
 
 BOOL LoadEmuKeySetting()
 {
@@ -324,8 +324,8 @@ LRESULT CALLBACK EmulatorOptionDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 					if(BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_USEPOV))
 						g_fUseJoyPOV = TRUE;
 
-					// ƒWƒ‡ƒCƒXƒeƒBƒbƒN‚É‚¨‚¢‚ÄA‚»‚ê©g‚â‹@”\‚Ì‚¤‚¿Ag—p‚Å‚«‚È‚¢‚à‚Ì‚ÍA
-					// ‚±‚ÌŠÖ”“à‚ÅƒŠƒZƒbƒg‚³‚ê‚éB
+					// ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã«ãŠã„ã¦ã€ãã‚Œè‡ªèº«ã‚„æ©Ÿèƒ½ã®ã†ã¡ã€ä½¿ç”¨ã§ããªã„ã‚‚ã®ã¯ã€
+					// ã“ã®é–¢æ•°å†…ã§ãƒªã‚»ãƒƒãƒˆã•ã‚Œã‚‹ã€‚
 					InitJoystick();
 
 					return TRUE;
@@ -378,7 +378,7 @@ BOOL LoadEmulatorSetting()
 
 /******************
 
-  ƒOƒ‰ƒtƒBƒbƒNƒX
+  ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹
 
 *******************/
 
@@ -631,7 +631,7 @@ NEXT:
 		if (iFlipY) y2 = (iSize - 1) - y2;
 
 		/*
-		if(iSize==16)//ƒX[ƒp[ƒ}ƒŠƒI‚ÍA8*8
+		if(iSize==16)//ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒãƒªã‚ªã¯ã€8*8
 		{
 			if((iIndex&0x01))
 			{
@@ -731,16 +731,16 @@ static void RefreshBackGroundLine(register WORD wLine)
 	iNameTable=(((bPPUCtrlReg1 & 0x03) * 0x400) | 0x2000);
 
 	/*
-	//cƒXƒNƒ[ƒ‹
+	//ç¸¦ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
 	if(iStartY>239)
 	{
 		iStartY-=240;
-		//‘Î‚É‚È‚éƒl[ƒ€ƒe[ƒuƒ‹‚ÌƒAƒhƒŒƒX‚ÌŒvZ
+		//å¯¾ã«ãªã‚‹ãƒãƒ¼ãƒ ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã®è¨ˆç®—
 		iNameTable^=0x800;
 	}
 	*/
 
-	//ƒ^ƒCƒ‹‚ÌŒvZ
+	//ã‚¿ã‚¤ãƒ«ã®è¨ˆç®—
 	x = bBGScrlH >> 3;
 	iTileIndex = iNameTable + ((iStartY / 8) * 32);// iTileIndex=((iStartY>>3)<<5)+iNameTable;
 
@@ -753,7 +753,7 @@ static void RefreshBackGroundLine(register WORD wLine)
 		int iIndex1 = iTileIndex + x;
 		
 		if((!(x & 1)) || iFirst){
-			//ƒAƒgƒŠƒrƒ…[ƒgƒe[ƒuƒ‹‚Ìƒf[ƒ^‚ğæ“¾
+			//ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 			if((!(x & 3)) || iFirst){
 				
 //				iColorByte = pbVRAM[((iIndex1&0x3C00)|(iIndex1&0x1F)>>2)|((iIndex1&0x380)>>4)|0x3C0];
@@ -778,7 +778,7 @@ static void RefreshBackGroundLine(register WORD wLine)
 				}
 			}
 
-			//ƒAƒgƒŠƒrƒ…[ƒgƒf[ƒ^‚Ì‚Ç‚Ì2ƒrƒbƒg‚ğg—p‚·‚é‚©‚ğŒvZ		
+			//ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ã®ã©ã®2ãƒ“ãƒƒãƒˆã‚’ä½¿ç”¨ã™ã‚‹ã‹ã‚’è¨ˆç®—		
 			/*
 			int iColorBits= ( (iIndex1&0x40)>>4 ) + (iIndex1&0x02) ;
 			iCol = ( (iColorByte>>iColorBits) & 0x03 ) ;
@@ -814,8 +814,8 @@ static void RefreshBackGroundLine(register WORD wLine)
 			// asm version
 			__asm {
 				// n = (iPixelX<0) ? 8+iPixelX : 8 ;
-				// if(iPixelX<0)pbChrBase -= iPixelX; <- ‚à‚µ‚©‚·‚é‚Æ‚±‚Ì•”•ª‚ª‚¨‚©‚µ‚¢HHiƒXƒNƒ[ƒ‹‚ªƒXƒ€[ƒY‚Å‚È‚¢‚±‚Æ‚ÌŒ´ˆöHj
-				// ƒJƒEƒ“ƒgƒŒƒWƒXƒ^
+				// if(iPixelX<0)pbChrBase -= iPixelX; <- ã‚‚ã—ã‹ã™ã‚‹ã¨ã“ã®éƒ¨åˆ†ãŒãŠã‹ã—ã„ï¼Ÿï¼Ÿï¼ˆã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãŒã‚¹ãƒ ãƒ¼ã‚ºã§ãªã„ã“ã¨ã®åŸå› ï¼Ÿï¼‰
+				// ã‚«ã‚¦ãƒ³ãƒˆãƒ¬ã‚¸ã‚¹ã‚¿
 				mov edx, iPixelX
 				mov ecx, 8 // n
 				mov esi, pbChrBase
@@ -857,7 +857,7 @@ L1:
 			__asm {
 				// n = (iPixelX<0) ? 8+iPixelX : 8 ;
 				// if(iPixelX<0)pbChrBase -= iPixelX;
-				// ƒJƒEƒ“ƒgƒŒƒWƒXƒ^
+				// ã‚«ã‚¦ãƒ³ãƒˆãƒ¬ã‚¸ã‚¹ã‚¿
 				mov ecx, 8 // n
 				mov esi, pbChrBase
 				mov edi, pbVideoBuf
@@ -917,8 +917,8 @@ static void RefreshLine(WORD wLine)
 
 /********************************
 
-  ƒLƒƒƒ‰ƒƒ€‚ªƒGƒfƒBƒbƒg‚³‚ê‚½‚ç
-  ‚±‚ÌŠÖ”‚ğŒÄ‚Ño‚·•K—v‚ª‚ ‚é
+  ã‚­ãƒ£ãƒ©ãƒ­ãƒ ãŒã‚¨ãƒ‡ã‚£ãƒƒãƒˆã•ã‚ŒãŸã‚‰
+  ã“ã®é–¢æ•°ã‚’å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹
 
 *********************************/
 BOOL PrepareVROMData(BYTE *pbSource)
@@ -980,7 +980,7 @@ UINT8 RdNESReg(UINT32 Addr,struct MemoryReadByte *psMemRead)
 //			JOYINFO joyInfo;
 			JOYINFOEX JoyInfoEx;
 
-			//ƒWƒ‡ƒCƒXƒeƒBƒbƒN‚Ìó‘Ô‚ğƒgƒ‰ƒbƒv
+			//ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®çŠ¶æ…‹ã‚’ãƒˆãƒ©ãƒƒãƒ—
 			if(!g_fSkipJoyRead) {
 //				joyGetPos(g_uEmuJoyID,&joyInfo);
 				JoyInfoEx.dwSize = sizeof(JOYINFOEX);
@@ -1062,7 +1062,7 @@ UINT8 RdNESReg(UINT32 Addr,struct MemoryReadByte *psMemRead)
 //			JOYINFO joyInfo;
 			JOYINFOEX JoyInfoEx;
 
-			//ƒWƒ‡ƒCƒXƒeƒBƒbƒN‚Ìó‘Ô‚ğƒgƒ‰ƒbƒv
+			//ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®çŠ¶æ…‹ã‚’ãƒˆãƒ©ãƒƒãƒ—
 			if(!g_fSkipJoyRead) {
 //				joyGetPos(g_uEmuJoyID,&joyInfo);
 				JoyInfoEx.dwSize = sizeof(JOYINFOEX);
@@ -1134,7 +1134,7 @@ UINT8 RdNESReg(UINT32 Addr,struct MemoryReadByte *psMemRead)
 				break;
 			}/* switch */
 
-			// Note : DemoRecorderHandler()ŠÖ”‚ğ2Con‚ÅŒÄ‚Ño‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
+			// Note : DemoRecorderHandler()é–¢æ•°ã‚’2Conã§å‘¼ã³å‡ºã—ã¦ã¯ã„ã‘ãªã„ã€‚
 
 			return bRet;
 		}
@@ -1209,7 +1209,7 @@ void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
 						pbVRAM[0x3f00|(i<<2)]=Value;
 						memcpy(&g_lpBmInfo->bmiColors[(i<<2)],&rgbNESPal[Value],sizeof(RGBQUAD));
 					}
-					//ƒoƒbƒNƒOƒ‰ƒEƒ“ƒh‚ÌFƒf[ƒ^
+					//ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã®è‰²ãƒ‡ãƒ¼ã‚¿
 					gbBGColor=Value;
 				}
 			}
@@ -1454,7 +1454,7 @@ void ResetEmulator()
 
 	// PrepareVROMData(pbVRAM);
 
-	//TODO ‚±‚±‚ÉƒŠƒZƒbƒg‚Ìˆ—‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+	//TODO ã“ã“ã«ãƒªã‚»ãƒƒãƒˆã®å‡¦ç†ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 	gblPause=FALSE;
 	gblDemoRecord=FALSE;
 
@@ -1604,21 +1604,21 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 
 	wVRAMAddr=0x0000;
 
-	//ƒ‹[ƒ€‚Ì‘®«
+	//ãƒ«ãƒ¼ãƒ ã®å±æ€§
 	pb6502CPUMemory[0x74E]=((psTPS->bRoomID>>5)&0x03);
 
 	pb6502CPUMemory[0x750]=(psTPS->bRoomID&0x1F);
 
-	//ƒ}ƒbƒvƒwƒbƒ_‚Ìˆ—
+	//ãƒãƒƒãƒ—ãƒ˜ãƒƒãƒ€ã®å‡¦ç†
 	bTmpBuf=pb6502CPUMemory[psTPS->MapAddress.word];
 
 	pb6502CPUMemory[0x741]=psTPS->bBackObject1;
 	pb6502CPUMemory[0x744]=psTPS->bBackObject2;
 
-	pb6502CPUMemory[0x710]=((bTmpBuf>>3)&0x07);//oŒ»ˆÊ’u
+	pb6502CPUMemory[0x710]=((bTmpBuf>>3)&0x07);//å‡ºç¾ä½ç½®
 
 	if(((bTmpBuf>>6)&0x03))
-		pb6502CPUMemory[0x715]=((bTmpBuf>>6)&0x03);//‚¿ŠÔ
+		pb6502CPUMemory[0x715]=((bTmpBuf>>6)&0x03);//æŒã¡æ™‚é–“
 	else{
 		pb6502CPUMemory[0x715]=0x00;
 		pb6502CPUMemory[0x7F8]=0x00;
@@ -1626,9 +1626,9 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 
 	bTmpBuf=pb6502CPUMemory[psTPS->MapAddress.word+1];
 
-	pb6502CPUMemory[0x727]=psTPS->bBasicBlock;//‰ŠúŠî–{”wŒiƒuƒƒbƒN
+	pb6502CPUMemory[0x727]=psTPS->bBasicBlock;//åˆæœŸåŸºæœ¬èƒŒæ™¯ãƒ–ãƒ­ãƒƒã‚¯
 
-	pb6502CPUMemory[0x742]=psTPS->bBackView;//‰ŠúŒiF
+	pb6502CPUMemory[0x742]=psTPS->bBackView;//åˆæœŸæ™¯è‰²
 	
 	if(((bTmpBuf>>6)&0x03)==0x03){
 		pb6502CPUMemory[0x733]=0x00;
@@ -1637,7 +1637,7 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 	else
 		pb6502CPUMemory[0x733]=((bTmpBuf>>6)&0x03);
 
-	//ƒAƒhƒŒƒX
+	//ã‚¢ãƒ‰ãƒ¬ã‚¹
 	wMapAddr=psTPS->MapAddress.word+2;
 	pb6502CPUMemory[0xE7]=(BYTE)(wMapAddr&0xFF);
 	pb6502CPUMemory[0xE8]=(BYTE)((wMapAddr>>8)&0xFF);
@@ -1658,8 +1658,8 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 	memcpy(pb6502CPUMemory+0x72D,psTPS->bLeftObjOfs,3);
 	memcpy(pb6502CPUMemory+0x730,psTPS->bLeftObjNum,3);
 
-	pb6502CPUMemory[0x734]=psTPS->bLeftObjData1;//ŠK’i
-	memcpy(pb6502CPUMemory+0x736,psTPS->bLeftObjData2,3);//‚«‚Ì‚±‚Ì“‡‚ÌŒs
+	pb6502CPUMemory[0x734]=psTPS->bLeftObjData1;//éšæ®µ
+	memcpy(pb6502CPUMemory+0x736,psTPS->bLeftObjData2,3);//ãã®ã“ã®å³¶ã®èŒ
 
 	pb6502CPUMemory[0x72C]=psTPS->bMapOfs;
 	pb6502CPUMemory[0x72A]=psTPS->bMapPage;
@@ -1676,7 +1676,7 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 	pb6502CPUMemory[0x754]=psTPS->bMarioSize;
 	pb6502CPUMemory[0x756]=psTPS->bMarioCap;
 
-	//ã‚Ì•\¦‚ğƒNƒŠƒA[
+	//ä¸Šã®è¡¨ç¤ºã‚’ã‚¯ãƒªã‚¢ãƒ¼
 	memset(pbVRAM+0x2000,0x24,128);
 	memset(pbVRAM+0x23C0,0xAA,0x40);
 	memset(pbVRAM+0x2400,0x24,128);
@@ -1707,15 +1707,15 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
 	wVRAMAddr=0x0000;
 
 	//----------------------------------
-	// ƒ}ƒŠƒI‚Ì‰ŠúˆÊ’u‚ğİ’è‚·‚éƒnƒbƒN
+	// ãƒãƒªã‚ªã®åˆæœŸä½ç½®ã‚’è¨­å®šã™ã‚‹ãƒãƒƒã‚¯
 	//----------------------------------
-	//00009165: B9 16 91	lda $9116,y  ; ‰Šú‰¡ˆÊ’u
+	//00009165: B9 16 91	lda $9116,y  ; åˆæœŸæ¨ªä½ç½®
 	if (psTPSEx->fPosXHack){
 		pb6502CPUMemory[0x9165] = 0xA9;
 		pb6502CPUMemory[0x9166] = psTPSEx->bPosX;
 		pb6502CPUMemory[0x9167] = 0xEA;
 	}
-	//0000916A: BD 1C 91	lda $911C,x  ; ‰ŠúcˆÊ’u
+	//0000916A: BD 1C 91	lda $911C,x  ; åˆæœŸç¸¦ä½ç½®
 	if (psTPSEx->fPosYHack){
 		pb6502CPUMemory[0x916A] = 0xA9;
 		pb6502CPUMemory[0x916B] = psTPSEx->bPosY;
@@ -1723,22 +1723,22 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
 	}
 
 	//-------------
-	// –³“GƒnƒbƒN
+	// ç„¡æ•µãƒãƒƒã‚¯
 	//-------------
 	if (psTPSEx->bInvincible)
 	{
-		// ƒtƒ@ƒCƒAƒo[
+		// ãƒ•ã‚¡ã‚¤ã‚¢ãƒãƒ¼
 		pb6502CPUMemory[0xCE0D] = 0xA9;
 		pb6502CPUMemory[0xCE0E] = 0x01;
 		pb6502CPUMemory[0xCE0F] = 0xEA;
-		//•’Ê‚Ì“G
+		//æ™®é€šã®æ•µ
 		pb6502CPUMemory[0xD92C] = 0xA9;
 		pb6502CPUMemory[0xD92D] = 0x01;
 		pb6502CPUMemory[0xD92E] = 0xEA;
 	}
 
-	//$075AFƒ}ƒŠƒI‚Ìc‹@
-	//›ƒ~ƒX‚·‚é‚Æ-1@00‚Åƒ~ƒX‚ğ‚·‚é‚ÆFF@-1‚µ‚½‚Æ‚«‚Ì’l‚ª80-FF‚È‚çƒQ[ƒ€ƒI[ƒo[
+	//$075Aï¼šãƒãƒªã‚ªã®æ®‹æ©Ÿ
+	//â—‹ãƒŸã‚¹ã™ã‚‹ã¨-1ã€€00ã§ãƒŸã‚¹ã‚’ã™ã‚‹ã¨FFã€€-1ã—ãŸã¨ãã®å€¤ãŒ80-FFãªã‚‰ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
 
 	//
 	//
@@ -1763,7 +1763,7 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
 	pb6502CPUMemory[0x754]=psTPSEx->bMarioSize;
 	pb6502CPUMemory[0x756]=psTPSEx->bMarioCap;
 
-	// “G‚ğ0ƒy[ƒW‚©‚ç•\¦‚·‚éƒnƒbƒN
+	// æ•µã‚’0ãƒšãƒ¼ã‚¸ã‹ã‚‰è¡¨ç¤ºã™ã‚‹ãƒãƒƒã‚¯
 	if(psTPSEx->bBadGuyHack){
 		pb6502CPUMemory[0xC1BB]=0x4C;
 		pb6502CPUMemory[0xC1BC]=0xCB;
@@ -1780,7 +1780,7 @@ void DirectWriteToEmulatorRAM(WORD wAddr,LPBYTE lpBuf,WORD wSize)
 
 /****************
 
-  ƒZ[ƒu‚Æƒ[ƒh
+  ã‚»ãƒ¼ãƒ–ã¨ãƒ­ãƒ¼ãƒ‰
 
 *****************/
 typedef struct
@@ -1970,7 +1970,7 @@ long FAR PASCAL EmuWndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			ImmAssociateContext(hWnd, (HIMC)NULL);
 			//Create Emulator
 			if(ghEmuWnd) {
-				//‰Šú‰»‚·‚é‚½‚ß‚É•K—v‚È’l‚Ìƒ[ƒh‚à‚ ‚é‚Ì‚ÅCreateNester()‚Ì‘O‚ÌŒÄ‚Ño‚·B
+				//åˆæœŸåŒ–ã™ã‚‹ãŸã‚ã«å¿…è¦ãªå€¤ã®ãƒ­ãƒ¼ãƒ‰ã‚‚ã‚ã‚‹ã®ã§CreateNester()ã®å‰ã®å‘¼ã³å‡ºã™ã€‚
 				LoadEmulatorSetting();
 				LoadEmuKeySetting();
 				CreateNester();
@@ -2073,7 +2073,7 @@ HWND CreateEmulatorWnd(HINSTANCE hInstance,HWND hWndMDIClient)
 
 	if(ghEmuWnd) return FALSE;
 
-	//WS_VISIBLE‚ğw’è‚µ‚Äì¬‚µ‚È‚¢‚ÆAWindowÒÆ­°‚É³²İÄŞ³‚ª’Ç‰Á‚³‚ê‚È‚¢B
+	//WS_VISIBLEã‚’æŒ‡å®šã—ã¦ä½œæˆã—ãªã„ã¨ã€Windowï¾’ï¾†ï½­ï½°ã«ï½³ï½²ï¾ï¾„ï¾ï½³ãŒè¿½åŠ ã•ã‚Œãªã„ã€‚
 	hWnd=CreateMDIWindow(EMUWNDCLASSNAME,
 		            STRING_WINDOW_EMULATOR,
 					WS_CAPTION|WS_THICKFRAME|WS_MINIMIZEBOX|WS_SYSMENU|WS_VISIBLE,

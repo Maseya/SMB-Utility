@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -135,7 +135,7 @@
 #define IDC_FIRSTBLOCK                  2022
 #define IDC_MAPATTR                     2023
 
-//ƒ}ƒbƒv‘S”Ê‚Ìİ’è
+//ãƒãƒƒãƒ—å…¨èˆ¬ã®è¨­å®š
 #define IDC_MARIOLEFT                   2030
 #define IDC_MARIOLEFTSPIN               2031
 #define IDC_ISWORLD                     2032
@@ -149,7 +149,7 @@
 #define IDC_DATA2                       2061
 #define IDC_DATA3                       2062
 #define IDC_DATA4                       2063
-//•¶š—ñ‚Ì•ÒW
+//æ–‡å­—åˆ—ã®ç·¨é›†
 #define IDC_STRINGSELECT                2040
 #define IDC_STRING                      2041
 #define IDC_STRINGWRITE                 2042
@@ -266,7 +266,7 @@
 #define IDC_JOYBUTTONLIST               2204
 
 
-//ƒ‹[ƒ€‘I‘ğƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+//ãƒ«ãƒ¼ãƒ é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 #define IDW_TOOLBAR 5000
 #define TOOLBAR_IMG 3002

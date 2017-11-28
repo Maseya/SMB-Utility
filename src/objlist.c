@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -17,18 +17,18 @@
 #include "objwndcmn.h"
 /************************
 
-  ƒ†[ƒU[’è‹`ƒƒbƒZ[ƒW
+  ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
 *************************/
 #define WM_LVSELCHANGE (WM_USER + 100) 
 
 /******************
 
-  ƒOƒ[ƒoƒ‹•Ï”
+  ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 
 *******************/
 
-//ƒŠƒXƒgƒrƒ…[‚Ìƒnƒ“ƒhƒ‹
+//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 HWND g_hWndListView;
 
 
@@ -37,10 +37,10 @@ HWND g_hWndListView;
 
 /***************
 
-•â•ŠÖ”
+è£œåŠ©é–¢æ•°
 
 ***************/
-//ƒŠƒXƒgƒ{ƒbƒNƒX
+//ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
 void ObjectListClear()
 {
 	ListView_DeleteAllItems(g_hWndListView);
@@ -59,7 +59,7 @@ void ObjectListShowCursor()
 	ListView_EnsureVisible(g_hWndListView,GetSelectedIndex(),FALSE);
 }
 
-//ƒOƒ[ƒoƒ‹‚È•Ï”‚Ì‰Šú‰»
+//ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªå¤‰æ•°ã®åˆæœŸåŒ–
 void InitMapEditGlobalValue()
 {
 	SetSelectedItem(0,TRUE);
@@ -67,7 +67,7 @@ void InitMapEditGlobalValue()
 
 /*************************************************
 
-  ƒ}ƒbƒv‚Ìî•ñ‚Ì•\¦
+  ãƒãƒƒãƒ—ã®æƒ…å ±ã®è¡¨ç¤º
 
 ***************************************************/
 #include "objdata.h"
@@ -103,8 +103,8 @@ void FormatMapString(LPBYTE lpbBuf,LPTSTR lpszBuf)
 			case 0:
 				wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
 				break;
-			// ƒIƒuƒWƒFƒNƒg‚Ìƒf[ƒ^ƒx[ƒX‚Ì“s‡(1‚Æ4,5‚Æ‚ÌŠÔ‚É‚ÍA’Ç‰Á‚Ì—v‘f‚ª1‚Â“ü‚Á‚Ä‚¢‚é‚½‚ß)‚É‚æ‚èA
-			// 1‚Æ4,5‚Íˆá‚¤ˆ—
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®éƒ½åˆ(1ã¨4,5ã¨ã®é–“ã«ã¯ã€è¿½åŠ ã®è¦ç´ ãŒ1ã¤å…¥ã£ã¦ã„ã‚‹ãŸã‚)ã«ã‚ˆã‚Šã€
+			// 1ã¨4,5ã¯é•ã†å‡¦ç†
 			case 1:
 				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
 				break;
@@ -152,7 +152,7 @@ void FormatMapString(LPBYTE lpbBuf,LPTSTR lpszBuf)
 			wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
 		}
 		else{
-			if(lpbBuf[1]&0x08)//“yŠÇ
+			if(lpbBuf[1]&0x08)//åœŸç®¡
 				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
 			else
 				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
@@ -173,7 +173,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 			LPTSTR cBuf = GetTempStringBuffer();
 			LVITEM lvItem;
 
-			//ƒoƒCƒiƒŠ
+			//ãƒã‚¤ãƒŠãƒª
 			wsprintf(cBuf,"%.2x %.2x",ObjSeek.pbData[0],ObjSeek.pbData[1]);
 			
 			if(blQuietUpdate){
@@ -200,13 +200,13 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 				ListView_InsertItem(g_hWndListView,&lvItem);
 			}
 
-			//ƒy[ƒW
+			//ãƒšãƒ¼ã‚¸
 			wsprintf(cBuf,"%d",ObjSeek.dwPage);
 			ListView_SetItemText(g_hWndListView,n,1,cBuf);
-			//ˆÊ’u
+			//ä½ç½®
 			wsprintf(cBuf,"(%d,%d)",GetMapXPos(ObjSeek.pbData),GetMapYPos(ObjSeek.pbData));
 			ListView_SetItemText(g_hWndListView,n,2,cBuf);
-			//í—Ş
+			//ç¨®é¡
 			FormatMapString(ObjSeek.pbData,cBuf);
 			ListView_SetItemText(g_hWndListView,n,3,cBuf);
 
@@ -220,7 +220,7 @@ CANCEL_SET_ITEM_TEXT:
 
 /*************************************************
 
-  “G‚Ìî•ñ‚Ì•\¦
+  æ•µã®æƒ…å ±ã®è¡¨ç¤º
 
 
 ***************************************************/
@@ -230,16 +230,16 @@ void FormatBadGuysString(LPBYTE lpbBuf,LPTSTR lpszBuf)
 
 	switch(lpbBuf[0]&0x0F)
 	{
-	case 0x0E://ƒ‹[ƒ€ŠÔˆÚ“®‚Ì–½—ßi‚RƒoƒCƒgj
+	case 0x0E://ãƒ«ãƒ¼ãƒ é–“ç§»å‹•ã®å‘½ä»¤ï¼ˆï¼“ãƒã‚¤ãƒˆï¼‰
 		{
 			LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE}; 
 			wsprintf(lpszBuf, STRING_OBJLIST_ROOM, lpbBuf[1] & 0x7F, lpAttr[(lpbBuf[1] >> 5) & 0x03], ((lpbBuf[2] >> 5) & 0x07) + 1,lpbBuf[2] & 0x1F);
 		}
 		break;
-	case 0x0F://‘—‚èƒRƒ}ƒ“ƒhi‚QƒoƒCƒgj
+	case 0x0F://é€ã‚Šã‚³ãƒãƒ³ãƒ‰ï¼ˆï¼’ãƒã‚¤ãƒˆï¼‰
 		wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1] & 0x3F);
 		break;
-	default://i“GƒLƒƒƒ‰ƒRƒ}ƒ“ƒhj
+	default://ï¼ˆæ•µã‚­ãƒ£ãƒ©ã‚³ãƒãƒ³ãƒ‰ï¼‰
 		{
 			wsprintf(lpszBuf, "%s%s", smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
 		}
@@ -257,7 +257,7 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
 			LPTSTR cBuf = GetTempStringBuffer();
 			LVITEM lvItem;
 
-			//ƒoƒCƒiƒŠ
+			//ãƒã‚¤ãƒŠãƒª
 			if(ObjSeek.dwObjLen==2)
 				wsprintf(cBuf,"%.2x %.2x",ObjSeek.pbData[0],ObjSeek.pbData[1]);
 			else
@@ -288,13 +288,13 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
 				lvItem.pszText=cBuf;		
 				ListView_InsertItem(g_hWndListView,&lvItem);
 			}
-			//ƒy[ƒW
+			//ãƒšãƒ¼ã‚¸
 			wsprintf(cBuf,"%d",ObjSeek.dwPage);
 			ListView_SetItemText(g_hWndListView,n,1,cBuf);
-			//ˆÊ’u
+			//ä½ç½®
 			wsprintf(cBuf,"(%d,%d)",GetBadGuysXPos(ObjSeek.pbData),GetBadGuysYPos(ObjSeek.pbData));
 			ListView_SetItemText(g_hWndListView,n,2,cBuf);
-			//í—Ş
+			//ç¨®é¡
 			FormatBadGuysString(ObjSeek.pbData,cBuf);
 			ListView_SetItemText(g_hWndListView,n,3,cBuf);			
 CANCEL_SET_ITEM_TEXT:
@@ -306,7 +306,7 @@ CANCEL_SET_ITEM_TEXT:
 
 /*************************************************
 
-  ƒŠƒXƒgƒ{ƒbƒNƒX‚ÌXV
+  ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®æ›´æ–°
 
 
 ***************************************************/
@@ -332,7 +332,7 @@ void UpdateObjectList(DWORD dwUpdateFlag)
 
 /**************************
 
-  ƒ}ƒbƒv‚Ìİ’è‚Ì•ÏX
+  ãƒãƒƒãƒ—ã®è¨­å®šã®å¤‰æ›´
 
 ***************************/
 
@@ -363,13 +363,13 @@ LRESULT CALLBACK MapComHeadEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 			   BYTE bBuf[2];
 			   LPTSTR AttrName[]={STRING_SEA,STRING_SKY,STRING_UNDERGROUND,STRING_CASTLE};
 
-			   //ƒ‹[ƒ€‚Ì‘®«
+			   //ãƒ«ãƒ¼ãƒ ã®å±æ€§
 			   for(n=0;n<4;n++)
 				   SendDlgItemMessage(hDlg,IDC_MAPATTR,CB_ADDSTRING,0,(LPARAM)AttrName[n]);
 			   bRoomID=GetRoomID();
 			   SendDlgItemMessage(hDlg,IDC_MAPATTR,CB_SETCURSEL,(bRoomID>>5)&0x03,0);
 
-			   //“r’†‚©‚ç‚Ìƒy[ƒW
+			   //é€”ä¸­ã‹ã‚‰ã®ãƒšãƒ¼ã‚¸
 			   for(n=0;n<16;n++){
 				   TCHAR cTmp[3];
 				   wsprintf(cTmp,"%d",n);
@@ -437,7 +437,7 @@ LRESULT CALLBACK MapComHeadEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 					   
 					   ChangeRoomAttribute(GetRoomID(),iNewAttr&0x03);
 
-					   //“r’†‚©‚ç
+					   //é€”ä¸­ã‹ã‚‰
 					   if(!rm_IsSubRoom())
 					   {
 						   BYTE bTmp;
@@ -456,7 +456,7 @@ LRESULT CALLBACK MapComHeadEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 						   bTmp&=bMask;
 						   bTmp|=bSel;
 
-						   if(g_iWorld>=0 && g_iWorld<GetNumWorlds())//ROM‚Ì•ÛŒì‚Ì‚½‚ß‚Éâ‘Î‚É•K—v
+						   if(g_iWorld>=0 && g_iWorld<GetNumWorlds())//ROMã®ä¿è­·ã®ãŸã‚ã«çµ¶å¯¾ã«å¿…è¦
 							   bPRGROM[ADDRESSDATA_GET(adRestartPageAddress)+g_iWorld*2+((g_iArea>>1)&0x01)]=bTmp;
 					   }
 
@@ -591,7 +591,7 @@ static void SaveListViewColumnWidth()
 
 /********************
 
-  ƒƒCƒ“ƒEƒCƒ“ƒhƒE
+  ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦
 
 *********************/
 long FAR PASCAL MapEditWndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
@@ -657,7 +657,7 @@ long FAR PASCAL MapEditWndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lPar
 		}
 		break;
 	case WM_SETFOCUS:
-		//ƒL[ƒ{[ƒhƒtƒH[ƒJƒX‚ğƒŠƒXƒgƒ{ƒbƒNƒX‚Ö
+		//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã¸
 		SetFocus(g_hWndListView);
 		break;
 	case WM_CREATE:
@@ -713,7 +713,7 @@ HWND CreateMapEditWnd(HINSTANCE hInstance,HWND hWndMDIClient)
 {
 	HWND hWnd;
 
-	//WS_VISIBLE‚ğw’è‚µ‚Äì¬‚µ‚È‚¢‚ÆAWindowÒÆ­°‚É³²İÄŞ³‚ª’Ç‰Á‚³‚ê‚È‚¢B
+	//WS_VISIBLEã‚’æŒ‡å®šã—ã¦ä½œæˆã—ãªã„ã¨ã€Windowï¾’ï¾†ï½­ï½°ã«ï½³ï½²ï¾ï¾„ï¾ï½³ãŒè¿½åŠ ã•ã‚Œãªã„ã€‚
 	hWnd=CreateMDIWindow(MAPEDITWNDCLASSNAME,
 		            STRING_WINDOW_OBJLIST,
 					WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN|WS_VISIBLE,

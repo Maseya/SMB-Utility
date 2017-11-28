@@ -1,4 +1,4 @@
-/************************************************************************************
+Ôªø/************************************************************************************
 
                                   smb Utility
 
@@ -32,7 +32,7 @@
 #define INI_EDITOR_KEYS               "EDITOR_KEYS"
 #define INI_EDITOR_WHEEL              "EDITOR_WHEEL"
 #define INI_OBJECTVIEW_SETTING         "OBJVIEW_SETTING"
-// HIWORD(N):çÇÇ≥ LOWORD(N):ê›íË
+// HIWORD(N):È´ò„Åï LOWORD(N):Ë®≠ÂÆö
 #define LOGVIEW_SHOWLOGVIEW            0x00000001
 #define INI_LOGVIEW_SETTING            "LOGVIEW_SETTING"
 //#define INI_LOGVIEW_BORDER             "LOGVIEW_BORDERPL"
@@ -44,7 +44,7 @@
 
 BOOL WriteToRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize);
 BOOL ReadFromRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize);
-// ÉAÉìÉCÉìÉXÉgÅ[ÉãéûÇ…åƒÇ—èoÇ∑
+// „Ç¢„É≥„Ç§„É≥„Çπ„Éà„Éº„É´ÊôÇ„Å´Âëº„Å≥Âá∫„Åô
 BOOL DeleteRegistryEntries();
 
 #define INIFILE_FILENAME              "smbutil.ini"

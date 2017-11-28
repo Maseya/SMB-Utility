@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -12,11 +12,11 @@
 
 /**************************************
 
-  �I�u�W�F�N�g�̃A�h���X�Ɋւ���萔
+  オブジェクトのアドレスに関する定数
 
 ***************************************/
 #define SMB_OBJECT_START_ADDRESS 0x9D70
-#define SMB_OBJECT_END_ADDRESS 0xAEDC   //���̱��ڽ�ɂ́A�����Ă͂����Ȃ��B�i���̱��ڽ�̂P�O�܂ł́A�}�b�v�f�[�^�j
+#define SMB_OBJECT_END_ADDRESS 0xAEDC   //このｱﾄﾞﾚｽには、書いてはいけない。（このｱﾄﾞﾚｽの１つ前までは、マップデータ）
 #define SMB_ALL_OBJECT_SIZE SMB_OBJECT_END_ADDRESS-SMB_OBJECT_START_ADDRESS
 
 LRESULT CALLBACK EditorOptionDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
@@ -24,18 +24,18 @@ void LoadEditorOption();
 
 /***************************
 
-  �I�u�W�F�N�g�̒T���֐�
+  オブジェクトの探索関数
 
 ****************************/
 typedef struct _tagOBJECTSEEKINFO
 {
-	LPBYTE pbData;//�|�C���^
-	DWORD  dwPage;//�y�[�W
-	DWORD  dwOfs;//�f�[�^�̐擪�i�}�b�v�́A�Q�o�C�g�̃w�b�_�͏����j
-	DWORD  dwLength;//�A�h���X����v�Z�����S���[���f�[�^�̒���
-	DWORD  dwIndex;//�擪�̃I�u�W�F�N�g���O�Ƃ����C���f�b�N�X
-	DWORD  dwObjLen;//�|�C���^�̎w���Ă���f�[�^�̃T�C�Y
-	BOOL   blIsPrevPageCom;//�y�[�W�̏����Ɏg����
+	LPBYTE pbData;//ポインタ
+	DWORD  dwPage;//ページ
+	DWORD  dwOfs;//データの先頭（マップは、２バイトのヘッダは除く）
+	DWORD  dwLength;//アドレスから計算した全ルームデータの長さ
+	DWORD  dwIndex;//先頭のオブジェクトを０としたインデックス
+	DWORD  dwObjLen;//ポインタの指しているデータのサイズ
+	BOOL   blIsPrevPageCom;//ページの処理に使われる
 }OBJECTSEEKINFO, FAR *LPOBJECTSEEKINFO;
 
 BOOL BadGuysSeekFirst(OBJECTSEEKINFO *psObjSeek,UINT uRoomID);

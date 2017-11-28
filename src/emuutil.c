@@ -1,9 +1,9 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
   File: emuutil.c
-  Description: ƒrƒ…[‚Ì•\¦EƒeƒXƒgƒvƒŒƒC‚Ì‚½‚ß‚Ìƒ‹[ƒ`ƒ“
+  Description: ãƒ“ãƒ¥ãƒ¼ã®è¡¨ç¤ºãƒ»ãƒ†ã‚¹ãƒˆãƒ—ãƒ¬ã‚¤ã®ãŸã‚ã®ãƒ«ãƒ¼ãƒãƒ³
   History:
 
  ************************************************************************************/
@@ -114,8 +114,8 @@ static void TestPlay(int iPage, LPPOINT lpPt)
 	//
 	if(gbIsCleared) 
 	{
-		sTPS.bIsCleared=0x01;//ƒNƒŠƒ{[¨ƒƒbƒg
-		sTPS.bIsDifficult=0x01;//5-3ˆÈ~
+		sTPS.bIsCleared=0x01;//ã‚¯ãƒªãƒœãƒ¼â†’ãƒ¡ãƒƒãƒˆ
+		sTPS.bIsDifficult=0x01;//5-3ä»¥é™
 	}
 
 	switch(giMarioState)
@@ -285,10 +285,10 @@ void DemoRecord()
 	else{
 		sTPS.bBackObject1=(bMapHead[0]&0x07);
 		sTPS.bBackObject2=0x00;
-	}//‰Šú”wŒiF
+	}//åˆæœŸèƒŒæ™¯è‰²
 
-	sTPS.bBasicBlock =(bMapHead[1]&0x0F);//‰ŠúŠî–{”wŒiƒuƒƒbƒN
-	sTPS.bBackView =((bMapHead[1]>>4)&0x03);//‰ŠúŒiF
+	sTPS.bBasicBlock =(bMapHead[1]&0x0F);//åˆæœŸåŸºæœ¬èƒŒæ™¯ãƒ–ãƒ­ãƒƒã‚¯
+	sTPS.bBackView =((bMapHead[1]>>4)&0x03);//åˆæœŸæ™¯è‰²
 
 	sTPS.bMarioSize=0x01;
 	sTPS.bMarioCap=0x00;
@@ -307,18 +307,18 @@ void DemoRecord()
 
   BOOL RunEmulatorViewPage(UINT uRoomID,int iPage)
 
-  uRoomID‚Åw’è‚³‚ê‚½ƒ‹[ƒ€‚ÌiPage‚Åw’è‚³‚ê‚½ƒy[ƒW‚Ìƒ}ƒbƒv‚ÌŠG‚ğ
-  ƒGƒ~ƒ…ƒŒ[ƒ^ƒEƒCƒ“ƒhƒE‚ÌƒoƒbƒNƒoƒbƒtƒ@‚É€”õ‚·‚éBuRoomID‚É
-  GETADDRESS_CURRENT_EDITTING’è”‚ğw’è‚·‚é‚ÆAŒ»İƒGƒfƒBƒg‚µ‚Ä‚¢‚é
-  ƒ‹[ƒ€‚ğw’è‚µ‚½‚±‚Æ‚É‚È‚éB
+  uRoomIDã§æŒ‡å®šã•ã‚ŒãŸãƒ«ãƒ¼ãƒ ã®iPageã§æŒ‡å®šã•ã‚ŒãŸãƒšãƒ¼ã‚¸ã®ãƒãƒƒãƒ—ã®çµµã‚’
+  ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã«æº–å‚™ã™ã‚‹ã€‚uRoomIDã«
+  GETADDRESS_CURRENT_EDITTINGå®šæ•°ã‚’æŒ‡å®šã™ã‚‹ã¨ã€ç¾åœ¨ã‚¨ãƒ‡ã‚£ãƒˆã—ã¦ã„ã‚‹
+  ãƒ«ãƒ¼ãƒ ã‚’æŒ‡å®šã—ãŸã“ã¨ã«ãªã‚‹ã€‚
 
-  œ•â•ŠÖ”œ
+  â—è£œåŠ©é–¢æ•°â—
 	static void PrepareMapRelatedMemory(int iPage,int iMapType,MAPRELATEDMEMORY *psMRM)
 
-	ƒ}ƒbƒv‚ÉŠÖ˜A‚µ‚½ƒƒ‚ƒŠ[‚ÌƒZƒbƒgƒAƒbƒv‚ğs‚¤B
+	ãƒãƒƒãƒ—ã«é–¢é€£ã—ãŸãƒ¡ãƒ¢ãƒªãƒ¼ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã‚’è¡Œã†ã€‚
 
 **************************************************************/
-//ƒGƒ~ƒ…ƒŒ[ƒ^ƒEƒCƒ“ƒhƒE‚ğ‘€ì‚·‚é‚½‚ß‚ÌƒOƒ[ƒoƒ‹•Ï”
+//ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 extern HDC ghMemdcOffScreen;
 extern BOOL gblShowSprite;
 
@@ -332,30 +332,30 @@ typedef struct
 	BYTE bExInfo;
 }MAPOBJLEFTINFO;
 
-//bExInfoƒƒ“ƒo‚Å—LŒø‚È’l
-#define EXINFO_STEPS    0x01//ŠK’i‚Ì‚½‚ß‚Ì“Áêˆ—
-#define EXINFO_ATHLETIC 0x02//ƒAƒXƒŒƒ`ƒbƒN‘ä‚ÆƒLƒ‰[‚Ì‚½‚ß‚Ì“Áêˆ—
+//bExInfoãƒ¡ãƒ³ãƒã§æœ‰åŠ¹ãªå€¤
+#define EXINFO_STEPS    0x01//éšæ®µã®ãŸã‚ã®ç‰¹æ®Šå‡¦ç†
+#define EXINFO_ATHLETIC 0x02//ã‚¢ã‚¹ãƒ¬ãƒãƒƒã‚¯å°ã¨ã‚­ãƒ©ãƒ¼ã®ãŸã‚ã®ç‰¹æ®Šå‡¦ç†
 
-MAPOBJLEFTINFO MapObjLeftInfo0B[]={0x7F,0x0C,0x01,0x03,0x00,0x00,//‹tLšŒ^“yŠÇuŒÅ’èv
-                                   0x70,0x10,0x00,0x00,0x0F,0x02,//ƒAƒXƒŒƒ`ƒbƒN‘äi—v’ˆÓj
-								   0x70,0x20,0x00,0x00,0x0F,0x00,//‰¡‚É•À‚ñ‚¾ƒŒƒ“ƒKƒuƒƒbƒN
-								   0x70,0x30,0x00,0x00,0x0F,0x00,//‰¡‚É•À‚ñ‚¾‰ó‚¹‚È‚¢ƒuƒƒbƒN
-								   0x70,0x40,0x00,0x00,0x0F,0x00,//‰¡‚É•À‚ñ‚¾ƒRƒCƒ“ƒuƒƒbƒN
-								   0x70,0x70,0x01,0x01,0x00,0x00};//“yŠÇuŒÅ’èv
-MAPOBJLEFTINFO MapObjLeftInfoC[]={0x70,0x00,0x00,0x00,0x0F,0x00,//’J
-                                  0x70,0x10,0x00,0x00,0x0F,0x00,//“V”‰ƒŠƒtƒg‚Ì‰¡ƒ[ƒv
-								  0x70,0x20,0x00,0x00,0x0F,0x00,//‚Â‚è‹´
-								  0x70,0x30,0x00,0x00,0x0F,0x00,//‚Â‚è‹´
-								  0x70,0x40,0x00,0x00,0x0F,0x00,//‚Â‚è‹´
-								  0x70,0x50,0x00,0x00,0x0F,0x00,//ì
-								  0x70,0x60,0x00,0x00,0x0F,0x00,//‰¡‚É•À‚ñ‚¾?ƒuƒƒbƒNiƒRƒCƒ“A‚‚³3j
-								  0x70,0x70,0x00,0x00,0x0F,0x00};//‰¡‚É•À‚ñ‚¾?ƒuƒƒbƒNiƒRƒCƒ“A‚‚³7j
+MAPOBJLEFTINFO MapObjLeftInfo0B[]={0x7F,0x0C,0x01,0x03,0x00,0x00,//é€†Lå­—å‹åœŸç®¡ã€Œå›ºå®šã€
+                                   0x70,0x10,0x00,0x00,0x0F,0x02,//ã‚¢ã‚¹ãƒ¬ãƒãƒƒã‚¯å°ï¼ˆè¦æ³¨æ„ï¼‰
+								   0x70,0x20,0x00,0x00,0x0F,0x00,//æ¨ªã«ä¸¦ã‚“ã ãƒ¬ãƒ³ã‚¬ãƒ–ãƒ­ãƒƒã‚¯
+								   0x70,0x30,0x00,0x00,0x0F,0x00,//æ¨ªã«ä¸¦ã‚“ã å£Šã›ãªã„ãƒ–ãƒ­ãƒƒã‚¯
+								   0x70,0x40,0x00,0x00,0x0F,0x00,//æ¨ªã«ä¸¦ã‚“ã ã‚³ã‚¤ãƒ³ãƒ–ãƒ­ãƒƒã‚¯
+								   0x70,0x70,0x01,0x01,0x00,0x00};//åœŸç®¡ã€Œå›ºå®šã€
+MAPOBJLEFTINFO MapObjLeftInfoC[]={0x70,0x00,0x00,0x00,0x0F,0x00,//è°·
+                                  0x70,0x10,0x00,0x00,0x0F,0x00,//å¤©ç§¤ãƒªãƒ•ãƒˆã®æ¨ªãƒ­ãƒ¼ãƒ—
+								  0x70,0x20,0x00,0x00,0x0F,0x00,//ã¤ã‚Šæ©‹
+								  0x70,0x30,0x00,0x00,0x0F,0x00,//ã¤ã‚Šæ©‹
+								  0x70,0x40,0x00,0x00,0x0F,0x00,//ã¤ã‚Šæ©‹
+								  0x70,0x50,0x00,0x00,0x0F,0x00,//å·
+								  0x70,0x60,0x00,0x00,0x0F,0x00,//æ¨ªã«ä¸¦ã‚“ã ?ãƒ–ãƒ­ãƒƒã‚¯ï¼ˆã‚³ã‚¤ãƒ³ã€é«˜ã•3ï¼‰
+								  0x70,0x70,0x00,0x00,0x0F,0x00};//æ¨ªã«ä¸¦ã‚“ã ?ãƒ–ãƒ­ãƒƒã‚¯ï¼ˆã‚³ã‚¤ãƒ³ã€é«˜ã•7ï¼‰
 MAPOBJLEFTINFO MapObjLeftInfoD[]={0x7F,0x40,0x01,0x03,0x00,0x00,
-	                              0x7F,0x44,0x01,0x0C,0x00,0x00};//ƒNƒbƒp‚Ì‹´uŒÅ’èv
-MAPOBJLEFTINFO MapObjLeftInfoF[]={0x70,0x20,0x01,0x04,0x00,0x00,//éuŒÅ’èv
-                                  0x78,0x30,0x00,0x00,0x07,0x01,//ŠK’ii‰Â•Ïj
-								  0x78,0x38,0x01,0x08,0x00,0x01,//ŠK’iuŒÅ’èv
-								  0x70,0x40,0x01,0x03,0x00,0x00};//‹tLšŒ^
+	                              0x7F,0x44,0x01,0x0C,0x00,0x00};//ã‚¯ãƒƒãƒ‘ã®æ©‹ã€Œå›ºå®šã€
+MAPOBJLEFTINFO MapObjLeftInfoF[]={0x70,0x20,0x01,0x04,0x00,0x00,//åŸã€Œå›ºå®šã€
+                                  0x78,0x30,0x00,0x00,0x07,0x01,//éšæ®µï¼ˆå¯å¤‰ï¼‰
+								  0x78,0x38,0x01,0x08,0x00,0x01,//éšæ®µã€Œå›ºå®šã€
+								  0x70,0x40,0x01,0x03,0x00,0x00};//é€†Lå­—å‹
 
 int GetNumMapObjLeftInfoC(){return sizeof(MapObjLeftInfoC)/sizeof(MAPOBJLEFTINFO);};
 int GetNumMapObjLeftInfoD(){return sizeof(MapObjLeftInfoD)/sizeof(MAPOBJLEFTINFO);};
@@ -370,8 +370,8 @@ typedef struct
 	BYTE bBackObject2;
 	BYTE bLeftObjNum[3];
 	BYTE bLeftObjOfs[3];
-	BYTE bLeftObjData1;//ŠK’i
-	BYTE bLeftObjData2[3];//‚«‚Ì‚±‚Ì“‡‚ÌŒs
+	BYTE bLeftObjData1;//éšæ®µ
+	BYTE bLeftObjData2[3];//ãã®ã“ã®å³¶ã®èŒ
 	BYTE bMapOfs;
 	BYTE bMapPageFlag;
 }MAPRELATEDMEMORY;
@@ -392,14 +392,14 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID,int iPage,int iMapType,MAPRELAT
 
 	if(!MapSeekFirst(&ObjSeek,uRoomID)) return TRUE;
 	{
-		//0ƒy[ƒW‚Ìƒ}ƒbƒvƒf[ƒ^‚ª‚È‚¢ê‡‚É0ƒy[ƒW‚Ì•\¦‚ğ—v‹‚³‚ê‚½ê‡
+		//0ãƒšãƒ¼ã‚¸ã®ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ãŒãªã„å ´åˆã«0ãƒšãƒ¼ã‚¸ã®è¡¨ç¤ºã‚’è¦æ±‚ã•ã‚ŒãŸå ´åˆ
 		if(iPage==0 && (ObjSeek.pbData[1]&0x80)) return TRUE;
 		
 		for(;;)
 		{
 			if(ObjSeek.dwPage>=(DWORD)iPage){
 				blRet=TRUE;
-				//ƒy[ƒW‘—‚èƒRƒ}ƒ“ƒh
+				//ãƒšãƒ¼ã‚¸é€ã‚Šã‚³ãƒãƒ³ãƒ‰
 				if(((ObjSeek.pbData[0]&0x0F)==0x0D) && ((ObjSeek.pbData[1]&0x40)==0x00)  && ObjSeek.dwPage==(DWORD)iPage)
 					psMRM->bMapPageFlag=0x00;
 				else
@@ -420,8 +420,8 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID,int iPage,int iMapType,MAPRELAT
 					}
 				}
 				else{
-					psMRM->bBasicBlock =(ObjSeek.pbData[1]&0x0F);//‰ŠúŠî–{”wŒiƒuƒƒbƒN
-					psMRM->bBackView =((ObjSeek.pbData[1]>>4)&0x03);//‰ŠúŒiF
+					psMRM->bBasicBlock =(ObjSeek.pbData[1]&0x0F);//åˆæœŸåŸºæœ¬èƒŒæ™¯ãƒ–ãƒ­ãƒƒã‚¯
+					psMRM->bBackView =((ObjSeek.pbData[1]>>4)&0x03);//åˆæœŸæ™¯è‰²
 				}
 			}
 			else if((ObjSeek.dwPage+1)==(DWORD)iPage){
@@ -448,7 +448,7 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID,int iPage,int iMapType,MAPRELAT
 						iBasicSize=(psMapObjLeftInfo[n].bIsSizeFixed)?psMapObjLeftInfo[n].bFixedSize:(psMapObjLeftInfo[n].bSizeMask & ObjSeek.pbData[1]);
 						iLeftObjNum=(int)(((ObjSeek.pbData[0]>>4)&0x0F)+iBasicSize-0x10);
 						
-						if(iLeftObjNum>=0 && !((psMapObjLeftInfo[n].bExInfo&EXINFO_ATHLETIC) && iMapType==2)){//ƒAƒXƒŒƒ`ƒbƒNƒIƒuƒWƒFƒNƒg‚ÅA‘å–C–Ê‚Å‚Í‚È‚¢
+						if(iLeftObjNum>=0 && !((psMapObjLeftInfo[n].bExInfo&EXINFO_ATHLETIC) && iMapType==2)){//ã‚¢ã‚¹ãƒ¬ãƒãƒƒã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ã€å¤§ç ²é¢ã§ã¯ãªã„
 							psMRM->bLeftObjNum[iLeftDataNum]=(BYTE)iLeftObjNum;
 							psMRM->bLeftObjOfs[iLeftDataNum]=(BYTE)(ObjSeek.dwOfs);
 							if(psMapObjLeftInfo[n].bExInfo&EXINFO_STEPS)
@@ -519,10 +519,10 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
 	{
 		sMRM.bBackObject1=(bMapHead[0]&0x07);
 		sMRM.bBackObject2=0x00;
-	}//‰Šú”wŒiF
+	}//åˆæœŸèƒŒæ™¯è‰²
 
-	sMRM.bBasicBlock =(bMapHead[1]&0x0F);//‰ŠúŠî–{”wŒiƒuƒƒbƒN
-	sMRM.bBackView =((bMapHead[1]>>4)&0x03);//‰ŠúŒiF
+	sMRM.bBasicBlock =(bMapHead[1]&0x0F);//åˆæœŸåŸºæœ¬èƒŒæ™¯ãƒ–ãƒ­ãƒƒã‚¯
+	sMRM.bBackView =((bMapHead[1]>>4)&0x03);//åˆæœŸæ™¯è‰²
 
 	PrepareMapRelatedMemory(uRoomID,iPage,(bMapHead[1]>>6)&0x03,&sMRM);
 	
@@ -532,8 +532,8 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
 	sTPS.bBackView=sMRM.bBackView;
 	memcpy(sTPS.bLeftObjNum,sMRM.bLeftObjNum,3);
 	memcpy(sTPS.bLeftObjOfs,sMRM.bLeftObjOfs,3);
-	sTPS.bLeftObjData1=sMRM.bLeftObjData1;//ŠK’i
-	memcpy(sTPS.bLeftObjData2,sMRM.bLeftObjData2,3);//‚«‚Ì‚±‚Ì“‡‚ÌŒs
+	sTPS.bLeftObjData1=sMRM.bLeftObjData1;//éšæ®µ
+	memcpy(sTPS.bLeftObjData2,sMRM.bLeftObjData2,3);//ãã®ã“ã®å³¶ã®èŒ
 
 	sTPS.bMapOfs=sMRM.bMapOfs;
 	sTPS.bMapPageFlag=sMRM.bMapPageFlag;
@@ -546,7 +546,7 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
 
 	TestPlaySetup(&sTPS);
 
-	Run6502Ex(0x1280);//òF‚Ì“yŠÇA–é‚É’ˆÓ,0x1280
+	Run6502Ex(0x1280);//æ©™è‰²ã®åœŸç®¡ã€å¤œã«æ³¨æ„,0x1280
 
 	SetPrepareBadGuysSpriteInfoStruct(sTPS.bRoomID,sTPS.bWorld,sTPS.bArea,&sPreBgSprInfo);
 	PrepareBadGuysSpriteInfo(&sPreBgSprInfo);
@@ -563,10 +563,10 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
 
 void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int iHeight,BOOL blIsStretch)
 
-  blIsStretch TRUEciWidth,iHeight‚ª—LŒøBFALSEciWidth,iHeight‚ğ–³‹
+  blIsStretch TRUEâ€¦iWidth,iHeightãŒæœ‰åŠ¹ã€‚FALSEâ€¦iWidth,iHeightã‚’ç„¡è¦–
 
-  ƒGƒ~ƒ…ƒŒ[ƒ^ƒEƒCƒ“ƒhƒE‚ÌƒoƒbƒNƒoƒbƒtƒ@[‚©‚çhDCDest‚Åw’è‚³‚ê
-  ‚½ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÖBitBlt‚ğs‚¤
+  ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‹ã‚‰hDCDestã§æŒ‡å®šã•ã‚Œ
+  ãŸãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¸BitBltã‚’è¡Œã†
 
 **************************************************************/
 void InstallEmulatorPalette(HDC hdc)
@@ -603,7 +603,7 @@ void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int 
 
   void RunEmulatorNormal()
 
-  ƒGƒ~ƒ…ƒŒ[ƒ^‚Ì’Êí‹N“®‚ğs‚¤B
+  ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã®é€šå¸¸èµ·å‹•ã‚’è¡Œã†ã€‚
 
 ***************************************************************/
 void RunEmulatorNormal()

@@ -1,4 +1,4 @@
-/************************************************************************************
+Ôªø/************************************************************************************
 
                                   smb Utility
 
@@ -18,8 +18,8 @@
 #define SMBADDRESS_LOOP_W7DATA2          0xC119
 //
 #define SMB_MARIO_LEFT                   0x906A
-#define SMB_FLOWER                       0x98F5 //5ÉoÉCÉg
-#define SMB_POLEGFX                      0x8C60 //4ÉoÉCÉg
+#define SMB_FLOWER                       0x98F5 //5„Éê„Ç§„Éà
+#define SMB_POLEGFX                      0x8C60 //4„Éê„Ç§„Éà
 //
 #define SMB_WARPZONE_WORLD_ADDRESS       0x87F2
 //

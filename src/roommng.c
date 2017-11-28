@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -9,30 +9,30 @@
  ************************************************************************************/
 /*
 
-  �A�h���X�E���[���h�̋敪�E���C�����|��ID�𑀍삷��
+  アドレス・ワールドの区分・メインル－ムIDを操作する
 
-  �A�h���X�Ǘ�(RM)
-  �I�u�W�F�N�g�Ǘ�(OM)
+  アドレス管理(RM)
+  オブジェクト管理(OM)
 
-  ���[���ƓG�E�}�b�v�f�[�^�̃A�h���X�̊֌W
-  �E�ǂݍ���
-  �i�P�j�G�E�}�b�v�f�[�^�̊J�n�A�h���X(RM)
-  �i�Q�j�L���ȃ��[��ID�̗�(RM)
-  �i�R�j���[��ID���L���ł��邩�����ł��邩�̃`�F�b�N(RM)
-  �E��������
-  �i�P�j���[���̃^�C�v�̕ύX(RM, OM)
-  �i�Q�j���[���Ԃ̃I�u�W�F�N�g�̈ړ�(RM, OM)
+  ルームと敵・マップデータのアドレスの関係
+  ・読み込み
+  （１）敵・マップデータの開始アドレス(RM)
+  （２）有効なルームIDの列挙(RM)
+  （３）ルームIDが有効であるか無効であるかのチェック(RM)
+  ・書き込み
+  （１）ルームのタイプの変更(RM, OM)
+  （２）ルーム間のオブジェクトの移動(RM, OM)
 
-  ���[���h�E�G���A�ƃ��[���̊֌W
+  ワールド・エリアとルームの関係
 
-  �u�a�v���ݕҏW���̃��[���Ɋ֘A
-  �E���[���I���_�C�A���O�̕\��(RM,OM)
-  �E���̎擾(RM,OM)
-  �@���[��ID�A�J�n�y�[�W�A���[���h�A�G���A�A�G���A�Q
+  「Ｂ」現在編集中のルームに関連
+  ・ルーム選択ダイアログの表示(RM,OM)
+  ・情報の取得(RM,OM)
+  　ルームID、開始ページ、ワールド、エリア、エリア２
 
-  ���[���h�Ɋ֘A
-  �E�N���A�ƂȂ郏�[���h�̊Ǘ�(RM)
-  �E���[���h�̋敪�̃f�[�^�̊Ǘ�(RM, OM)
+  ワールドに関連
+  ・クリアとなるワールドの管理(RM)
+  ・ワールドの区分のデータの管理(RM, OM)
 
 
 */
@@ -44,7 +44,7 @@
 #include "roomseldlg.h"
 #include "objmng.h"
 #include "emuutil.h"
-#include "emulator.h" //ClearEmuBackBuffer();�ׂ̈���
+#include "emulator.h" //ClearEmuBackBuffer();の為だけ
 
 /*********************
 
@@ -53,8 +53,8 @@
 /*
 typedef struct _tagGLOBALROOMDATA
 {
-	BYTE        bWorld[256];//ܰ��ނ̋敪
-	BYTE        bMainRoomID[SMB_NUM_AREAS];//Ҳ�ٰт�ٰ�ID�̎w��
+	BYTE        bWorld[256];//ﾜｰﾙﾄﾞの区分
+	BYTE        bMainRoomID[SMB_NUM_AREAS];//ﾒｲﾝﾙｰﾑのﾙｰﾑIDの指定
 	BYTE        addrHeadMap[4];
 	ADDRESSDATA addrDataMap[SMB_NUM_ADDRESSDATA];
 	BYTE        addrHeadBadGuys[4];
@@ -62,8 +62,8 @@ typedef struct _tagGLOBALROOMDATA
 }GLOBALROOMDATA, FAR *LPGLOBALROOMDATA;
 */
 
-BYTE        bWorldData[SMB_NUM_WORLDS];//ܰ��ނ̋敪
-BYTE        bAreaData[SMB_NUM_AREAS];//Ҳ�ٰт�ٰ�ID�̎w��
+BYTE        bWorldData[SMB_NUM_WORLDS];//ﾜｰﾙﾄﾞの区分
+BYTE        bAreaData[SMB_NUM_AREAS];//ﾒｲﾝﾙｰﾑのﾙｰﾑIDの指定
 BYTE        addrHeadMap[4];
 ADDRESSDATA addrDataMap[SMB_NUM_ADDRESSDATA];
 BYTE        addrHeadBadGuys[4];
@@ -126,7 +126,7 @@ void rm_UpdateGlobalRoomData()
 
 /***********************
 
-  �L����ROOMID��񋓂���
+  有効なROOMIDを列挙する
 
 ************************/
 typedef struct
@@ -145,7 +145,7 @@ static int compare(const void *arg1,const void *arg2)
 		return 1;
 }
 
-//pbBuf�́ASMB_NUM_ADDRESSDATA�o�C�g�ȏ�̃o�b�t�@�[
+//pbBufは、SMB_NUM_ADDRESSDATAバイト以上のバッファー
 void GetValidRoomIDs(LPBYTE pbBuf)
 {
 	GETVALIDROONIDS gvrhMap[4+1];
@@ -175,7 +175,7 @@ void GetValidRoomIDs(LPBYTE pbBuf)
 	}
 }
 
-//�w�肵�����[��ID���L�����`�F�b�N
+//指定したルームIDが有効かチェック
 BOOL IsRoomIDValid(BYTE bRoomID)
 {
 	BYTE bTmpMap;
@@ -191,12 +191,12 @@ BOOL IsRoomIDValid(BYTE bRoomID)
 	
 	for(n=0;n<4;n++)
 	{
-		//�}�b�v
+		//マップ
 		if(addrHeadMap[iOldAttr]<addrHeadMap[n])
 		{
 			if(bTmpMap>addrHeadMap[n]) bTmpMap=addrHeadMap[n];
 		}
-		//�G
+		//敵
 		if(addrHeadBadGuys[iOldAttr]<addrHeadBadGuys[n])
 		{
 			if(bTmpBadGuys>addrHeadBadGuys[n]) bTmpBadGuys=addrHeadBadGuys[n];
@@ -216,17 +216,17 @@ BOOL IsRoomIDValid(BYTE bRoomID)
 
 /*************************
 
-  ���[���h���̎擾�E�ύX
+  ワールド数の取得・変更
 
 **************************/
-// ���[���h�̐��A1==���[���h1�ŃN���A,2==���[���h2�ŃN���A
+// ワールドの数、1==ワールド1でクリア,2==ワールド2でクリア
 int  g_iNumWorlds;
 
 #define SMB_CLEAR_STRINGMUSIC 0x8428
 #define SMB_CLEAR_JUDGE       0x846A
 #define SMB_CLEAR_PEACH       0xEA17
 
-// 3�Ƃ��������ꍇ�A���̃��[���h���A�������Ȃ��ꍇ-1��Ԃ��B
+// 3つとも等しい場合、そのワールドを、等しくない場合-1を返す。
 int GetClearWorld()
 {
 	BYTE bStr,bJdg,bPch;
@@ -256,17 +256,17 @@ int GetNumWorlds()
 	return g_iNumWorlds;
 }
 
-BOOL g_fSubRoom;   // FALSE==���C�����[��, TRUE==�T�u���[��
-int  g_iAreaIndex; // ���C�����[���̏ꍇ�̃��[��ID�擾�p
-BYTE g_bRoomID;    // �T�u���[���̏ꍇ�̃��[��ID
-int  g_iPage;      // �T�u���[���̊J�n�y�[�W�i���C�����[���ł́A�K��0�j
-int  g_iWorld;     // ���[���h
-int  g_iArea;      // �G���A�i�ʏ�j
-int  g_iArea2;     // �G���A�i�����ʂ�1�̃G���A�Ƃ��Đ�����
+BOOL g_fSubRoom;   // FALSE==メインルーム, TRUE==サブルーム
+int  g_iAreaIndex; // メインルームの場合のルームID取得用
+BYTE g_bRoomID;    // サブルームの場合のルームID
+int  g_iPage;      // サブルームの開始ページ（メインルームでは、必ず0）
+int  g_iWorld;     // ワールド
+int  g_iArea;      // エリア（通常）
+int  g_iArea2;     // エリア（導入面も1つのエリアとして数える
 
 /*****************************
 
-  �ҏW���̃��[���̏��𓾂�
+  編集中のルームの情報を得る
 
 ******************************/
 BYTE GetRoomID()
@@ -312,7 +312,7 @@ BOOL rm_IsThereObject()
 }
 /************************************************************************
 
-  ���ꂼ��̃��[���̓G�E�}�b�v�f�[�^�̐擪�A�h���X(6502CPU������)���擾
+  それぞれのルームの敵・マップデータの先頭アドレス(6502CPUメモリ)を取得
 
 *************************************************************************/
 
@@ -376,7 +376,7 @@ WORD MapGetAllDataLength(UINT uRoomID)
 
 /***********************
 
-  �ҏW���郋�[���̕ύX
+  編集するルームの変更
 
 ************************/
 typedef struct _tagROOMINFO
@@ -395,7 +395,7 @@ int g_iTVImgList[4]={0};
 static HTREEITEM InsertRoomDependencyTreeViewItem(LPROOMINFO *lpRoomInfo,int *piCurRoom,BYTE** pbParentRoom,int iNumParentRooms,HWND hDlg,HTREEITEM hParentItem,HTREEITEM hPrevItem)
 {
 	OBJECTSEEKINFO sObjSeek;
-	// ���݁A�������Ă��郋�[���̏�񂪕ۑ�����Ă���ROOMINFO�\���̂̃C���f�b�N�X
+	// 現在、処理しているルームの情報が保存されているROOMINFO構造体のインデックス
 	UINT nCurRoom=*piCurRoom;
 
 	{
@@ -476,9 +476,9 @@ NEXTOBJ:
 }
 
 
-// �w�肳�ꂽ���[��ID�A�G���A�̃C���f�b�N�X���烏�[���h�ƃG���A���擾
-// iArea  --- �ʏ�̂���
-// iArea2 --- �����ʂ�1�̃G���A�Ƃ��Đ�����
+// 指定されたルームID、エリアのインデックスからワールドとエリアを取得
+// iArea  --- 通常のもの
+// iArea2 --- 導入面も1つのエリアとして数える
 static BOOL GetWorldArea(int *piWorld, int *piAreaNormal, int *piArea2, int iAreaNumber, BYTE bRoomData)
 {
 	int iWRet=0;
@@ -496,20 +496,20 @@ static BOOL GetWorldArea(int *piWorld, int *piAreaNormal, int *piArea2, int iAre
 		BYTE bRoomID;
 
 		bRoomID=MAKE_ROOMID(bAreaData[n]);
-		//�G���A��������
+		//エリア内を検索
 		pbData=bPRGROM+GetMapAddress(bRoomID);
 
-		//pbData�́A�}�b�v�w�b�_���w���Ă���
+		//pbDataは、マップヘッダを指している
 		blAutoWalk=(((pbData[0]>>3)&0x06)==0x06)?TRUE:FALSE;
 
-		//�}�b�v�w�b�h���΂��B
+		//マップヘッドを飛ばす。
 		pbData+=2;
 
 		for(;;)
 		{
 			if(pbData>bPRGROM+0xFFFF) return FALSE;
 
-			//���������G���A�����߂�G���A�Ȃ�I��
+			//検索したエリアが求めるエリアなら終了
 			if(bRoomID==bRoomData && iAreaNumber==n)
 			{
 				if(piWorld) *piWorld=iWRet;
@@ -524,7 +524,7 @@ static BOOL GetWorldArea(int *piWorld, int *piAreaNormal, int *piArea2, int iAre
 
 			if(*pbData==0xFD) break;
 
-			//�h���́h�̃I�u�W�F�N�g
+			//”おの”のオブジェクト
 			if(((pbData[0]&0x0F)==0x0D)&&((pbData[1]&0x7F)==0x42))
 			{
 				iWRet++;
@@ -730,7 +730,7 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM 
 
 /********************
 
-  ���[���̕��בւ�
+  ルームの並べ替え
 
 *********************/
 
@@ -787,7 +787,7 @@ LRESULT CALLBACK AreaSortDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lPa
    {
 	   case WM_PAINT:
 		   UpdateAreaSortPreview(hDlg);
-		   return FALSE;//�d�v
+		   return FALSE;//重要
        case WM_INITDIALOG:
 		   {
 			   sblWritten=FALSE;
@@ -956,7 +956,7 @@ LRESULT CALLBACK GeneralSettingDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 }
 /********************
 
-  ���[���h�̎����ݒ�
+  ワールドの自動設定
 
 *********************/
 void UpdateWorldData(BOOL fCommand)
@@ -1010,24 +1010,24 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 	memcpy(bOldAddrHeadMap,addrHeadMap,4);
 	memcpy(bOldAddrHeadBadGuys,addrHeadBadGuys,4);
 
-	// �V���������ƌ��݂̑������Ⴄ���`�F�b�N����B
+	// 新しい属性と現在の属性が違うかチェックする。
 	if(iOldAttr==iNewAttr) return;
 
-	//�V�����G�L�����R�}���h�A�h���X�w�b�_
+	//新しい敵キャラコマンドアドレスヘッダ
 	/*
-	0�i�C�j�̑�����������  �@1,2,3�̑��� �� +1
-	1�i�n��j�̑����������� �@2,3 �̑��� �� +1
-	2�i�n���j�̑�����������  �@3  �̑��� �� +1
-	3�i��j�̑�����������
+	0（海）の属性が増える  　1,2,3の属性 を +1
+	1（地上）の属性が増える 　2,3 の属性 を +1
+	2（地下）の属性が増える  　3  の属性 を +1
+	3（城）の属性が増える
 
-	0�i�C�j�̑���������  �@1,2,3�̑��� �� -1
-	1�i�n��j�̑��������� �@2,3 �̑��� �� -1
-	2�i�n���j�̑���������  �@3  �̑��� �� -1
-	3�i��j�̑���������
+	0（海）の属性が減る  　1,2,3の属性 を -1
+	1（地上）の属性が減る 　2,3 の属性 を -1
+	2（地下）の属性が減る  　3  の属性 を -1
+	3（城）の属性が減る
 
-	����2�̑���̑g�ݍ��킹
+	この2つの操作の組み合わせ
 	*/
-	//�G�L����
+	//敵キャラ
 	for(n=0;n<=3;n++)
 	{
 		if(bOldAddrHeadBadGuys[n]>bOldAddrHeadBadGuys[iNewAttr])
@@ -1038,7 +1038,7 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 		if(bOldAddrHeadBadGuys[n]>bOldAddrHeadBadGuys[iOldAttr])
 			addrHeadBadGuys[n]--;
 	}
-	//�}�b�v
+	//マップ
 	for(n=0;n<=3;n++)
 	{
 		if(bOldAddrHeadMap[n]>bOldAddrHeadMap[iNewAttr])
@@ -1050,7 +1050,7 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 			addrHeadMap[n]--;
 	}
 
-	//iNewAreaNum �̌v�Z�i�V�����w�b�_���v�Z������j
+	//iNewAreaNum の計算（新しいヘッダを計算した後）
 	bBuf=34;
 	for(n=0;n<=3;n++)
 	{
@@ -1059,7 +1059,7 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 	}
 	iNewAreaNum=bBuf-addrHeadBadGuys[iNewAttr]-1;
 
-	//�G�L�����R�}���h�A�h���X�f�[�^�̓��ꊷ��
+	//敵キャラコマンドアドレスデータの入れ換え
 	memcpy(&addrDataBuf,&addrDataBadGuys[bOldAddrHeadBadGuys[iOldAttr]+iOldAreaNum],sizeof(ADDRESSDATA));
 	for(n=bOldAddrHeadBadGuys[iOldAttr]+iOldAreaNum;n<33;n++)
 		memcpy(&addrDataBadGuys[n],&addrDataBadGuys[n+1],sizeof(ADDRESSDATA));
@@ -1067,7 +1067,7 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 		memcpy(&addrDataBadGuys[n],&addrDataBadGuys[n-1],sizeof(ADDRESSDATA));
 	memcpy(&addrDataBadGuys[n],&addrDataBuf,sizeof(ADDRESSDATA));
 
-	//�}�b�v
+	//マップ
 	memcpy(&addrDataBuf,&addrDataMap[bOldAddrHeadMap[iOldAttr]+iOldAreaNum],sizeof(ADDRESSDATA));
 	for(n=bOldAddrHeadMap[iOldAttr]+iOldAreaNum;n<33;n++)
 		memcpy(&addrDataMap[n],&addrDataMap[n+1],sizeof(ADDRESSDATA));
@@ -1076,8 +1076,8 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 	memcpy(&addrDataMap[n],&addrDataBuf,sizeof(ADDRESSDATA));
 
 
-	//�G���A�f�[�^�̏�������
-	//�G���A�̃f�[�^��V���������̏���������
+	//エリアデータの書き換え
+	//エリアのデータを新しい属性の書き換える
 	for(n=0;n<36;n++)
 	{
 		if(((bAreaData[n]>>5)&0x3)==iOldAttr)
@@ -1089,9 +1089,9 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 		}
 	}
 
-	//���[���ύX�R�}���h�̏�������
-	//�E������ύX�������[���ւ�
-	//�E���[���w���ύX�������[���ւ�
+	//ルーム変更コマンドの書き換え
+	//・属性を変更したルームへの
+	//・ルーム指定を変更したルームへの
 	for(n=0;n<34;n++)
 	{
 		BYTE *pbData;
@@ -1127,7 +1127,7 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 		}
 	}
 
-	//�O���[�o���Ȓl�̍Đݒ�
+	//グローバルな値の再設定
 	if(g_fSubRoom) g_bRoomID=((iNewAttr<<5)|iNewAreaNum);
 
 	SaveCommandAddrData();
@@ -1135,28 +1135,28 @@ void ChangeRoomAttribute(BYTE bData,int iNewAttr)
 
 /********************************
 
-  �I�u�W�F�N�g�̃��[���Ԃ̈ړ�
+  オブジェクトのルーム間の移動
 
 *********************************/
 
 /*
-���������������������������d�v����������������������������������������
-�@�G�I�u�W�F�N�g�ƃ}�b�v�I�u�W�F�N�g�ł́A
-	���@�y�[�W����R�}���h
-	���@���y�[�W�t���O���������I�u�W�F�N�g
-�@�̂悤�ȃI�u�W�F�N�g�f�[�^�̏ꍇ�A���ۂɕ\�������I�u�W�F�N�g�̗l�q�ɂ́A�Ⴂ������B
-�@��̓I�ɂ́A�G�I�u�W�F�N�g�̏ꍇ�A
-	P �y�[�W�@�y�[�W����R�}���h
-	P �y�[�W�@���y�[�W�t���O���������I�u�W�F�N�g
-�@�}�b�v�I�u�W�F�N�g�̏ꍇ
-	P �y�[�W�@�@�@�y�[�W����R�}���h
-	(P+1) �y�[�W�@���y�[�W�t���O���������I�u�W�F�N�g
-�@�̂悤�ɕ\�������B
+＊＊＊＊＊＊＊＊＊＊＊＊＊重要＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+　敵オブジェクトとマップオブジェクトでは、
+	＊　ページ送りコマンド
+	＊　改ページフラグを持ったオブジェクト
+　のようなオブジェクトデータの場合、実際に表示されるオブジェクトの様子には、違いがある。
+　具体的には、敵オブジェクトの場合、
+	P ページ　ページ送りコマンド
+	P ページ　改ページフラグを持ったオブジェクト
+　マップオブジェクトの場合
+	P ページ　　　ページ送りコマンド
+	(P+1) ページ　改ページフラグを持ったオブジェクト
+　のように表示される。
 
-�@�ȏ��
+　以上の
 */
 
-// �}�b�v�p
+// マップ用
 
 static BOOL IsMapPageRelatedObject(LPBYTE lpbBuf)
 {
@@ -1189,7 +1189,7 @@ static UINT MapMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int iPag
 	dwAddrSrc=GetMapAddress(uRoomIDSrc)+ObjSeekSrc.dwOfs+2;
 
 
-	//�����̃��[���́ASMB�G���W���ŏ����ł���͈͂̃I�u�W�F�N�g����
+	//送り先のルームは、SMBエンジンで処理できる範囲のオブジェクト数か
 	if(MapSeekFirst(&ObjSeekDst,uRoomIDDst)){
 		for(;;){
 			if(!MapSeekNext(&ObjSeekDst))
@@ -1201,7 +1201,7 @@ static UINT MapMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int iPag
 
 
 	//Get information of destinate object(Check)
-	fPrevDst=FALSE;// �����̃y�[�W�ɃI�u�W�F�N�g��1�����Ȃ��ꍇ�ւ̑Ή��̂���
+	fPrevDst=FALSE;// 送り先のページにオブジェクトが1つしかない場合への対応のため
 	if(MapSeekFirst(&ObjSeekDst,uRoomIDDst)){
 		for(;;){
 			BOOL fPageObj=IsMapPageRelatedObject(ObjSeekDst.pbData);
@@ -1225,14 +1225,14 @@ static UINT MapMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int iPag
 
 	//
 	memcpy(bBufSrc,ObjSeekSrc.pbData,2);
-	memmove(ObjSeekSrc.pbData,ObjSeekSrc.pbData+2,SMB_OBJECT_END_ADDRESS-dwAddrSrc-2);//-2�́A�؂���I�u�W�F�N�g�̃f�[�^��
+	memmove(ObjSeekSrc.pbData,ObjSeekSrc.pbData+2,SMB_OBJECT_END_ADDRESS-dwAddrSrc-2);//-2は、切り取るオブジェクトのデータ分
 	for(i=0;i<SMB_NUM_ADDRESSDATA;i++){
 		if(dwAddrSrc<addrDataMap[i].word)
 			addrDataMap[i].word-=2;
 	}
 
 	//ReGet information of destinate object
-	fPrevDst=FALSE;// �����̃y�[�W�ɃI�u�W�F�N�g��1�����Ȃ��ꍇ�ւ̑Ή��̂���
+	fPrevDst=FALSE;// 送り先のページにオブジェクトが1つしかない場合への対応のため
 	if(MapSeekFirst(&ObjSeekDst,uRoomIDDst)){
 		for(;;){
 			BOOL fPageObj=IsMapPageRelatedObject(ObjSeekDst.pbData);
@@ -1247,9 +1247,9 @@ static UINT MapMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int iPag
 			if(!MapSeekNext(&ObjSeekDst)) return MOVEOBJ_ERR_DSTPAGE;
 		}
 	}
-	dwAddrDst = GetMapAddress(uRoomIDDst) + ObjSeekDst.dwOfs + 2;//+2�́A�w�b�_��
+	dwAddrDst = GetMapAddress(uRoomIDDst) + ObjSeekDst.dwOfs + 2;//+2は、ヘッダ分
 
-	memmove(ObjSeekDst.pbData+2,ObjSeekDst.pbData,SMB_OBJECT_END_ADDRESS-dwAddrDst-2);//-2�́A�؂������I�u�W�F�N�g�̃f�[�^��
+	memmove(ObjSeekDst.pbData+2,ObjSeekDst.pbData,SMB_OBJECT_END_ADDRESS-dwAddrDst-2);//-2は、切り取ったオブジェクトのデータ分
 	memcpy(ObjSeekDst.pbData,bBufSrc,2);
 	for(i=0;i<SMB_NUM_ADDRESSDATA;i++){
 		if(dwAddrDst<addrDataMap[i].word)
@@ -1262,7 +1262,7 @@ static UINT MapMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int iPag
 	return MOVEOBJ_ERR_SUCCESS;
 }
 
-//�G�p
+//敵用
 
 static UINT BadGuysMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int iPageDst)
 {
@@ -1281,29 +1281,29 @@ static UINT BadGuysMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int 
 	if(iIndexSrc<0 || iPageDst<0 || !BadGuysSeekFirst(&ObjSeekSrc,uRoomIDSrc)) return FALSE;
 	for(;;){
 		/*
-			�Ȃ��A�G�I�u�W�F�N�g�̏ꍇ����
-			�@�y�[�W����R�}���h
-			�@�I�u�W�F�N�g�c�i���j
-			�@���y�[�W�t���O���������I�u�W�F�N�g�c�i�����j
-			�́i���j�̃I�u�W�F�N�g���y�[�W�̊֌W��ۂ��߂̃I�u�W�F�N�g�Ƃ݂Ȃ�
-			�̂��ɂ��āB
-			�܂��A�y�[�W�̊֌W��ۂK�v�����闝�R�ɂ��ẮA���[�U�[�ɂƂ��āh
-			����h�ɂ���ăy�[�W�̊֌W���ς��̂́A�\�����Ȃ����Ƃł��邽�߁A�G
-			���[�Ƃ��Ĉ����ׂ��ł��邱�ƂƁA�������A�������A�y�[�W�ɂ��T����
-			�s���Ă��邽�߁A�y�[�W�̊֌W���������ꍇ�A�؂���͐������Ă��\��t��
-			�Ńy�[�W�����݂��Ȃ����߂Ɏ��s���A�f�[�^��j�󂵂Ă��܂��B
-			���ɁA��L�́i���j�𑗂��Ă��܂����ꍇ�A�Ȃ��G�I�u�W�F�N�g�̏ꍇ����
-			�y�[�W�̊֌W������Ă��܂����ɂ��ẮA
-			�@�y�[�W����R�}���h
-			�@���y�[�W�t���O���������I�u�W�F�N�g�c�i���j
-			�̂悤�ȃI�u�W�F�N�g���������ꍇ�A�G�ƒn�`�I�u�W�F�N�g�ł�2�̃I�u�W�F
-			�N�g�̃y�[�W�̈��������Ⴄ����ł���B�n�`�̏ꍇ�́A�i���j�́A�y�[�W
-			����R�}���h�Ŏw�肳�ꂽ�y�[�W�̎��̃y�[�W�ɃZ�b�g�����̂ɑ΂��A�G��
-			�ꍇ�́A�y�[�W����R�}���h�Ɓi���j�̃I�u�W�F�N�g�͓����y�[�W�Z�b�g����
-			��B�ł��邩��A�i���j�̃I�u�W�F�N�g�𑗂����ꍇ�A�i�����j�̃I�u�W�F�N
-			�g�̃y�[�W�́A�P�O�Ƃ��������ɂȂ��Ă��܂��A�y�[�W�̊֌W��������Ă�
-			�܂��B����ł́A�����y�[�W�ɃI�u�W�F�N�g���S�����݂��Ȃ��Ȃ�\����
-			�o�Ă��āA���ɂ����Ȃ����ꍇ�\��t���Ɏ��s����B
+			なぜ、敵オブジェクトの場合だけ
+			　ページ送りコマンド
+			　オブジェクト…（＊）
+			　改ページフラグを持ったオブジェクト…（＊＊）
+			の（＊）のオブジェクトをページの関係を保つためのオブジェクトとみなす
+			のかについて。
+			まず、ページの関係を保つ必要がある理由については、ユーザーにとって”
+			送る”によってページの関係が変わるのは、予期しないことであるため、エ
+			ラーとして扱うべきであることと、何よりも、実装が、ページによる探索を
+			行っているため、ページの関係が狂った場合、切り取りは成功しても貼り付け
+			でページが存在しないために失敗し、データを破壊してしまう。
+			つぎに、上記の（＊）を送ってしまった場合、なぜ敵オブジェクトの場合だけ
+			ページの関係が崩れてしまうかについては、
+			　ページ送りコマンド
+			　改ページフラグを持ったオブジェクト…（＠）
+			のようなオブジェクトがあった場合、敵と地形オブジェクトでは2つのオブジェ
+			クトのページの扱われ方が違うからである。地形の場合は、（＠）は、ページ
+			送りコマンドで指定されたページの次のページにセットされるのに対し、敵の
+			場合は、ページ送りコマンドと（＠）のオブジェクトは同じページセットされ
+			る。であるから、（＊）のオブジェクトを送った場合、（＊＊）のオブジェク
+			トのページは、１つ前という扱いになってしまい、ページの関係がくずれてし
+			まう。これでは、送り先ページにオブジェクトが全く存在しなくなる可能性が
+			出てきて、仮にそうなった場合貼り付けに失敗する。
 		*/
 		DWORD dwPageRelated = BadGuysIsPageRelatedObject(ObjSeekSrc.pbData);
 		if(ObjSeekSrc.dwIndex==(DWORD)iIndexSrc
@@ -1323,7 +1323,7 @@ static UINT BadGuysMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int 
 	dwAddrSrc=GetBadGuysAddress(uRoomIDSrc)+ObjSeekSrc.dwOfs;
 	iSrcSize=ObjSeekSrc.dwObjLen;
 
-	//�����̃��[���́ASMB�G���W���ŏ����ł���͈͂̃I�u�W�F�N�g����
+	//送り先のルームは、SMBエンジンで処理できる範囲のオブジェクト数か
 	if(BadGuysSeekFirst(&ObjSeekDst, uRoomIDDst)){
 		for(;;){
 			if(!BadGuysSeekNext(&ObjSeekDst))
@@ -1335,7 +1335,7 @@ static UINT BadGuysMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int 
 
 
 	//Get information of destination object(check)
-	fPrevDst=FALSE;// �����̃y�[�W�ɃI�u�W�F�N�g��1�����Ȃ��ꍇ�ւ̑Ή��̂���
+	fPrevDst=FALSE;// 送り先のページにオブジェクトが1つしかない場合への対応のため
 	if(BadGuysSeekFirst(&ObjSeekDst,uRoomIDDst)){//for no room object
 		for(;;)
 		{
@@ -1362,15 +1362,15 @@ static UINT BadGuysMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int 
 
 	//
 	memcpy(bBufSrc,ObjSeekSrc.pbData,iSrcSize);
-	memmove(ObjSeekSrc.pbData,ObjSeekSrc.pbData+iSrcSize,SMB_OBJECT_END_ADDRESS-dwAddrSrc-iSrcSize);//-2�́A�؂���I�u�W�F�N�g�̃f�[�^��
+	memmove(ObjSeekSrc.pbData,ObjSeekSrc.pbData+iSrcSize,SMB_OBJECT_END_ADDRESS-dwAddrSrc-iSrcSize);//-2は、切り取るオブジェクトのデータ分
 	for(i=0;i<SMB_NUM_ADDRESSDATA;i++){
 		if(dwAddrSrc<addrDataBadGuys[i].word)
 			addrDataBadGuys[i].word-=iSrcSize;
 	}
 
-	//�\�[�X�̃I�u�W�F�N�g��؂��������Ƃɂ���āA�����̃|�C���^�[�������ɂȂ���
+	//ソースのオブジェクトを切り取ったことによって、送り先のポインターが無効になった
 	//ReGet information of destinate object
-	fPrevDst=FALSE;// �����̃y�[�W�ɃI�u�W�F�N�g��1�����Ȃ��ꍇ�ւ̑Ή��̂���
+	fPrevDst=FALSE;// 送り先のページにオブジェクトが1つしかない場合への対応のため
 	if(BadGuysSeekFirst(&ObjSeekDst,uRoomIDDst)){
 		for(;;){
 			BOOL fPageObj=BadGuysIsPageRelatedObject(ObjSeekDst.pbData);
@@ -1387,7 +1387,7 @@ static UINT BadGuysMoveObject(UINT uRoomIDSrc,int iIndexSrc,UINT uRoomIDDst,int 
 	}
 	dwAddrDst=GetBadGuysAddress(uRoomIDDst)+ObjSeekDst.dwOfs;
 
-	memmove(ObjSeekDst.pbData+iSrcSize,ObjSeekDst.pbData,SMB_OBJECT_END_ADDRESS-dwAddrDst-iSrcSize);//-2�́A�؂������I�u�W�F�N�g�̃f�[�^��
+	memmove(ObjSeekDst.pbData+iSrcSize,ObjSeekDst.pbData,SMB_OBJECT_END_ADDRESS-dwAddrDst-iSrcSize);//-2は、切り取ったオブジェクトのデータ分
 	memcpy(ObjSeekDst.pbData,bBufSrc,iSrcSize);
 	for(i=0;i<SMB_NUM_ADDRESSDATA;i++){
 		if(dwAddrDst<addrDataBadGuys[i].word)

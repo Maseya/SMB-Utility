@@ -1,15 +1,15 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
   File: filemng.h
-  Description: ƒtƒ@ƒCƒ‹‚Ìƒ[ƒhBƒZ[ƒu‚ğs‚¤ƒ‹[ƒ`ƒ“
+  Description: ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ­ãƒ¼ãƒ‰ã€‚ã‚»ãƒ¼ãƒ–ã‚’è¡Œã†ãƒ«ãƒ¼ãƒãƒ³
   History:
 
  ************************************************************************************/
 #include "smbutil.h"
 
-// ŠO•”ƒGƒfƒBƒ^•ÏX‘Î‰
+// å¤–éƒ¨ã‚¨ãƒ‡ã‚£ã‚¿å¤‰æ›´å¯¾å¿œ
 FILETIME gFileTime;
 BOOL gblFileCmpEnable;
 extern char gFilePath[MAX_PATH];
@@ -39,17 +39,17 @@ void SetROMFileTime()
 	GetFileLastWrite(&gFileTime);
 }
 
-//iÄjƒ[ƒh‚µ‚½“_‚Ìƒtƒ@ƒCƒ‹‚ÌÅIXVŠÔ‚Æ
-//@@“¯‚¶cTRUE
-//@ˆá‚¤cFALSE
-//  ‚ğ•Ô‚·B
+//ï¼ˆå†ï¼‰ãƒ­ãƒ¼ãƒ‰ã—ãŸæ™‚ç‚¹ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€çµ‚æ›´æ–°æ™‚é–“ã¨
+//ã€€ã€€åŒã˜â€¦TRUE
+//ã€€é•ã†â€¦FALSE
+//  ã‚’è¿”ã™ã€‚
 BOOL CheckROMFileTime()
 {
 	FILETIME TmpFileTime;
 
-	if(!gblFileCmpEnable) return TRUE;//¸”s
+	if(!gblFileCmpEnable) return TRUE;//å¤±æ•—
 	
-	if(!GetFileLastWrite(&TmpFileTime)) return TRUE;//¸”s
+	if(!GetFileLastWrite(&TmpFileTime)) return TRUE;//å¤±æ•—
 
 	if(!memcmp(&TmpFileTime,&gFileTime,sizeof(FILETIME))) return TRUE;
 	

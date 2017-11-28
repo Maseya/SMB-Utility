@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -36,7 +36,7 @@ extern int GetNumEMapObject();
 extern int GetNumFMapObject();
 /***********************
 
-  “GƒGƒfƒCƒbƒgƒ_ƒCƒAƒƒO
+  æ•µã‚¨ãƒ‡ã‚¤ãƒƒãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 ************************/
 #define BADGUYS_EDITDLG_NOPREVIEWSIZE 420
@@ -154,11 +154,11 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 				   char cBuf[20];
 				   int n;
 
-				   //ƒ[ƒ‹ƒh‚Ì”ÍˆÍ
+				   //ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®ç¯„å›²
 				   SendDlgItemMessage(hDlg,IDC_WORLDSPIN,UDM_SETRANGE,0,MAKEWPARAM(8,1));
-				   //ƒy[ƒW‚Ì”ÍˆÍ
+				   //ãƒšãƒ¼ã‚¸ã®ç¯„å›²
 				   SendDlgItemMessage(hDlg,IDC_PAGEEDIT2SPIN,UDM_SETRANGE,0,MAKEWPARAM(0x1F,0));
-				   //ƒy[ƒW‚Ì”ÍˆÍ
+				   //ãƒšãƒ¼ã‚¸ã®ç¯„å›²
 				   SendDlgItemMessage(hDlg,IDC_XPOS2SPIN,UDM_SETRANGE,0,MAKEWPARAM(0xF,0));
 
 				   sprintf(cBuf,"%.2x %.2x %.2x",bBuf[0],bBuf[1],bBuf[2]);
@@ -191,7 +191,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 			   else if((bBuf[0]&0x0F)==0x0F)
 			   {
 				   char cBuf[10];
-				   //‰üƒy[ƒWƒtƒ‰ƒO
+				   //æ”¹ãƒšãƒ¼ã‚¸ãƒ•ãƒ©ã‚°
 				   if (bBuf[1] & 0x80)
 					   CheckDlgButton(hDlg,IDC_PAGEFLAG,BST_CHECKED);
 //				   if (bBuf[1] & 0x40)
@@ -210,9 +210,9 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 				   
 				   blIs3BytesObj=FALSE;
 				   DisableBadguysEditDlgControls(hDlg,DISABLE_3BYTES);
-				   // ˆê‰‚È‚É‚©‘I‘ğ‚µ‚Ä‚¨‚­
+				   // ä¸€å¿œãªã«ã‹é¸æŠã—ã¦ãŠã
 				   SendDlgItemMessage(hDlg,IDC_TYPE,CB_SETCURSEL,0,0);
-				   // ŠÖŒW‚Ì‚È‚¢—v‘f‚ğ–³Œø‰»
+				   // é–¢ä¿‚ã®ãªã„è¦ç´ ã‚’ç„¡åŠ¹åŒ–
 				   EnableWindow(GetDlgItem(hDlg,IDC_TYPE), FALSE);
 				   EnableWindow(GetDlgItem(hDlg,IDC_BIT6), FALSE);
 
@@ -230,9 +230,9 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 				   CheckDlgButton(hDlg,IDC_ISBIN,BST_UNCHECKED);
 				   if(bBuf[1]&0x40) CheckDlgButton(hDlg,IDC_BIT6,BST_CHECKED);
 				   if(bBuf[1]&0x80)  CheckDlgButton(hDlg,IDC_PAGEFLAG,BST_CHECKED);
-				   //yˆÊ’u‚Ì”ÍˆÍ‚Ìİ’è
+				   //yä½ç½®ã®ç¯„å›²ã®è¨­å®š
 				   SendDlgItemMessage(hDlg,IDC_YPOSSPIN,UDM_SETRANGE,0,MAKEWPARAM(-1,13+smbBudGuysInfo[bBuf[1]&0x3F].YDelta));
-				   //xˆÊ’u‚Ì”ÍˆÍ‚Ìİ’è
+				   //xä½ç½®ã®ç¯„å›²ã®è¨­å®š
 				   SendDlgItemMessage(hDlg,IDC_XPOSSPIN,UDM_SETRANGE,0,MAKEWPARAM(15+smbBudGuysInfo[bBuf[1]&0x3F].XDelta,smbBudGuysInfo[bBuf[1]&0x3F].XDelta));
 				   
 				   blIs3BytesObj=FALSE;
@@ -255,7 +255,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 						   char cBuf[20];
 						   BYTE bBuf[4];
 						   int iSize;
-						   //ƒoƒCƒiƒŠƒf[ƒ^‚Ìæ“¾
+						   //ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 						   GetDlgItemText(hDlg,IDC_BIN,cBuf,20);
 						   iSize=sscanf(cBuf,"%x %x %x %x",&bBuf[0],&bBuf[1],&bBuf[2],&bBuf[3]);
 						   if(iSize<1 || iSize>4) return TRUE;
@@ -293,10 +293,10 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 						   }
 						   else
 						   {
-							   //í—Ş‚Ìæ“¾
+							   //ç¨®é¡ã®å–å¾—
 							   bType=(BYTE)SendDlgItemMessage(hDlg,IDC_TYPE,CB_GETCURSEL,0,0);
 							   bBuf[1]|=bType;
-							   //X‚Ìæ“¾
+							   //Xã®å–å¾—
 							   //GetDlgItemText(hDlg,IDC_XPOS,cBuf,20);
 							   //if(1!=sscanf(cBuf,"%d",&bTmp)) return TRUE;
 							   bTmp = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, TRUE);
@@ -304,7 +304,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 							   bTmp-=smbBudGuysInfo[bType].XDelta;
 							   if(bTmp>0xF) return TRUE;
 							   bBuf[0]|=(bTmp<<4);
-							   //Y‚Ìæ“¾
+							   //Yã®å–å¾—
 							   //GetDlgItemText(hDlg,IDC_YPOS,cBuf,20);
 							   //if(1!=sscanf(cBuf,"%d",&bTmp)) return TRUE;
 							   bTmp = GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, TRUE);
@@ -312,10 +312,10 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 							   bTmp+=abs(smbBudGuysInfo[bType].YDelta);
 							   if(bTmp>0xD) return TRUE;
 							   bBuf[0]|=(bTmp&0x0F);
-							   //‰üƒy[ƒWƒtƒ‰ƒO‚Ìæ“¾
+							   //æ”¹ãƒšãƒ¼ã‚¸ãƒ•ãƒ©ã‚°ã®å–å¾—
 							   if(BST_CHECKED&IsDlgButtonChecked(hDlg,IDC_PAGEFLAG))
 								   bBuf[1]|=0x80;
-							   //‘æ2ƒoƒCƒg‚Ìƒrƒbƒg6‚Ìæ“¾
+							   //ç¬¬2ãƒã‚¤ãƒˆã®ãƒ“ãƒƒãƒˆ6ã®å–å¾—
 							   if(BST_CHECKED&IsDlgButtonChecked(hDlg,IDC_BIT6))
 								   bBuf[1]|=0x40;
 						   }
@@ -338,18 +338,18 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 						   bBuf[0]|=((bTmp&0x0F)<<4);
 						   //YPOS
 						   bBuf[0]|=0x0E;
-						   //‰üƒy[ƒWƒtƒ‰ƒO
+						   //æ”¹ãƒšãƒ¼ã‚¸ãƒ•ãƒ©ã‚°
 						   if(BST_CHECKED==IsDlgButtonChecked(hDlg,IDC_PAGEFLAG2))
 							   bBuf[1]|=0x80;
 						   //
 						   GetDlgItemText(hDlg,IDC_DATA,cBuf,3);
 						   if(1!=sscanf(cBuf,"%x",&bTmp)) return TRUE;
 						   bBuf[1]|=(bTmp&0x7F);
-						   //ƒ[ƒ‹ƒh
+						   //ãƒ¯ãƒ¼ãƒ«ãƒ‰
 						   bTmp=GetDlgItemInt(hDlg,IDC_WORLD,&blSuccess,FALSE);
 						   if(!blSuccess || bTmp>8) return TRUE;
 						   bBuf[2]|=(((bTmp-1)&0x07)<<5);
-						   //ƒy[ƒW
+						   //ãƒšãƒ¼ã‚¸
 						   bTmp=GetDlgItemInt(hDlg,IDC_PAGEEDIT2,&blSuccess,FALSE);
 						   if(!blSuccess || bTmp>0x1F) return TRUE;
 						   bBuf[2]|=(bTmp&0x1F);
@@ -372,9 +372,9 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 					   bType=(BYTE)SendDlgItemMessage(hDlg,IDC_TYPE,CB_GETCURSEL,0,0);
 					   if(bType!=CB_ERR)
 					   {
-						   //yˆÊ’u‚Ì”ÍˆÍ‚Ìİ’è
+						   //yä½ç½®ã®ç¯„å›²ã®è¨­å®š
 						   SendDlgItemMessage(hDlg,IDC_YPOSSPIN,UDM_SETRANGE,0,MAKEWPARAM(-1,13+smbBudGuysInfo[bType].YDelta));
-						   //xˆÊ’u‚Ì”ÍˆÍ‚Ìİ’è
+						   //xä½ç½®ã®ç¯„å›²ã®è¨­å®š
 						   SendDlgItemMessage(hDlg,IDC_XPOSSPIN,UDM_SETRANGE,0,MAKEWPARAM(15+smbBudGuysInfo[bType].XDelta,smbBudGuysInfo[bType].XDelta));
 					   }
 					   if(HIWORD(wParam)==CBN_SELCHANGE)
@@ -395,7 +395,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 				   if(HIWORD(wParam)==BN_CLICKED)
 					   CheckDlgButton(hDlg,IDC_ISBIN,BST_UNCHECKED);
 				   return TRUE;
-			   //ƒ‹[ƒ€ŠÔˆÚ“®
+			   //ãƒ«ãƒ¼ãƒ é–“ç§»å‹•
 			   case IDC_DATA:
 				   if(BST_UNCHECKED==IsDlgButtonChecked(hDlg,IDC_OPENPREVIEW)) return TRUE;
 				   if(HIWORD(wParam)==CBN_EDITCHANGE)
@@ -447,7 +447,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 
 /*********************************
 
-  ƒ}ƒbƒvƒGƒfƒBƒgƒ_ƒCƒAƒƒOŠÖ”ŠÖ”
+  ãƒãƒƒãƒ—ã‚¨ãƒ‡ã‚£ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°é–¢æ•°é–¢æ•°
 
 ***********************************/
 
@@ -500,7 +500,7 @@ static void PrepareMapComEditDlg(HWND hDlg,BYTE *bBuf,int iPage,int iPrepareOpti
 		SetDlgItemInt(hDlg,IDC_YPOS,bBuf[0]&0x0F,FALSE);
 	}
 
-	//ƒ^ƒCƒv‚ğ•À‚×‚é
+	//ã‚¿ã‚¤ãƒ—ã‚’ä¸¦ã¹ã‚‹
 	DisableConrols(hDlg);
 	switch(bBuf[0]&0x0F)
 	{
@@ -545,18 +545,18 @@ static void PrepareMapComEditDlg(HWND hDlg,BYTE *bBuf,int iPage,int iPrepareOpti
 		if((bBuf[1]&psObjInfo[n].bBasicDataMask)==psObjInfo[n].bBasicData) break;
 	}
 
-	//ƒ^ƒCƒv‚ğ‘I‘ğ
+	//ã‚¿ã‚¤ãƒ—ã‚’é¸æŠ
 	if(n<iMaxNumObjs)
 		SendDlgItemMessage(hDlg,IDC_TYPE,CB_SETCURSEL,n,0);
-	else//•s–¾‚ÈƒIƒuƒWƒFƒNƒg‚Ìê‡
+	else//ä¸æ˜ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆ
 	{
 		SendDlgItemMessage(hDlg,IDC_TYPE,CB_SETCURSEL,-1,0);
 		CheckDlgButton(hDlg,IDC_ISBIN,BST_CHECKED);
 	}
-	//’ˆÓ‘‚«‚ğ•\¦
+	//æ³¨æ„æ›¸ãã‚’è¡¨ç¤º
 	SetDlgItemText(hDlg,IDC_NOTE,psObjInfo[n].Note);
 
-	//YPOS‚ğƒZƒbƒg¨ƒTƒCƒY‚ğƒZƒbƒg‚Ì‡
+	//YPOSã‚’ã‚»ãƒƒãƒˆâ†’ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆã®é †
 	if(psObjInfo[n].bIsSizeValid)
 	{
 		EnableControl(hDlg,IDC_LEN);
@@ -632,13 +632,13 @@ LRESULT CALLBACK MapComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM 
 					   }
 					   else
 					   {
-						   //‰üƒy[ƒWƒtƒ‰ƒO
+						   //æ”¹ãƒšãƒ¼ã‚¸ãƒ•ãƒ©ã‚°
 						   if(BST_CHECKED&IsDlgButtonChecked(hDlg,IDC_PAGEFLAG)) bNewData[1]|=0x80;
-						   //X‚Ìæ“¾
+						   //Xã®å–å¾—
 						   bTmp=(BYTE)GetDlgItemInt(hDlg,IDC_XPOS,&blSuccess,FALSE);
 						   if(!blSuccess || bTmp>0x0F) return FALSE;
 						   bNewData[0]|=((bTmp&0x0F)<<4);
-						   //Y‚Ìæ“¾
+						   //Yã®å–å¾—
 						   bTmp=(BYTE)GetDlgItemInt(hDlg,IDC_YPOS,&blSuccess,FALSE);
 						   if(!blSuccess || bTmp>0x0F) return FALSE;
 						   bNewData[0]|=(bTmp&0x0F);
@@ -688,7 +688,7 @@ LRESULT CALLBACK MapComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM 
 					   {
 						   iSize=GetDlgItemInt(hDlg,IDC_LEN,&blSuccess,FALSE);
 						   if(!blSuccess) return FALSE;
-						   //‘‰Á•ª‚ğ‘«‚µ‚Ä‚©‚çAƒ}ƒXƒN‚·‚é‚±‚Æ‚ÍAd—vB—á‚¦‚ÎA’·‚³‚W‚Ì“yŠÇ‚Ì“ü—ÍB
+						   //å¢—åŠ åˆ†ã‚’è¶³ã—ã¦ã‹ã‚‰ã€ãƒã‚¹ã‚¯ã™ã‚‹ã“ã¨ã¯ã€é‡è¦ã€‚ä¾‹ãˆã°ã€é•·ã•ï¼˜ã®åœŸç®¡ã®å…¥åŠ›ã€‚
 						   iSize+=psObjInfo[iSel].iSizeDelta;
 
 						   if(iSize<0 || iSize>psObjInfo[iSel].bSizeMask) return TRUE;
@@ -713,7 +713,7 @@ LRESULT CALLBACK MapComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM 
 					   BYTE bTmp;
 					   BOOL blSuccess;
 
-					   //Y‚Ìæ“¾
+					   //Yã®å–å¾—
 					   bTmp=(BYTE)GetDlgItemInt(hDlg,IDC_YPOS,&blSuccess,FALSE);
 					   if(!blSuccess) return FALSE;
 					   bBuf[0]&=0xF0;
@@ -745,7 +745,7 @@ LRESULT CALLBACK MapComEditDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM 
 					   return TRUE;
 				   }
 				   break;
-			   case IDC_TYPE://í—Ş‚ğ•ÏX
+			   case IDC_TYPE://ç¨®é¡ã‚’å¤‰æ›´
 				   if(HIWORD(wParam)==CBN_SELCHANGE)
 				   {
 					   BYTE bTmp;

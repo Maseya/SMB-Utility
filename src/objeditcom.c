@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -18,12 +18,12 @@
 
 /***********************
 
-  �L�[�{�[�h���̓n���h��
+  キーボード入力ハンドラ
 
 ************************/
 static int SetDataNextPageBadGuys(int iItem)
 {
-	//�ړ�����f�[�^
+	//移動するデータ
 	BYTE bBuf[3];
 	int  iBufSize;
 	BOOL blIsPage;
@@ -59,11 +59,11 @@ static int SetDataNextPageBadGuys(int iItem)
 	if(!BadGuysSeekNext(&ObjSeek)) return INVALID_OBJECT_INDEX;
 	iItem++;
 
-	//�ړ������ް������y�[�W�t���O�������Ă��āA�����̃f�[�^���y�[�W���\������
-	//�I�u�W�F�N�g�ł���ꍇ���A�ȉ��̂悤�ȕ��т́i���j�̃I�u�W�F�N�g
-	// �y�[�W����R�}���h
-	// (���y�[�W�t���O����E�Ȃ��̗�����)���ʒu15�̃I�u�W�F�N�g�c�i���j
-	//�́A�ړ������Ȃ��B
+	//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータがページを構成する
+	//オブジェクトである場合か、以下のような並びの（＊）のオブジェクト
+	// ページ送りコマンド
+	// (改ページフラグあり・なしの両方の)横位置15のオブジェクト…（＊）
+	//は、移動させない。
 	{
 		BOOL blSetPage = (dwPrevPageRelated == PAGEOBJECT_SETPAGE);
 		BOOL blNextPageRelated = ((ObjSeek.pbData[1]&0x80)||((ObjSeek.pbData[0]&0x0f)==0x0F));
@@ -72,16 +72,16 @@ static int SetDataNextPageBadGuys(int iItem)
 			|| (blSetPage && blNextPageRelated))
 		return INVALID_OBJECT_INDEX;
 	}
-	// �������ʒu15�ɂ���I�u�W�F�N�g���Ƃ΂��B
-	// �f�[�^���ύX����邽�߁ABadGuysSeek()�֐��́A�g���Ȃ����Ƃɒ���
+	// 同じ横位置15にあるオブジェクトをとばす。
+	// データが変更されるため、BadGuysSeek()関数は、使えないことに注意
 	for(;iItem<=iMaxIndex;iItem++)
 	{
 		BYTE bTmp[3];
 		int iTmpSize;
-		// �R�s�[��ۑ����Ă���
+		// コピーを保存しておく
 		iTmpSize=((ObjSeek.pbData[0]&0x0F)==0x0E)?3:2;
 		memcpy(bTmp,ObjSeek.pbData,iTmpSize);
-		// �f�[�^���ړ�
+		// データを移動
 		memcpy(pbPrev,bTmp,iTmpSize);
 		pbPrev+=iTmpSize;
 		//
@@ -97,7 +97,7 @@ static int SetDataNextPageBadGuys(int iItem)
 		ObjSeek.pbData+=iTmpSize;
 	}
 
-	//�ړ������f�[�^�Ƀy�[�W�t���b�O������ꍇ
+	//移動したデータにページフラッグがある場合
 	if(blIsPage)
 		pbBuf[1]|=0x80;
 
@@ -117,7 +117,7 @@ static int SetDataPrevPageBadGuys(int iItem)
 	BYTE *pbBuf;
 	BYTE *pbPageTop;
 	int n=0;
-	BOOL blIsPage;//�ړ�����f�[�^
+	BOOL blIsPage;//移動するデータ
 	OBJECTSEEKINFO ObjSeek;
 	DWORD dwPrevPageRelated = PAGEOBJECT_NO;
 
@@ -155,28 +155,28 @@ static int SetDataPrevPageBadGuys(int iItem)
 //	if(!(bBuf[1]&0x80) && iItem==0) return INVALID_OBJECT_INDEX;
 	if(!BadGuysSeekNext(&ObjSeek)) return INVALID_OBJECT_INDEX;
 
-	// �ړ������ް������y�[�W�t���O�������Ă��āA�����̃f�[�^�����y�[�W�t���O������
-	// �Ă���ꍇ���Ȃ킿�A���̃f�[�^��1�y�[�W��1�����Ȃ�
-	//�ȉ��̂悤�ȕ��т́i���j�̃I�u�W�F�N�g
-	// �y�[�W����R�}���h
-	// ���y�[�W�t���O�Ȃ��̉��ʒu15�̃I�u�W�F�N�g�c�i���j
-	// ���y�[�W�t���O���������I�u�W�F�N�g
-	//�́A�ړ������Ȃ��B
+	// 移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っ
+	// ている場合すなわち、そのデータが1ページに1つしかない
+	//以下のような並びの（＊）のオブジェクト
+	// ページ送りコマンド
+	// 改ページフラグなしの横位置15のオブジェクト…（＊）
+	// 改ページフラグを持ったオブジェクト
+	//は、移動させない。
 	if(blIsPage || dwPrevPageRelated == PAGEOBJECT_SETPAGE){
 		if( (ObjSeek.pbData[1]&0x80)
 			|| ((ObjSeek.pbData[0]&0x0f)==0x0F) )
 			return INVALID_OBJECT_INDEX;
 	}
 
-	// �ړ�����f�[�^���g�����y�[�W�t���O�������Ă���ꍇ�A
-	// ���̃f�[�^�ɉ��y�[�W�t���O���ړ�����
+	// 移動するデータ自身が改ページフラグを持っている場合、
+	// 次のデータに改ページフラグを移動する
 	if(blIsPage){
 		ObjSeek.pbData[1]|=0x80;
 
 		bBuf[0]|=0xF0;
 		bBuf[1]&=0x7F;
 		memcpy(pbBuf,bBuf,iBufSize);
-		//�C���f�b�N�X�̕ύX�Ȃ�
+		//インデックスの変更なし
 		n=0;
 	}
 	else{
@@ -216,7 +216,7 @@ static int SetObjIndexBadGuys(int iItem,BOOL fPlus)
 }
 
 
-//�߂�l�@���X�g�{�b�N�X�̍X�V���K�v�ȏꍇ�ATRUE, �����Ȃ���΁AFALSE
+//戻り値　リストボックスの更新が必要な場合、TRUE, さもなければ、FALSE
 static BOOL BadGuysKeyInput(int iItem,int iVKey)
 {
 	BYTE bBuf[3];
@@ -249,7 +249,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 			SetBadGuysData(GETADDRESS_CURRENT_EDITTING,iItem,bBuf);
 			bRet=TRUE;
 		}
-		else if((bBuf[0]&0xF0)==0xF0)//���̃y�[�W��
+		else if((bBuf[0]&0xF0)==0xF0)//次のページへ
 		{
 			int iCurIndex;
 			int iPage;
@@ -259,7 +259,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 			if(iCurIndex!=INVALID_OBJECT_INDEX){
 				SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING,&iCurIndex,FALSE);
 				SetSelectedItem(iCurIndex,TRUE);//giSelectedItem=iCurIndex;
-				//�y�[�W�A�J�[�\���̍X�V
+				//ページ、カーソルの更新
 				GetBadGuysData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bTmp,&iPage);
 				SetMapViewCursoleBadGuys(bTmp,iPage);
 				bRet=TRUE;
@@ -274,7 +274,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 			SetBadGuysData(GETADDRESS_CURRENT_EDITTING,iItem,bBuf);
 			bRet=TRUE;
 		}
-		else if((bBuf[0]&0xF0)==0x00)//�O�̃y�[�W��
+		else if((bBuf[0]&0xF0)==0x00)//前のページへ
 		{
 			int iCurIndex;
 			int iPage;
@@ -286,7 +286,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 				SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING,&iCurIndex,FALSE);
 				SetSelectedItem(iCurIndex,TRUE);//giSelectedItem=iCurIndex;
 
-				//�y�[�W�A�J�[�\���̍X�V
+				//ページ、カーソルの更新
 				GetBadGuysData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bTmp,&iPage);
 				SetMapViewCursoleBadGuys(bTmp,iPage);
 				bRet=TRUE;
@@ -331,7 +331,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 			
 			bRet=TRUE;
 
-			//�J�[�\���̍X�V
+			//カーソルの更新
 			GetBadGuysData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bBuf,&iPage);
 			SetMapViewCursoleBadGuys(bBuf,iPage);
 
@@ -348,7 +348,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 			if(iNewIndex!=-1) SetSelectedItem(iNewIndex,TRUE);//giSelectedItem=iNewIndex;
 			bRet=TRUE;
 
-			//�J�[�\���̍X�V
+			//カーソルの更新
 			GetBadGuysData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bBuf,&iPage);
 			SetMapViewCursoleBadGuys(bBuf,iPage);
 		}
@@ -368,7 +368,7 @@ static BOOL BadGuysKeyInput(int iItem,int iVKey)
 				BYTE bBuf[3];
 				// 
 				bRet = TRUE;
-				// �J�[�\���̍X�V
+				// カーソルの更新
 				GetBadGuysData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bBuf,&iPage);
 				SetMapViewCursoleBadGuys(bBuf,iPage);
 			}
@@ -438,20 +438,20 @@ BOOL MapKeyInput(int iItem,int iVKey)
 			if(SetMapData(GETADDRESS_CURRENT_EDITTING,iItem,bBuf))
 				bRet=TRUE;
 		}
-		else if((bBuf[0]&0xF0)==0xF0)//���̃y�[�W��
+		else if((bBuf[0]&0xF0)==0xF0)//次のページへ
 		{
 			/*
-			bBuf �c�@�ړ�����f�[�^
+			bBuf …　移動するデータ
 			*/
 			BYTE bTmp[3]={0};
 			BYTE bNextPageXPos;
 			int n=0;
 			int i;
-			BOOL blIsPage;//�ړ�����f�[�^
+			BOOL blIsPage;//移動するデータ
 
 			blIsPage=(bBuf[1]&0x80)?TRUE:FALSE;
 
-			if(blIsPage)//�ړ������ް������y�[�W�t���O�������Ă��āA�����̃f�[�^�����y�[�W�t���O�������Ă���ꍇ���Ȃ킿�A1�y�[�W��1�����f�[�^���Ȃ��ꍇ�ړ������Ȃ�
+			if(blIsPage)//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っている場合すなわち、1ページに1つしかデータがない場合移動させない
 			{
 				if(-1==GetMapData(GETADDRESS_CURRENT_EDITTING,iItem+1,bTmp,NULL)) break;
 				if((bTmp[1]&0x80)||((bTmp[0]&0x0f)==0x0D) && ((bTmp[1]&0x40)==0x00)) goto CANCELNEXT;
@@ -484,7 +484,7 @@ BOOL MapKeyInput(int iItem,int iVKey)
 				}
 			}
 
-			if(blIsPage)//�ړ������ް������y�[�W�t���O�������Ă��ꍇ
+			if(blIsPage)//移動するﾃﾞｰﾀが改ページフラグを持ってい場合
 			{
 				GetMapData(GETADDRESS_CURRENT_EDITTING,iItem,bTmp,NULL);
 				bTmp[1]|=0x80;
@@ -509,7 +509,7 @@ CANCELNEXT:
 			if(SetMapData(GETADDRESS_CURRENT_EDITTING,iItem,bBuf))
 				bRet=TRUE;
 		}
-		else if((bBuf[0]&0xF0)==0x00)//�O�̃y�[�W��
+		else if((bBuf[0]&0xF0)==0x00)//前のページへ
 		{
 			BYTE bTmp[2]={0};
 			int n=0;
@@ -517,11 +517,11 @@ CANCELNEXT:
 			
 			if((bBuf[0]|0xF0)==0xFD) break;
 
-			//�����A0�߰�ނ̂̃f�[�^�Ȃ�L�����Z��
+			//もし、0ﾍﾟｰｼﾞののデータならキャンセル
 			GetMapData(GETADDRESS_CURRENT_EDITTING,iItem,NULL,&iPage);
 			if(iPage==0) break;
 			
-			if(bBuf[1]&0x80)//�ړ������ް������y�[�W�t���O�������Ă��āA�����̃f�[�^�����y�[�W�t���O�������Ă���ꍇ���Ȃ킿�A1�y�[�W��1�����f�[�^���Ȃ��ꍇ�ړ������Ȃ�
+			if(bBuf[1]&0x80)//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っている場合すなわち、1ページに1つしかデータがない場合移動させない
 			{
 				if(-1!=GetMapData(GETADDRESS_CURRENT_EDITTING,iItem+1,bTmp,NULL)){
 					if((bTmp[1]&0x80)||((bTmp[0]&0x0f)==0x0D) && ((bTmp[1]&0x40)==0x00))
@@ -604,7 +604,7 @@ CANCELPREV:
 			if(iNewIndex!=-1) SetSelectedItem(iNewIndex,TRUE);//giSelectedItem=iNewIndex;
 			bRet=TRUE;
 
-			//�J�[�\���̍X�V
+			//カーソルの更新
 			GetMapData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bBuf,&iPage);
 			SetMapViewCursoleMap(bBuf,iPage);
 
@@ -621,7 +621,7 @@ CANCELPREV:
 			if(iNewIndex!=-1) SetSelectedItem(iNewIndex,TRUE);//giSelectedItem=iNewIndex;
 			bRet=TRUE;
 
-			//�J�[�\���̍X�V
+			//カーソルの更新
 			GetMapData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bBuf,&iPage);
 			SetMapViewCursoleMap(bBuf,iPage);
 		}
@@ -641,7 +641,7 @@ CANCELPREV:
 				BYTE bBuf[2];
 				// 
 				bRet = TRUE;
-				// �J�[�\���̍X�V
+				// カーソルの更新
 				GetMapData(GETADDRESS_CURRENT_EDITTING,GetSelectedIndex(),bBuf,&iPage);
 				SetMapViewCursoleMap(bBuf,iPage);
 			}
@@ -682,14 +682,14 @@ BOOL MapEditCommand(WORD wCommand)
 	iPrevEditMode=GetMapEditMode();
 	//
 	if(GetMapEditMode()){
-		//�G
+		//敵
 		if(fReturn=BadGuysKeyInput(GetSelectedIndex(),wCommand)){
 			UpdateObjectList(1);
 			UpdateObjectView(0);
 		}
 	}
 	else{
-		//�}�b�v
+		//マップ
 		if(fReturn=MapKeyInput(GetSelectedIndex(),wCommand)){
 			UpdateObjectList(1);
 			UpdateObjectView(0);

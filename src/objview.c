@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -66,13 +66,13 @@ HBITMAP ghBitmapMapViewWnd=NULL;
 HBITMAP ghPrevBitmapMapViewWnd=NULL;
 int giCursorX=-1;
 int giCursorY=-1;
-//ƒ}ƒbƒvƒrƒ…[‚Ì¶’[‚É•\¦‚³‚ê‚Ä‚¢‚éƒ}ƒbƒv‚Ìƒy[ƒW
+//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã®å·¦ç«¯ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒãƒƒãƒ—ã®ãƒšãƒ¼ã‚¸
 int giMapViewPageBase=0;
-//ƒ}ƒbƒvƒrƒ…[‚Ì¶’[‚ğ0ƒy[ƒW‚Æ‚µ‚½‚Æ‚«‚ÌƒJ[ƒ\ƒ‹‚Ì‚ ‚éƒy[ƒW
+//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã®å·¦ç«¯ã‚’0ãƒšãƒ¼ã‚¸ã¨ã—ãŸã¨ãã®ã‚«ãƒ¼ã‚½ãƒ«ã®ã‚ã‚‹ãƒšãƒ¼ã‚¸
 int giMapViewEditPage=0;
-//ƒJ[ƒ\ƒ‹‚Ì‚ ‚éƒ}ƒbƒv‚Ìƒy[ƒW
+//ã‚«ãƒ¼ã‚½ãƒ«ã®ã‚ã‚‹ãƒãƒƒãƒ—ã®ãƒšãƒ¼ã‚¸
 int giMapViewPage=0;
-//ƒEƒCƒ“ƒhƒE‚Å•\¦‰Â”\‚Èƒy[ƒW”(‚O‹NZ)
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã§è¡¨ç¤ºå¯èƒ½ãªãƒšãƒ¼ã‚¸æ•°(ï¼èµ·ç®—)
 int giWndPages;
 //
 int g_iCursoleEnable=0;
@@ -527,7 +527,7 @@ void DeleteGauge(HWND hWnd,HDC *lphDC,HBITMAP *lphBmp,HBITMAP *lphPrevBmp)
 
 /******************
 
-  ƒc[ƒ‹ƒ`ƒbƒv
+  ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—
 
 *******************/
 HWND CreateObjectViewTooltip()
@@ -543,7 +543,7 @@ HWND CreateObjectViewTooltip()
 						  CW_USEDEFAULT,
 						  CW_USEDEFAULT,
 						  CW_USEDEFAULT,
-						  ghMapViewWnd,//‚±‚Ìw’è‚Í•K—vII
+						  ghMapViewWnd,//ã“ã®æŒ‡å®šã¯å¿…è¦ï¼ï¼
 						  (HMENU) NULL,
 						  GetModuleHandle(NULL),
 						  NULL);
@@ -560,7 +560,7 @@ BOOL AddToolToObjectViewToolTip(int x,int y,LPTSTR lpText,UINT id)
 
 	if (!lpText) return FALSE;
 
-	// ƒIƒuƒWƒFƒNƒg‚ª•¡”d‚È‚Á‚½ˆÊ’u‚É‚ ‚éê‡‚ÌŒŸoA‚¨‚æ‚Ñ’Ç‰Á‚ÌƒeƒLƒXƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¤‡æ•°é‡ãªã£ãŸä½ç½®ã«ã‚ã‚‹å ´åˆã®æ¤œå‡ºã€ãŠã‚ˆã³è¿½åŠ ã®ãƒ†ã‚­ã‚¹ãƒˆ
 	ht.hwnd = ghMapViewWnd;
 	ht.pt.x = x;
 	ht.pt.y = y;
@@ -568,10 +568,10 @@ BOOL AddToolToObjectViewToolTip(int x,int y,LPTSTR lpText,UINT id)
 
 	if (SendMessage(ghToolTip, TTM_HITTEST, 0, (LPARAM)(LPHITTESTINFO)&ht))
 	{
-		// ht.ti.uId‚Éƒqƒbƒg‚µ‚½ƒc[ƒ‹ƒ`ƒbƒv‚ÌID‚ªŠi”[‚³‚ê‚Ä‚¢‚é
+		// ht.ti.uIdã«ãƒ’ãƒƒãƒˆã—ãŸãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®IDãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹
 		if (!SendMessage(ghToolTip, TTM_GETTOOLINFO, 0, (LPARAM)(LPTOOLINFO) &ht.ti))
 			return FALSE;
-		// lpText‚ÍAGetTempStringBuffer()‚ÅŠm•Û‚³‚ê‚½ƒoƒbƒtƒ@[
+		// lpTextã¯ã€GetTempStringBuffer()ã§ç¢ºä¿ã•ã‚ŒãŸãƒãƒƒãƒ•ã‚¡ãƒ¼
 		ht.ti.lpszText = GetTempStringBuffer2();
 		SendMessage(ghToolTip, TTM_GETTEXT, 0, (LPARAM)(LPTOOLINFO) &ht.ti);
 		if (lstrlen(lpText) + lstrlen(ht.ti.lpszText) < TMPSTRBUFSIZ){
@@ -581,7 +581,7 @@ BOOL AddToolToObjectViewToolTip(int x,int y,LPTSTR lpText,UINT id)
 		lstrcpy(lpText, ht.ti.lpszText);
 	}
 
-	// ’Ç‰Á‚·‚éƒc[ƒ‹ƒ`ƒbƒv—p\‘¢‘Ì‚Ì‰Šú‰»
+	// è¿½åŠ ã™ã‚‹ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ç”¨æ§‹é€ ä½“ã®åˆæœŸåŒ–
 	ti.cbSize = sizeof(TOOLINFO);
 	ti.uFlags = 0;
 	ti.hwnd = ghMapViewWnd;
@@ -618,7 +618,7 @@ BOOL DeleteAllToolObjectViewToolTip()
 
 /*************************
 
-  ƒ}ƒbƒv‚Ì•â•}Œ`‚ğ•`‰æ
+  ãƒãƒƒãƒ—ã®è£œåŠ©å›³å½¢ã‚’æç”»
 
 **************************/
 void DrawAssistObjectMap()
@@ -640,7 +640,7 @@ void DrawAssistObjectMap()
 	if(!GetMapEditMode()){
 		if(MapSeekFirst(&ObjSeek,GETADDRESS_CURRENT_EDITTING)){
 			for(;;){
-				if((DWORD)giMapViewPageBase<=ObjSeek.dwPage && ObjSeek.dwPage<=(DWORD)giMapViewPageBase+(DWORD)giWndPages+1){//ÅŒã‚Ìƒy[ƒW‚Ì‰¡ˆÊ’u‚ª•‰‚ÌƒIƒuƒWƒFƒNƒg‚Ì‚½‚ß‚É•K—v
+				if((DWORD)giMapViewPageBase<=ObjSeek.dwPage && ObjSeek.dwPage<=(DWORD)giMapViewPageBase+(DWORD)giWndPages+1){//æœ€å¾Œã®ãƒšãƒ¼ã‚¸ã®æ¨ªä½ç½®ãŒè² ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãŸã‚ã«å¿…è¦
 					uBaseX = (ObjSeek.dwPage - giMapViewPageBase >= 0) ? (ObjSeek.dwPage - giMapViewPageBase) * 256 : 0;
 					x = GetMapXPos(ObjSeek.pbData) * 16 + uBaseX;
 					y = TOP_16PIXEL + GetMapYPos(ObjSeek.pbData) * 16;
@@ -731,7 +731,7 @@ BOOL DrawHalfPageMark()
 
 /**************************************
 
-  ƒoƒbƒNƒoƒbƒtƒ@‚©‚ç‚Ì“]‘—‚Æ•â•‚Ì•`‰æ
+  ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ã®è»¢é€ã¨è£œåŠ©ã®æç”»
 
 ***************************************/
 
@@ -781,7 +781,7 @@ void UpdateObjectView(DWORD dwUpdateFlag)
 
 	if(!gblIsROMLoaded || !ghMapViewWnd || !ghMemdcMapViewWnd) return;
 	
-	//ƒ}ƒbƒvƒrƒ…[ƒEƒCƒ“ƒhƒE‚Ì•‚ğæ“¾
+	//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¹…ã‚’å–å¾—
 	GetClientRect(ghMapViewWnd,&rcWnd);
 	giWndPages=(rcWnd.right-YPOSLABEL_WIDTH)/NES_SCREENSIZEX;
 
@@ -884,7 +884,7 @@ void SetObjectViewCursole(int iPage)
 
 }
 
-//ƒ}ƒbƒvƒrƒ…[‚ÌƒJ[ƒ\ƒ‹‚Ìİ’è
+//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¼ã‚½ãƒ«ã®è¨­å®š
 BOOL UpdateObjectViewCursole()
 {
 	int iPage;
@@ -925,7 +925,7 @@ void ChangeMapViewScreenSize(int iPages)
 {
 	RECT rcWnd;
 	if(IsZoomed(ghMapViewWnd)||IsIconic(ghMapViewWnd)) return;
-	//ƒ}ƒbƒvƒrƒ…[ƒEƒCƒ“ƒhƒE‚Ì•‚ğæ“¾
+	//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¹…ã‚’å–å¾—
 	GetWindowRect(ghMapViewWnd,&rcWnd);
 	SetWindowPos(ghMapViewWnd,NULL,0,0,ONE_PAGE_SIZE+NES_SCREENSIZEX*(iPages-1)-1,MAPVIEW_WINDOWHEIGHT/*rcWnd.bottom-rcWnd.top*/,SWP_NOMOVE|SWP_NOZORDER);
 }
@@ -960,7 +960,7 @@ void ShowPopupMenu (HWND hwnd,POINT point,LPTSTR lpMenuName)
 }
 /**************************
 
-  ƒ}ƒEƒX“ü—Í‚É‘Î‚·‚é‘Oˆ—
+  ãƒã‚¦ã‚¹å…¥åŠ›ã«å¯¾ã™ã‚‹å‰å‡¦ç†
 
 ***************************/
 typedef struct _tagOBJVIEWMOUSEINPUT
@@ -1258,7 +1258,7 @@ long FAR PASCAL MapViewWndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lPar
 		int iNewIndex;
 		GETINDEXINFO sGetIndex;
 		OBJVIEWMOUSEINPUT MouseInput;
-		BOOL uPopMenuSelected = 0; //ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚ª@ 0F”ñ•\¦A-1F•\¦¨‘I‘ğ‚È‚µA‚»‚êˆÈŠOF•\¦¨‘I‘ğ‚ ‚è
+		BOOL uPopMenuSelected = 0; //ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒã€€ 0ï¼šéè¡¨ç¤ºã€-1ï¼šè¡¨ç¤ºâ†’é¸æŠãªã—ã€ãã‚Œä»¥å¤–ï¼šè¡¨ç¤ºâ†’é¸æŠã‚ã‚Š
 
 
 		if(!gblIsROMLoaded) break;
@@ -1575,7 +1575,7 @@ HWND CreateMapViewWnd(HINSTANCE hInstance,HWND hWndMDIClient)
 {
 	HWND hWnd;
 
-	//WS_VISIBLE‚ğw’è‚µ‚Äì¬‚µ‚È‚¢‚ÆAWindowÒÆ­°‚É³²İÄŞ³‚ª’Ç‰Á‚³‚ê‚È‚¢B
+	//WS_VISIBLEã‚’æŒ‡å®šã—ã¦ä½œæˆã—ãªã„ã¨ã€Windowï¾’ï¾†ï½­ï½°ã«ï½³ï½²ï¾ï¾„ï¾ï½³ãŒè¿½åŠ ã•ã‚Œãªã„ã€‚
 	hWnd=CreateMDIWindow(MAPVIEWWNDCLASSNAME,
 		            STRING_WINDOW_OBJVIEW,
 					WS_SYSMENU|WS_MINIMIZEBOX|WS_CAPTION|WS_THICKFRAME|WS_CLIPCHILDREN|WS_VISIBLE,

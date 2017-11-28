@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -58,8 +58,8 @@ typedef struct
 	BYTE bBackObject2;//$744
 	BYTE bLeftObjOfs[3];
 	BYTE bLeftObjNum[3];
-	BYTE bLeftObjData1;//�K�i$734
-	BYTE bLeftObjData2[3];//�L�m�R�̓�$737
+	BYTE bLeftObjData1;//階段$734
+	BYTE bLeftObjData2[3];//キノコの島$737
 	BYTE bMapOfs;//$072C
 	BYTE bMapPage;//$072A
 	BYTE bMapPageFlag;//$072B
@@ -68,8 +68,8 @@ typedef struct
 	BYTE bBadGuysPageFlag;//$073B
 	BYTE bBadGuysPage2;//$071B
 	BYTE bWorld;
-	BYTE bArea; //$075C �ʏ�̂���
-	BYTE bArea2;//$0760 �����ʂ��P�̃G���A�ɐ�����
+	BYTE bArea; //$075C 通常のもの
+	BYTE bArea2;//$0760 導入面も１つのエリアに数える
 	BYTE bIsCleared;//0 -NO, 1 -YES
 	BYTE bIsDifficult;
 	BYTE bMarioSize;//$0756 0-large 1-small
@@ -82,8 +82,8 @@ typedef struct
 	BYTE bRoomID;
 	BYTE bPage;
 	BYTE bWorld;
-	BYTE bArea;//$075C �ʏ�̂���
-	BYTE bArea2;//$0760 �����ʂ��P�̃G���A�ɐ�����
+	BYTE bArea;//$075C 通常のもの
+	BYTE bArea2;//$0760 導入面も１つのエリアに数える
 	BYTE bIsCleared;//0 -NO, 1 -YES
 	BYTE bIsDifficult;
 	BYTE bMarioSize;//$0756 0-large 1-small
@@ -129,7 +129,7 @@ typedef struct _tagNESCONTEXT
 BOOL RegisterEmuWndClass(HINSTANCE hInstance);
 HWND CreateEmulatorWnd(HINSTANCE hInstance,HWND hWndMDIClient);
 BOOL PrepareVROMData(BYTE *pbSource);
-//�Эڰ� ����޳�̊�{����
+//ｴﾐｭﾚｰﾀ ｳｲﾝﾄﾞｳの基本制御
 void StartEmulator(void);
 void StopEmulator(void);
 BOOL SuspendEmulator(BOOL blState);//blState == TRUE ->suspend, blState == FALSE ->start
@@ -164,22 +164,22 @@ LRESULT CALLBACK EmulatorOptionDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPA
 
 BOOL LoadEmuKeySetting();
 
-// �L�[�{�[�h�̃{�^�� WORD�^�̗v�f��EMULATOR_NUM_BUTTONS�̔z��
+// キーボードのボタン WORD型の要素数EMULATOR_NUM_BUTTONSの配列
 BOOL GetEmulatorVKeys(WORD aEmuKeys[]);
 BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[]);
-// �W���C�X�e�B�b�N�̃{�^�� DWORD�^�̗v�f��EMULATOR_NUM_JOYBUTTONS�̔z��
+// ジョイスティックのボタン DWORD型の要素数EMULATOR_NUM_JOYBUTTONSの配列
 BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[]);
 
 
-// �����L�[���܂߂��{�^����
+// 方向キーを含めたボタン数
 #define EMULATOR_NUM_BUTTONS 8
-// �����L�[���������W���C�X�e�B�b�N�Ń{�^���̓��͂Ƃ��Ď󂯎��A, B, Select, Start��4��
+// 方向キーを除いたジョイスティックでボタンの入力として受け取るA, B, Select, Startの4つ
 #define EMULATOR_NUM_JOYBUTTONS 4
-// Win32 API joyGetPosEx()�֐��Ŏ擾�\�ȃ{�^���̍ő吔
+// Win32 API joyGetPosEx()関数で取得可能なボタンの最大数
 #define JOYSTICK_MAX_BUTTONS 32
 
-//gblDemoRecord��TRUE�̏ꍇ�A�W���C�X�e�C�b�N�̃��[�`������Ăяo�����B
-//emuutil.c�Ɏ�������Ă���B
+//gblDemoRecordがTRUEの場合、ジョイステイックのルーチンから呼び出される。
+//emuutil.cに実装されている。
 void DemoRecorderHandler(BYTE bJoy1Read,BYTE bRet);
 
 #define EMULATOR_NES_COLORS 64
