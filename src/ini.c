@@ -1,9 +1,9 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
   File: ini.c
-  Description: ���W�X�g���AINI�t�@�C���A�N�Z�X�̂��߂̃��[�`��
+  Description: レジストリ、INIファイルアクセスのためのルーチン
   History:
 
  ************************************************************************************/
@@ -13,15 +13,15 @@
 #include "cmnlib.h"
 /********************
 
-  ���W�X�g���A�N�Z�X
+  レジストリアクセス
 
 *********************/
 
 /*************************************
 dwType 
- REG_BINARY �C�ӂ̌`���̃o�C�i���f�[�^
- REG_DWORD  32�r�b�g�l
- REG_SZ     ������
+ REG_BINARY 任意の形式のバイナリデータ
+ REG_DWORD  32ビット値
+ REG_SZ     文字列
 **************************************/
 BOOL WriteToRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize)
 {
@@ -38,9 +38,9 @@ BOOL WriteToRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize)
 
 /*************************************
 dwType 
- REG_BINARY �C�ӂ̌`���̃o�C�i���f�[�^
- REG_DWORD  32�r�b�g�l
- REG_SZ     ������
+ REG_BINARY 任意の形式のバイナリデータ
+ REG_DWORD  32ビット値
+ REG_SZ     文字列
 **************************************/
 BOOL ReadFromRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize)
 {
@@ -81,30 +81,30 @@ int GetAppPathName(LPTSTR lpBuffer,int iBufferSize,LPTSTR lpFileName)
 	LPTSTR pt, p;
 	int cb;
 	
-	// NOTE : �R�}���h�v�����v�g������s���ꂽ�ꍇ�A���͂��ꂽ�R�}���h�����񂪂��̂܂܎擾�����B
-	//        �Ⴆ�΁AWinIPS�̒u����Ă���f�B���N�g��������R�}���h�v�����v�g��"winips"�ƋN������ƁA
-	//        "winips"���擾�����̂ŁA�ȉ��̕��@�ł͂��߁B
+	// NOTE : コマンドプロンプトから実行された場合、入力されたコマンド文字列がそのまま取得される。
+	//        例えば、WinIPSの置かれているディレクトリ内からコマンドプロンプトで"winips"と起動すると、
+	//        "winips"が取得されるので、以下の方法ではだめ。
 	// p = GetCommandLine();
-	// ���s�\�t�@�C���̃t���p�X�����擾����
+	// 実行可能ファイルのフルパス名を取得する
 	GetModuleFileName(GetModuleHandle(NULL), FullPath, MAX_PATH);
 	p = FullPath;
 
 	while(*p == '"')
 		p = CharNext(p);
-	pt = p; // "���������擪�ւ̃|�C���^
-	// �}���`�o�C�g�������𓾂�
-	for (;*p && *p != '"';p = CharNext(p)); // �I�[��"��T��
-	for (;pt < p && *(CharPrev(pt, p)) != '\\';p = CharPrev(pt, p)); // �I�[����\��T��
+	pt = p; // "を除いた先頭へのポインタ
+	// マルチバイト文字数を得る
+	for (;*p && *p != '"';p = CharNext(p)); // 終端へ"を探す
+	for (;pt < p && *(CharPrev(pt, p)) != '\\';p = CharPrev(pt, p)); // 終端から\を探す
 	//
-	cb = p - pt; // �o�C�g��
-	if (iBufferSize <= cb + (int)sizeof(TCHAR)) // + NULL����
+	cb = p - pt; // バイト数
+	if (iBufferSize <= cb + (int)sizeof(TCHAR)) // + NULL文字
 		return 0;
 	//
 	memcpy(lpBuffer, pt, cb);
 	//
 	*(LPTSTR)((LPBYTE)lpBuffer + cb) = '\0';
 
-	// �t�@�C�����̎w�肪����΁A������R�s�[
+	// ファイル名の指定があれば、それをコピー
 	if (lpFileName) {
 		if (iBufferSize <= cb + (int)sizeof(TCHAR) + (int)strlen(lpFileName))
 			return 0;
@@ -117,7 +117,7 @@ int GetAppPathName(LPTSTR lpBuffer,int iBufferSize,LPTSTR lpFileName)
 	TCHAR FullPath[MAX_PATH];
 	LPTSTR lpCmdLine;
 	int iCopySize;
-	int iDirNameSize;//�J�����g�f�B���N�g���̖��O�̃T�C�Y
+	int iDirNameSize;//カレントディレクトリの名前のサイズ
 	int iFileNameSize;//
 
 	if(!lpBuffer) return 0;

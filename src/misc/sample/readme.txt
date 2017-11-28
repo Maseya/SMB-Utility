@@ -1,14 +1,14 @@
+﻿
+ マリオファン リローデッド
 
- �}���I�t�@�� �����[�f�b�h
 
+０．紹介
+　マリオファンを元に作られた、地形や敵オブジェクトの組み合わせの面白さが光る作品です。IPSファイル形式での配布ですので、Windows以外のOSを使用していて、マリオファンをプレイできなかった方も、その楽しさの一部を味わうことができます。
 
-�O�D�Љ�
-�@�}���I�t�@�������ɍ��ꂽ�A�n�`��G�I�u�W�F�N�g�̑g�ݍ��킹�̖ʔ����������i�ł��BIPS�t�@�C���`���ł̔z�z�ł��̂ŁAWindows�ȊO��OS���g�p���Ă��āA�}���I�t�@�����v���C�ł��Ȃ����������A���̊y�����̈ꕔ�𖡂키���Ƃ��ł��܂��B
-
-�P�D�X�^�b�t
-�@�v���f���[�X�F M.K.H
-�@�ǉ��v���O���~���O�F�@M.K.S
-�@�^�C�g���ҏW�F�@M.K.H
-�@���x���ҏW�F M.K.H
-�@�e�X�g�v���C�F M.K.S
-�@�z�z�v���O�����쐬�F M.K.S
+１．スタッフ
+　プロデュース： M.K.H
+　追加プログラミング：　M.K.S
+　タイトル編集：　M.K.H
+　レベル編集： M.K.H
+　テストプレイ： M.K.S
+　配布プログラム作成： M.K.S

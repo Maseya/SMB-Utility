@@ -1,4 +1,4 @@
-#include "smbutil.h"
+ï»¿#include "smbutil.h"
 #include "objlib.h"
 #include "objviewbmp.h"
 
@@ -19,7 +19,7 @@
 #define MAPASSISTBMPDATAINDEX_ARROWDOWN       10
 
 ASSISTBMPDATA g_MapAssistBmpData[] = {
-	0, 0, 0, // ƒrƒbƒgƒ}ƒbƒv–³‚µ—p‚Ìƒ_ƒ~[ƒf[ƒ^
+	0, 0, 0, // ãƒ“ãƒƒãƒˆãƒžãƒƒãƒ—ç„¡ã—ç”¨ã®ãƒ€ãƒŸãƒ¼ãƒ‡ãƒ¼ã‚¿
 	0, 0, 6,
 	0, 0, 8,
 	0, 0, 8,
@@ -53,7 +53,7 @@ ASSISTBMPDATA g_MapAssistBmpData[] = {
 #define BADGUYSASSISTBMPDATAINDEX_NOMOVE            19
 
 ASSISTBMPDATA g_BadGuysAssistBmpData[] = {
-	0, 0, 0, //•â•}Œ`‚È‚µ‚Ìƒ_ƒ~[ƒf[ƒ^
+	0, 0, 0, //è£œåŠ©å›³å½¢ãªã—ã®ãƒ€ãƒŸãƒ¼ãƒ‡ãƒ¼ã‚¿
 	0, 0, 12,
 	0, 0, 13,
 	0, 0, 14,
@@ -68,7 +68,7 @@ ASSISTBMPDATA g_BadGuysAssistBmpData[] = {
 	0, -16, 0,
 	0, -16, 1,
 	0, -8, 16,
-	0, -8, 14, //ƒpƒ^ƒpƒ^(’µ‚Ë‚é)
+	0, -8, 14, //ãƒ‘ã‚¿ãƒ‘ã‚¿(è·³ã­ã‚‹)
 	0, -8, 17,
 	0, -8, 16,
 	0, -8, 14,
@@ -154,8 +154,8 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
 			case 0:
 				//wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
 				break;
-			// ƒIƒuƒWƒFƒNƒg‚Ìƒf[ƒ^ƒx[ƒX‚Ì“s‡(1‚Æ4,5‚Æ‚ÌŠÔ‚É‚ÍA’Ç‰Á‚Ì—v‘f‚ª1‚Â“ü‚Á‚Ä‚¢‚é‚½‚ß)‚É‚æ‚èA
-			// 1‚Æ4,5‚Íˆá‚¤ˆ—
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®éƒ½åˆ(1ã¨4,5ã¨ã®é–“ã«ã¯ã€è¿½åŠ ã®è¦ç´ ãŒ1ã¤å…¥ã£ã¦ã„ã‚‹ãŸã‚)ã«ã‚ˆã‚Šã€
+			// 1ã¨4,5ã¯é•ã†å‡¦ç†
 			case 1:
 //				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
 				break;
@@ -223,7 +223,7 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
 			//wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
 		}
 		else{
-			if(lpbBuf[1]&0x08){//“yŠÇ
+			if(lpbBuf[1]&0x08){//åœŸç®¡
 				//wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
 				iRet = MAPASSISTBMPDATAINDEX_ARROWDOWN;
 			}
@@ -278,16 +278,16 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
 	int iRet = 0;
 	switch(lpbBuf[0]&0x0F)
 	{
-	case 0x0E://ƒ‹[ƒ€ŠÔˆÚ“®‚Ì–½—ßi‚RƒoƒCƒgj
+	case 0x0E://ãƒ«ãƒ¼ãƒ é–“ç§»å‹•ã®å‘½ä»¤ï¼ˆï¼“ãƒã‚¤ãƒˆï¼‰
 		{
 //			LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE}; 
 //			wsprintf(lpszBuf, STRING_OBJLIST_ROOM, lpbBuf[1] & 0x7F, lpAttr[(lpbBuf[1] >> 5) & 0x03], ((lpbBuf[2] >> 5) & 0x07) + 1,lpbBuf[2] & 0x1F);
 		}
 		break;
-	case 0x0F://‘—‚èƒRƒ}ƒ“ƒhi‚QƒoƒCƒgj
+	case 0x0F://é€ã‚Šã‚³ãƒžãƒ³ãƒ‰ï¼ˆï¼’ãƒã‚¤ãƒˆï¼‰
 //		wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1]);
 		break;
-	default://i“GƒLƒƒƒ‰ƒRƒ}ƒ“ƒhj
+	default://ï¼ˆæ•µã‚­ãƒ£ãƒ©ã‚³ãƒžãƒ³ãƒ‰ï¼‰
 		{
 //			LPSTR bit6[]={"", STRING_OBJLIST_HARD};
 //			wsprintf(lpszBuf, "%s%s", smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
@@ -310,10 +310,10 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
 				BADGUYSASSISTBMPDATAINDEX_LIFTDOWNSMALL
 			};
 			
-			if (0x1B <= bType && bType <=0x1F){//ƒtƒ@ƒCƒAƒo[
+			if (0x1B <= bType && bType <=0x1F){//ãƒ•ã‚¡ã‚¤ã‚¢ãƒãƒ¼
 				iRet = iFireBars[bType - 0x1B];
 			}
-			else if(0x25 <= bType && bType <= 0x2C){//ƒŠƒtƒg
+			else if(0x25 <= bType && bType <= 0x2C){//ãƒªãƒ•ãƒˆ
 				iRet = iLifts[bType - 0x25];
 			}
 			else {

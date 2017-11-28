@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -16,7 +16,7 @@ void LoadTestPlaySettings();
 
 /*********************************
 
-  ƒeƒXƒgƒvƒŒƒC‚Ìİ’èƒ_ƒCƒAƒƒOŠÖ”
+  ãƒ†ã‚¹ãƒˆãƒ—ãƒ¬ã‚¤ã®è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°é–¢æ•°
 
 **********************************/
 LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
@@ -25,10 +25,10 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPA
 
 BOOL RunEmulatorViewPage(UINT uRoomID,int iPage);
 
-  uRoomID‚Åw’è‚³‚ê‚½ƒ‹[ƒ€‚ÌiPage‚Åw’è‚³‚ê‚½ƒy[ƒW‚Ìƒ}ƒbƒv‚ÌŠG‚ğ
-  ƒGƒ~ƒ…ƒŒ[ƒ^ƒEƒCƒ“ƒhƒE‚ÌƒoƒbƒNƒoƒbƒtƒ@‚É€”õ‚·‚éBuRoomID‚É
-  GETADDRESS_CURRENT_EDITTING’è”‚ğw’è‚·‚é‚ÆAŒ»İƒGƒfƒBƒg‚µ‚Ä‚¢‚é
-  ƒ‹[ƒ€‚ğw’è‚µ‚½‚±‚Æ‚É‚È‚éB
+  uRoomIDã§æŒ‡å®šã•ã‚ŒãŸãƒ«ãƒ¼ãƒ ã®iPageã§æŒ‡å®šã•ã‚ŒãŸãƒšãƒ¼ã‚¸ã®ãƒãƒƒãƒ—ã®çµµã‚’
+  ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã«æº–å‚™ã™ã‚‹ã€‚uRoomIDã«
+  GETADDRESS_CURRENT_EDITTINGå®šæ•°ã‚’æŒ‡å®šã™ã‚‹ã¨ã€ç¾åœ¨ã‚¨ãƒ‡ã‚£ãƒˆã—ã¦ã„ã‚‹
+  ãƒ«ãƒ¼ãƒ ã‚’æŒ‡å®šã—ãŸã“ã¨ã«ãªã‚‹ã€‚
 
 *******************************************************************/
 BOOL RunEmulatorViewPage(UINT uRoomID,int iPage);
@@ -37,10 +37,10 @@ BOOL RunEmulatorViewPage(UINT uRoomID,int iPage);
 
 void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int iHeight,BOOL blIsStretch)
 
-  blIsStretch TRUE  iDestX,iDestY,iWidth,iHeight‚Ö‚P‰æ–Ê•ªAStretchBlt()s‚¤
-              FALSE iDestX,iDestY‚ÖiWidth,iHeight•ªABitBlt()s‚¤
+  blIsStretch TRUE  iDestX,iDestY,iWidth,iHeightã¸ï¼‘ç”»é¢åˆ†ã€StretchBlt()è¡Œã†
+              FALSE iDestX,iDestYã¸iWidth,iHeightåˆ†ã€BitBlt()è¡Œã†
 
-  ƒGƒ~ƒ…ƒŒ[ƒ^ƒEƒCƒ“ƒhƒE‚ÌƒoƒbƒNƒoƒbƒtƒ@[‚©‚çhDCDest‚Åw’è‚³‚ê‚½ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÖBitBlt‚ğs‚¤
+  ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‹ã‚‰hDCDestã§æŒ‡å®šã•ã‚ŒãŸãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¸BitBltã‚’è¡Œã†
 
 ************************************************************************************************************/
 void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int iHeight,BOOL blIsStretch);
@@ -51,7 +51,7 @@ void InstallEmulatorPalette(HDC hdc);
 
   void RunEmulatorTestPlay();
 
-  Œ»İƒGƒfƒBƒg‚µ‚Ä‚¢‚éƒ‹[ƒ€‚ÌƒeƒXƒgƒvƒŒƒC‚ğƒ‹[ƒ€‚Ì‚Í‚¶‚ß‚©‚çs‚¤B
+  ç¾åœ¨ã‚¨ãƒ‡ã‚£ãƒˆã—ã¦ã„ã‚‹ãƒ«ãƒ¼ãƒ ã®ãƒ†ã‚¹ãƒˆãƒ—ãƒ¬ã‚¤ã‚’ãƒ«ãƒ¼ãƒ ã®ã¯ã˜ã‚ã‹ã‚‰è¡Œã†ã€‚
 
 *********************************************************************/
 void RunEmulatorTestPlay();
@@ -60,7 +60,7 @@ void RunEmulatorTestPlay();
 
   void RunEmulatorTestPlayEx(int iPage);
 
-  Œ»İƒGƒfƒBƒg‚µ‚Ä‚¢‚éƒ‹[ƒ€‚ÌƒeƒXƒgƒvƒŒƒC‚ğw’è‚³‚ê‚½ƒy[ƒW‚©‚çs‚¤
+  ç¾åœ¨ã‚¨ãƒ‡ã‚£ãƒˆã—ã¦ã„ã‚‹ãƒ«ãƒ¼ãƒ ã®ãƒ†ã‚¹ãƒˆãƒ—ãƒ¬ã‚¤ã‚’æŒ‡å®šã•ã‚ŒãŸãƒšãƒ¼ã‚¸ã‹ã‚‰è¡Œã†
 
 *********************************************************************/
 void RunEmulatorTestPlayEx(int iPage,BOOL blHalfPoint,LPPOINT lpPt);
@@ -69,7 +69,7 @@ void RunEmulatorTestPlayEx(int iPage,BOOL blHalfPoint,LPPOINT lpPt);
 
   void RunEmulatorNormal();
 
-  ƒGƒ~ƒ…ƒŒ[ƒ^‚Ì’Êí‹N“®‚ğs‚¤
+  ã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã®é€šå¸¸èµ·å‹•ã‚’è¡Œã†
 
 ********************************/
 void RunEmulatorNormal();

@@ -1,4 +1,4 @@
-/************************************************************************************
+Ôªø/************************************************************************************
 
                                   smb Utility
 
@@ -27,7 +27,7 @@ typedef struct _tagINESHEADER
 BOOL SaveAsFile(LPSTR pFilename);
 
 BOOL LoadROM(LPSTR pFilename);
-// èëÇ´ä∑Ç¶ÇÁÇÍÇΩ - TRUE, ìØÇ∂ - FALSE
+// Êõ∏„ÅçÊèõ„Åà„Çâ„Çå„Åü - TRUE, Âêå„Åò - FALSE
 BOOL CheckROMFileTime();
 
 void SetROMFileTime();

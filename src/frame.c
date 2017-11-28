@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -32,7 +32,7 @@ HWND ghWndMDIClient;
 HWND ghWndFrame;
 
 HWND ghWndEmu;
-HWND ghWndMapEdit;//ƒ}ƒbƒvƒGƒfƒBƒgƒEƒCƒ“ƒhƒE‚Ö‚Ìƒnƒ“ƒhƒ‹
+HWND ghWndMapEdit;//ãƒãƒƒãƒ—ã‚¨ãƒ‡ã‚£ãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒãƒ³ãƒ‰ãƒ«
 HWND ghWndMapView;
 
 HWND g_hTbWnd=NULL;
@@ -188,15 +188,15 @@ LRESULT CALLBACK ApplicationOptionDlgProc( HWND hDlg,UINT message,WPARAM wParam,
 
 /******************************************
 
-  ‚±‚ÌŠÖ”‚ÍA‚Í‚¶‚ß‚É•\¦‚³‚ê‚éƒy[ƒW‚Ì
-  WM_INITDIALG‚Ìƒnƒ“ƒhƒ‰“à‚ÅŒÄ‚Ño‚³‚ê‚éB
+  ã“ã®é–¢æ•°ã¯ã€ã¯ã˜ã‚ã«è¡¨ç¤ºã•ã‚Œã‚‹ãƒšãƒ¼ã‚¸ã®
+  WM_INITDIALGã®ãƒãƒ³ãƒ‰ãƒ©å†…ã§å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚
 
 *******************************************/
 void CenterPropatySheet(HWND hDlg)
 {
 	HWND hWndParent=GetParent(GetParent(hDlg));
 	HWND hWndProp=GetParent(hDlg);
-	// ƒvƒƒpƒeƒCƒV[ƒg‚ğ’†‰›‚É‚Á‚Ä‚¢‚­‚½‚ß‚Ì‚à‚Ì
+	// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚¤ã‚·ãƒ¼ãƒˆã‚’ä¸­å¤®ã«æŒã£ã¦ã„ããŸã‚ã®ã‚‚ã®
 	if(IsZoomed(hWndParent))
 	{
 		RECT rcDlg;
@@ -314,7 +314,7 @@ void InitGlobalValue()
 
 /**************
 
-  ƒc[ƒ‹ƒo[
+  ãƒ„ãƒ¼ãƒ«ãƒãƒ¼
 
 **************/
 #define TOOLBAR_BUTTONS 13
@@ -338,7 +338,7 @@ static void SetToolBarButtonState(HWND hTBWnd)
 	if(gblIsROMLoaded){
 		for(i=0;i<STBBS_NUM_BUTTONS;i++)
 			SendMessage(hTBWnd,TB_SETSTATE,uMenuID[i],MAKELONG(TBSTATE_ENABLED,0));
-		//“G‚Æƒ}ƒbƒv‚Ì‘I‘ğ
+		//æ•µã¨ãƒãƒƒãƒ—ã®é¸æŠ
 		if(GetMapEditMode())
 			SendMessage(hTBWnd,TB_CHECKBUTTON,(LPARAM)IDM_SETTING_BADGUYS,(WPARAM)1);
 		else
@@ -388,7 +388,7 @@ static HWND CreateMainWindowToolBar(HWND hWnd)
 }
 
 /*************
- ƒXƒe[ƒ^ƒXƒo[
+ ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼
 ***************/
 #define SB_BUFSIZ 126
 #define SBPARTS 2
@@ -487,7 +487,7 @@ VOID __cdecl DumpPRGROM(void *pParam)
 */
 /**************************
 
-  ƒtƒ@ƒCƒ‹‚Ì•Û‘¶Eƒ[ƒh
+  ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜ãƒ»ãƒ­ãƒ¼ãƒ‰
 
 ***************************/
 BOOL ConfirmOnExit()
@@ -568,7 +568,7 @@ BOOL LoadROMFromFile()
 	if(!LoadROM(gFilePath))
 	{
 		gFilePath[0] = 0;
-		//gblIsROMLoaded=FALSE;//LoadROM‚ª¸”s‚µ‚½“_‚ÅFALSE‚É‚È‚Á‚Ä‚¢‚éB
+		//gblIsROMLoaded=FALSE;//LoadROMãŒå¤±æ•—ã—ãŸæ™‚ç‚¹ã§FALSEã«ãªã£ã¦ã„ã‚‹ã€‚
 		ObjectListClear();
 		ClearObjectViewBackBuffer();
 		UpdateObjectView(0);
@@ -579,7 +579,7 @@ BOOL LoadROMFromFile()
 		return FALSE;
 	}
 
-	//ƒLƒƒƒ‰ƒƒ€‚Ì‘Oˆ—
+	//ã‚­ãƒ£ãƒ©ãƒ­ãƒ ã®å‰å‡¦ç†
 	PrepareVROMData(bCHRROM);
 	
 	InitGlobalValue();
@@ -648,7 +648,7 @@ BOOL SaveToFile()
 
 /********************
 
-  ƒo[ƒWƒ‡ƒ“î•ñ
+  ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±
 
 *********************/
 
@@ -992,7 +992,7 @@ OPENCANCEL:
 				if(!GetOpenFileName(&fname)) break;
 
 				if(LoadCHRROMFromFile(filepath, fname.lCustData)){
-					//ƒLƒƒƒ‰ƒƒ€‚Ì‘Oˆ—
+					//ã‚­ãƒ£ãƒ©ãƒ­ãƒ ã®å‰å‡¦ç†
 					PrepareVROMData(bCHRROM);
 					UpdateObjectView(0);
 				}
@@ -1012,9 +1012,9 @@ OPENCANCEL:
 					DialogBox(ghInst, "ROOMSELECTDLG", hWnd, AreaSettingDlgProc);
 					if(g_hTbWnd){
 						LPARAM dwState;
-						// ƒ{ƒ^ƒ“‚ğŒ³‚É–ß‚·
+						// ãƒœã‚¿ãƒ³ã‚’å…ƒã«æˆ»ã™
 						SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_SETTING_AREA, 0);
-						// “r’†ƒy[ƒWƒeƒXƒgƒvƒŒƒC‚Ìƒ{ƒ^ƒ“‚Ì—LŒøA–³Œø
+						// é€”ä¸­ãƒšãƒ¼ã‚¸ãƒ†ã‚¹ãƒˆãƒ—ãƒ¬ã‚¤ã®ãƒœã‚¿ãƒ³ã®æœ‰åŠ¹ã€ç„¡åŠ¹
 						dwState = (rm_IsSubRoom()) ? MAKELPARAM(FALSE, 0) : MAKELPARAM(TRUE, 0);
 						SendMessage(g_hTbWnd, TB_ENABLEBUTTON, IDM_EMULATOR_PAGEPLAYHALF, dwState);
 					}
@@ -1437,14 +1437,14 @@ BOOL RegisterWndClass(HINSTANCE hInstance,int nCmdShow)
 	if(!ghWndFrame || !ghWndMDIClient) return FALSE;
 
 	//Create MDI Child window
-	//ÅŒã‚ÉƒIƒuƒWƒFƒNƒgƒrƒ…[‚ğì¬‚·‚ê‚ÎAƒIƒuƒWƒFƒNƒgƒrƒ…[‚ªƒAƒNƒeƒBƒu‚Å‹N“®‚·‚éB
+	//æœ€å¾Œã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã‚Œã°ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ“ãƒ¥ãƒ¼ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§èµ·å‹•ã™ã‚‹ã€‚
 	ghWndEmu=CreateEmulatorWnd(hInstance,ghWndMDIClient);
 	ghWndMapEdit=CreateMapEditWnd(hInstance,ghWndMDIClient);
 	ghWndMapView=CreateMapViewWnd(hInstance,ghWndMDIClient);//After Emulator is Created
 
 	if(!ghWndMapEdit||!ghWndEmu||!ghWndMapView) return FALSE;
 
-	//ƒEƒCƒ“ƒhƒEƒƒjƒ…[‚Ì‚½‚ß
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãŸã‚
 	Sleep(5);
 
 	ShowWindow(ghWndMapView,SW_HIDE);

@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 rem 6502 CPU Emulator
 rem Make M6502 source code for VC++ 
  make6502 M6502.asm -s -d -z

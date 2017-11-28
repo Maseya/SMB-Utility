@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -11,10 +11,10 @@
 #include "roommng.h"
 #include "objlib.h"
 #include "objmng.h"
-//���݃G�f�B�g���Ă���I�u�W�F�N�g�̎�ނ�ۑ����Ă���
-//0�̓}�b�v�A 1�͓G�������B
+//現在エディトしているオブジェクトの種類を保存している
+//0はマップ、 1は敵を示す。
 int giEditMode = 0;
-//���݃G�f�B�g���Ă���I�u�W�F�N�g�̃C���f�b�N�X��ۑ�
+//現在エディトしているオブジェクトのインデックスを保存
 int giSelectedItem = 0;
 
 void SetSelectedItem(int iItem,BOOL blInitKeyUndo)
@@ -30,12 +30,12 @@ void SetSelectedItem(int iItem,BOOL blInitKeyUndo)
 
 /********************************************
 
-  �G�f�C�b�g�̑Ώہi�}�b�v<->�G�j��؂�ւ���
+  エデイットの対象（マップ<->敵）を切り替える
 
-  iMode CHANGEEDITMODE_SWITCHING �c�@���݂̃��[�h�Ƃ͋t�̃��[�h�ɂ���i�G���}�b�v�A�}�b�v���G�j
-        CHANGEEDITMODE_MAP�@�c�@�}�b�v
-		CHANGEEDITMODE_BADGUYS�@�c�@�G
-		CHANGEEDITMODE_BADGUYS �c�@���[�h�̕ύX����
+  iMode CHANGEEDITMODE_SWITCHING …　現在のモードとは逆のモードにする（敵→マップ、マップ→敵）
+        CHANGEEDITMODE_MAP　…　マップ
+		CHANGEEDITMODE_BADGUYS　…　敵
+		CHANGEEDITMODE_BADGUYS …　モードの変更無し
 **********************************************/
 void ChangeMapEditMode(int iMode, BOOL blInitSelect)
 {
@@ -50,13 +50,13 @@ void ChangeMapEditMode(int iMode, BOOL blInitSelect)
 
 	if(!gblIsROMLoaded) return;
 
-	//�V�����C���f�b�N�X�̐ݒ�
+	//新しいインデックスの設定
 	if(blInitSelect){
-		//giSelectedItem=0;//������
+		//giSelectedItem=0;//初期化
 		SetSelectedItem(0,TRUE);
 	}
 	else{
-		if(giEditMode == CHANGEEDITMODE_BADGUYS){//�G�ւ̐؂�ւ��[ϯ�߂őI������Ă����߰�ނ�I��
+		if(giEditMode == CHANGEEDITMODE_BADGUYS){//敵への切り替えーﾏｯﾌﾟで選択されていたﾍﾟｰｼﾞを選択
 			int iNewIndex;
 			if(GETDATAINDEX_ERROR_NOTFOUND != GetMapData(GETADDRESS_CURRENT_EDITTING,giSelectedItem,NULL,&iPage)){
 				iNewIndex = GetBadGuysDataIndex(GETADDRESS_CURRENT_EDITTING, NULL, iPage, TRUE);

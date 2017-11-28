@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -30,7 +30,7 @@ void LoadEditorOption()
 }
 
 /*
-İ’è—pƒ_ƒCƒAƒƒOƒR[ƒ‹ƒoƒbƒNŠÖ”
+è¨­å®šç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 */
 LRESULT CALLBACK EditorOptionDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam)
 {
@@ -68,15 +68,15 @@ LRESULT CALLBACK EditorOptionDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARA
 
 /*********************************************
 
-  ’¼ÚƒIƒuƒWƒFƒNƒgƒf[ƒ^‚ğŒŸõ‚·‚é‚Æ‚«‚Ì•â•ŠÖ”
+  ç›´æ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’æ¤œç´¢ã™ã‚‹ã¨ãã®è£œåŠ©é–¢æ•°
 
 **********************************************/
 /*********
-    “G
+    æ•µ
 **********/
 
 
-//“G‚Ìƒy[ƒW‚É‚Â‚¢‚Ä‚Ìˆ—i•â•ŠÖ”j
+//æ•µã®ãƒšãƒ¼ã‚¸ã«ã¤ã„ã¦ã®å‡¦ç†ï¼ˆè£œåŠ©é–¢æ•°ï¼‰
 static void BadGuysSetPage(OBJECTSEEKINFO *psObjSeek)
 {
 	if(!psObjSeek) return;
@@ -86,9 +86,9 @@ static void BadGuysSetPage(OBJECTSEEKINFO *psObjSeek)
 	}
 	else if(((psObjSeek->pbData[0])&0x0F)==0x0F){
 		// nhxx xxxx
-		// n:‰üƒy[ƒWƒtƒ‰ƒO
-		// h:5-3ˆÈ~oŒ»
-		// xxxxxx:V‚µ‚¢ƒy[ƒW
+		// n:æ”¹ãƒšãƒ¼ã‚¸ãƒ•ãƒ©ã‚°
+		// h:5-3ä»¥é™å‡ºç¾
+		// xxxxxx:æ–°ã—ã„ãƒšãƒ¼ã‚¸
 		psObjSeek->dwPage = psObjSeek->pbData[1] & 0x3F;
 		psObjSeek->blIsPrevPageCom=TRUE;
 	}
@@ -96,7 +96,7 @@ static void BadGuysSetPage(OBJECTSEEKINFO *psObjSeek)
 	if(((psObjSeek->pbData[0])&0x0F)!=0x0F) psObjSeek->blIsPrevPageCom=FALSE;
 }
 
-//ƒ‹[ƒ€“à‚Ìƒf[ƒ^‚È‚çTRUEAƒ‹[ƒ€ŠO‚Ìƒf[ƒ^‚È‚çFALSE‚ğ•Ô‚·
+//ãƒ«ãƒ¼ãƒ å†…ã®ãƒ‡ãƒ¼ã‚¿ãªã‚‰TRUEã€ãƒ«ãƒ¼ãƒ å¤–ã®ãƒ‡ãƒ¼ã‚¿ãªã‚‰FALSEã‚’è¿”ã™
 static BOOL BadGuysCheckDataLength(OBJECTSEEKINFO *psObjSeek)
 {
 	if(!psObjSeek) return FALSE;
@@ -107,27 +107,27 @@ static BOOL BadGuysCheckDataLength(OBJECTSEEKINFO *psObjSeek)
 	return TRUE;
 }
 
-//“G‚Ìƒf[ƒ^‚ÌƒTƒCƒY‚ğ“¾‚é
+//æ•µã®ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 int BadGuysGetDataLength(BYTE *pbBuf){
 	return ((pbBuf[0]&0x0F)==0x0E)?3:2;
 }
 
-//“G‚Ìƒf[ƒ^‚ğŒŸõ‚·‚é‚½‚ß‚Ìƒf[ƒ^‚ğ‰Šú‰»‚·‚é
-//uRoomID‚É‚ÍAæ“¾‚µ‚½‚¢ƒ‹[ƒ€‚Ìƒf[ƒ^‚ğw’èB
-//GETADDRESS_CURRENT_EDITTING‚ğw’è‚·‚é‚ÆŒ»İƒGƒfƒBƒg‚µ‚Ä‚¢‚éƒ‹[ƒ€
+//æ•µã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¤œç´¢ã™ã‚‹ãŸã‚ã®ãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–ã™ã‚‹
+//uRoomIDã«ã¯ã€å–å¾—ã—ãŸã„ãƒ«ãƒ¼ãƒ ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŒ‡å®šã€‚
+//GETADDRESS_CURRENT_EDITTINGã‚’æŒ‡å®šã™ã‚‹ã¨ç¾åœ¨ã‚¨ãƒ‡ã‚£ãƒˆã—ã¦ã„ã‚‹ãƒ«ãƒ¼ãƒ 
 BOOL BadGuysSeekFirst(OBJECTSEEKINFO *psObjSeek,UINT uRoomID){
 	if(!psObjSeek) return FALSE;
-	//\‘¢‘Ì‚ğ‰Šú‰»
+	//æ§‹é€ ä½“ã‚’åˆæœŸåŒ–
 	memset(psObjSeek,0,sizeof(OBJECTSEEKINFO));
 	psObjSeek->pbData=bPRGROM+GetBadGuysAddress(uRoomID);
 	
 	if(psObjSeek->pbData[0]==0xFF) return FALSE;
 	
-	//ƒy[ƒW‚Ìî•ñ‚ğƒZƒbƒg
+	//ãƒšãƒ¼ã‚¸ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	BadGuysSetPage(psObjSeek);
-	//’·‚³‚Ìî•ñ‚ğƒZƒbƒg
+	//é•·ã•ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	psObjSeek->dwLength=BadGuysGetAllDataLength(uRoomID);
-	//ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚º
 	psObjSeek->dwObjLen=BadGuysGetDataLength(psObjSeek->pbData);
 
 	if(g_blIsLengthValid && !BadGuysCheckDataLength(psObjSeek)) return FALSE;
@@ -135,8 +135,8 @@ BOOL BadGuysSeekFirst(OBJECTSEEKINFO *psObjSeek,UINT uRoomID){
 	return TRUE;
 }
 
-//Ÿ‚Ìƒf[ƒ^‚ğ“¾‚é
-//³‚µ‚­ƒf[ƒ^‚ğæ“¾‚Å‚«‚½ê‡‚ÍATRUE,@NULL‚ğ“n‚·‚©Aƒf[ƒ^‚ÌI—¹‚Ìê‡‚ÍAFALSE‚ğ•Ô‚·B
+//æ¬¡ã®ãƒ‡ãƒ¼ã‚¿ã‚’å¾—ã‚‹
+//æ­£ã—ããƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã§ããŸå ´åˆã¯ã€TRUE,ã€€NULLã‚’æ¸¡ã™ã‹ã€ãƒ‡ãƒ¼ã‚¿ã®çµ‚äº†ã®å ´åˆã¯ã€FALSEã‚’è¿”ã™ã€‚
 BOOL BadGuysSeekNext(OBJECTSEEKINFO *psObjSeek){
 	int iCurObjSize;
 	if(!psObjSeek) return FALSE;
@@ -147,16 +147,16 @@ BOOL BadGuysSeekNext(OBJECTSEEKINFO *psObjSeek){
 
 	if(psObjSeek->pbData[0]==0xFF) return FALSE;
 
-	//ƒy[ƒW‚Ìî•ñ‚ğƒZƒbƒg
+	//ãƒšãƒ¼ã‚¸ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	BadGuysSetPage(psObjSeek);
-	//ƒCƒ“ƒfƒbƒNƒX‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
+	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	psObjSeek->dwIndex++;
-	//ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚º
 	psObjSeek->dwObjLen=BadGuysGetDataLength(psObjSeek->pbData);
 
 	if(g_blIsLengthValid
 		&& (!BadGuysCheckDataLength(psObjSeek)
-			|| psObjSeek->dwOfs > 0xFF)) // 1ƒ‹[ƒ€‚É‘¶İ‚Å‚«‚éÅ‘åƒIƒuƒWƒFƒNƒg”
+			|| psObjSeek->dwOfs > 0xFF)) // 1ãƒ«ãƒ¼ãƒ ã«å­˜åœ¨ã§ãã‚‹æœ€å¤§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°
 			return FALSE;
 
 	return TRUE;
@@ -173,9 +173,9 @@ DWORD BadGuysIsPageRelatedObject(LPBYTE lpbBuf)
 
 
 /**********
-   ƒ}ƒbƒv
+   ãƒãƒƒãƒ—
 ***********/
-//ƒy[ƒW‚Ìˆ—i•â•ŠÖ”j
+//ãƒšãƒ¼ã‚¸ã®å‡¦ç†ï¼ˆè£œåŠ©é–¢æ•°ï¼‰
 static void MapSetPage(OBJECTSEEKINFO *psObjSeek)
 {
 	if(!psObjSeek) return;
@@ -191,7 +191,7 @@ static void MapSetPage(OBJECTSEEKINFO *psObjSeek)
 	//if(!((((psObjSeek->pbData[0])&0x0F)==0x0D) && (!((psObjSeek->pbData[1])&0x40)))) psObjSeek->blIsPrevPageCom=FALSE;
 }
 
-//ƒ‹[ƒ€“à‚Ìƒf[ƒ^‚È‚çTRUEAƒ‹[ƒ€ŠO‚Ìƒf[ƒ^‚È‚çFALSE‚ğ•Ô‚·
+//ãƒ«ãƒ¼ãƒ å†…ã®ãƒ‡ãƒ¼ã‚¿ãªã‚‰TRUEã€ãƒ«ãƒ¼ãƒ å¤–ã®ãƒ‡ãƒ¼ã‚¿ãªã‚‰FALSEã‚’è¿”ã™
 static BOOL MapCheckDataLength(OBJECTSEEKINFO *psObjSeek)
 {
 	if(!psObjSeek) return FALSE;
@@ -202,22 +202,22 @@ static BOOL MapCheckDataLength(OBJECTSEEKINFO *psObjSeek)
 	return TRUE;
 }
 
-//ŒŸõ‚·‚é‚½‚ß‚Ìƒf[ƒ^‚ğ‰Šú‰»‚·‚é
-//uRoomID‚É‚ÍAæ“¾‚µ‚½‚¢ƒ‹[ƒ€‚Ìƒf[ƒ^‚ğw’èB
-//GETADDRESS_CURRENT_EDITTING‚ğw’è‚·‚é‚ÆŒ»İƒGƒfƒBƒg‚µ‚Ä‚¢‚éƒ‹[ƒ€
+//æ¤œç´¢ã™ã‚‹ãŸã‚ã®ãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–ã™ã‚‹
+//uRoomIDã«ã¯ã€å–å¾—ã—ãŸã„ãƒ«ãƒ¼ãƒ ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŒ‡å®šã€‚
+//GETADDRESS_CURRENT_EDITTINGã‚’æŒ‡å®šã™ã‚‹ã¨ç¾åœ¨ã‚¨ãƒ‡ã‚£ãƒˆã—ã¦ã„ã‚‹ãƒ«ãƒ¼ãƒ 
 BOOL MapSeekFirst(OBJECTSEEKINFO *psObjSeek,UINT uRoomID){
 	if(!psObjSeek) return FALSE;
-	//\‘¢‘Ì‚ğ‰Šú‰»
+	//æ§‹é€ ä½“ã‚’åˆæœŸåŒ–
 	memset(psObjSeek,0,sizeof(OBJECTSEEKINFO));
-	psObjSeek->pbData=bPRGROM+GetMapAddress(uRoomID)+2;//+2‚ÍAƒwƒbƒ_•ª
+	psObjSeek->pbData=bPRGROM+GetMapAddress(uRoomID)+2;//+2ã¯ã€ãƒ˜ãƒƒãƒ€åˆ†
 
 	if(psObjSeek->pbData[0]==0xFD) return FALSE;
 	
-	//ƒy[ƒW‚Ìî•ñ‚ğƒZƒbƒg
+	//ãƒšãƒ¼ã‚¸ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	MapSetPage(psObjSeek);
-	//’·‚³‚Ìî•ñ‚ğƒZƒbƒg
+	//é•·ã•ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	psObjSeek->dwLength=MapGetAllDataLength(uRoomID);
-	//ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚º
 	psObjSeek->dwObjLen=2;
 
 	if(g_blIsLengthValid && !MapCheckDataLength(psObjSeek)) return FALSE;
@@ -233,16 +233,16 @@ BOOL MapSeekNext(OBJECTSEEKINFO *psObjSeek){
 
 	if(psObjSeek->pbData[0]==0xFD) return FALSE;
 
-	//ƒy[ƒW‚Ìî•ñ‚ğƒZƒbƒg
+	//ãƒšãƒ¼ã‚¸ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	MapSetPage(psObjSeek);
-	//ƒCƒ“ƒfƒbƒNƒX‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
+	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	psObjSeek->dwIndex++;
-	//ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚º
 	psObjSeek->dwObjLen=2;
 
 	if(g_blIsLengthValid 
 		&& (!MapCheckDataLength(psObjSeek)
-		     || psObjSeek->dwOfs > 0xFF)) // 1ƒ‹[ƒ€‚É‘¶İ‚Å‚«‚éÅ‘åƒIƒuƒWƒFƒNƒg”
+		     || psObjSeek->dwOfs > 0xFF)) // 1ãƒ«ãƒ¼ãƒ ã«å­˜åœ¨ã§ãã‚‹æœ€å¤§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°
 			 return FALSE;
 
 	return TRUE;
@@ -250,7 +250,7 @@ BOOL MapSeekNext(OBJECTSEEKINFO *psObjSeek){
 
 /***********************************
 
-  ƒ}ƒbƒv‚Ìƒf[ƒ^•ÏXˆ—ŠÖ”
+  ãƒãƒƒãƒ—ã®ãƒ‡ãƒ¼ã‚¿å¤‰æ›´å‡¦ç†é–¢æ•°
 
 ************************************/
 int GetMapData(UINT uRoomID, int iIndex, BYTE *pbBuf, int *piPage)
@@ -285,8 +285,8 @@ BOOL SortByPosXMap(UINT uRoomID,int *piCurIndex,BOOL IsResort)
 	BYTE *pbData;
 	BOOL blRet;
 	UINT uPageBaseOfs;
-	int iIndexBase;//æ“ª‚©‚ç‚ÌŠî€ƒCƒ“ƒfƒbƒNƒX
-	int iIndex;//Šî€‚©‚ç‚ÌƒCƒ“ƒfƒbƒNƒX
+	int iIndexBase;//å…ˆé ­ã‹ã‚‰ã®åŸºæº–ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+	int iIndex;//åŸºæº–ã‹ã‚‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 	BOOL blReSortNeed;
 	DWORD dwLength;
 
@@ -304,7 +304,7 @@ BOOL SortByPosXMap(UINT uRoomID,int *piCurIndex,BOOL IsResort)
 		int iPageBaseNum=0;
 
 		pbPageBase=pbData;
-		//‚Pƒy[ƒW“à‚ÌŒŸõ
+		//ï¼‘ãƒšãƒ¼ã‚¸å†…ã®æ¤œç´¢
 		for(;;)
 		{
 			int n=0;
@@ -318,7 +318,7 @@ BOOL SortByPosXMap(UINT uRoomID,int *piCurIndex,BOOL IsResort)
 					if((pbPageBase[iPageBaseNum]&0x0F)==0x0D && (pbPageBase[iPageBaseNum+1]&0x70)==0x00)
 						blReSortNeed=TRUE;
 
-					//‰üƒy[ƒWƒtƒ‰ƒO
+					//æ”¹ãƒšãƒ¼ã‚¸ãƒ•ãƒ©ã‚°
 					if(pbPageBase[iPageBaseNum+1]&0x80)
 					{
 						pbPageBase[iPageBaseNum+n+1]|=0x80;
@@ -327,9 +327,9 @@ BOOL SortByPosXMap(UINT uRoomID,int *piCurIndex,BOOL IsResort)
 					memcpy(bTmp,pbPageBase+iPageBaseNum,2);
 					memcpy(pbPageBase+iPageBaseNum,pbPageBase+iPageBaseNum+n,2);
 					memcpy(pbPageBase+iPageBaseNum+n,bTmp,2);
-					//ÃŞ°À‚ª•Ï‚í‚Á‚½
+					//ï¾ƒï¾ï½°ï¾€ãŒå¤‰ã‚ã£ãŸ
 					blRet=TRUE;
-					//ƒCƒ“ƒfƒbƒNƒX‚Ìˆ—
+					//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å‡¦ç†
 					if(piCurIndex)
 					{
 						if((iIndexBase+iIndex)==*piCurIndex)
@@ -402,7 +402,7 @@ BOOL SetMapData(UINT uRoomID,int iIndex,BYTE *bBuf)
 		//giSelectedItem=iIndex;
 		SetSelectedItem(iIndex,FALSE);
 		GetMapData(uRoomID,iIndex,bTmp,&iPage);
-		//ƒJ[ƒ\ƒ‹‚ÌXV
+		//ã‚«ãƒ¼ã‚½ãƒ«ã®æ›´æ–°
 		SetMapViewCursoleMap(bTmp,iPage);
 	}
 
@@ -438,7 +438,7 @@ BOOL SetMapDataBinary(UINT uRoomID,int iIndex, BYTE *bBuf,int iValidSize)
 		SetSelectedItem(iIndex,FALSE);
 		GetMapData(GETADDRESS_CURRENT_EDITTING,iIndex,bTmp,&iPage);
 
-		//ƒJ[ƒ\ƒ‹‚ÌXV
+		//ã‚«ãƒ¼ã‚½ãƒ«ã®æ›´æ–°
 		SetMapViewCursoleMap(bTmp,iPage);
 	}
 
@@ -447,8 +447,8 @@ BOOL SetMapDataBinary(UINT uRoomID,int iIndex, BYTE *bBuf,int iValidSize)
 
 /******
 
-  blPageOverDec‚ÍAw’è‚µ‚½Íß°¼Ş‚ğ’´‚¦‚Ä‚µ‚Ü‚Á‚½ê‡‚ÉAƒCƒ“ƒfƒbƒNƒX‚ğ‚P‚ÂŒ¸‚ç‚·‚©
-  TRUEcŒ¸‚ç‚· FALSE c@Œ¸‚ç‚³‚È‚¢
+  blPageOverDecã¯ã€æŒ‡å®šã—ãŸï¾ï¾Ÿï½°ï½¼ï¾ã‚’è¶…ãˆã¦ã—ã¾ã£ãŸå ´åˆã«ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ï¼‘ã¤æ¸›ã‚‰ã™ã‹
+  TRUEâ€¦æ¸›ã‚‰ã™ FALSE â€¦ã€€æ¸›ã‚‰ã•ãªã„
 *******/
 int GetMapDataIndex(UINT uRoomID,GETINDEXINFO *psGetIndex,int iPage,BOOL blPageOverDec)
 {
@@ -503,7 +503,7 @@ int GetMapDataIndex(UINT uRoomID,GETINDEXINFO *psGetIndex,int iPage,BOOL blPageO
 
 /***********************************
 
-  “G‚Ìƒf[ƒ^•ÏXˆ—ŠÖ”
+  æ•µã®ãƒ‡ãƒ¼ã‚¿å¤‰æ›´å‡¦ç†é–¢æ•°
 
 ************************************/
 int GetBadGuysData(UINT uRoomID,int iIndex, BYTE *bBuf, int *piPage)
@@ -528,12 +528,12 @@ int GetBadGuysData(UINT uRoomID,int iIndex, BYTE *bBuf, int *piPage)
 
 static BOOL MemorySwap(BYTE *pbBuf1,int iBuf1Size, BYTE *pbBuf2, int iBuf2Size)
 {
-	BYTE *pbBufSmall;//ƒAƒhƒŒƒX‚Ì¬‚³‚¢•û
+	BYTE *pbBufSmall;//ã‚¢ãƒ‰ãƒ¬ã‚¹ã®å°ã•ã„æ–¹
 	BYTE *pbTmpSmall;
-	BYTE *pbBufLarge;//ƒAƒhƒŒƒX‚Ì‘å‚«‚¢•û
+	BYTE *pbBufLarge;//ã‚¢ãƒ‰ãƒ¬ã‚¹ã®å¤§ãã„æ–¹
 	BYTE *pbTmpLarge;
-	int iSizeSmall;//ƒAƒhƒŒƒX‚Ì¬‚³‚¢•û‚Ìƒf[ƒ^‚ÌƒTƒCƒY
-	int iSizeLarge;//ƒAƒhƒŒƒX‚Ì‘å‚«‚¢•û‚Ìƒf[ƒ^‚ÌƒTƒCƒY
+	int iSizeSmall;//ã‚¢ãƒ‰ãƒ¬ã‚¹ã®å°ã•ã„æ–¹ã®ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚º
+	int iSizeLarge;//ã‚¢ãƒ‰ãƒ¬ã‚¹ã®å¤§ãã„æ–¹ã®ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚º
 
 	if(pbBuf1==pbBuf2) return FALSE;
 
@@ -576,7 +576,7 @@ static BOOL MemorySwap(BYTE *pbBuf1,int iBuf1Size, BYTE *pbBuf2, int iBuf2Size)
 }
 
 /***************************************************
-•À‚×‘Ö‚¦‚ª‹N‚±‚Á‚½‚çTRUEA‚»‚¤‚Å‚È‚¯‚ê‚ÎFALSE‚ğ•Ô‚·B
+ä¸¦ã¹æ›¿ãˆãŒèµ·ã“ã£ãŸã‚‰TRUEã€ãã†ã§ãªã‘ã‚Œã°FALSEã‚’è¿”ã™ã€‚
 ****************************************************/
 /*
 BOOL SortByPosXBadGuysEx(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
@@ -608,8 +608,8 @@ BOOL SortByPosXBadGuys(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
 	BYTE *pbData;
 	BOOL blRet;
 	UINT uPageBaseOfs;
-	int iIndexBase;//æ“ª‚©‚ç‚ÌŠî€ƒCƒ“ƒfƒbƒNƒX
-	int iIndex;//Šî€‚©‚ç‚ÌƒCƒ“ƒfƒbƒNƒX
+	int iIndexBase;//å…ˆé ­ã‹ã‚‰ã®åŸºæº–ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+	int iIndex;//åŸºæº–ã‹ã‚‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 	BOOL blReSortNeed;
 	DWORD dwLength;
 
@@ -626,7 +626,7 @@ BOOL SortByPosXBadGuys(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
 		int iPageBaseNum=0;
 
 		pbPageBase=pbData;
-		//‚Pƒy[ƒW“à‚Ìƒ\[ƒg
+		//ï¼‘ãƒšãƒ¼ã‚¸å†…ã®ã‚½ãƒ¼ãƒˆ
 		for(;;)
 		{
 			int n=0;
@@ -644,14 +644,14 @@ BOOL SortByPosXBadGuys(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
 					((pbPageBase[iPageBaseNum+n]&0x0F)==0x0F)||
 					(g_blIsLengthValid && ((DWORD)(uPageBaseOfs+n+BadGuysGetDataLength(&pbPageBase[iPageBaseNum]))>dwLength))) break;
 
-				//ƒXƒƒbƒv‚ª•K—v‚È‚çs‚¤
+				//ã‚¹ãƒ¯ãƒƒãƒ—ãŒå¿…è¦ãªã‚‰è¡Œã†
 				if((pbPageBase[iPageBaseNum]&0xF0)>(pbPageBase[iPageBaseNum+n]&0xF0))
 				{
 					BYTE bTmp[3];
 					int iData1Size;
 					int iData2Size;
 
-					//ƒy[ƒW‚Ìƒx[ƒX‚ª‘—‚èƒRƒ}ƒ“ƒh‚ÅA‚»‚ê‚Æ‰½‚©‚ğƒXƒƒbƒv‚µ‚½ê‡AÄƒ\[ƒg‚ª•K—v
+					//ãƒšãƒ¼ã‚¸ã®ãƒ™ãƒ¼ã‚¹ãŒé€ã‚Šã‚³ãƒãƒ³ãƒ‰ã§ã€ãã‚Œã¨ä½•ã‹ã‚’ã‚¹ãƒ¯ãƒƒãƒ—ã—ãŸå ´åˆã€å†ã‚½ãƒ¼ãƒˆãŒå¿…è¦
 					if((pbPageBase[iPageBaseNum]&0x0F)==0x0F) blReSortNeed=TRUE;
 
 					iData1Size=((pbPageBase[iPageBaseNum]&0x0F)==0x0E)?3:2;
@@ -673,9 +673,9 @@ BOOL SortByPosXBadGuys(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
 						MemorySwap(pbPageBase+iPageBaseNum,iData1Size,pbPageBase+iPageBaseNum+n,iData2Size);
 						n+=(iData2Size-iData1Size);
 					}
-					//ÃŞ°À‚ª•Ï‚í‚Á‚½
+					//ï¾ƒï¾ï½°ï¾€ãŒå¤‰ã‚ã£ãŸ
 					blRet=TRUE;
-					//ƒCƒ“ƒfƒbƒNƒX‚Ìˆ—
+					//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å‡¦ç†
 					if(piCurIndex)
 					{
 						if((iIndexBase+iIndex)==*piCurIndex)
@@ -722,7 +722,7 @@ BOOL SortByPosXBadGuys(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
 }
 
 /*
-	’ˆÓF@ƒf[ƒ^‚ÌƒTƒCƒY‚Ìˆá‚¤ƒIƒuƒWƒFƒNƒgiƒ‹[ƒ€ŠÔˆÚ“®‚Ì–½—ß‚ÉƒNƒŠƒ{[‚È‚Çj‚ğİ’è‚µ‚æ‚¤‚Æ‚·‚é‚Æ¸”s‚·‚é
+	æ³¨æ„ï¼šã€€ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã®é•ã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆãƒ«ãƒ¼ãƒ é–“ç§»å‹•ã®å‘½ä»¤ã«ã‚¯ãƒªãƒœãƒ¼ãªã©ï¼‰ã‚’è¨­å®šã—ã‚ˆã†ã¨ã™ã‚‹ã¨å¤±æ•—ã™ã‚‹
 
 */
 BOOL SetBadGuysData(UINT uRoomID,int iIndex, BYTE *bBuf)
@@ -740,9 +740,9 @@ BOOL SetBadGuysData(UINT uRoomID,int iIndex, BYTE *bBuf)
 		if(!BadGuysSeekNext(&ObjSeek)) return FALSE;
 	}
 	
-	//“ü—Íƒf[ƒ^‚ÌƒTƒCƒY‚ğæ“¾
+	//å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
 	iValidSize1=BadGuysGetDataLength(bBuf);
-	//Œ³‚Ìƒf[ƒ^‚ÌƒTƒCƒY‚ğæ“¾
+	//å…ƒã®ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
 	iValidSize2=BadGuysGetDataLength(ObjSeek.pbData);
 	if(iValidSize1!=iValidSize2) return FALSE;
 	memcpy(ObjSeek.pbData,bBuf,iValidSize1);
@@ -759,7 +759,7 @@ BOOL SetBadGuysData(UINT uRoomID,int iIndex, BYTE *bBuf)
 		//giSelectedItem=iIndex;
 		SetSelectedItem(iIndex,FALSE);
 		GetBadGuysData(GETADDRESS_CURRENT_EDITTING,iIndex,bTmp,&iPage);
-		//ƒ}ƒbƒvƒrƒ…[‚ÌƒJ[ƒ\ƒ‹‚ÌXV
+		//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¼ã‚½ãƒ«ã®æ›´æ–°
 		SetMapViewCursoleBadGuys(bTmp,iPage);
 	}
 
@@ -786,7 +786,7 @@ BOOL SetBadGuysDataBinary(UINT uRoomID,int iIndex, BYTE *bBuf,int iValidSize)
 //	gblDataChanged=TRUE;
 	fr_SetDataChanged(TRUE);
 
-	//ƒ}ƒbƒvƒrƒ…[AƒJƒŒƒ“ƒgƒZƒŒƒNƒg‚ÌXV
+	//ãƒãƒƒãƒ—ãƒ“ãƒ¥ãƒ¼ã€ã‚«ãƒ¬ãƒ³ãƒˆã‚»ãƒ¬ã‚¯ãƒˆã®æ›´æ–°
 	{
 		int iPage;
 		BYTE bTmp[3];

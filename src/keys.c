@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
                                   smb Utility
 
@@ -208,50 +208,50 @@ static UINT FindVkeyIndex(BYTE bVkey)
 }
 
 
-// A, B, SELECT, START, UP, DOWN, LEFT, RIGHT�̏�
-// NOTE : A, B, SELECT, START���ŏ��ɂ��邱�Ƃ�O��ɂ��āA
-//        �W���C�X�e�B�b�N�̃{�^���ݒ���������Ă���
-//        (UP, DOWN, LEFT, RIGHT�͖��g�p)
+// A, B, SELECT, START, UP, DOWN, LEFT, RIGHTの順
+// NOTE : A, B, SELECT, STARTが最初にくることを前提にして、
+//        ジョイスティックのボタン設定を実装している
+//        (UP, DOWN, LEFT, RIGHTは未使用)
 LPTSTR g_szEmuKeyName[EMULATOR_NUM_BUTTONS] =
 {
 	STRING_KEYCONFIG_EMU_A,//"A",
 	STRING_KEYCONFIG_EMU_B,//"B",
-	STRING_KEYCONFIG_EMU_SELECT,//"�ڸ�",
-	STRING_KEYCONFIG_EMU_START,//"����",
-	STRING_KEYCONFIG_EMU_UP,//"��",
-	STRING_KEYCONFIG_EMU_DOWN,//"��",
-	STRING_KEYCONFIG_EMU_LEFT,//"��",
-	STRING_KEYCONFIG_EMU_RIGHT//"�E"
+	STRING_KEYCONFIG_EMU_SELECT,//"ｾﾚｸﾄ",
+	STRING_KEYCONFIG_EMU_START,//"ｽﾀｰﾄ",
+	STRING_KEYCONFIG_EMU_UP,//"上",
+	STRING_KEYCONFIG_EMU_DOWN,//"下",
+	STRING_KEYCONFIG_EMU_LEFT,//"左",
+	STRING_KEYCONFIG_EMU_RIGHT//"右"
 };
 
 LPTSTR g_szEditKeyName[KEYACCEL_NUM_COMMANDS] =
 {
-	STRING_KEYCONFIG_EDIT_ADD1,//"��ނ�+1",
-	STRING_KEYCONFIG_EDIT_DEC1,//"��ނ�-1",
-	STRING_KEYCONFIG_EDIT_ADD16,//"��ނ�+16",
-	STRING_KEYCONFIG_EDIT_DEC16,//"��ނ�-16",
-	STRING_KEYCONFIG_EDIT_UP,//"�ʒu�����",
-	STRING_KEYCONFIG_EDIT_DOWN,//"�ʒu������",
-	STRING_KEYCONFIG_EDIT_LEFT,//"�ʒu������",
-	STRING_KEYCONFIG_EDIT_RIGHT,//"�ʒu���E��",
-	STRING_KEYCONFIG_EDIT_NEXTPAGE,//"�����߰�ނ�",
-	STRING_KEYCONFIG_EDIT_PREVPAGE,//"�O���߰�ނ�",
-	STRING_KEYCONFIG_EDIT_NEXTOBJ,//"���̵�޼ު�Ă�",
-	STRING_KEYCONFIG_EDIT_PREVOBJ,//"�O�̵�޼ު�Ă�",
-	STRING_KEYCONFIG_EDIT_SAVEFILE,//"̧��: �㏑���ۑ�",
-	STRING_KEYCONFIG_EDIT_UNDO,//"�ҏW: ���ɖ߂�",
-	STRING_KEYCONFIG_EDIT_ROOM,//"�ҏW: ٰт��J��",
-	STRING_KEYCONFIG_EDIT_BADGUYS,//"�ҏW: �G",
-	STRING_KEYCONFIG_EDIT_MAP,//"�ҏW: �n�`",
-	STRING_KEYCONFIG_EDIT_TESTPLAY,//"�Эڰ�: ý���ڲ",
-	STRING_KEYCONFIG_EDIT_PAGETESTPLAY,//"�Эڰ�: �߰��ý���ڲ",
-	STRING_KEYCONFIG_EDIT_PAGETESTPLAY2,//"�Эڰ�: �r���߰��ý���ڲ",
-	STRING_KEYCONFIG_EDIT_STOP,//"�Эڰ�: ��~",
-	STRING_KEYCONFIG_EDIT_SAVEEMU,//"�Эڰ�: ����",
-	STRING_KEYCONFIG_EDIT_LOADEMU,//"�Эڰ�: ۰��",
-	STRING_KEYCONFIG_EDIT_EMUSETTING,//"�Эڰ�: ý���ڲ�̐ݒ�",
-	STRING_KEYCONFIG_EDIT_NEXTWIN,//"����޳: ����",
-	STRING_KEYCONFIG_EDIT_PREVWIN,//"����޳: �O��"
+	STRING_KEYCONFIG_EDIT_ADD1,//"種類を+1",
+	STRING_KEYCONFIG_EDIT_DEC1,//"種類を-1",
+	STRING_KEYCONFIG_EDIT_ADD16,//"種類を+16",
+	STRING_KEYCONFIG_EDIT_DEC16,//"種類を-16",
+	STRING_KEYCONFIG_EDIT_UP,//"位置を上へ",
+	STRING_KEYCONFIG_EDIT_DOWN,//"位置を下へ",
+	STRING_KEYCONFIG_EDIT_LEFT,//"位置を左へ",
+	STRING_KEYCONFIG_EDIT_RIGHT,//"位置を右へ",
+	STRING_KEYCONFIG_EDIT_NEXTPAGE,//"次のﾍﾟｰｼﾞへ",
+	STRING_KEYCONFIG_EDIT_PREVPAGE,//"前のﾍﾟｰｼﾞへ",
+	STRING_KEYCONFIG_EDIT_NEXTOBJ,//"次のｵﾌﾞｼﾞｪｸﾄへ",
+	STRING_KEYCONFIG_EDIT_PREVOBJ,//"前のｵﾌﾞｼﾞｪｸﾄへ",
+	STRING_KEYCONFIG_EDIT_SAVEFILE,//"ﾌｧｲﾙ: 上書き保存",
+	STRING_KEYCONFIG_EDIT_UNDO,//"編集: 元に戻す",
+	STRING_KEYCONFIG_EDIT_ROOM,//"編集: ﾙｰﾑを開く",
+	STRING_KEYCONFIG_EDIT_BADGUYS,//"編集: 敵",
+	STRING_KEYCONFIG_EDIT_MAP,//"編集: 地形",
+	STRING_KEYCONFIG_EDIT_TESTPLAY,//"ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲ",
+	STRING_KEYCONFIG_EDIT_PAGETESTPLAY,//"ｴﾐｭﾚｰﾀ: ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ",
+	STRING_KEYCONFIG_EDIT_PAGETESTPLAY2,//"ｴﾐｭﾚｰﾀ: 途中ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ",
+	STRING_KEYCONFIG_EDIT_STOP,//"ｴﾐｭﾚｰﾀ: 停止",
+	STRING_KEYCONFIG_EDIT_SAVEEMU,//"ｴﾐｭﾚｰﾀ: ｾｰﾌﾞ",
+	STRING_KEYCONFIG_EDIT_LOADEMU,//"ｴﾐｭﾚｰﾀ: ﾛｰﾄﾞ",
+	STRING_KEYCONFIG_EDIT_EMUSETTING,//"ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲの設定",
+	STRING_KEYCONFIG_EDIT_NEXTWIN,//"ｳｲﾝﾄﾞｳ: 次へ",
+	STRING_KEYCONFIG_EDIT_PREVWIN,//"ｳｲﾝﾄﾞｳ: 前へ"
 };
 
 #define CUSTOMIZE_KEYIDS 2
@@ -305,13 +305,13 @@ static LPTSTR FormatOverlappedKeyInformation(LPTSTR szBuf,DWORD dwResult)
 
 #define WM_UPDATEKEYVALUE (WM_USER + 1)
 
-// �W���C�X�e�B�b�N
+// ジョイスティック
 DWORD g_adwJoyButtonFlags[JOYSTICK_MAX_BUTTONS] = {JOY_BUTTON1,  JOY_BUTTON2,  JOY_BUTTON3, JOY_BUTTON4,   JOY_BUTTON5,  JOY_BUTTON6, JOY_BUTTON7,   JOY_BUTTON8,
 												   JOY_BUTTON9,  JOY_BUTTON10, JOY_BUTTON11, JOY_BUTTON12, JOY_BUTTON13, JOY_BUTTON14, JOY_BUTTON15, JOY_BUTTON16,
 												   JOY_BUTTON17, JOY_BUTTON18, JOY_BUTTON19, JOY_BUTTON20, JOY_BUTTON21, JOY_BUTTON22, JOY_BUTTON23, JOY_BUTTON24, 
 												   JOY_BUTTON25, JOY_BUTTON26, JOY_BUTTON27, JOY_BUTTON28, JOY_BUTTON29, JOY_BUTTON30, JOY_BUTTON31, JOY_BUTTON32 };
 
-// �W���C�X�e�B�b�N�̈�̃{�^���t���O�r�b�g����R���{�{�b�N�X�ł̃C���f�b�N�X�𓾂�
+// ジョイスティックの一つのボタンフラグビットからコンボボックスでのインデックスを得る
 static UINT FindJoyButtonIndex(DWORD dwJoyButton)
 {
 	DWORD n;
@@ -343,7 +343,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 			LPTSTR  szButtonName = GetTempStringBuffer();
 
 			//---------------
-			//  ������
+			//  初期化
 			//---------------
 			//
 			GetEditorVKeys(&bEditVKeys[0]);
@@ -351,7 +351,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 			GetEmulatorJoyButtons(&dwEmuJoyButtons[0]);
 			CopyMemory(wfWheelFunc, g_wfWheelFunc, sizeof(WHEELFUNC) * CUSTOMIZE_WHEEL_NUMFUNCS);
 
-			// �L�[�{�[�h
+			// キーボード
 			for(N=0;N<CUSTOMIZE_KEYIDS;N++)
 				SendDlgItemMessage(hDlg,IDC_KEYID,CB_ADDSTRING,0,(LPARAM)lpKeyID[N]);
 			for(N=0;N<NUM_VKEYINFO;N++)
@@ -359,16 +359,16 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 			for(N=0;N<KEYACCEL_NUM_PRESETS;N++)
 				SendDlgItemMessage(hDlg,IDC_PRESET,CB_ADDSTRING,0,(LPARAM)lpPreset[N]);
 			SendDlgItemMessage(hDlg, IDC_PRESET, CB_SETCURSEL, 0, 0);
-			// �}�E�X�z�C�[��
+			// マウスホイール
 			for(N=0;N<CUSTOMIZE_WHEEL_NUMFUNCS;N++)
 				SendDlgItemMessage(hDlg,IDC_WHEELLIST,LB_ADDSTRING,0,(LPARAM)lpWheel[N]);
 			for(N=0;N<CUSTOMIZE_WHEEL_NUMFUNCS;N++)
 				SendDlgItemMessage(hDlg,IDC_WHEELCOMMAND,CB_ADDSTRING,0,(LPARAM)lpWheelFunc[N]);
-			// �W���C�X�e�B�b�N�̃{�^��
-			// ���X�g�ɃR���g���[���[�̃{�^������ǉ�
+			// ジョイスティックのボタン
+			// リストにコントローラーのボタン名を追加
 			for(N=0;N<EMULATOR_NUM_JOYBUTTONS;N++)
 				SendDlgItemMessage(hDlg,IDC_JOYBUTTONLIST,LB_ADDSTRING,0,(LPARAM)g_szEmuKeyName[N]);
-			// �R���{�{�b�N�X�ɃW���C�X�e�B�b�N�̃{�^������ǉ�
+			// コンボボックスにジョイスティックのボタン名を追加
 			for(N=0;N<JOYSTICK_MAX_BUTTONS;N++) {
 				wsprintf(szButtonName, STRING_KEYCONFIG_BUTTONX, N + 1);
 				SendDlgItemMessage(hDlg,IDC_JOYBUTTONVALUE,CB_ADDSTRING,0,(LPARAM)szButtonName);
@@ -441,7 +441,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 							EndDialog(hDlg,FALSE);
 							return TRUE;
 						}
-						// �L�[ID�́A1����n�܂�
+						// キーIDは、1から始まる
 						uKeyID++;
 						//
 						SendDlgItemMessage(hDlg,IDC_KEYLIST,LB_RESETCONTENT,0,0);
@@ -468,7 +468,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 						return TRUE;
 					}
 					
-				} //�@IDC_KEYID
+				} //　IDC_KEYID
 				break;
 			case IDC_KEYLIST:
 				{
@@ -502,7 +502,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 							SETVKEY(wNewKey,bNewVKey);
 							dwResult = FindOverlappedKeyDefinition(wNewKey,bEditVKeys,bEmuVKeys);
 							if(dwResult
-								&& (CUSTOMIZE_KEYS_ID_EDIT != HIWORD(dwResult) || uKey != LOWORD(dwResult)) // �V���ɑI���������ڂ��I������Ă������̂Ɠ������ڂłȂ����
+								&& (CUSTOMIZE_KEYS_ID_EDIT != HIWORD(dwResult) || uKey != LOWORD(dwResult)) // 新たに選択した項目が選択されていたものと同じ項目でなければ
 							  ){
 								FormatOverlappedKeyInformation(szBuf, dwResult);
 								Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
@@ -516,7 +516,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 							wNewKey = (WORD)bNewVKey;
 							dwResult = FindOverlappedKeyDefinition(wNewKey,bEditVKeys,bEmuVKeys);
 							if(dwResult
-								&& (CUSTOMIZE_KEYS_ID_EMU != HIWORD(dwResult) || uKey != LOWORD(dwResult)) // �V���ɑI���������ڂ��I������Ă������̂Ɠ������ڂłȂ����
+								&& (CUSTOMIZE_KEYS_ID_EMU != HIWORD(dwResult) || uKey != LOWORD(dwResult)) // 新たに選択した項目が選択されていたものと同じ項目でなければ
 							  ){
 								FormatOverlappedKeyInformation(szBuf, dwResult);
 								Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
@@ -562,7 +562,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 								wNewKey&=~wMask;
 
 							dwResult = FindOverlappedKeyDefinition(wNewKey,bEditVKeys,bEmuVKeys);
-							if (dwResult) { // �`�F�b�N�{�b�N�X�̏�Ԃ̕ω��ɂ���ē����L�[���͂ɂȂ邱�Ƃ͂Ȃ�
+							if (dwResult) { // チェックボックスの状態の変化によって同じキー入力になることはない
 								FormatOverlappedKeyInformation(szBuf, dwResult);
 								Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
 								SendMessage(hDlg,WM_UPDATEKEYVALUE,0,0);
@@ -612,7 +612,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 						if(L != LB_ERR){
 							C = SendDlgItemMessage(hDlg, IDC_WHEELCOMMAND, CB_GETCURSEL, 0, 0);
 							if(C != CB_ERR){
-								//���ݐݒ肳��Ă��鑀���������
+								//現在設定されている操作を見つける
 								for(N = 0;N < CUSTOMIZE_WHEEL_NUMFUNCS;N++){
 									if(wfWheelFunc[N] == (WHEELFUNC)C)
 										break;
@@ -636,7 +636,7 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 					if (wNotifyCode == LBN_SELCHANGE)
 					{
 						L = SendDlgItemMessage(hDlg, IDC_JOYBUTTONLIST, LB_GETCURSEL, 0, 0);
-						// �R���{�{�b�N�X���X�V
+						// コンボボックスを更新
 						if (L != LB_ERR)
 							SendDlgItemMessage(hDlg, IDC_JOYBUTTONVALUE, CB_SETCURSEL, FindJoyButtonIndex(dwEmuJoyButtons[L]), 0);
 					}
@@ -652,22 +652,22 @@ LRESULT CALLBACK CustomizeDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM l
 						if (L != LB_ERR){
 							V = SendDlgItemMessage(hDlg, IDC_JOYBUTTONVALUE, CB_GETCURSEL, 0, 0);
 							if (V != CB_ERR){
-								// �{�^���̐V�����l
+								// ボタンの新しい値
 								dwNewButton = g_adwJoyButtonFlags[V];
-								// �d���ݒ�����o
+								// 重複設定を検出
 								for (N = 0;N < EMULATOR_NUM_JOYBUTTONS;N++) {
 									if (dwEmuJoyButtons[N] == dwNewButton)
 										break;
 								}
-								if (N != EMULATOR_NUM_JOYBUTTONS) { // �d��������ꍇ�A
-									// �d�������{�^���ݒ�ƐV�����{�^���ݒ�����ւ���
+								if (N != EMULATOR_NUM_JOYBUTTONS) { // 重複がある場合、
+									// 重複したボタン設定と新しいボタン設定を入れ替える
 									T = dwEmuJoyButtons[N];
 									dwEmuJoyButtons[N] = dwEmuJoyButtons[L];
 									dwEmuJoyButtons[L] = T;
 								}
-								else { // �d�����Ȃ���΁A
-									// �W���C�X�e�B�b�N�̃{�^���t���O�萔���Z�b�g���ꂽ
-									// �z��ɐV�����f�[�^���Z�b�g
+								else { // 重複がなければ、
+									// ジョイスティックのボタンフラグ定数がセットされた
+									// 配列に新しいデータをセット
 									dwEmuJoyButtons[L] = dwNewButton;
 								}
 							}

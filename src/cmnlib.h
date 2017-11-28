@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -17,7 +17,7 @@
 #define COMCTRL_V472  8
 #define COMCTRL_LATER 16
 
-//ˆê•¶š—ñƒoƒbƒtƒ@[‚ÌƒTƒCƒYAGetTempStringBuffer()ŠÖ”‚ÅŠm•Û‚³‚ê‚Ä‚¢‚é
+//ä¸€æ™‚æ–‡å­—åˆ—ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®ã‚µã‚¤ã‚ºã€GetTempStringBuffer()é–¢æ•°ã§ç¢ºä¿ã•ã‚Œã¦ã„ã‚‹
 #define TMPSTRBUFSIZ 512
 
 #define Malloc(S)     HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS, (S))

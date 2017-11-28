@@ -1,4 +1,4 @@
-------------------
+﻿------------------
 Notes on compiling
 ------------------
 When compiling, define a constant INTERNATIONAL.

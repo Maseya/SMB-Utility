@@ -1,4 +1,4 @@
-#ifndef LOGVIEW_H
+ï»¿#ifndef LOGVIEW_H
 #define LOGVIEW_H
 
 #define LOGVIEW_DEFAULTHEIGHT 512
@@ -6,7 +6,7 @@
 
 #define LOGVIEW_FONTHEIGHT    12
 
-#define LOGVIEW_FONTNAME      "‚l‚r ‚oƒSƒVƒbƒN"
+#define LOGVIEW_FONTNAME      "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
 #define LOGVIEW_FONTNAMEI     "MS Sans Serif"
 
 #define LOGVIEW_OUTPUTSTRING_CR    0x00000001

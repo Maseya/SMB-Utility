@@ -1,4 +1,4 @@
-/************************************************************************************
+ï»¿/************************************************************************************
 
                                   smb Utility
 
@@ -22,7 +22,7 @@ int iTrainer_undo=0;
 TCHAR g_tcUndoName[UNDONAME_BUFFER_SIZE]={0};
 BOOL g_blUndoEnable=FALSE;
 
-//ƒL[“ü—Í‚É‘Î‚µ‚ÄUNDO‚Ì‚½‚ß‚ÌƒRƒs[‚ğ•Û‘¶‚·‚é‚©
+//ã‚­ãƒ¼å…¥åŠ›ã«å¯¾ã—ã¦UNDOã®ãŸã‚ã®ã‚³ãƒ”ãƒ¼ã‚’ä¿å­˜ã™ã‚‹ã‹
 BOOL g_blKeyCommandUndo=TRUE;
 
 void undoPrepare(LPCTSTR lpUndoName)
@@ -58,7 +58,7 @@ void undoRestore()
 		//
 		rm_UpdateGlobalRoomData();
 
-		//ƒLƒƒƒ‰ƒƒ€‚Ì‘Oˆ—
+		//ã‚­ãƒ£ãƒ©ãƒ­ãƒ ã®å‰å‡¦ç†
 		PrepareVROMData(bCHRROM);
 
 		if(!UpdateObjectViewCursole()){

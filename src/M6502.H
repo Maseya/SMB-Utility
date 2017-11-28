@@ -1,4 +1,4 @@
-/* Multi-6502 32 Bit emulator */
+﻿/* Multi-6502 32 Bit emulator */
 
 /* Copyright 1996, 1997, 1998, Neil Bradley, All rights reserved
  *

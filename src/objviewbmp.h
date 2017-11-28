@@ -1,4 +1,4 @@
-#ifndef OBJVIEWBMP_H
+﻿#ifndef OBJVIEWBMP_H
 #define OBJVIEWBMP_H
 
 
