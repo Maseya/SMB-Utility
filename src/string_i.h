@@ -1,4 +1,4 @@
-/************************************************************************************
+﻿/************************************************************************************
 
 
                                   smb Utility
@@ -19,9 +19,9 @@
 #define STRING_NULL    ""
 #define STRING_UNKNOWN "Unknown"
 
-#define STRING_LOGVIEW_FILESAVE "Saved as %s."//"%s�ɕۑ����܂����B"
-#define STRING_LOGVIEW_FILEOPEN "Loaded %s."//"%s���J���܂����B"
-#define STRING_LOGVIEW_LOADCHR  "Imported CHR-ROM from %s.(%.4xH bytes)"//"%s����%.4xH�޲Ă�CHRROM��ǂݍ��݂܂����B"
+#define STRING_LOGVIEW_FILESAVE "Saved as %s."//"%sに保存しました。"
+#define STRING_LOGVIEW_FILEOPEN "Loaded %s."//"%sを開きました。"
+#define STRING_LOGVIEW_LOADCHR  "Imported CHR-ROM from %s.(%.4xH bytes)"//"%sから%.4xHﾊﾞｲﾄのCHRROMを読み込みました。"
 
 //
 //
@@ -47,7 +47,7 @@
 #define STRING_FILEERROR_NOTFOUND   "Not found file."
 
 //
-#define STRING_CONFIRM_SAVE         "Overwrite file?"//"�㏑���ۑ����܂����H"
+#define STRING_CONFIRM_SAVE         "Overwrite file?"//"上書き保存しますか？"
 #define STRING_CONFIRM_EXIT         "Save and exit?"
 #define STRING_CONFIRM_RELOAD       "File has been changed by another editor.\nReload?"
 #define STRING_CONFIRM_DEMORECORD   "Start recording demonstration?"
@@ -76,7 +76,7 @@
 //
 #define STRING_SENDOBJECT_SRCERROR "Can't send source object."
 #define STRING_SENDOBJECT_DSTERROR "There are no objects in destination page."
-#define STRING_SENDOBJECT_OVEROBJ  "Can't send any more objects to the destination room."//"������ٰтɂ́A����ȏ��޼ު�Ă𑗂邱�Ƃ��ł��܂���B"
+#define STRING_SENDOBJECT_OVEROBJ  "Can't send any more objects to the destination room."//"送り先のﾙｰﾑには、これ以上ｵﾌﾞｼﾞｪｸﾄを送ることができません。"
 
 #define STRING_UNDO_MENUTEXT              "&Undo \"%s\""
 #define STRING_UNDONAME_KEYEDIT           "Keyboard Input"
@@ -131,11 +131,11 @@
 #define STRING_TESTPLAYSETTING_MARIO      "Regular Mario"
 #define STRING_TESTPLAYSETTING_SUPERMARIO "Super Mario"
 #define STRING_TESTPLAYSETTING_FIREMARIO  "Fiery Mario"
-#define STRING_TESTPLAYSETTING_NONE       "Default" //"����"
-#define STRING_TESTPLAYSETTING_POS        "Position"//"�ʒu"
-#define STRING_TESTPLAYSETTING_DOT        "Pixel"//"�ޯ�"
+#define STRING_TESTPLAYSETTING_NONE       "Default" //"無効"
+#define STRING_TESTPLAYSETTING_POS        "Position"//"位置"
+#define STRING_TESTPLAYSETTING_DOT        "Pixel"//"ﾄﾞｯﾄ"
 
-#define STRING_EMULATOROPTION_JOYSTICK   "Pad"//"�ޮ��è��"
+#define STRING_EMULATOROPTION_JOYSTICK   "Pad"//"ｼﾞｮｲｽﾃｨｯｸ"
 
 #define STRING_KEYCONFIG_EMU_A              "A"
 #define STRING_KEYCONFIG_EMU_B              "B"
@@ -180,16 +180,16 @@
 #define STRING_KEYCONFIG_PRESET_DESKTOP     "Desktop PC(Ten key)"
 #define STRING_KEYCONFIG_PRESET_NOTE        "Note PC"
 
-#define STRING_KEYCONFIG_WHEEL_NONE         "None"//"�Ȃ�"
-#define STRING_KEYCONFIG_WHEEL_SHIFT        "+Shift"//"+���"
-#define STRING_KEYCONFIG_WHEEL_CTRL         "+Ctrl"//"+���۰�"
-#define STRING_KEYCONFIG_WHEEL_SHIFTCTRL    "+Shift+Ctrl"//"+���+���۰�"
-#define STRING_KEYCONFIG_WHEEL_TYPE1        "Change object value by 1"//"��ނ𑝌�1"
-#define STRING_KEYCONFIG_WHEEL_TYPE16       "Change object value by 16"//"��ނ𑝌�16"
-#define STRING_KEYCONFIG_WHEEL_PAGE         "Select object on next page"//"�߰�ނ��Ƃ̈ړ�"
-#define STRING_KEYCONFIG_WHEEL_OBJ          "Select object"//"��޼ު�Ă��Ƃ̈ړ�"
+#define STRING_KEYCONFIG_WHEEL_NONE         "None"//"なし"
+#define STRING_KEYCONFIG_WHEEL_SHIFT        "+Shift"//"+ｼﾌﾄ"
+#define STRING_KEYCONFIG_WHEEL_CTRL         "+Ctrl"//"+ｺﾝﾄﾛｰﾙ"
+#define STRING_KEYCONFIG_WHEEL_SHIFTCTRL    "+Shift+Ctrl"//"+ｼﾌﾄ+ｺﾝﾄﾛｰﾙ"
+#define STRING_KEYCONFIG_WHEEL_TYPE1        "Change object value by 1"//"種類を増減1"
+#define STRING_KEYCONFIG_WHEEL_TYPE16       "Change object value by 16"//"種類を増減16"
+#define STRING_KEYCONFIG_WHEEL_PAGE         "Select object on next page"//"ﾍﾟｰｼﾞごとの移動"
+#define STRING_KEYCONFIG_WHEEL_OBJ          "Select object"//"ｵﾌﾞｼﾞｪｸﾄごとの移動"
 
-#define STRING_KEYCONFIG_BUTTONX            "Button%d"//"����%d"
+#define STRING_KEYCONFIG_BUTTONX            "Button%d"//"ﾎﾞﾀﾝ%d"
 
 
 #define STRING_OBJLIST_LENNAME   "Length:%d, %s"
@@ -245,10 +245,10 @@
 #define STRING_OBJDATA_MAP_B_23 "Pipe(Player can't enter.)"
 #define STRING_OBJDATA_MAP_B_24 "Pipe(Player can enter.)"
 
-#define STRING_OBJDATA_HELP_B12 ""//"��׸��̂P�B��׸����ް�ŕ\������Ȃ��Ȃ�ƁA�ص�����܂��ďo��Ȃ��Ȃ�̂Œ��ӁB"
-#define STRING_OBJDATA_HELP_B13 ""//"����9�Œ�B������ł��ォ��ł������B(���ʒu�{2)����2��ו��́A��Ɏw�肳�ꂽ��Q���������B"
-#define STRING_OBJDATA_HELP_B14 ""//"�₽��Ǝg�p���Ȃ����ƁB1ٰт�2��ȏ�g�p����Ɩ\�����₷���Ȃ�̂Œ��ӁB"
-#define STRING_OBJDATA_HELP_B23 ""//"������1�ɂ��Ă��K��2�ɂȂ�B"
+#define STRING_OBJDATA_HELP_B12 ""//"ｷｬﾗｸﾀの１つ。ｷｬﾗｸﾀｵｰﾊﾞｰで表示されなくなると、ﾏﾘｵが挟まって出れなくなるので注意。"
+#define STRING_OBJDATA_HELP_B13 ""//"高さ9固定。横からでも上からでも入れる。(横位置＋2)から2ｷｬﾗ分は、先に指定された障害物を消す。"
+#define STRING_OBJDATA_HELP_B14 ""//"やたらと使用しないこと。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。"
+#define STRING_OBJDATA_HELP_B23 ""//"長さを1にしても必ず2になる。"
 
 #define STRING_OBJDATA_MAP_C_01 "Hole"
 #define STRING_OBJDATA_MAP_C_02 "Balance's horizontal rope"
@@ -259,9 +259,9 @@
 #define STRING_OBJDATA_MAP_C_07 "Horizontal ?Blocks(Coin, V=3)"
 #define STRING_OBJDATA_MAP_C_08 "Horizontal ?Blocks(Coin, V=7)"
 
-#define STRING_OBJDATA_HELP_C01 ""//"�c�ʒu8����12�̐�w�肵�����ׂĂ�ϯ�߷�ׂ������B"
-#define STRING_OBJDATA_HELP_C02 ""//"�c�ʒu0�Œ�"
-#define STRING_OBJDATA_HELP_C06 ""//"�c�ʒu10����12�̐�w�肵�����ׂĂ�ϯ�߷�ׂ������B"
+#define STRING_OBJDATA_HELP_C01 ""//"縦位置8から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
+#define STRING_OBJDATA_HELP_C02 ""//"縦位置0固定"
+#define STRING_OBJDATA_HELP_C06 ""//"縦位置10から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
 
 #define STRING_OBJDATA_MAP_D_01 "Page skip"
 #define STRING_OBJDATA_MAP_D_02 "Reverse L pipe"
@@ -279,12 +279,12 @@
 #define STRING_OBJDATA_MAP_D_15 "*Freeze"
 
 #define STRING_OBJDATA_HELP_D01 ""
-#define STRING_OBJDATA_HELP_D03 ""//"�₽��Ǝg�p���Ȃ����B1ٰт�2��ȏ�g�p����Ɩ\�����₷���Ȃ�̂Œ��ӁB"
-#define STRING_OBJDATA_HELP_D04 ""//"�c�ʒu6�Œ�"
-#define STRING_OBJDATA_HELP_D05 ""//"�c�ʒu7�Œ�"
-#define STRING_OBJDATA_HELP_D06 ""//"�c�ʒu8�A����13�Œ�"
-#define STRING_OBJDATA_HELP_D12 ""//"�A���o����ׂ��o������A�\����h�����߂��߰ق��o���O�Ɏw��B"
-#define STRING_OBJDATA_HELP_D13 ""//"�߰�ޑ������ނƾ�Ă�ٰ�߂��`������B"
+#define STRING_OBJDATA_HELP_D03 ""//"やたらと使用しない事。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。"
+#define STRING_OBJDATA_HELP_D04 ""//"縦位置6固定"
+#define STRING_OBJDATA_HELP_D05 ""//"縦位置7固定"
+#define STRING_OBJDATA_HELP_D06 ""//"縦位置8、長さ13固定"
+#define STRING_OBJDATA_HELP_D12 ""//"連続出現ｷｬﾗを出した後、暴走を防ぐためにﾎﾟｰﾙを出す前に指定。"
+#define STRING_OBJDATA_HELP_D13 ""//"ﾍﾟｰｼﾞ送りｺﾏﾝﾄﾞとｾｯﾄでﾙｰﾌﾟを形成する。"
 
 #define STRING_OBJDATA_MAP_E_01 "Basic brick & scenery"
 #define STRING_OBJDATA_MAP_E_02 "Change background"
@@ -298,11 +298,11 @@
 #define STRING_OBJDATA_MAP_F_07 "Vertical balls"
 #define STRING_OBJDATA_MAP_F_08 "Nothing"
 
-#define STRING_OBJDATA_HELP_F01 ""//"�c�ʒu0�A����13�Œ�B�w�艡�ʒu�ɂ����āA��w�肵�����ׂĂ�ϯ�߷�ׂ������B"
-#define STRING_OBJDATA_HELP_F02 ""//"�c�ʒu1�Œ�B�w�艡�ʒu�ɂ����āA��w�肵�����ׂĂ�ϯ�߷�ׂ������B"
-#define STRING_OBJDATA_HELP_F03 ""//"�₽��Ǝg�p���Ȃ����ƁB�����g�p����Ɩ\�����₷���Ȃ�B"
-#define STRING_OBJDATA_HELP_F05 ""//"����0�`3 ���Ȃ��B\n����4�`6 ���̨������ׂ��B����7 ���̨������ׂ��B(���ʒu+16)�̈ʒu�ɏc�ʒu7�̉󂹂Ȃ���ۯ�1�B"
-#define STRING_OBJDATA_HELP_F07 ""//"���̂悤�ɂ��܂��ď㉺�ړ����\�B�c�ʒu2�Œ�"
+#define STRING_OBJDATA_HELP_F01 ""//"縦位置0、長さ13固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
+#define STRING_OBJDATA_HELP_F02 ""//"縦位置1固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。"
+#define STRING_OBJDATA_HELP_F03 ""//"やたらと使用しないこと。多く使用すると暴走しやすくなる。"
+#define STRING_OBJDATA_HELP_F05 ""//"長さ0～3 問題なし。\n長さ4～6 ｸﾞﾗﾌｨｯｸｽが潰れる。長さ7 ｸﾞﾗﾌｨｯｸｽが潰れる。(横位置+16)の位置に縦位置7の壊せないﾌﾞﾛｯｸ1個。"
+#define STRING_OBJDATA_HELP_F07 ""//"ﾂﾀのようにつかまって上下移動が可能。縦位置2固定"
 
 #define STRING_OBJDATA_BB_01 "Brick:None"
 #define STRING_OBJDATA_BB_02 "Brick:Surface"
@@ -408,9 +408,9 @@
 #define STRING_OBJDATA_BADGUYS_63 "3 Koopa Troopa(green, V=6)"
 
 // delreg.exe
-#define STRING_DELREG_TITLE    "Deleting registry entries of SMB Utility"//�_�C�A���O�̃^�C�g�� "SMB Utility ڼ޽�؂̍폜"
-#define STRING_DELREG_CONFIRM  "You are about to delete registry keys that were used in SMB Utility. Are you sure?"//"SMB Utility�Ŏg�p����ڼ޽�؂̷����폜���܂����H"
-#define STRING_DELREG_COMPLETE "Deleted registry keys that were used in SMB Utility."//"SMB Utility�Ŏg�p����ڼ޽�؂̷����폜���܂����B"
-#define STRING_DELREG_ERROR_01 "Registry keys that were used in SMB Utility don't exist."//"SMB Utility��ڼ޽�؂̷��́A���݂��܂���B"
+#define STRING_DELREG_TITLE    "Deleting registry entries of SMB Utility"//ダイアログのタイトル "SMB Utility ﾚｼﾞｽﾄﾘの削除"
+#define STRING_DELREG_CONFIRM  "You are about to delete registry keys that were used in SMB Utility. Are you sure?"//"SMB Utilityで使用したﾚｼﾞｽﾄﾘのｷｰを削除しますか？"
+#define STRING_DELREG_COMPLETE "Deleted registry keys that were used in SMB Utility."//"SMB Utilityで使用したﾚｼﾞｽﾄﾘのｷｰを削除しました。"
+#define STRING_DELREG_ERROR_01 "Registry keys that were used in SMB Utility don't exist."//"SMB Utilityのﾚｼﾞｽﾄﾘのｷｰは、存在しません。"
 
 #endif
