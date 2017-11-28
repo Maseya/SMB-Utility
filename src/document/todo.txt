@@ -1,0 +1,73 @@
+・変更したファイルをタイトルバーにアスタリスクを付けるなど分かるように。（済）
+　※ 無変更から一回編集して、アンドューした場合、アスタリスクは消えない。
+・マウスやキーボード編集入力時に不可能な操作をキャンセルした場合のエラーをログウィンドウに出力。
+・マウス入力によるオブジェクトの移動で、ウィンドウに表示されていないページにオブジェクトを移動
+させることができない。
+・メニューにキーボードアクセレレータの対応するキーを表示（カスタマイズで割り当てを変更できるの
+で、動的に変更する必要あり）。
+・より良いレベル作成の為のレポート機能。
+　ルーム内で獲得可能なコインの最大枚数。
+　地形オブジェクトが消えてしまう可能性。
+・keys.cのg_VKeyInfoの文字列をstring_?.hに定数として定義する。
+
+NOTE : 
+--------------------------------------------------------------------------------------
+emuengine.cのExecuteCPU()関数で、カットされるスキャンラインの本数が1～7の7本しかない。
+--------------------------------------------------------------------------------------
+・RefreshLine()関数の引数は0起算。
+・テストプレイ用のセーブデータを書き換えなければならない
+・オブジェクトビュー描画用のExecuteCPUNoRefreshScreen()
+
+// 上側のスキャンラインを8本にしたバージョン
+// NTSC
+// 0   - 7     the top eight lines are cut off
+// 8   - 231   visible
+// 232 - 239   the bottom eight lines are cut off
+// 240 - 242   an additional 3 scanlines worth of CPU cycles to enter V-Blank.
+// 243         V-Blank flag, NMI
+// 243 - 262   V-Blank period takes a further 20 scanlines worth before the next frame can be drawn.
+static WORD ExecuteCPU()
+{
+	// Execute CPU
+	m6502zpexec(113);
+
+	// Set hity flag, if necessary
+	if(wScanline == pbSPRRAM[0] + GetFirstNonTransparentLine(pbSPRRAM[1]))
+		bPPUStaReg|=0x40;
+	//
+	if(wScanline > 7 && wScanline < 232) { // 8 - 231
+		// Update scanline
+		RefreshLine(wScanline);
+		return ++wScanline;
+	}
+	else if(wScanline == NES_SCANLINE_VBLANK) {
+		PostMessage(GETFRAMEWNDHANDLE(ghEmuWnd), WM_UPDATEFRAME, 0, 0); //g_fUpdate = TRUE;
+		// VBlank begins
+		g_bInVBlank = TRUE;
+		// Set vblank flag
+		bPPUStaReg |= 0x80;
+		// if nessesary, execute NMI.
+		if(bPPUCtrlReg1 & 0x80) m6502zpnmi();
+		return ++wScanline;
+	}
+	else if(wScanline >= NES_SCANLINE_BOTTOM) {
+		// VBlank ends
+		g_bInVBlank = FALSE;
+		// Clear VBlank flag and hity flag
+		bPPUStaReg &= 0x30;
+		// Reset scanline
+		wScanline = 0;
+		return 0; // wScanline == 0 and DO NOT INCREMENT
+	}
+
+	return ++wScanline;
+}
+
+※ 他のNESエミュレータと同時に起動して、SMBの残り時間の経過を比較すると遅い。
+
+マルチメディアタイマーの時間の補正を行えたら修正できるかもしれない。
+スレッド作成して、ループでやればよかった。そうでもない。
+
+------------------------------------------
+全般の設定はアンドゥできないようにしてある
+------------------------------------------
