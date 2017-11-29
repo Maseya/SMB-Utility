@@ -3,9 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "delreg", "delreg_i.vcxproj", "{0D115221-B598-46A9-9593-4FDD87E4B99D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "delreg_i", "delreg_i.vcxproj", "{0D115221-B598-46A9-9593-4FDD87E4B99D}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D115221-B598-46A9-9593-4FDD87E4B99D}.Debug|x86.ActiveCfg = Debug|Win32
+		{0D115221-B598-46A9-9593-4FDD87E4B99D}.Debug|x86.Build.0 = Debug|Win32
+		{0D115221-B598-46A9-9593-4FDD87E4B99D}.Debug|x86.Deploy.0 = Debug|Win32
+		{0D115221-B598-46A9-9593-4FDD87E4B99D}.Release|x86.ActiveCfg = Release|Win32
+		{0D115221-B598-46A9-9593-4FDD87E4B99D}.Release|x86.Build.0 = Release|Win32
+		{0D115221-B598-46A9-9593-4FDD87E4B99D}.Release|x86.Deploy.0 = Release|Win32
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
