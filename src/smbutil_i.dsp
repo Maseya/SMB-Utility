@@ -1,24 +1,24 @@
-﻿# Microsoft Developer Studio Project File - Name="smbutil" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="smbutil" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** 編集しないでください **
+# ** �ҏW���Ȃ��ł������� **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
 CFG=smbutil - Win32 Debug
-!MESSAGE これは有効なﾒｲｸﾌｧｲﾙではありません。 このﾌﾟﾛｼﾞｪｸﾄをﾋﾞﾙﾄﾞするためには NMAKE を使用してください。
-!MESSAGE [ﾒｲｸﾌｧｲﾙのｴｸｽﾎﾟｰﾄ] ｺﾏﾝﾄﾞを使用して実行してください
+!MESSAGE ����͗L����Ҳ�̧�قł͂���܂���B ������ۼު�Ă�����ނ��邽�߂ɂ� NMAKE ���g�p���Ă��������B
+!MESSAGE [Ҳ�̧�ق̴���߰�] ����ނ��g�p���Ď��s���Ă�������
 !MESSAGE 
 !MESSAGE NMAKE /f "smbutil_i.mak".
 !MESSAGE 
-!MESSAGE NMAKE の実行時に構成を指定できます
-!MESSAGE ｺﾏﾝﾄﾞ ﾗｲﾝ上でﾏｸﾛの設定を定義します。例:
+!MESSAGE NMAKE �̎��s���ɍ\�����w��ł��܂�
+!MESSAGE ����� ײݏ��ϸۂ̐ݒ���`���܂��B��:
 !MESSAGE 
 !MESSAGE NMAKE /f "smbutil_i.mak" CFG="smbutil - Win32 Debug"
 !MESSAGE 
-!MESSAGE 選択可能なﾋﾞﾙﾄﾞ ﾓｰﾄﾞ:
+!MESSAGE �I���\������� Ӱ��:
 !MESSAGE 
-!MESSAGE "smbutil - Win32 Release" ("Win32 (x86) Application" 用)
-!MESSAGE "smbutil - Win32 Debug" ("Win32 (x86) Application" 用)
+!MESSAGE "smbutil - Win32 Release" ("Win32 (x86) Application" �p)
+!MESSAGE "smbutil - Win32 Debug" ("Win32 (x86) Application" �p)
 !MESSAGE 
 
 # Begin Project
