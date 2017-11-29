@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{d0ae4ba2-223f-4d31-b66a-e695981fdd1f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{45d5b6b6-46e0-4bd9-a07b-9a1d88b8543a}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{e7726416-e8ae-4153-b8de-0c59933f3bbb}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Document Files">
+      <UniqueIdentifier>{d329f4df-83ea-438c-8c3f-09b49f67142a}</UniqueIdentifier>
+      <Extensions>txt</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmnlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="emubgset.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="emuengine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="emuutil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filemng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="frame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ini.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="keyaccel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="keys.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logview.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objeditcom.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objeditdlg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objlist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objmng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objview.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objviewbmp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objwndcmn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="roommng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="roomseldlg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tools.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="undo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource_j.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmnlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="emubgset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="emulator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="emuutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filemng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ini.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keyaccel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="M6502.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nespal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objeditcom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objmng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objviewbmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objwndcmn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resrc1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="roommng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="roomseldlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smbutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="string_j.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="undo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="versinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assist_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\assist_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\castle_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\emulator.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\lf_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\maplisti.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\mapview.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\rg_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\rom.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\sea_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\sky_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\smbutil.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\tvmask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\ug_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\xgauge_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="image\ygauge_img.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="misc\history.txt">
+      <Filter>Document Files</Filter>
+    </Text>
+    <Text Include="document\international.txt">
+      <Filter>Document Files</Filter>
+    </Text>
+    <Text Include="misc\readme.txt">
+      <Filter>Document Files</Filter>
+    </Text>
+    <Text Include="document\todo.txt">
+      <Filter>Document Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="M6502.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="data\ram1.bin">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="data\ram2.bin">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="data\ram3.bin">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

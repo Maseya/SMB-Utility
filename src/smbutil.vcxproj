@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+    <ProjectGuid>{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\smbutil.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\smbutil.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0411</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\smbutil.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <OutputFile>.\Release\smbutil.exe</OutputFile>
+      <AdditionalDependencies>winmm.lib;comctl32.lib;imm32.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Debug\smbutil.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\smbutil.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0411</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\smbutil.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <OutputFile>.\Debug\smbutil.exe</OutputFile>
+      <AdditionalDependencies>winmm.lib;comctl32.lib;imm32.lib;libcmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cmnlib.c" />
+    <ClCompile Include="emubgset.c" />
+    <ClCompile Include="emuengine.c" />
+    <ClCompile Include="emuutil.c" />
+    <ClCompile Include="filemng.c" />
+    <ClCompile Include="frame.c" />
+    <ClCompile Include="ini.c" />
+    <ClCompile Include="keyaccel.c" />
+    <ClCompile Include="keys.c" />
+    <ClCompile Include="logview.c" />
+    <ClCompile Include="objeditcom.c" />
+    <ClCompile Include="objeditdlg.c" />
+    <ClCompile Include="objlib.c" />
+    <ClCompile Include="objlist.c" />
+    <ClCompile Include="objmng.c" />
+    <ClCompile Include="objview.c" />
+    <ClCompile Include="objviewbmp.c" />
+    <ClCompile Include="objwndcmn.c" />
+    <ClCompile Include="roommng.c" />
+    <ClCompile Include="roomseldlg.c" />
+    <ClCompile Include="tools.c" />
+    <ClCompile Include="undo.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="data\ram1.bin" />
+    <CustomBuild Include="data\ram2.bin" />
+    <CustomBuild Include="data\ram3.bin" />
+    <CustomBuild Include="M6502.asm">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)bin\nasm.exe" -f win32 -o $(IntDir)m6502.obj %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">creating M6502.obj...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)bin\nasm.exe" -f win32 -o $(IntDir)m6502.obj %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">creating M6502.obj...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource_j.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmnlib.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="emubgset.h" />
+    <ClInclude Include="emulator.h" />
+    <ClInclude Include="emuutil.h" />
+    <ClInclude Include="filemng.h" />
+    <ClInclude Include="frame.h" />
+    <ClInclude Include="ini.h" />
+    <ClInclude Include="keyaccel.h" />
+    <ClInclude Include="keys.h" />
+    <ClInclude Include="logview.h" />
+    <ClInclude Include="M6502.h" />
+    <ClInclude Include="nespal.h" />
+    <ClInclude Include="objdata.h" />
+    <ClInclude Include="objeditcom.h" />
+    <ClInclude Include="objlib.h" />
+    <ClInclude Include="objlist.h" />
+    <ClInclude Include="objmng.h" />
+    <ClInclude Include="objview.h" />
+    <ClInclude Include="objviewbmp.h" />
+    <ClInclude Include="objwndcmn.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resrc1.h" />
+    <ClInclude Include="roommng.h" />
+    <ClInclude Include="roomseldlg.h" />
+    <ClInclude Include="smbutil.h" />
+    <ClInclude Include="strings.h" />
+    <ClInclude Include="string_j.h" />
+    <ClInclude Include="tools.h" />
+    <ClInclude Include="undo.h" />
+    <ClInclude Include="versinfo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assist_img.bmp" />
+    <Image Include="image\assist_img.bmp" />
+    <Image Include="image\castle_img.bmp" />
+    <Image Include="image\emulator.ico" />
+    <Image Include="image\lf_img.bmp" />
+    <Image Include="image\maplisti.ico" />
+    <Image Include="image\mapview.ico" />
+    <Image Include="image\rg_img.bmp" />
+    <Image Include="image\rom.ico" />
+    <Image Include="image\sea_img.bmp" />
+    <Image Include="image\sky_img.bmp" />
+    <Image Include="image\smbutil.ico" />
+    <Image Include="image\toolbar.bmp" />
+    <Image Include="image\tvmask.bmp" />
+    <Image Include="image\ug_img.bmp" />
+    <Image Include="image\xgauge_img.bmp" />
+    <Image Include="image\ygauge_img.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="document\international.txt" />
+    <Text Include="document\todo.txt" />
+    <Text Include="misc\history.txt" />
+    <Text Include="misc\readme.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
