@@ -12,22 +12,19 @@
 
 typedef struct
 {
-	BOOL blIsLiftSmall;
-	BOOL blIsLiftCloud;
-	BOOL blPeach;
+    BOOL blIsLiftSmall;
+    BOOL blIsLiftCloud;
+    BOOL blPeach;
 }PREPAREBGSPRINFO;
 /*********************
 
-
 **********************/
-void PrepareSpriteRAM(UINT uRoomID,int iPage);
+void PrepareSpriteRAM(UINT uRoomID, int iPage);
 /*********************
 
-
 **********************/
-void SetPrepareBadGuysSpriteInfoStruct(BYTE bRoomID,int iWorld,int iArea,PREPAREBGSPRINFO *psPreBSI);
+void SetPrepareBadGuysSpriteInfoStruct(BYTE bRoomID, int iWorld, int iArea, PREPAREBGSPRINFO *psPreBSI);
 /*********************
-
 
 **********************/
 void PrepareBadGuysSpriteInfo(PREPAREBGSPRINFO *psPreBSI);

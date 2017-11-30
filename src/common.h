@@ -10,11 +10,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-/*****************
+ /*****************
 
-   General
+    General
 
-******************/
+ ******************/
 #define SMB_NUM_PRGS  2
 #define SMB_NUM_CHARS 1
 
@@ -29,25 +29,26 @@
 
 typedef struct
 {
-	char cType[4];
-	BYTE bNum_PRGs;
-	BYTE bNum_CHARs;
-	BYTE bROM_Type;
-	BYTE bROM_Type2;
-	char Reserved[8];
+    char cType[4];
+    BYTE bNum_PRGs;
+    BYTE bNum_CHARs;
+    BYTE bROM_Type;
+    BYTE bROM_Type2;
+    char Reserved[8];
 }INESHEADER;
 
 #define SMB_OBJECT_DATA_MAX_SIZE 3
 
 #define SMB_MAX_PAGE 0x7F
 
-typedef union 
+typedef union
 {
-	struct{
-	BYTE bLower;
-	BYTE bUpper;
-	}byte;
-	WORD word;
+    struct
+    {
+        BYTE bLower;
+        BYTE bUpper;
+    }byte;
+    WORD word;
 }ADDRESSDATA;
 
 #define ADDRESSDATA_LOAD(a,p) memcpy(&(a).byte.bLower,bPRGROM+(p),2)
@@ -55,29 +56,30 @@ typedef union
 
 typedef struct
 {
-	LPSTR Name;
-	BYTE  bBasicDataMask;
-	BYTE  bBasicData;
-	BYTE  bIsSizeValid;
-	BYTE  bSizeMask;
-	int   iSizeDelta;
-	LPSTR Note;
+    LPSTR Name;
+    BYTE  bBasicDataMask;
+    BYTE  bBasicData;
+    BYTE  bIsSizeValid;
+    BYTE  bSizeMask;
+    int   iSizeDelta;
+    LPSTR Note;
 }SMBMAPOBJECTINFO;
 
 typedef struct _tagSMBBADGUYSINFO
 {
-	LPSTR Name;
-	int YDelta;
-	BYTE bFixedYPos;
-	int XDelta;
+    LPSTR Name;
+    int YDelta;
+    BYTE bFixedYPos;
+    int XDelta;
 }SMBBADGUYSINFO;
 
 extern INESHEADER Head;
-extern BYTE bPRGROM[INES_PRGROMBANKSIZE*SMB_NUM_PRGS+0x8000];
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE*SMB_NUM_PRGS + 0x8000];
 extern BYTE bCHRROM[INES_CHRROMBANKSIZE*SMB_NUM_CHARS];
 extern int iTrainer;
 
 extern BOOL gblIsROMLoaded;
+
 //extern BOOL gblDataChanged;
 
 #endif /* COMMON_H */

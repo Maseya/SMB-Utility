@@ -10,7 +10,7 @@
 #ifndef FRAME_H
 #define FRAME_H
 
-int Msg(LPCTSTR lpText,UINT uType);
+int Msg(LPCTSTR lpText, UINT uType);
 void SetStatusBarText(LPTSTR lpText);
 void RefreshWindowTitle(BOOL);
 void UpdateStatusBarRoomInfoText(HWND hSbWnd);

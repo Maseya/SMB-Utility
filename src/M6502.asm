@@ -8,7 +8,6 @@ bits 32
 ; Using stack calling conventions
 ; Zero page version (all zero page accesses are direct)
 
-
 		section	.data
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
@@ -33,7 +32,6 @@ _m6502zps		db	0	; s
 _irqPending	db	0	; Non-zero if an IRQ is pending
 
 _m6502zpcontextEnd:
-
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
@@ -6667,7 +6665,6 @@ _m6502zpnmi:
 		dec     bl
 
 		mov     al, byte [_m6502zpaf+1] ; Get our flags
-
 
 		mov     [edi + ebx], al         ; Store flags
 		dec     bl

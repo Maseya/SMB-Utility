@@ -19,7 +19,7 @@ void LoadTestPlaySettings();
   テストプレイの設定ダイアログ関数
 
 **********************************/
-LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
+LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 /*****************************************************************
 
@@ -31,7 +31,7 @@ BOOL RunEmulatorViewPage(UINT uRoomID,int iPage);
   ルームを指定したことになる。
 
 *******************************************************************/
-BOOL RunEmulatorViewPage(UINT uRoomID,int iPage);
+BOOL RunEmulatorViewPage(UINT uRoomID, int iPage);
 
 /***********************************************************************************************************
 
@@ -43,8 +43,7 @@ void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int 
   エミュレータウインドウのバックバッファーからhDCDestで指定されたデバイスコンテキストへBitBltを行う
 
 ************************************************************************************************************/
-void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int iHeight,BOOL blIsStretch);
-
+void TransferFromEmuBackBuffer(HDC hDCDest, int iDestX, int iDestY, int iWidth, int iHeight, BOOL blIsStretch);
 
 void InstallEmulatorPalette(HDC hdc);
 /********************************************************************
@@ -63,7 +62,7 @@ void RunEmulatorTestPlay();
   現在エディトしているルームのテストプレイを指定されたページから行う
 
 *********************************************************************/
-void RunEmulatorTestPlayEx(int iPage,BOOL blHalfPoint,LPPOINT lpPt);
+void RunEmulatorTestPlayEx(int iPage, BOOL blHalfPoint, LPPOINT lpPt);
 
 /*******************************
 
