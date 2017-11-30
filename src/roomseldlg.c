@@ -26,7 +26,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     if (!blGetRoomIDFromList)
     {
         GetDlgItemText(hDlg, IDC_DATA, cBuf, 10);
-        if (1 != sscanf(cBuf, "%x", &bRoomID)) return;
+        if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return;
     }
     else
     {
@@ -110,7 +110,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             LPROOMSELECT lpRoomSelect;
 
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-            if (1 != sscanf(cBuf, "%x", &bRoomID)) return TRUE;
+            if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return TRUE;
             if (!IsRoomIDValid(bRoomID)) return TRUE;
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;
