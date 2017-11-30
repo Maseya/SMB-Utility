@@ -603,17 +603,14 @@ NEXT:
 
         //iSpritesPerLine++;
 
-        // C version
-        /*
-        iIndex = pbSPRRAM[i+1];
-        iCol = (pbSPRRAM[i+2]&0x03);
-        iFlipX = (pbSPRRAM[i+2]&0x40);
-        iFlipY = (pbSPRRAM[i+2]&0x80);
-        iPriority = (pbSPRRAM[i+2]&0x20);
-        x = pbSPRRAM[i+3];
-        */
-
-        // asm version
+#ifdef WIN64
+        iIndex = pbSPRRAM[i + 1];
+        iCol = (pbSPRRAM[i + 2] & 0x03);
+        iFlipX = (pbSPRRAM[i + 2] & 0x40);
+        iFlipY = (pbSPRRAM[i + 2] & 0x80);
+        iPriority = (pbSPRRAM[i + 2] & 0x20);
+        x = pbSPRRAM[i + 3];
+#else
         __asm {
             mov ebx, i
             xor edx, edx
@@ -640,6 +637,7 @@ NEXT:
             mov dl, byte ptr(pbSPRRAM + 3)[ebx]
             mov x, edx
         }
+#endif
 
         y2 = dwLine - y;
         if (iFlipY) y2 = (iSize - 1) - y2;
@@ -774,7 +772,9 @@ static void RefreshBackGroundLine(register WORD wLine)
             //アトリビュートテーブルのデータを取得
             if ((!(x & 3)) || iFirst)
             {
-                //				iColorByte = pbVRAM[((iIndex1&0x3C00)|(iIndex1&0x1F)>>2)|((iIndex1&0x380)>>4)|0x3C0];
+#ifdef WIN64
+                iColorByte = pbVRAM[((iIndex1 & 0x3C00) | (iIndex1 & 0x1F) >> 2) | ((iIndex1 & 0x380) >> 4) | 0x3C0];
+#else
                 __asm {
                     mov eax, iIndex1
 
@@ -794,6 +794,7 @@ static void RefreshBackGroundLine(register WORD wLine)
                     mov dl, byte ptr pbVRAM[ecx]
                     mov iColorByte, edx
                 }
+#endif
             }
 
             //アトリビュートデータのどの2ビットを使用するかを計算
@@ -831,6 +832,20 @@ static void RefreshBackGroundLine(register WORD wLine)
 
         if (!g_fUseMMX)
         {
+#ifdef WIN64
+            int n = (iPixelX < 0) ? 8 + iPixelX : 8;
+            if (iPixelX < 0)pbChrBase -= iPixelX;
+            iPixelX += 8;
+
+            *pbVideoBuf |= iCol;
+
+            for (int i = n; --i >= 0; )
+                pbVideoBuf[i] = pbChrBase[i] | iCol;
+
+            pbChrBase += n;
+            pbVideoBuf += n;
+#else
+
             // asm version
             __asm {
 
@@ -872,7 +887,7 @@ static void RefreshBackGroundLine(register WORD wLine)
                     or [edi + 6], eax
                     or [edi + 7], eax
             }
-
+#endif
             if (++x & 0x20)
             {
                 x = 0;
@@ -881,6 +896,20 @@ static void RefreshBackGroundLine(register WORD wLine)
         }
         else
         {
+#ifdef WIN64
+            int n = (iPixelX < 0) ? 8 + iPixelX : 8;
+            if (iPixelX < 0)pbChrBase -= iPixelX;
+
+            for (int i = 0; i < 8; i++)
+            {
+                pbVideoBuf[i] = pbChrBase[i] | iCol;
+            }
+
+            pbVideoBuf += n;
+            iPixelX += 8;
+            pbChrBase += 8;
+#else
+
             // asm version
             __asm {
 
@@ -915,6 +944,7 @@ static void RefreshBackGroundLine(register WORD wLine)
 
                     emms
             }
+#endif
             if (++x & 0x20)
             {
                 x = 0;
@@ -930,7 +960,9 @@ static void RefreshLine(WORD wLine)
         RefreshBackGroundLine(wLine);
     else
     {
-        //memset(gpbBmBufOffScreen + wLine * NES_SCREENSIZEX, 0, NES_SCREENSIZEX);
+#ifdef WIN64
+        memset(gpbBmBufOffScreen + wLine * NES_SCREENSIZEX, 0, NES_SCREENSIZEX);
+#else
         __asm {
             mov edi, gpbBmBufOffScreen
             xor edx, edx
@@ -941,6 +973,7 @@ static void RefreshLine(WORD wLine)
             mov al, 0
             rep stos
         }
+#endif
     }
 
     if (bPPUCtrlReg2 & 0x10)

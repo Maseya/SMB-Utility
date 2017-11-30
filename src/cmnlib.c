@@ -9,6 +9,9 @@
  ************************************************************************************/
 #include <windows.h>
 #include <shlwapi.h>
+#ifdef WIN64
+#include <intrin.h>
+#endif
 #include "cmnlib.h"
 
 TCHAR g_szTempStringBuffer[TMPSTRBUFSIZ];
@@ -23,6 +26,13 @@ BOOL IsMMXAvailable()
 
     if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
     {
+#ifdef WIN64
+        int cpuid[4];
+        __cpuid(cpuid, 1);
+
+        if (cpuid[3] & 0x00800000)
+            blReturn = TRUE;
+#else
         __asm {
             mov eax, 1
             cpuid
@@ -31,6 +41,7 @@ BOOL IsMMXAvailable()
             mov blReturn, TRUE
             NOMMX :
         }
+#endif
     }
     return blReturn;
 }

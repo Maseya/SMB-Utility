@@ -507,7 +507,7 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
             iRet = GetDlgItemInt(hDlg, IDC_MARIOLEFT, &blSuccess, FALSE) - 1;
             if (!blSuccess || (iRet < 0 || iRet>127))
             {
-                SetWindowLong(hDlg, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
             bPRGROM[SMB_MARIO_LEFT] = iRet;
@@ -702,7 +702,7 @@ LRESULT CALLBACK GameSettingWarpZoneDlgProc(HWND hDlg, UINT message, WPARAM wPar
                 iRet = GetDlgItemInt(hDlg, iCtrlID[n], &blSuccess, FALSE);
                 if (!blSuccess || (iRet < 0 || iRet>255))
                 {
-                    SetWindowLong(hDlg, DWL_MSGRESULT, TRUE);
+                    SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                     return TRUE;
                 }
                 bPRGROM[SMB_WARPZONE_WORLD_ADDRESS + iAddrDelta[n]] = iRet;
@@ -823,7 +823,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             iRet = GetDlgItemInt(hDlg, IDC_WORLD, &blSuccess, FALSE);
             if (!blSuccess || iRet < 1 || iRet>256)
             {
-                SetWindowLong(hDlg, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
 
@@ -882,7 +882,7 @@ LRESULT CALLBACK GameSettingWorldDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             iRet = GetDlgItemInt(hDlg, IDC_DIFFICULTYWORLD, &blSuccess, FALSE) - 1;
             if (!blSuccess || iRet < 0 || iRet>255)
             {
-                SetWindowLong(hDlg, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
             bPRGROM[SMB_DIFFICULTYWORLD] = (BYTE)iRet;
@@ -890,7 +890,7 @@ LRESULT CALLBACK GameSettingWorldDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             iRet = GetDlgItemInt(hDlg, IDC_DIFFICULTYAREA, &blSuccess, FALSE) - 1;
             if (!blSuccess || iRet < 0 || iRet>255)
             {
-                SetWindowLong(hDlg, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
             bPRGROM[SMB_DIFFICULTYAREA] = (BYTE)iRet;
@@ -898,7 +898,7 @@ LRESULT CALLBACK GameSettingWorldDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             iRet = GetDlgItemInt(hDlg, IDC_SEABLOCKWORLD, &blSuccess, FALSE) - 1;
             if (!blSuccess || iRet < 0 || iRet>255)
             {
-                SetWindowLong(hDlg, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
             bPRGROM[SMB_SEABLOCKWORLD] = (BYTE)iRet;

@@ -684,7 +684,7 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
 
         SetRoomDepedencyTreeViewImageList(hDlg);
         lpRoomInfo = (LPROOMINFO)UpdateRoomDepedencyTreeView(hDlg);
-        SetWindowLong(hDlg, GWL_USERDATA, (LONG)lpRoomInfo);
+        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG)lpRoomInfo);
         return 0;
     }
     case WM_DESTROY:
@@ -695,7 +695,7 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
         DestroyWindow(GetDlgItem(hDlg, IDC_ROOM));
         ImageList_Destroy(himl);
 
-        lpRoomInfo = (LPROOMINFO)GetWindowLong(hDlg, GWL_USERDATA);
+        lpRoomInfo = (LPROOMINFO)GetWindowLongPtr(hDlg, GWLP_USERDATA);
         if (lpRoomInfo) Mfree(lpRoomInfo);
         return TRUE;
     }
@@ -718,7 +718,7 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
                 tviSelItem.hItem = hSelItem;
                 if (SendDlgItemMessage(hDlg, IDC_ROOM, TVM_GETITEM, 0, (LPARAM)&tviSelItem))
                 {
-                    lpRoomInfo = (LPROOMINFO)GetWindowLong(hDlg, GWL_USERDATA);
+                    lpRoomInfo = (LPROOMINFO)GetWindowLongPtr(hDlg, GWLP_USERDATA);
                     if (lpRoomInfo)
                     {
                         iIndex = (int)tviSelItem.lParam;

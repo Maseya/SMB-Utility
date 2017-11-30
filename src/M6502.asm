@@ -12,6 +12,7 @@ bits 32
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+        global m6502zppc
 		global	_m6502zppc
 
 		global	m6502zppbBankSwitch_, _m6502zppbBankSwitch
@@ -6506,6 +6507,7 @@ writeMacroExit91:
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+m6502zpGetContext:
 m6502zpGetContext_:
 _m6502zpGetContext:
 		mov	eax, [esp+4]	; Get our context address
@@ -6526,6 +6528,7 @@ _m6502zpGetContext:
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+m6502zpSetContext:
 m6502zpSetContext_:
 _m6502zpSetContext:
 		mov	eax, [esp+4]	; Get our context address
@@ -6546,6 +6549,7 @@ _m6502zpSetContext:
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+m6502zpGetContextSize:
 m6502zpGetContextSize_:
 _m6502zpGetContextSize:
 		mov     eax, _m6502zpcontextEnd - _m6502zpcontextBegin
@@ -6589,6 +6593,7 @@ _m6502zpReleaseTimeslice:
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+m6502zpreset:
 m6502zpreset_:
 _m6502zpreset:
 		push	ebp	; Save our important register
@@ -6643,11 +6648,13 @@ intNotTaken:
 		mov	eax, 1		; Indicate we didn't take it
 		mov	[_irqPending], al ; Indicate we have a pending IRQ
 		ret
+        global m6502zpnmi
 		global	_m6502zpnmi
 		global	m6502zpnmi_
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+m6502zpnmi:
 m6502zpnmi_:
 _m6502zpnmi:
 		push    edi
@@ -6682,9 +6689,11 @@ _m6502zpnmi:
 		ret
 		global	_m6502zpexec
 		global	m6502zpexec_
+        global m6502zpexec
 
 times ($$-$) & 3 nop	; pad with NOPs to 4-byte boundary
 
+m6502zpexec:
 m6502zpexec_:
 _m6502zpexec:
 		mov	eax, [esp+4]	; Get our execution cycle count
