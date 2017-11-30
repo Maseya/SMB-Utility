@@ -1,4 +1,4 @@
-﻿//Microsoft Developer Studio generated resource script.
+//Microsoft Developer Studio generated resource script.
 //
 #include "resrc1.h"
 
@@ -18,7 +18,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 resources
+// ���{�� resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 #ifdef _WIN32
@@ -54,70 +54,70 @@ RAMDATA2                BINARY  DISCARDABLE     "data/ram2.bin"
 
 MAINWNDMENU MENU DISCARDABLE 
 BEGIN
-    POPUP "ﾌｧｲﾙ(&F)"
+    POPUP "̧��(&F)"
     BEGIN
-        MENUITEM "開く(&O)...",                 IDM_FILE_OPEN
-        MENUITEM "上書き保存(&S)",              IDM_FILE_SAVE
-        MENUITEM "名前を付けて保存(&A)...",     IDM_FILE_SAVEAS
+        MENUITEM "�J��(&O)...",                 IDM_FILE_OPEN
+        MENUITEM "�㏑���ۑ�(&S)",              IDM_FILE_SAVE
+        MENUITEM "���O��t���ĕۑ�(&A)...",     IDM_FILE_SAVEAS
         MENUITEM SEPARATOR
-        MENUITEM "ｷｬﾗｸﾀﾛﾑの読みこみ(&C)...",    IDM_FILE_CHRLOAD
+        MENUITEM "��׸��т̓ǂ݂���(&C)...",    IDM_FILE_CHRLOAD
         MENUITEM SEPARATOR
-        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",         IDM_FILE_EXIT
+        MENUITEM "���ع���݂̏I��(&X)",         IDM_FILE_EXIT
     END
-    POPUP "編集(&E)"
+    POPUP "�ҏW(&E)"
     BEGIN
-        MENUITEM "元に戻す(&U)",                IDM_EDIT_UNDO
+        MENUITEM "���ɖ߂�(&U)",                IDM_EDIT_UNDO
         MENUITEM SEPARATOR
-        MENUITEM "ﾙｰﾑの変更(&A)...",            IDM_SETTING_AREA
+        MENUITEM "ٰт̕ύX(&A)...",            IDM_SETTING_AREA
         MENUITEM SEPARATOR
-        MENUITEM "敵(&B)",                      IDM_SETTING_BADGUYS
-        MENUITEM "地形(&M)",                    IDM_SETTING_MAP
+        MENUITEM "�G(&B)",                      IDM_SETTING_BADGUYS
+        MENUITEM "�n�`(&M)",                    IDM_SETTING_MAP
         MENUITEM SEPARATOR
-        MENUITEM "ﾙｰﾑ/ｴﾘｱの設定(&S)...",        IDM_SETTING_MAPHEAD
+        MENUITEM "ٰ�/�ر�̐ݒ�(&S)...",        IDM_SETTING_MAPHEAD
     END
-    POPUP "表示（&V）"
+    POPUP "�\���i&V�j"
     BEGIN
-        MENUITEM "ﾂｰﾙﾊﾞｰ(&T)",                  IDM_VIEW_TOOLBAR
-        MENUITEM "ｽﾃｰﾀｽﾊﾞｰ(&S)",                IDM_VIEW_STATUSBAR
-        MENUITEM "ﾛｸﾞﾋﾞｭｰ(&L)",                 IDM_VIEW_LOGVIEW
+        MENUITEM "°��ް(&T)",                  IDM_VIEW_TOOLBAR
+        MENUITEM "�ð���ް(&S)",                IDM_VIEW_STATUSBAR
+        MENUITEM "۸��ޭ�(&L)",                 IDM_VIEW_LOGVIEW
     END
-    POPUP "ｴﾐｭﾚｰﾀ(&M)"
+    POPUP "�Эڰ�(&M)"
     BEGIN
-        MENUITEM "通常起動(&B)",                IDM_EMULATOR_LOADPLAY
-        MENUITEM "ﾃｽﾄﾌﾟﾚｲ(&T)",                 IDM_EMULATOR_NORMALPLAY
-        MENUITEM "ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ(&P)",            IDM_EMULATOR_PAGEPLAY
-        MENUITEM "途中ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ(&H)",        IDM_EMULATOR_PAGEPLAYHALF
-        MENUITEM "停止(&E)",                    IDM_EMULATOR_STOP
+        MENUITEM "�ʏ�N��(&B)",                IDM_EMULATOR_LOADPLAY
+        MENUITEM "ý���ڲ(&T)",                 IDM_EMULATOR_NORMALPLAY
+        MENUITEM "�߰��ý���ڲ(&P)",            IDM_EMULATOR_PAGEPLAY
+        MENUITEM "�r���߰��ý���ڲ(&H)",        IDM_EMULATOR_PAGEPLAYHALF
+        MENUITEM "��~(&E)",                    IDM_EMULATOR_STOP
         MENUITEM SEPARATOR
-        MENUITEM "ﾃｽﾄﾌﾟﾚｲの設定(&C)...",        IDM_EMULATOR_TESTPLAYSETTING
+        MENUITEM "ý���ڲ�̐ݒ�(&C)...",        IDM_EMULATOR_TESTPLAYSETTING
         MENUITEM SEPARATOR
-        MENUITEM "ｾｰﾌﾞ(&S)",                    IDM_EMULATOR_SAVE
-        MENUITEM "ﾛｰﾄﾞ(&L)",                    IDM_EMULATOR_LOAD
+        MENUITEM "����(&S)",                    IDM_EMULATOR_SAVE
+        MENUITEM "۰��(&L)",                    IDM_EMULATOR_LOAD
     END
-    POPUP "ﾂｰﾙ（&T）"
+    POPUP "°فi&T�j"
     BEGIN
-        MENUITEM "文字列(&S)...",               IDM_EDIT_STRINGS
-        MENUITEM "ﾙｰﾌﾟ(&B)...",                 IDM_EDIT_LOOP
-        MENUITEM "ﾜｰﾙﾄﾞの区分の更新(&U)",       IDM_TOOL_WORLDDATAUPDATE
-        MENUITEM "ｴﾘｱの開始ﾙｰﾑ(&N)...",         IDM_EDIT_AREASORT
-        MENUITEM "ﾃﾞﾓ ﾚｺｰﾀﾞｰ(&D)",              IDM_TOOL_DEMORECORD
-        MENUITEM "全般の設定(&L)...",           IDM_TOOL_GENERALSETTING
-        MENUITEM "その他の設定(&O)...",         IDM_SETTING_GAME
+        MENUITEM "������(&S)...",               IDM_EDIT_STRINGS
+        MENUITEM "ٰ��(&B)...",                 IDM_EDIT_LOOP
+        MENUITEM "ܰ��ނ̋敪�̍X�V(&U)",       IDM_TOOL_WORLDDATAUPDATE
+        MENUITEM "�ر�̊J�nٰ�(&N)...",         IDM_EDIT_AREASORT
+        MENUITEM "��� ں��ް(&D)",              IDM_TOOL_DEMORECORD
+        MENUITEM "�S�ʂ̐ݒ�(&L)...",           IDM_TOOL_GENERALSETTING
+        MENUITEM "���̑��̐ݒ�(&O)...",         IDM_SETTING_GAME
         MENUITEM SEPARATOR
-        MENUITEM "ｵﾌﾟｼｮﾝ(&O)...",               IDM_TOOL_OPTION
-        MENUITEM "ｶｽﾀﾏｲｽﾞ(&C)...",              IDM_TOOL_CUSTOMIZE
+        MENUITEM "��߼��(&O)...",               IDM_TOOL_OPTION
+        MENUITEM "���ϲ��(&C)...",              IDM_TOOL_CUSTOMIZE
     END
-    POPUP "ｳｨﾝﾄﾞｳ(&W)"
+    POPUP "����޳(&W)"
     BEGIN
-        MENUITEM "重ねて表示(&C)",              IDM_WINDOW_CASCADE
-        MENUITEM "すべて最小化(&L)",            IDM_WINDOW_CLOSEALL
+        MENUITEM "�d�˂ĕ\��(&C)",              IDM_WINDOW_CASCADE
+        MENUITEM "���ׂčŏ���(&L)",            IDM_WINDOW_CLOSEALL
         MENUITEM SEPARATOR
-        MENUITEM "次へ(&N)",                    IDM_WINDOW_NEXT
-        MENUITEM "前へ(&P)",                    IDM_WINDOW_PREV
+        MENUITEM "����(&N)",                    IDM_WINDOW_NEXT
+        MENUITEM "�O��(&P)",                    IDM_WINDOW_PREV
     END
-    POPUP "ﾍﾙﾌﾟ(&H)"
+    POPUP "����(&H)"
     BEGIN
-        MENUITEM "ﾊﾞｰｼﾞｮﾝ情報(&V)",             IDM_HELP_VERSION
+        MENUITEM "�ް�ޮݏ��(&V)",             IDM_HELP_VERSION
     END
 END
 
@@ -125,16 +125,16 @@ MAPVIEW_POPUP MENU DISCARDABLE
 BEGIN
     POPUP "DUMMY"
     BEGIN
-        MENUITEM "編集モードの切り替え(&S)",    IDM_MAPVIEW_SWITCHEDITMODE
+        MENUITEM "�ҏW���[�h�̐؂�ւ�(&S)",    IDM_MAPVIEW_SWITCHEDITMODE
         MENUITEM SEPARATOR
-        MENUITEM "この位置からﾃｽﾄﾌﾟﾚｲ(&T)",     IDM_MAPVIEW_TESTPLAY
+        MENUITEM "���̈ʒu����ý���ڲ(&T)",     IDM_MAPVIEW_TESTPLAY
         MENUITEM SEPARATOR
-        MENUITEM "次のﾍﾟｰｼﾞへ(&N)",             IDM_MAPVIEW_NEXTPAGE
-        MENUITEM "前のﾍﾟｰｼﾞへ(&P)",             IDM_MAPVIEW_PREVPAGE
+        MENUITEM "�����߰�ނ�(&N)",             IDM_MAPVIEW_NEXTPAGE
+        MENUITEM "�O���߰�ނ�(&P)",             IDM_MAPVIEW_PREVPAGE
         MENUITEM SEPARATOR
-        MENUITEM "ｱｸﾃｨﾌﾞｵﾌﾞｼﾞｪｸﾄを他ﾙｰﾑへ送る(&M)...", 
+        MENUITEM "��è�޵�޼ު�Ă�ٰт֑���(&M)...", 
                                                 IDM_MAPVIEW_SENDOBJECT
-        MENUITEM "ｱｸﾃｨﾌﾞｵﾌﾞｼﾞｪｸﾄを編集(&E)...", IDM_MAPVIEW_SHOWEDITDIALOG
+        MENUITEM "��è�޵�޼ު�Ă�ҏW(&E)...", IDM_MAPVIEW_SHOWEDITDIALOG
     END
 END
 
@@ -146,8 +146,8 @@ END
 
 VERSIONDLG DIALOG DISCARDABLE  22, 17, 191, 67
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_VISIBLE | WS_CAPTION
-CAPTION "ﾊﾞｰｼﾞｮﾝ情報"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�ް�ޮݏ��"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,144,10,37,14,WS_GROUP
     ICON            "APPICON",IDC_STATIC,12,13,20,20
@@ -161,21 +161,21 @@ END
 ROOMSELECTDLG DIALOGEX 0, 0, 159, 199
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "ﾙｰﾑの変更"
-FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+CAPTION "ٰт̕ύX"
+FONT 9, "�l�r �o�S�V�b�N", 0, 0, 0x1
 BEGIN
     CONTROL         "Tree1",IDC_ROOM,"SysTreeView32",TVS_HASBUTTONS | 
                     TVS_HASLINES | TVS_LINESATROOT | WS_TABSTOP,3,2,153,151,
                     WS_EX_CLIENTEDGE
     DEFPUSHBUTTON   "OK",IDOK,101,160,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,101,178,50,14
+    PUSHBUTTON      "��ݾ�",IDCANCEL,101,178,50,14
 END
 
 MAPCOMHEADEDITDLG DIALOG DISCARDABLE  0, 0, 309, 183
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "設定"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�ݒ�"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     COMBOBOX        IDC_TIME,58,16,184,56,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | 
                     WS_VSCROLL | WS_TABSTOP
@@ -194,17 +194,17 @@ BEGIN
     COMBOBOX        IDC_PAGE,68,161,28,90,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,254,12,47,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,255,29,47,14
-    LTEXT           "時間",IDC_STATIC,9,18,34,8
-    LTEXT           "出現位置",IDC_STATIC,9,35,34,8
-    LTEXT           "初期背景",IDC_STATIC,9,53,34,8
-    LTEXT           "面設定",IDC_STATIC,9,70,34,8
-    LTEXT           "初期景色",IDC_STATIC,9,88,34,8
-    LTEXT           "初期基本ﾌﾞﾛｯｸ",IDC_STATIC,9,106,46,9
-    LTEXT           "ﾏｯﾌﾟの種類",IDC_STATIC,8,125,38,8
-    LTEXT           "途中の開始ﾍﾟｰｼﾞ",IDC_STATIC_PAGE,11,163,56,8
-    LTEXT           "ﾙｰﾑ",IDC_STATIC,6,2,15,8
-    LTEXT           "ｴﾘｱ",IDC_STATIC,6,145,12,8
+    PUSHBUTTON      "��ݾ�",IDCANCEL,255,29,47,14
+    LTEXT           "����",IDC_STATIC,9,18,34,8
+    LTEXT           "�o���ʒu",IDC_STATIC,9,35,34,8
+    LTEXT           "�����w�i",IDC_STATIC,9,53,34,8
+    LTEXT           "�ʐݒ�",IDC_STATIC,9,70,34,8
+    LTEXT           "�����i�F",IDC_STATIC,9,88,34,8
+    LTEXT           "������{��ۯ�",IDC_STATIC,9,106,46,9
+    LTEXT           "ϯ�߂̎��",IDC_STATIC,8,125,38,8
+    LTEXT           "�r���̊J�n�߰��",IDC_STATIC_PAGE,11,163,56,8
+    LTEXT           "ٰ�",IDC_STATIC,6,2,15,8
+    LTEXT           "�ر",IDC_STATIC,6,145,12,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,25,5,225,1
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,25,148,228,1
 END
@@ -212,8 +212,8 @@ END
 MAPCOMEDITDLG DIALOG DISCARDABLE  0, 0, 266, 159
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTERMOUSE | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "編集"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�ҏW"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_XPOS,31,19,27,13,ES_CENTER | ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_XPOSSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
@@ -223,7 +223,7 @@ BEGIN
     CONTROL         "Spin2",IDC_YPOSSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,116,11,6,
                     16
-    CONTROL         "改ﾍﾟｰｼﾞﾌﾗｸﾞ",IDC_PAGEFLAG,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "���߰���׸�",IDC_PAGEFLAG,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,127,20,52,10
     COMBOBOX        IDC_TYPE,25,38,122,76,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
@@ -239,37 +239,37 @@ BEGIN
                     WS_TABSTOP
     EDITTEXT        IDC_NOTE,10,95,251,22,ES_MULTILINE | ES_READONLY | 
                     ES_WANTRETURN | WS_VSCROLL | NOT WS_TABSTOP
-    CONTROL         "ﾊﾞｲﾅﾘ入力",IDC_ISBIN,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "�޲�ؓ���",IDC_ISBIN,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,3,124,48,10
     EDITTEXT        IDC_BIN,14,139,46,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_OFFSET,191,136,26,12,ES_RIGHT | ES_READONLY | NOT 
                     WS_BORDER | NOT WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,208,4,46,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,208,21,46,14
-    LTEXT           "横位置",IDC_STATIC,6,21,22,8
-    LTEXT           "縦位置",IDC_STATIC,64,21,22,8
-    LTEXT           "長さ",IDC_STATIC_LENGTH,153,40,16,9
+    PUSHBUTTON      "��ݾ�",IDCANCEL,208,21,46,14
+    LTEXT           "���ʒu",IDC_STATIC,6,21,22,8
+    LTEXT           "�c�ʒu",IDC_STATIC,64,21,22,8
+    LTEXT           "����",IDC_STATIC_LENGTH,153,40,16,9
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,50,127,138,1
-    LTEXT           "景色",IDC_STATIC_VIEW,147,60,15,8
-    LTEXT           "ﾌﾞﾛｯｸ",IDC_STATIC_BLOCK,10,60,18,8
-    LTEXT           "背景",IDC_STATIC_BACKCOLOR,10,78,15,8
-    LTEXT           "種類",IDC_STATIC,6,40,15,8
-    LTEXT           "ﾊﾞｲﾄ目",IDC_STATIC,221,136,22,8
-    LTEXT           "ｵﾌﾞｼﾞｪｸﾄ",IDC_STATIC,3,6,27,8
+    LTEXT           "�i�F",IDC_STATIC_VIEW,147,60,15,8
+    LTEXT           "��ۯ�",IDC_STATIC_BLOCK,10,60,18,8
+    LTEXT           "�w�i",IDC_STATIC_BACKCOLOR,10,78,15,8
+    LTEXT           "���",IDC_STATIC,6,40,15,8
+    LTEXT           "�޲Ė�",IDC_STATIC,221,136,22,8
+    LTEXT           "��޼ު��",IDC_STATIC,3,6,27,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,30,9,168,1
 END
 
 GAMESETTINGDLG DIALOG DISCARDABLE  0, 0, 159, 195
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "全般の設定"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�S�ʂ̐ݒ�"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_MARIOLEFT,19,24,29,14,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_MARIOLEFTSPIN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS,48,24,9,14
-    CONTROL         "1-1からﾊﾟｯｸﾝﾌﾗﾜｰを出す。",IDC_FLOWER,"Button",
+    CONTROL         "1-1�����߯����ܰ���o���B",IDC_FLOWER,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,19,62,94,10
     COMBOBOX        IDC_POLEGFX,16,98,70,88,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
@@ -279,13 +279,13 @@ BEGIN
                     WS_TABSTOP
     COMBOBOX        IDC_TIME200,39,166,70,127,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "ﾏﾘｵの初期人数",IDC_STATIC,8,8,49,10
+    LTEXT           "�ص�̏����l��",IDC_STATIC,8,8,49,10
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,46,49,106,1
-    LTEXT           "縦に並んだ丸ｷｬﾗのｸﾞﾗﾌｨｯｸ",IDC_STATIC,7,81,86,8
+    LTEXT           "�c�ɕ��񂾊۷�̸ׂ��̨��",IDC_STATIC,7,81,86,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,90,84,62,1
-    LTEXT           "ﾊﾟｯｸﾝﾌﾗﾜｰ",IDC_STATIC,7,46,35,8
+    LTEXT           "�߯����ܰ",IDC_STATIC,7,46,35,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,60,11,94,1
-    LTEXT           "残り時間",IDC_STATIC,7,120,27,8
+    LTEXT           "�c�莞��",IDC_STATIC,7,120,27,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,36,122,115,1
     LTEXT           "400",IDC_STATIC,16,134,11,8
     LTEXT           "300",IDC_STATIC,16,151,11,8
@@ -295,24 +295,24 @@ END
 STRINGEDITDLG DIALOG DISCARDABLE  0, 0, 247, 48
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION | WS_SYSMENU
-CAPTION "文字列の編集"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "������̕ҏW"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     COMBOBOX        IDC_STRINGSELECT,30,9,156,90,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_STRING,30,28,156,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "書きこみ",IDOK,190,27,50,14
-    LTEXT           "文字まで",IDC_STATIC,205,12,33,8
-    LTEXT           "種類",IDC_STATIC,7,12,15,8
-    LTEXT           "文字列",IDC_STATIC,7,29,22,8
+    PUSHBUTTON      "��������",IDOK,190,27,50,14
+    LTEXT           "�����܂�",IDC_STATIC,205,12,33,8
+    LTEXT           "���",IDC_STATIC,7,12,15,8
+    LTEXT           "������",IDC_STATIC,7,29,22,8
     LTEXT           "0",IDC_LEN,196,12,8,8
 END
 
 LOOPEDITDLG DIALOG DISCARDABLE  0, 0, 215, 183
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "ﾙｰﾌﾟの編集"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "ٰ�߂̕ҏW"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_WORLD,23,18,117,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_PAGE,24,49,118,14,ES_AUTOHSCROLL
@@ -321,41 +321,41 @@ BEGIN
     EDITTEXT        IDC_DATA1,106,155,20,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_DATA2,136,155,21,14,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,158,7,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,158,25,50,14
-    LTEXT           "ﾜｰﾙﾄﾞ ((ﾜｰﾙﾄﾞ) -1で指定)",IDC_STATIC,9,5,78,8
-    LTEXT           "ﾍﾟｰｼﾞ (ﾙｰﾌﾟｺﾏﾝﾄﾞのあるﾍﾟｰｼﾞの次のﾍﾟｰｼﾞ)",IDC_STATIC,9,
+    PUSHBUTTON      "��ݾ�",IDCANCEL,158,25,50,14
+    LTEXT           "ܰ��� ((ܰ���) -1�Ŏw��)",IDC_STATIC,9,5,78,8
+    LTEXT           "�߰�� (ٰ�ߺ���ނ̂����߰�ނ̎����߰��)",IDC_STATIC,9,
                     38,127,8
-    LTEXT           "縦位置の条件 (上位4ﾋﾞｯﾄで指定。00=-1, 10=0, 20=1, …, f0=15)",
+    LTEXT           "�c�ʒu�̏��� (���4�ޯĂŎw��B00=-1, 10=0, 20=1, �c, f0=15)",
                     IDC_STATIC,9,70,184,8
-    LTEXT           "戻り位置（地形用ﾍﾟｰｼﾞ送りｺﾏﾝﾄﾞの先頭からの0起算によるﾊﾞｲﾄ数）",
+    LTEXT           "�߂�ʒu�i�n�`�p�߰�ޑ������ނ̐擪�����0�N�Z�ɂ���޲Đ��j",
                     IDC_STATIC,10,106,198,10
-    LTEXT           "ﾜｰﾙﾄﾞ7のﾙｰﾌﾟの設定",IDC_STATIC,9,143,65,8
-    LTEXT           "ﾜｰﾙﾄﾞ ((ﾜｰﾙﾄﾞ) -1で指定)",IDC_STATIC,24,159,78,8
+    LTEXT           "ܰ���7��ٰ�߂̐ݒ�",IDC_STATIC,9,143,65,8
+    LTEXT           "ܰ��� ((ܰ���) -1�Ŏw��)",IDC_STATIC,24,159,78,8
 END
 
 TESTPLAYSETTINGDLG DIALOG DISCARDABLE  0, 0, 191, 232
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "ﾃｽﾄﾌﾟﾚｲの設定"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "ý���ڲ�̐ݒ�"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
-    CONTROL         "裏面として出す。",IDC_ISCLEARED,"Button",
+    CONTROL         "���ʂƂ��ďo���B",IDC_ISCLEARED,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,15,20,65,10
     COMBOBOX        IDC_MARIOSTATE,15,50,94,54,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    CONTROL         "開始ﾍﾟｰｼﾞの敵も出現させる。",IDC_0PAGEBADGUYS,"Button",
+    CONTROL         "�J�n�߰�ނ̓G���o��������B",IDC_0PAGEBADGUYS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,86,101,10
-    CONTROL         "無敵状態にする。",IDC_INVINCIBLE,"Button",
+    CONTROL         "���G��Ԃɂ���B",IDC_INVINCIBLE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,103,67,10
-    CONTROL         "選択しているｵﾌﾞｼﾞｪｸﾄのあるﾍﾟｰｼﾞから",IDC_FROMCURPAGE,
+    CONTROL         "�I�����Ă����޼ު�Ă̂����߰�ނ���",IDC_FROMCURPAGE,
                     "Button",BS_AUTORADIOBUTTON,12,137,127,10
-    CONTROL         "指定したﾍﾟｰｼﾞから",IDC_FROMDESTPAGE,"Button",
+    CONTROL         "�w�肵���߰�ނ���",IDC_FROMDESTPAGE,"Button",
                     BS_AUTORADIOBUTTON,12,153,67,10
     EDITTEXT        IDC_PAGE,79,151,28,14,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_PAGESPIN,"msctls_updown32",UDS_SETBUDDYINT | 
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
                     UDS_HORZ,104,157,10,14
-    PUSHBUTTON      "途中開始ページに設定",IDC_HALFPAGE,108,150,74,16
+    PUSHBUTTON      "�r���J�n�y�[�W�ɐݒ�",IDC_HALFPAGE,108,150,74,16
     EDITTEXT        IDC_XPOS,38,189,31,12,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_XPOSSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
@@ -369,48 +369,48 @@ BEGIN
     COMBOBOX        IDC_YPOSHACK,72,207,44,54,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,129,10,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,129,28,50,14
+    PUSHBUTTON      "��ݾ�",IDCANCEL,129,28,50,14
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,43,9,76,1
-    LTEXT           "ﾏﾘｵの状態",IDC_STATIC,6,36,34,8
+    LTEXT           "�ص�̏��",IDC_STATIC,6,36,34,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,43,38,77,1
-    LTEXT           "裏面の設定",IDC_STATIC,6,7,35,8
-    LTEXT           "ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲの開始ﾍﾟｰｼﾞ",IDC_STATIC,6,121,79,8
+    LTEXT           "���ʂ̐ݒ�",IDC_STATIC,6,7,35,8
+    LTEXT           "�߰��ý���ڲ�̊J�n�߰��",IDC_STATIC,6,121,79,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,88,123,94,1
-    LTEXT           "ｵﾌﾟｼｮﾝ",IDC_STATIC,7,72,22,8
+    LTEXT           "��߼��",IDC_STATIC,7,72,22,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,31,74,151,1
-    LTEXT           "ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲの初期位置",IDC_STATIC,7,173,77,8
+    LTEXT           "�߰��ý���ڲ�̏����ʒu",IDC_STATIC,7,173,77,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,85,176,97,1
-    LTEXT           "横位置",IDC_STATIC,15,191,22,8
-    LTEXT           "縦位置",IDC_STATIC,15,209,22,8
+    LTEXT           "���ʒu",IDC_STATIC,15,191,22,8
+    LTEXT           "�c�ʒu",IDC_STATIC,15,209,22,8
 END
 
 AREASORTDLG DIALOG DISCARDABLE  0, 0, 255, 178
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION | WS_SYSMENU
-CAPTION "ｴﾘｱの開始ﾙｰﾑの編集"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�ر�̊J�nٰт̕ҏW"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     LISTBOX         IDC_AREA,7,7,116,161,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "↑",IDC_UP,128,67,15,14
-    PUSHBUTTON      "↓",IDC_DOWN,128,94,15,14
+    PUSHBUTTON      "��",IDC_UP,128,67,15,14
+    PUSHBUTTON      "��",IDC_DOWN,128,94,15,14
     CONTROL         "",IDC_VIEW,"Static",SS_BITMAP | SS_SUNKEN,149,38,100,
                     108
     EDITTEXT        IDC_PAGEEDIT,214,154,28,14,ES_CENTER | ES_AUTOHSCROLL
     CONTROL         "Spin3",IDC_PAGEEDITSPIN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS | UDS_HORZ,239,154,10,14
-    LTEXT           "ﾍﾟｰｼﾞ",IDC_STATIC,194,157,17,8
+    LTEXT           "�߰��",IDC_STATIC,194,157,17,8
 END
 
 LOOPWIZARDDLG DIALOGEX 0, 0, 311, 153
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "ﾙｰﾌﾟ作成ｳィｻﾞｰﾄﾞ"
-FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+CAPTION "ٰ�ߍ쐬��B�ް��"
+FONT 9, "�l�r �o�S�V�b�N", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "作成",IDOK,28,132,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,113,132,50,14
+    DEFPUSHBUTTON   "�쐬",IDOK,28,132,50,14
+    PUSHBUTTON      "��ݾ�",IDCANCEL,113,132,50,14
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ | SS_SUNKEN,7,123,
                     185,1
     EDITTEXT        IDC_PAGE,123,78,22,14,ES_AUTOHSCROLL
@@ -421,12 +421,12 @@ BEGIN
                     WS_TABSTOP
     COMBOBOX        IDC_DATA,7,31,181,104,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "ﾙｰﾌﾟの作成ﾍﾟｰｼﾞ",IDC_STATIC,17,80,68,8
-    LTEXT           "ﾃﾞｰﾀのまとまりの指定",IDC_STATIC,7,17,154,8
-    LTEXT           "ﾙｰﾌﾟを起こさない縦位置の指定",IDC_STATIC,17,102,93,8
+    LTEXT           "ٰ�߂̍쐬�߰��",IDC_STATIC,17,80,68,8
+    LTEXT           "�ް��̂܂Ƃ܂�̎w��",IDC_STATIC,7,17,154,8
+    LTEXT           "ٰ�߂��N�����Ȃ��c�ʒu�̎w��",IDC_STATIC,17,102,93,8
     COMBOBOX        IDC_WORLD,121,55,33,79,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "ﾜｰﾙﾄﾞ",IDC_STATIC,17,57,95,8
+    LTEXT           "ܰ���",IDC_STATIC,17,57,95,8
     EDITTEXT        IDC_NOTE,198,15,106,123,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_READONLY | ES_WANTRETURN | NOT WS_BORDER | NOT 
                     WS_TABSTOP,WS_EX_TRANSPARENT
@@ -435,9 +435,9 @@ END
 EDITOROPTIONDLG DIALOG DISCARDABLE  0, 0, 187, 25
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
-    CONTROL         "ﾙｰﾑごとのｵﾌﾞｼﾞｪｸﾄの保護機能を有効にする。",
+    CONTROL         "ٰт��Ƃ̵�޼ު�Ă̕ی�@�\��L���ɂ���B",
                     IDC_ISADDRESS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,
                     153,10
 END
@@ -445,24 +445,24 @@ END
 EMULATOROPTIONDLG DIALOG DISCARDABLE  0, 0, 187, 82
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION | WS_SYSMENU
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
-    CONTROL         "MMXを有効にする。",IDC_SPEEDOPTIMIZE,"Button",
+    CONTROL         "MMX��L���ɂ���B",IDC_SPEEDOPTIMIZE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,7,73,10
-    CONTROL         "ｼﾞｮｲｽﾃｨｯｸを使用しない。",IDC_SKIPJOYREAD,"Button",
+    CONTROL         "�ޮ��è�����g�p���Ȃ��B",IDC_SKIPJOYREAD,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,24,90,10
     COMBOBOX        IDC_JOYSTICKID,71,41,64,59,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    CONTROL         "ｼﾞｮｲｽﾃｨｯｸのpoint of viewを有効にする。",IDC_USEPOV,
+    CONTROL         "�ޮ��è����point of view��L���ɂ���B",IDC_USEPOV,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,61,134,10
-    LTEXT           "使用するｼﾞｮｲｽﾃｨｯｸ",IDC_STATIC_JOYSTICKID,7,44,58,8
+    LTEXT           "�g�p����ޮ��è��",IDC_STATIC_JOYSTICKID,7,44,58,8
 END
 
 SENDOBJECTDLG DIALOG DISCARDABLE  0, 0, 185, 127
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTERMOUSE | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "ｵﾌﾞｼﾞｪｸﾄの送り先の指定"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "��޼ު�Ă̑����̎w��"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     COMBOBOX        IDC_DATA,142,78,29,123,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
@@ -471,17 +471,17 @@ BEGIN
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS | UDS_HORZ,170,101,7,14
     DEFPUSHBUTTON   "OK",IDOK,128,7,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,128,24,50,14
+    PUSHBUTTON      "��ݾ�",IDCANCEL,128,24,50,14
     CONTROL         "",IDC_VIEW,"Static",SS_BITMAP | SS_SUNKEN,13,8,100,108
-    LTEXT           "ﾙｰﾑ",IDC_STATIC,123,79,15,8
-    LTEXT           "ﾍﾟｰｼﾞ",IDC_STATIC,122,104,17,8
+    LTEXT           "ٰ�",IDC_STATIC,123,79,15,8
+    LTEXT           "�߰��",IDC_STATIC,122,104,17,8
 END
 
 BADGUYSCOMEDITDLG DIALOG DISCARDABLE  0, 0, 359, 161
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTERMOUSE | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "編集"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�ҏW"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_XPOS,32,17,24,14,ES_CENTER
     CONTROL         "Spin1",IDC_XPOSSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
@@ -491,13 +491,13 @@ BEGIN
     CONTROL         "Spin1",IDC_YPOSSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,110,17,7,
                     14
-    CONTROL         "改ﾍﾟｰｼﾞﾌﾗｸﾞ",IDC_PAGEFLAG,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "���߰���׸�",IDC_PAGEFLAG,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,122,14,52,10
-    CONTROL         "5-3以降出現",IDC_BIT6,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "5-3�ȍ~�o��",IDC_BIT6,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,122,26,54,10
     COMBOBOX        IDC_TYPE,31,39,142,165,CBS_DROPDOWNLIST | 
                     CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "ﾍﾟｰｼﾞ送りｺﾏﾝﾄﾞ",IDC_ISPAGECOMMAND,"Button",
+    CONTROL         "�߰�ޑ�������",IDC_ISPAGECOMMAND,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,8,58,57,10
     EDITTEXT        IDC_PAGEEDIT,69,56,23,14,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_PAGEEDITSPIN,"msctls_updown32",
@@ -507,9 +507,9 @@ BEGIN
     CONTROL         "Spin1",IDC_XPOS2SPIN,"msctls_updown32",UDS_SETBUDDYINT | 
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
                     UDS_HORZ,56,89,10,14
-    CONTROL         "改ﾍﾟｰｼﾞﾌﾗｸﾞ",IDC_PAGEFLAG2,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "���߰���׸�",IDC_PAGEFLAG2,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,71,90,52,10
-    CONTROL         "ﾌﾟﾚﾋﾞｭｰ",IDC_OPENPREVIEW,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "����ޭ�",IDC_OPENPREVIEW,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,134,86,46,12
     EDITTEXT        IDC_WORLD,33,108,24,14,ES_CENTER | ES_AUTOHSCROLL
     CONTROL         "Spin2",IDC_WORLDSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
@@ -521,35 +521,35 @@ BEGIN
     CONTROL         "Spin3",IDC_PAGEEDIT2SPIN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS | UDS_HORZ,172,107,7,14
-    CONTROL         "ﾊﾞｲﾅﾘ入力",IDC_ISBIN,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "�޲�ؓ���",IDC_ISBIN,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,3,128,48,10
     EDITTEXT        IDC_BIN,13,141,127,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_OFFSET,184,138,22,12,ES_RIGHT | ES_READONLY | NOT 
                     WS_BORDER | NOT WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,190,12,43,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,191,30,43,14
-    LTEXT           "横位置",IDC_STATIC_XPOS1,8,20,22,8
-    LTEXT           "縦位置",IDC_STATIC_YPOS,62,19,22,8
-    LTEXT           "種類",IDC_STATIC_TYPE,8,41,15,8
-    LTEXT           "ﾙｰﾑ",IDC_STATIC_ROOM,73,110,15,8
-    LTEXT           "ﾜｰﾙﾄﾞ",IDC_STATIC_WORLD,9,110,19,8
-    LTEXT           "ﾍﾟｰｼﾞ",IDC_STATIC_PAGE,128,110,17,8
-    LTEXT           "横位置",IDC_STATIC_XPOS2,7,91,22,8
+    PUSHBUTTON      "��ݾ�",IDCANCEL,191,30,43,14
+    LTEXT           "���ʒu",IDC_STATIC_XPOS1,8,20,22,8
+    LTEXT           "�c�ʒu",IDC_STATIC_YPOS,62,19,22,8
+    LTEXT           "���",IDC_STATIC_TYPE,8,41,15,8
+    LTEXT           "ٰ�",IDC_STATIC_ROOM,73,110,15,8
+    LTEXT           "ܰ���",IDC_STATIC_WORLD,9,110,19,8
+    LTEXT           "�߰��",IDC_STATIC_PAGE,128,110,17,8
+    LTEXT           "���ʒu",IDC_STATIC_XPOS2,7,91,22,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,63,78,120,1
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,50,131,134,1
-    LTEXT           "ﾊﾞｲﾄ目",IDC_STATIC,210,138,22,8
+    LTEXT           "�޲Ė�",IDC_STATIC,210,138,22,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,238,13,1,120
     CONTROL         "",IDC_VIEW,"Static",SS_BITMAP | SS_SUNKEN,246,20,100,
                     108
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,32,8,150,1
-    LTEXT           "ﾙｰﾑ間移動の命令",IDC_STATIC_ROOMMOVE,3,76,56,8
-    LTEXT           "ｵﾌﾞｼﾞｪｸﾄ",IDC_STATIC_OBJECT,3,5,30,8
+    LTEXT           "ٰъԈړ��̖���",IDC_STATIC_ROOMMOVE,3,76,56,8
+    LTEXT           "��޼ު��",IDC_STATIC_OBJECT,3,5,30,8
 END
 
 GAMESETTING1UPDLG DIALOG DISCARDABLE  0, 0, 187, 111
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     COMBOBOX        IDC_WORLD,17,34,48,119,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
@@ -557,7 +557,7 @@ BEGIN
     CONTROL         "Spin2",IDC_COINSFOR1UPSPIN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS,109,34,9,14
-    LTEXT           "隠れﾌﾞﾛｯｸの1UPｷﾉｺのためのｺｲﾝの枚数",IDC_STATIC,7,13,120,
+    LTEXT           "�B����ۯ���1UP�ɺ�̂��߂̺�݂̖���",IDC_STATIC,7,13,120,
                     8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,130,16,47,1
 END
@@ -565,7 +565,7 @@ END
 GAMESETTINGWARPZONEDLG DIALOG DISCARDABLE  0, 0, 187, 95
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_WARPA1,57,32,29,14,ES_AUTOHSCROLL
     CONTROL         "Spin2",IDC_WARPASPIN1,"msctls_updown32",UDS_SETBUDDYINT | 
@@ -603,17 +603,17 @@ BEGIN
     CONTROL         "Spin2",IDC_WARPCSPIN3,"msctls_updown32",UDS_SETBUDDYINT | 
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,172,65,9,
                     14
-    LTEXT           "ﾜｰﾌﾟｿﾞｰﾝ 1",IDC_STATIC,13,34,37,8
-    LTEXT           "ﾜｰﾌﾟｿﾞｰﾝ 2",IDC_STATIC,13,51,39,10
-    LTEXT           "ﾜｰﾌﾟｿﾞｰﾝ 3",IDC_STATIC,13,68,36,9
-    LTEXT           "ﾜｰﾌﾟｿﾞｰﾝの行き先ﾜｰﾙﾄﾞ",IDC_STATIC,7,13,74,8
+    LTEXT           "ܰ�߿ް� 1",IDC_STATIC,13,34,37,8
+    LTEXT           "ܰ�߿ް� 2",IDC_STATIC,13,51,39,10
+    LTEXT           "ܰ�߿ް� 3",IDC_STATIC,13,68,36,9
+    LTEXT           "ܰ�߿ް݂̍s����ܰ���",IDC_STATIC,7,13,74,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,85,16,92,1
 END
 
 GAMESETTINGKOOPADLG DIALOG DISCARDABLE  0, 0, 195, 93
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_WORLD,26,28,30,14,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_WORLDSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
@@ -623,8 +623,8 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_KOOPA,84,65,99,132,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "ﾊﾝﾏｰを出し始めるﾜｰﾙﾄﾞ",IDC_STATIC,8,11,74,8
-    LTEXT           "ｸｯﾊﾟの正体",IDC_STATIC,9,50,38,8
+    LTEXT           "��ϰ���o���n�߂�ܰ���",IDC_STATIC,8,11,74,8
+    LTEXT           "���߂̐���",IDC_STATIC,9,50,38,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,46,52,134,1
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,81,15,100,1
 END
@@ -632,7 +632,7 @@ END
 GAMESETTINGWORLDDLG DIALOG DISCARDABLE  0, 0, 187, 101
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_DIFFICULTYWORLD,38,24,25,14,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_DIFFICULTYWORLDSPIN,"msctls_updown32",
@@ -646,11 +646,11 @@ BEGIN
     CONTROL         "Spin1",IDC_SEABLOCKWORLDSPIN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS,49,70,9,14
-    LTEXT           "難易度の境目",IDC_STATIC,7,10,49,8
+    LTEXT           "��Փx�̋���",IDC_STATIC,7,10,49,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,59,13,121,1
-    LTEXT           "ﾜｰﾙﾄﾞ",IDC_STATIC,14,27,21,8
-    LTEXT           "ｴﾘｱ",IDC_STATIC,81,27,12,8
-    LTEXT           "海面のﾌﾞﾛｯｸが城のﾌﾞﾛｯｸになるﾜｰﾙﾄﾞ",IDC_STATIC,8,51,114,
+    LTEXT           "ܰ���",IDC_STATIC,14,27,21,8
+    LTEXT           "�ر",IDC_STATIC,81,27,12,8
+    LTEXT           "�C�ʂ���ۯ��������ۯ��ɂȂ�ܰ���",IDC_STATIC,8,51,114,
                     8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,125,54,55,1
 END
@@ -658,34 +658,34 @@ END
 GENERALSETTINGDLG DIALOG DISCARDABLE  0, 0, 187, 51
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION
-CAPTION "全般の設定"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "�S�ʂ̐ݒ�"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_CLEARWORLD,17,24,25,14,ES_AUTOHSCROLL
     CONTROL         "Spin1",IDC_CLEARWORLDSPIN,"msctls_updown32",
                     UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
                     UDS_ARROWKEYS,42,25,9,14
-    CONTROL         "ｶｽﾀﾑ",IDC_ISCLEARWORLD,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "����",IDC_ISCLEARWORLD,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,65,28,33,10
     DEFPUSHBUTTON   "OK",IDOK,122,10,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,122,30,50,14
+    PUSHBUTTON      "��ݾ�",IDCANCEL,122,30,50,14
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,58,12,45,1
-    LTEXT           "ｸﾘｱｰとなるﾜｰﾙﾄﾞ",IDC_STATIC,7,10,55,8
+    LTEXT           "�ر��ƂȂ�ܰ���",IDC_STATIC,7,10,55,8
 END
 
 APPOPTIONDLG DIALOG DISCARDABLE  0, 0, 207, 93
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "ｱﾌﾟﾘｹｰｼｮﾝ"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "���ع����"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     EDITTEXT        IDC_HELPPATH,13,29,139,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "参照",IDC_BROWSE,163,29,31,14
+    PUSHBUTTON      "�Q��",IDC_BROWSE,163,29,31,14
 END
 
 CUSTOMIZEDLG DIALOG DISCARDABLE  0, 0, 354, 253
 STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION
-CAPTION "ｶｽﾀﾏｲｽﾞ"
-FONT 9, "ＭＳ Ｐゴシック"
+CAPTION "���ϲ��"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
     COMBOBOX        IDC_KEYID,33,21,102,69,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
@@ -701,7 +701,7 @@ BEGIN
                     109,111,30,10
     COMBOBOX        IDC_PRESET,23,141,98,69,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    PUSHBUTTON      "ﾛｰﾄﾞ",IDC_RESET,126,141,38,14
+    PUSHBUTTON      "۰��",IDC_RESET,126,141,38,14
     LISTBOX         IDC_WHEELLIST,34,180,103,37,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_WHEELCOMMAND,34,224,104,129,CBS_DROPDOWNLIST | 
@@ -711,46 +711,46 @@ BEGIN
     COMBOBOX        IDC_JOYBUTTONVALUE,210,65,104,129,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,236,223,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,292,223,50,14
-    LTEXT           "ｷｰﾎﾞｰﾄﾞ",IDC_STATIC,7,7,26,8
+    PUSHBUTTON      "��ݾ�",IDCANCEL,292,223,50,14
+    LTEXT           "���ް��",IDC_STATIC,7,7,26,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,35,11,138,1
-    LTEXT           "対象",IDC_STATIC,13,23,15,8
-    LTEXT           "内容",IDC_STATIC,13,60,15,8
-    LTEXT           "値",IDC_STATIC,16,102,8,8
-    GROUPBOX        "ﾌﾟﾘｾｯﾄ ｷｰ",IDC_STATIC,14,129,158,32
-    LTEXT           "ﾏｳｽﾎｲｰﾙ",IDC_STATIC,7,167,32,8
-    LTEXT           "同時ｷｰ",IDC_STATIC,9,196,24,8
-    LTEXT           "内容",IDC_STATIC,13,226,15,8
-    LTEXT           "ｼﾞｮｲｽﾃｨｯｸ",IDC_STATIC,180,7,32,8
+    LTEXT           "�Ώ�",IDC_STATIC,13,23,15,8
+    LTEXT           "���e",IDC_STATIC,13,60,15,8
+    LTEXT           "�l",IDC_STATIC,16,102,8,8
+    GROUPBOX        "��ؾ�� ��",IDC_STATIC,14,129,158,32
+    LTEXT           "ϳ�β��",IDC_STATIC,7,167,32,8
+    LTEXT           "������",IDC_STATIC,9,196,24,8
+    LTEXT           "���e",IDC_STATIC,13,226,15,8
+    LTEXT           "�ޮ��è��",IDC_STATIC,180,7,32,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,216,11,132,1
-    LTEXT           "内容",IDC_STATIC,188,35,15,8
-    LTEXT           "値",IDC_STATIC,191,67,8,8
+    LTEXT           "���e",IDC_STATIC,188,35,15,8
+    LTEXT           "�l",IDC_STATIC,191,67,8,8
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,40,170,132,1
 END
 
 APPLICATIONOPTIONDLG DIALOG DISCARDABLE  0, 0, 187, 24
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
-    CONTROL         "上書き保存時に、確認ﾒｯｾｰｼﾞﾎﾞｯｸｽを表示する。",
+    CONTROL         "�㏑���ۑ����ɁA�m�Fү�����ޯ����\������B",
                     IDC_MSGONSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,
                     173,10
 END
 
 OBJECTVIEWOPTIONDLG DIALOG DISCARDABLE  0, 0, 187, 90
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "�l�r �o�S�V�b�N"
 BEGIN
-    CONTROL         "補助ﾋﾞｯﾄﾏｯﾌﾟを非表示にする。",IDC_NOTDRAWASSISTBMP,
+    CONTROL         "�⏕�ޯ�ϯ�߂��\���ɂ���B",IDC_NOTDRAWASSISTBMP,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,173,10
 END
 
 LOADCHROPTION DIALOGEX 0, 0, 187, 22
 STYLE WS_CHILD | WS_CLIPSIBLINGS
 EXSTYLE WS_EX_CONTROLPARENT
-FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+FONT 9, "�l�r �o�S�V�b�N", 0, 0, 0x1
 BEGIN
-    CONTROL         "ｷｬﾗｸﾀﾛﾑ全体を読み込む。",IDC_TITLE,"Button",
+    CONTROL         "��׸��ёS�̂�ǂݍ��ށB",IDC_TITLE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,7,173,8
 END
 
@@ -1000,7 +1000,7 @@ LF_IMG                  BITMAP  DISCARDABLE     "image/lf_img.bmp"
 IDB_XGAUGE_IMG          BITMAP  DISCARDABLE     "image/xgauge_img.bmp"
 IDB_YGAUGE_IMG          BITMAP  DISCARDABLE     "image/ygauge_img.bmp"
 ASSIST_IMG              BITMAP  DISCARDABLE     "image\\assist_img.bmp"
-#endif    // 日本語 resources
+#endif    // ���{�� resources
 /////////////////////////////////////////////////////////////////////////////
 
 

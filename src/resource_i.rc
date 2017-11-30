@@ -1,4 +1,4 @@
-ï»¿//Microsoft Developer Studio generated resource script.
+//Microsoft Developer Studio generated resource script.
 //
 #include "resrc1.h"
 
@@ -18,7 +18,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// æ—¥æœ¬èªž resources
+// “ú–{Œê resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 #ifdef _WIN32
@@ -922,7 +922,7 @@ LF_IMG                  BITMAP  DISCARDABLE     "image/lf_img.bmp"
 IDB_XGAUGE_IMG          BITMAP  DISCARDABLE     "image/xgauge_img.bmp"
 IDB_YGAUGE_IMG          BITMAP  DISCARDABLE     "image/ygauge_img.bmp"
 ASSIST_IMG              BITMAP  DISCARDABLE     "image/assist_img.bmp"
-#endif    // æ—¥æœ¬èªž resources
+#endif    // “ú–{Œê resources
 /////////////////////////////////////////////////////////////////////////////
 
 
