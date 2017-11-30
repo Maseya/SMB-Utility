@@ -42,10 +42,10 @@
  * with subsequent releases of M6502.
  *
  * The whole idea of this emulator is to have the fastest available 32 bit
- * Multi-6502 emulator for the PC, giving maximum performance. 
- */ 
+ * Multi-6502 emulator for the PC, giving maximum performance.
+ */
 
-/* General 6502 related goodies */
+ /* General 6502 related goodies */
 
 #ifndef _M6502_H_
 #define _M6502_H_
@@ -66,117 +66,117 @@
 extern "C" {
 #endif
 
-extern UINT32 m6502nmi(void);
-extern UINT32 m6502int(UINT32);
-extern UINT32 m6502exec(UINT32);
-extern void m6502reset(void);
-extern UINT32 m6502GetElapsedTicks(UINT32);
-extern void m6502ReleaseTimeslice();
+    extern UINT32 m6502nmi(void);
+    extern UINT32 m6502int(UINT32);
+    extern UINT32 m6502exec(UINT32);
+    extern void m6502reset(void);
+    extern UINT32 m6502GetElapsedTicks(UINT32);
+    extern void m6502ReleaseTimeslice();
 
-extern UINT32 m6502zpnmi(void);
-extern UINT32 m6502zpint(UINT32);
-extern UINT32 m6502zpexec(UINT32);
-extern void m6502zpreset(void);
-extern UINT32 m6502zpGetElapsedTicks(UINT32);
-extern void m6502zpReleaseTimeslice();
+    extern UINT32 m6502zpnmi(void);
+    extern UINT32 m6502zpint(UINT32);
+    extern UINT32 m6502zpexec(UINT32);
+    extern void m6502zpreset(void);
+    extern UINT32 m6502zpGetElapsedTicks(UINT32);
+    extern void m6502zpReleaseTimeslice();
 
-extern UINT32 m6502bsnmi(void);
-extern UINT32 m6502bsint(UINT32);
-extern UINT32 m6502bsexec(UINT32);
-extern void m6502bsreset(void);
-extern UINT32 m6502bsGetElapsedTicks(UINT32);
-extern void m6502bsReleaseTimeslice();
+    extern UINT32 m6502bsnmi(void);
+    extern UINT32 m6502bsint(UINT32);
+    extern UINT32 m6502bsexec(UINT32);
+    extern void m6502bsreset(void);
+    extern UINT32 m6502bsGetElapsedTicks(UINT32);
+    extern void m6502bsReleaseTimeslice();
 
-extern UINT16 m6502bspc;
-extern UINT16 m6502zppc;
-extern UINT16 m6502pc;
+    extern UINT16 m6502bspc;
+    extern UINT16 m6502zppc;
+    extern UINT16 m6502pc;
 
 #ifndef _MEMORYREADWRITEBYTE_
 #define _MEMORYREADWRITEBYTE_
 
-struct MemoryWriteByte
-{
-	UINT32 lowAddr;
-	UINT32 highAddr;
-	void (*memoryCall)(UINT32, UINT8, struct MemoryWriteByte *);
-	void *pUserArea;
-};      
+    struct MemoryWriteByte
+    {
+        UINT32 lowAddr;
+        UINT32 highAddr;
+        void(*memoryCall)(UINT32, UINT8, struct MemoryWriteByte *);
+        void *pUserArea;
+    };
 
-struct MemoryReadByte
-{
-	UINT32 lowAddr;
-	UINT32 highAddr;
-	UINT8 (*memoryCall)(UINT32, struct MemoryReadByte *);
-	void *pUserArea;
-};      
+    struct MemoryReadByte
+    {
+        UINT32 lowAddr;
+        UINT32 highAddr;
+        UINT8(*memoryCall)(UINT32, struct MemoryReadByte *);
+        void *pUserArea;
+    };
 
 #endif // _MEMORYREADWRITEBYTE_
 
-/* WARNING: Do not use a sizeof() operator on this structure. The assembly
- * code will pack other context relevant data after this space. Use the
- * GetContextSize() call to obtain the specifics of the context.
- */
+    /* WARNING: Do not use a sizeof() operator on this structure. The assembly
+     * code will pack other context relevant data after this space. Use the
+     * GetContextSize() call to obtain the specifics of the context.
+     */
 
-struct m6502context
-{
-	UINT8 *m6502Base;                               /* 32 Bit pointer to base memory address */
+    struct m6502context
+    {
+        UINT8 *m6502Base;                               /* 32 Bit pointer to base memory address */
 
-	/* 32 Bit pointers to user trap address structure array */
+        /* 32 Bit pointers to user trap address structure array */
 
-	struct MemoryReadByte *m6502MemoryRead;
-	struct MemoryWriteByte *m6502MemoryWrite;
+        struct MemoryReadByte *m6502MemoryRead;
+        struct MemoryWriteByte *m6502MemoryWrite;
 
-	/* This context's register dump */
+        /* This context's register dump */
 
-	UINT16 m6502af;                 /* A & Flags */
-	UINT16 m6502pc;                 /* Program counter */
-	UINT8 m6502x;                   /* X register */
-	UINT8 m6502y;                   /* Y register */
-	UINT8 m6502s;                   /* S register */
-	UINT8 irqPending;
-};
+        UINT16 m6502af;                 /* A & Flags */
+        UINT16 m6502pc;                 /* Program counter */
+        UINT8 m6502x;                   /* X register */
+        UINT8 m6502y;                   /* Y register */
+        UINT8 m6502s;                   /* S register */
+        UINT8 irqPending;
+    };
 
-struct m6502bscontext
-{
-	UINT8 *m6502Base;                               /* 32 Bit pointer to base memory address */
+    struct m6502bscontext
+    {
+        UINT8 *m6502Base;                               /* 32 Bit pointer to base memory address */
 
-	/* 32 Bit pointers to user trap address structure array */
+        /* 32 Bit pointers to user trap address structure array */
 
-	struct MemoryReadByte *m6502MemoryRead;
-	struct MemoryWriteByte *m6502MemoryWrite;
+        struct MemoryReadByte *m6502MemoryRead;
+        struct MemoryWriteByte *m6502MemoryWrite;
 
-	UINT8 *pbBankSwitch[32];		/* 32 2K addresses */
+        UINT8 *pbBankSwitch[32];		/* 32 2K addresses */
 
-	/* This context's register dump */
+        /* This context's register dump */
 
-	UINT16 m6502af;                 /* A & Flags */
-	UINT16 m6502pc;                 /* Program counter */
-	UINT8 m6502x;                   /* X register */
-	UINT8 m6502y;                   /* Y register */
-	UINT8 m6502s;                   /* S register */
-	UINT8 irqPending;
-};
+        UINT16 m6502af;                 /* A & Flags */
+        UINT16 m6502pc;                 /* Program counter */
+        UINT8 m6502x;                   /* X register */
+        UINT8 m6502y;                   /* Y register */
+        UINT8 m6502s;                   /* S register */
+        UINT8 irqPending;
+    };
 
-typedef struct m6502context CONTEXTM6502;
-typedef struct m6502bscontext CONTEXTM6502BS;
+    typedef struct m6502context CONTEXTM6502;
+    typedef struct m6502bscontext CONTEXTM6502BS;
 
-extern void m6502SetContext(struct m6502context *);
-extern void m6502GetContext(struct m6502context *);
-extern UINT32 m6502GetContextSize(void);
+    extern void m6502SetContext(struct m6502context *);
+    extern void m6502GetContext(struct m6502context *);
+    extern UINT32 m6502GetContextSize(void);
 
-extern void m6502zpSetContext(struct m6502context *);
-extern void m6502zpGetContext(struct m6502context *);
-extern UINT32 m6502zpGetContextSize(void);
+    extern void m6502zpSetContext(struct m6502context *);
+    extern void m6502zpGetContext(struct m6502context *);
+    extern UINT32 m6502zpGetContextSize(void);
 
-extern void m6502bsSetContext(struct m6502context *);
-extern void m6502bsGetContext(struct m6502context *);
-extern UINT32 m6502bsGetContextSize(void);
+    extern void m6502bsSetContext(struct m6502context *);
+    extern void m6502bsGetContext(struct m6502context *);
+    extern UINT32 m6502bsGetContextSize(void);
 
-extern void m6502init(void);
-extern void m6502zpinit(void);
-extern void m6502bsinit(void);
+    extern void m6502init(void);
+    extern void m6502zpinit(void);
+    extern void m6502bsinit(void);
 
-extern UINT8 *m6502bspbBankSwitch[32];	// Bank switching registers
+    extern UINT8 *m6502bspbBankSwitch[32];	// Bank switching registers
 
 #ifdef __cplusplus
 };

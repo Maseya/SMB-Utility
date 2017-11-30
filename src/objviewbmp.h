@@ -1,15 +1,12 @@
 ﻿#ifndef OBJVIEWBMP_H
 #define OBJVIEWBMP_H
 
-
 typedef struct _tagASSISTBMPDATA
 {
-	int iPosDeltaX;
-	int iPosDeltaY;
-	int iBmpIndex;
+    int iPosDeltaX;
+    int iPosDeltaY;
+    int iBmpIndex;
 }ASSISTBMPDATA, FAR *LPASSISTBMPDATA;
-
-
 
 VOID TrashAssistBmp();
 BOOL InitAssistBmp(HWND hWnd);

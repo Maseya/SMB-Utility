@@ -13,7 +13,7 @@
 #define _WIN32_IE 0x200
 #include <windows.h>//imm32.lib
 #include <windowsx.h>
-#include <commctrl.h>//Comctl32.lib 
+#include <commctrl.h>//Comctl32.lib
 #include <process.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +26,6 @@
 #include "strings.h"
 #include "logview.h"
 
-// #define INTERNATIONAL
+ // #define INTERNATIONAL
 
 #endif /* SMBUTIL_H */

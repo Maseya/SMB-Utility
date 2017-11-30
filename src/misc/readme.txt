@@ -1,11 +1,6 @@
-﻿
-
- SMB Utility ver.1.08
-
-
+﻿ SMB Utility ver.1.08
 
 　このテキストは、メモ帳の[編集]-[右端で折り返す]をチェックすると読みやすくなります。
-
 
 §1 概要
 　SMB Utility は、Super Mario Bros.(TM)のオリジナルマップを作成するためのWindows(R)用アプリケーションです。SMB Utilityとその作者は、Super Mario Bros.(TM)の開発元であるNintendo(R)とは、一切関係ありません。

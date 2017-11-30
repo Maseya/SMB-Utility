@@ -1,6 +1,5 @@
 ﻿/************************************************************************************
 
-
                                   smb Utility
 
   File: string.h
@@ -23,8 +22,8 @@
 #define STRING_LOGVIEW_FILEOPEN "Loaded %s."//"%sを開きました。"
 #define STRING_LOGVIEW_LOADCHR  "Imported CHR-ROM from %s.(%.4xH bytes)"//"%sから%.4xHﾊﾞｲﾄのCHRROMを読み込みました。"
 
-//
-//
+ //
+ //
 #define STRING_FILEOPENDIALOG_CHRLOAD "Import CHR-ROM from file"
 #define STRING_WINDOW_EMULATOR        "Emulator"
 #define STRING_WINDOW_OBJLIST         "Object List"
@@ -90,8 +89,8 @@
 #define STRING_UNDONAME_TOOLAREAROOM      "Sort Areas"
 #define STRING_UNDONAME_TOOLDEMORECORDER  "Record Intro Demo"//"Demo Recording"
 #define STRING_UNDONAME_TOOLOTHER         "Edit Some Game Stuff"
-//#define STRING_UNDONAME_TOOLGLOBAL        "General Setting"
 
+//#define STRING_UNDONAME_TOOLGLOBAL        "General Setting"
 
 #define STRING_POLEGFX_DEFAULT "Default"
 #define STRING_POLEGFX_ROPE    "Rope"
@@ -105,7 +104,6 @@
 #define STRING_SETTING_WORLD    "World"
 #define STRING_SETTING_OTHER    "Other"
 #define STRING_SETTING_TITLE    "Edit Some Game Stuff"
-
 
 #define STRING_STRINGDATA_01 "MARIO(Status bar)"
 #define STRING_STRINGDATA_02 "MARIO(Time up at two players mode)"
@@ -190,7 +188,6 @@
 #define STRING_KEYCONFIG_WHEEL_OBJ          "Select object"//"ｵﾌﾞｼﾞｪｸﾄごとの移動"
 
 #define STRING_KEYCONFIG_BUTTONX            "Button%d"//"ﾎﾞﾀﾝ%d"
-
 
 #define STRING_OBJLIST_LENNAME   "Length:%d, %s"
 #define STRING_OBJLIST_UNKNOWN   "Unknown object"
@@ -350,7 +347,6 @@
 #define STRING_OBJDATA_V_02 "Clouds"
 #define STRING_OBJDATA_V_03 "Mountain"
 #define STRING_OBJDATA_V_04 "Fence"
-
 
 #define STRING_OBJDATA_BADGUYS_01 "Koopa Troopa(green)"
 #define STRING_OBJDATA_BADGUYS_02 "Koopa Troopa(red)"
