@@ -10,8 +10,9 @@
 #ifndef INI_H
 #define INI_H
 
-//
+ //
 #define REGROOTPATH "Software\\smbUtil"
+
 //
 #define INI_MDIFRAME_WINDOW            "MDIFRAME_WNDPL"
 #define INI_OBJECTLIST_WINDOW          "OBJLIST_WNDPL"
@@ -32,9 +33,11 @@
 #define INI_EDITOR_KEYS               "EDITOR_KEYS"
 #define INI_EDITOR_WHEEL              "EDITOR_WHEEL"
 #define INI_OBJECTVIEW_SETTING         "OBJVIEW_SETTING"
+
 // HIWORD(N):高さ LOWORD(N):設定
 #define LOGVIEW_SHOWLOGVIEW            0x00000001
 #define INI_LOGVIEW_SETTING            "LOGVIEW_SETTING"
+
 //#define INI_LOGVIEW_BORDER             "LOGVIEW_BORDERPL"
 //#define INI_LOGVIEW_LOGVIEW            "LOGVIEW_LOGVIEWPL"
 
@@ -42,8 +45,9 @@
 
 #define INI_INSTALL_DIR                "INSTALL_DIR"
 
-BOOL WriteToRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize);
-BOOL ReadFromRegistry(LPSTR lpValueName,DWORD dwType,LPVOID lpData,DWORD dwSize);
+BOOL WriteToRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
+BOOL ReadFromRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
+
 // アンインストール時に呼び出す
 BOOL DeleteRegistryEntries();
 
@@ -57,6 +61,6 @@ BOOL DeleteRegistryEntries();
 #define INIFILE_EDITOR                "EDITOR"
 #define INIFILE_EDITOR_PROTECT        "PROTECT"
 
-UINT  GetIntegerFromINI(LPCTSTR,LPCTSTR,INT);
+UINT  GetIntegerFromINI(LPCTSTR, LPCTSTR, INT);
 
 #endif /* INI_H */

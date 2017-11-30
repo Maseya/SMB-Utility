@@ -37,20 +37,19 @@
 #define IDM_TOOL_OPTION          1042
 #define IDM_TOOL_DEMORECORD      1043
 #define IDM_TOOL_CUSTOMIZE       1044
-//#define IDM_TOOL_DUMPPRG         1045
-//#define IDM_TOOL_DUMPCHR         1046
-//#define IDM_TOOL_DUMPTRAINER     1047
 
-
+ //#define IDM_TOOL_DUMPPRG         1045
+ //#define IDM_TOOL_DUMPCHR         1046
+ //#define IDM_TOOL_DUMPTRAINER     1047
 
 #define IDM_VIEW_TOOLBAR 1070
 #define IDM_VIEW_STATUSBAR 1071
 #define IDM_VIEW_LOGVIEW   1072
 
-
 #define IDM_EMULATOR_NORMALPLAY      1020
 #define IDM_EMULATOR_LOADPLAY        1021
 #define IDM_EMULATOR_TESTPLAYSETTING 1022
+
 //#define IDM_EMULATOR_FRAMESKIP0      1023
 //#define IDM_EMULATOR_FRAMESKIP1      1024
 //#define IDM_EMULATOR_FRAMESKIP2      1025
@@ -60,7 +59,6 @@
 #define IDM_EMULATOR_STOP            1029
 #define IDM_EMULATOR_PAGEPLAY        1019
 #define IDM_EMULATOR_PAGEPLAYHALF    1050
-
 
 #define IDM_WINDOW_NEXT                 1030
 #define IDM_WINDOW_PREV                 1031
@@ -97,6 +95,7 @@
 #define IDC_BIN               2010
 #define IDC_ISBIN             2011
 #define IDC_ISADDRESS         2015
+
 //#define IDC_APPLY             2168
 
 #define IDC_STATIC_XPOS1                2154
@@ -126,7 +125,6 @@
 
 #define IDC_BROWSE                      2168
 
-
 #define IDC_TIME                        2017
 #define IDC_POSITION                    2018
 #define IDC_BACKCOLOR                   2019
@@ -149,6 +147,7 @@
 #define IDC_DATA2                       2061
 #define IDC_DATA3                       2062
 #define IDC_DATA4                       2063
+
 //文字列の編集
 #define IDC_STRINGSELECT                2040
 #define IDC_STRING                      2041
@@ -179,7 +178,6 @@
 
 #define IDC_COINSFOR1UP                 2117
 #define IDC_COINSFOR1UPSPIN             2118
-
 
 #define IDC_KOOPA                       2134
 #define IDC_KOOPAWORLD                  2135
@@ -239,7 +237,6 @@
 #define IDC_JOYSTICKID                  2214
 #define IDC_STATIC_JOYSTICKID           2215
 
-
 #define IDC_HELPPATH            2167
 
 #define IDC_MSGONSAVE                   2196
@@ -264,7 +261,6 @@
 #define IDC_WHEELLIST                   2202
 #define IDC_JOYBUTTONVALUE              2203
 #define IDC_JOYBUTTONLIST               2204
-
 
 //ルーム選択ダイアログボックス
 

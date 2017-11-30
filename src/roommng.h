@@ -16,7 +16,7 @@
 
 #define MAKE_ROOMID(b) ((BYTE)( (b)&0x7F ))
 
-//PRG ADDRESS
+ //PRG ADDRESS
 #define SMB_WORLD_SETTING         0x9CB4
 #define SMB_AREA_SETTING          0x9CBC
 #define SMB_BADGUYS_ADDRESS_HEAD  0x9CE0
@@ -32,7 +32,6 @@
 #define MOVEOBJ_ERR_DSTPAGE     2
 #define MOVEOBJ_ERR_OBJOVER     4
 
-
 extern int g_iPage;
 extern int g_iWorld;
 extern int g_iArea;
@@ -41,6 +40,7 @@ extern int g_iArea2;
 //uRoomIDとして指定すると現在エディットしているアドレスが返ってくる
 // 旧
 #define GETADDRESS_CURRENT_EDITTING 0x100
+
 // 新
 #define CURRENT_ROOMID GETADDRESS_CURRENT_EDITTING
 
@@ -67,6 +67,7 @@ WORD BadGuysGetAllDataLength(UINT uRoomID);
 /**************************************
 
 **************************************/
+
 //現在編集しているルームのルームIDを得る
 BYTE GetRoomID();
 BYTE rm_GetStartPage();
@@ -89,7 +90,7 @@ int GetNumWorlds();
 /**************************************
 
 **************************************/
-void ChangeRoomAttribute(BYTE bData,int iNewAttr);
+void ChangeRoomAttribute(BYTE bData, int iNewAttr);
 
 void GetValidRoomIDs(LPBYTE pbBuf);
 
@@ -104,10 +105,8 @@ void OpenNewRoomProcess();
 
 void UpdateWorldData(BOOL);
 
-
-
-LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
-LRESULT CALLBACK AreaSortDlgProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
-LRESULT CALLBACK SendObjectDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
-LRESULT CALLBACK GeneralSettingDlgProc( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam);
+LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK AreaSortDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK GeneralSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 #endif /* ROOMMNG_H */

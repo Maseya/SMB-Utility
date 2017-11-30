@@ -12,12 +12,12 @@
 
 typedef struct _tagINESHEADER
 {
-	char cType[4];
-	unsigned char bNum_PRGs;
-	unsigned char bNum_CHRs;
-	unsigned char bROM_CTRL1;
-	unsigned char bROM_CTRL2;
-	char cReserved[8];
+    char cType[4];
+    unsigned char bNum_PRGs;
+    unsigned char bNum_CHRs;
+    unsigned char bROM_CTRL1;
+    unsigned char bROM_CTRL2;
+    char cReserved[8];
 }iNES_HEADER;
 
 #define INES_ROMBANKSIZE   0x4000
@@ -27,6 +27,7 @@ typedef struct _tagINESHEADER
 BOOL SaveAsFile(LPSTR pFilename);
 
 BOOL LoadROM(LPSTR pFilename);
+
 // 書き換えられた - TRUE, 同じ - FALSE
 BOOL CheckROMFileTime();
 

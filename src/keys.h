@@ -12,13 +12,12 @@
 
 LRESULT CALLBACK CustomizeDlgProc(HWND, UINT, WPARAM, LPARAM);
 
-
 typedef enum _tagWHEELFUNC
 {
-	TYPE1 = 0,
-	TYPE16 = 1,
-	PAGE = 2,
-	OBJ = 3
+    TYPE1 = 0,
+    TYPE16 = 1,
+    PAGE = 2,
+    OBJ = 3
 }WHEELFUNC;
 
 HANDLE ky_Initialize();
