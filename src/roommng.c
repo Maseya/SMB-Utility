@@ -1532,7 +1532,7 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             UINT uRet;
 
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-            if (1 != sscanf(cBuf, "%x", &bRoomID)) return TRUE;
+            if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return TRUE;
             if (!IsRoomIDValid(bRoomID)) return TRUE;
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;

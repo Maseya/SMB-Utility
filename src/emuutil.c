@@ -760,6 +760,8 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
                 {
                 case NONE:
                     fEditEnable = FALSE;
+                    wSpinMin = 0;
+                    wSpinMax = 0;
                     break;
                 case POS:
                     if (fTraslated
@@ -812,6 +814,8 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
                 switch (iRet)
                 {
                 case NONE:
+                    wSpinMin = 0;
+                    wSpinMax = 0;
                     fEditEnable = FALSE;
                     break;
                 case POS:

@@ -197,7 +197,7 @@ static void ChangeString(UINT iStringNum, LPSTR pString)
             {
                 char cTmp[4] = {0};
                 memcpy(cTmp, &pString[n], 3);
-                sscanf(cTmp, "#%x", &bTmp);
+                sscanf(cTmp, "#%hhx", &bTmp);
                 n += 3;
             }
             else
@@ -355,27 +355,27 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_WORLD, cBuf, 34);
-            if (11 != sscanf(cBuf, "%x %x %x %x %x %x %x %x %x %x %x", &bTmp[0][0], &bTmp[0][1], &bTmp[0][2], &bTmp[0][3], &bTmp[0][4], &bTmp[0][5], &bTmp[0][6], &bTmp[0][7], &bTmp[0][8], &bTmp[0][9], &bTmp[0][10])) return TRUE;
+            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[0][0], &bTmp[0][1], &bTmp[0][2], &bTmp[0][3], &bTmp[0][4], &bTmp[0][5], &bTmp[0][6], &bTmp[0][7], &bTmp[0][8], &bTmp[0][9], &bTmp[0][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_PAGE, cBuf, 34);
-            if (11 != sscanf(cBuf, "%x %x %x %x %x %x %x %x %x %x %x", &bTmp[1][0], &bTmp[1][1], &bTmp[1][2], &bTmp[1][3], &bTmp[1][4], &bTmp[1][5], &bTmp[1][6], &bTmp[1][7], &bTmp[1][8], &bTmp[1][9], &bTmp[1][10])) return TRUE;
+            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[1][0], &bTmp[1][1], &bTmp[1][2], &bTmp[1][3], &bTmp[1][4], &bTmp[1][5], &bTmp[1][6], &bTmp[1][7], &bTmp[1][8], &bTmp[1][9], &bTmp[1][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_YPOS, cBuf, 34);
-            if (11 != sscanf(cBuf, "%x %x %x %x %x %x %x %x %x %x %x", &bTmp[2][0], &bTmp[2][1], &bTmp[2][2], &bTmp[2][3], &bTmp[2][4], &bTmp[2][5], &bTmp[2][6], &bTmp[2][7], &bTmp[2][8], &bTmp[2][9], &bTmp[2][10])) return TRUE;
+            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[2][0], &bTmp[2][1], &bTmp[2][2], &bTmp[2][3], &bTmp[2][4], &bTmp[2][5], &bTmp[2][6], &bTmp[2][7], &bTmp[2][8], &bTmp[2][9], &bTmp[2][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_RETURNPOS, cBuf, 34);
-            if (11 != sscanf(cBuf, "%x %x %x %x %x %x %x %x %x %x %x", &bTmp[3][0], &bTmp[3][1], &bTmp[3][2], &bTmp[3][3], &bTmp[3][4], &bTmp[3][5], &bTmp[3][6], &bTmp[3][7], &bTmp[3][8], &bTmp[3][9], &bTmp[3][10])) return TRUE;
+            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[3][0], &bTmp[3][1], &bTmp[3][2], &bTmp[3][3], &bTmp[3][4], &bTmp[3][5], &bTmp[3][6], &bTmp[3][7], &bTmp[3][8], &bTmp[3][9], &bTmp[3][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_DATA1, cBuf, 3);
-            if (1 != sscanf(cBuf, "%x", &bData[0]))return TRUE;
+            if (1 != sscanf(cBuf, "%hhx", &bData[0]))return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_DATA2, cBuf, 3);
-            if (1 != sscanf(cBuf, "%x", &bData[1])) return TRUE;
+            if (1 != sscanf(cBuf, "%hhx", &bData[1])) return TRUE;
 
             undoPrepare(UNDONAME_TOOLLOOPBIN);
 

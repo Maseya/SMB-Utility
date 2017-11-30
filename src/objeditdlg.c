@@ -86,7 +86,7 @@ void UpdateBadguysEditDlgPreview(HWND hDlg, BOOL blGetRoomIDFromList)
     if (!blGetRoomIDFromList)
     {
         GetDlgItemText(hDlg, IDC_DATA, cBuf, 10);
-        if (1 != sscanf(cBuf, "%x", &bRoomID)) return;
+        if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return;
     }
     else
     {
@@ -276,7 +276,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
                 //バイナリデータの取得
                 GetDlgItemText(hDlg, IDC_BIN, cBuf, 20);
-                iSize = sscanf(cBuf, "%x %x %x %x", &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
+                iSize = sscanf(cBuf, "%hhx %hhx %hhx %hhx", &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
                 if (iSize < 1 || iSize>4) return TRUE;
 
                 undoPrepare(UNDONAME_DLGEDIT);
@@ -374,7 +374,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
                 //
                 GetDlgItemText(hDlg, IDC_DATA, cBuf, 3);
-                if (1 != sscanf(cBuf, "%x", &bTmp)) return TRUE;
+                if (1 != sscanf(cBuf, "%hhx", &bTmp)) return TRUE;
                 bBuf[1] |= (bTmp & 0x7F);
 
                 //ワールド
@@ -663,7 +663,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
                 int iValidSize;
 
                 GetDlgItemText(hDlg, IDC_BIN, cBinBuf, 10);
-                iValidSize = sscanf(cBinBuf, "%x %x %x", &bBinBuf[0], &bBinBuf[1], &bBinBuf[2]);
+                iValidSize = sscanf(cBinBuf, "%hhx %hhx %hhx", &bBinBuf[0], &bBinBuf[1], &bBinBuf[2]);
                 if (iValidSize < 1 || 3 < iValidSize) return TRUE;
 
                 undoPrepare(UNDONAME_DLGEDIT);
