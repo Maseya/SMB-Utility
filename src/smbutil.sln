@@ -6,6 +6,16 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "smbutil", "smbutil.vcxproj", "{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}.Debug|x86.ActiveCfg = Debug|Win32
+		{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}.Debug|x86.Build.0 = Debug|Win32
+		{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}.Release|x86.ActiveCfg = Release|Win32
+		{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

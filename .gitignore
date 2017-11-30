@@ -290,3 +290,4 @@ __pycache__/
 
 # This file originally got removed by the *_i.h
 !src/string_i.h
+src/bin/nasm.exe

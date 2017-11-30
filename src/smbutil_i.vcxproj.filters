@@ -187,9 +187,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assist_img.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="image\assist_img.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -263,8 +260,10 @@
     <CustomBuild Include="data\ram2.bin">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="data\ram3.bin">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\make6502.bat">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
