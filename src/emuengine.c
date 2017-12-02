@@ -603,41 +603,12 @@ NEXT:
 
         //iSpritesPerLine++;
 
-#ifdef WIN64
         iIndex = pbSPRRAM[i + 1];
         iCol = (pbSPRRAM[i + 2] & 0x03);
         iFlipX = (pbSPRRAM[i + 2] & 0x40);
         iFlipY = (pbSPRRAM[i + 2] & 0x80);
         iPriority = (pbSPRRAM[i + 2] & 0x20);
         x = pbSPRRAM[i + 3];
-#else
-        __asm {
-            mov ebx, i
-            xor edx, edx
-            mov dl, byte ptr(pbSPRRAM + 1)[ebx]
-            mov iIndex, edx
-
-            mov dl, byte ptr(pbSPRRAM + 2)[ebx]
-
-            mov eax, edx
-            and eax, 3
-            mov iCol, eax
-
-            mov eax, edx
-            and eax, 0x40
-            mov iFlipX, eax
-
-            mov eax, edx
-            and eax, 0x80
-            mov iFlipY, eax
-
-            and edx, 0x20
-            mov iPriority, edx
-
-            mov dl, byte ptr(pbSPRRAM + 3)[ebx]
-            mov x, edx
-        }
-#endif
 
         y2 = dwLine - y;
         if (iFlipY) y2 = (iSize - 1) - y2;
@@ -772,29 +743,7 @@ static void RefreshBackGroundLine(register WORD wLine)
             //アトリビュートテーブルのデータを取得
             if ((!(x & 3)) || iFirst)
             {
-#ifdef WIN64
                 iColorByte = pbVRAM[((iIndex1 & 0x3C00) | (iIndex1 & 0x1F) >> 2) | ((iIndex1 & 0x380) >> 4) | 0x3C0];
-#else
-                __asm {
-                    mov eax, iIndex1
-
-                    mov ecx, eax
-                    sar eax, 4
-                    and ch, 0x3C    // --xx xx-- ---- ----
-
-                    and eax, 0x0038 // ---- ---- --xx x---
-                    sar cl, 2
-                    and cl, 0x07    // ---- ---- ---- -xxx
-
-                    or eax, 0x03C0
-
-                    or ecx, eax    // ---- --11 11-- ----
-
-                    xor edx, edx
-                    mov dl, byte ptr pbVRAM[ecx]
-                    mov iColorByte, edx
-                }
-#endif
             }
 
             //アトリビュートデータのどの2ビットを使用するかを計算
@@ -832,7 +781,6 @@ static void RefreshBackGroundLine(register WORD wLine)
 
         if (!g_fUseMMX)
         {
-#ifdef WIN64
             int n = (iPixelX < 0) ? 8 + iPixelX : 8;
             if (iPixelX < 0)pbChrBase -= iPixelX;
             iPixelX += 8;
@@ -844,50 +792,7 @@ static void RefreshBackGroundLine(register WORD wLine)
 
             pbChrBase += n;
             pbVideoBuf += n;
-#else
 
-            // asm version
-            __asm {
-
-                // n = (iPixelX<0) ? 8+iPixelX : 8 ;
-                // if(iPixelX<0)pbChrBase -= iPixelX; <- もしかするとこの部分がおかしい？？（スクロールがスムーズでないことの原因？）
-                // カウントレジスタ
-                mov edx, iPixelX
-                mov ecx, 8 // n
-                mov esi, pbChrBase
-                mov edi, pbVideoBuf
-                cmp edx, 0
-                jge L1
-                add ecx, edx
-                sub esi, edx
-                L1 :
-
-                // iPixelX+=8;
-                add iPixelX, 8
-
-                    // save counter
-                    mov ebx, ecx
-
-                    //cld
-                    rep movs
-
-                    //
-                    mov pbChrBase, esi
-                    mov pbVideoBuf, edi
-
-                    //  *pbVideoBuf |= iCol;
-                    mov eax, iCol //iCol
-                    sub edi, ebx
-                    or [edi], eax
-                    or [edi + 1], eax
-                    or [edi + 2], eax
-                    or [edi + 3], eax
-                    or [edi + 4], eax
-                    or [edi + 5], eax
-                    or [edi + 6], eax
-                    or [edi + 7], eax
-            }
-#endif
             if (++x & 0x20)
             {
                 x = 0;
@@ -896,7 +801,6 @@ static void RefreshBackGroundLine(register WORD wLine)
         }
         else
         {
-#ifdef WIN64
             int n = (iPixelX < 0) ? 8 + iPixelX : 8;
             if (iPixelX < 0)pbChrBase -= iPixelX;
 
@@ -908,43 +812,7 @@ static void RefreshBackGroundLine(register WORD wLine)
             pbVideoBuf += n;
             iPixelX += 8;
             pbChrBase += 8;
-#else
 
-            // asm version
-            __asm {
-
-                // n = (iPixelX<0) ? 8+iPixelX : 8 ;
-                // if(iPixelX<0)pbChrBase -= iPixelX;
-                // カウントレジスタ
-                mov ecx, 8 // n
-                mov esi, pbChrBase
-                mov edi, pbVideoBuf
-                mov edx, iPixelX
-                cmp edx, 0
-                jge L1MMX
-                add ecx, edx
-                sub esi, edx
-                L1MMX :
-                add pbVideoBuf, ecx
-                    add iPixelX, 8
-                    add pbChrBase, 8
-
-                    //
-                    movq mm0, [esi]
-
-                    //  *pbVideoBuf |= iCol;
-                    por mm0, qwCol64
-                    movq[edi], mm0
-                    /*
-                    mov esi, edi
-                    mov eax, iCol //iCol
-                    rep stos
-                    por mm0,[esi]
-                    */
-
-                    emms
-            }
-#endif
             if (++x & 0x20)
             {
                 x = 0;
@@ -960,20 +828,7 @@ static void RefreshLine(WORD wLine)
         RefreshBackGroundLine(wLine);
     else
     {
-#ifdef WIN64
         memset(gpbBmBufOffScreen + wLine * NES_SCREENSIZEX, 0, NES_SCREENSIZEX);
-#else
-        __asm {
-            mov edi, gpbBmBufOffScreen
-            xor edx, edx
-            mov dx, wLine
-            shl edx, 8
-            add edi, edx
-            mov ecx, NES_SCREENSIZEX
-            mov al, 0
-            rep stos
-        }
-#endif
     }
 
     if (bPPUCtrlReg2 & 0x10)

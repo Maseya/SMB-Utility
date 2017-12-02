@@ -26,22 +26,11 @@ BOOL IsMMXAvailable()
 
     if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
     {
-#ifdef WIN64
         int cpuid[4];
         __cpuid(cpuid, 1);
 
         if (cpuid[3] & 0x00800000)
             blReturn = TRUE;
-#else
-        __asm {
-            mov eax, 1
-            cpuid
-            test edx, 00800000h
-            jz NOMMX
-            mov blReturn, TRUE
-            NOMMX :
-        }
-#endif
     }
     return blReturn;
 }
