@@ -373,9 +373,6 @@
     <Text Include="misc\history.txt" />
     <Text Include="misc\readme.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\make6502.bat" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

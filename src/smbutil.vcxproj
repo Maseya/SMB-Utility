@@ -379,9 +379,6 @@
     <Text Include="misc\readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\make6502.bat" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="resource_j.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

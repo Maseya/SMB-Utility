@@ -261,9 +261,4 @@
       <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\make6502.bat">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>
