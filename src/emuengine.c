@@ -1399,14 +1399,17 @@ void CALLBACK Run6502(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
 _inline void ExecuteCPUNoRefreshScreen(int *lpiScanlines)
 {
     m6502zpexec(113);
-    if (g_wPrevPC == m6502zppc)
+
+    int pc = m6502zppc();
+
+    if (g_wPrevPC == pc)
     {
         // detect a follow code.
         // addr1 : jmp addr1
-        LPBYTE lpbOpCode = &psM6502->m6502Base[m6502zppc];
+        LPBYTE lpbOpCode = &psM6502->m6502Base[pc];
         if (lpbOpCode[0] == 0x4C
-            && lpbOpCode[1] == (m6502zppc & 0xFF)
-            && lpbOpCode[2] == (m6502zppc >> 8))
+            && lpbOpCode[1] == (pc & 0xFF)
+            && lpbOpCode[2] == (pc >> 8))
         {
             if (wScanline < 242)
             {
@@ -1415,7 +1418,7 @@ _inline void ExecuteCPUNoRefreshScreen(int *lpiScanlines)
             }
         }
     }
-    g_wPrevPC = m6502zppc;
+    g_wPrevPC = pc;
 
     wScanline++;
 
@@ -1512,9 +1515,9 @@ void DestoryNester()
 
 BOOL CreateNester()
 {
-    psM6502 = Malloc(m6502zpGetContextSize());
+    psM6502 = Malloc(sizeof(CONTEXTM6502));
     if (!psM6502) return FALSE;
-    memset(psM6502, 0, m6502zpGetContextSize());
+    memset(psM6502, 0, sizeof(CONTEXTM6502));
 
     pb6502CPUMemory = Malloc(0x10000);
     if (!pb6502CPUMemory) return FALSE;

@@ -85,6 +85,9 @@
     <ClCompile Include="undo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="M6502.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource_i.rc">
@@ -251,9 +254,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="M6502.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="data\ram1.bin">
       <Filter>Resource Files</Filter>
     </CustomBuild>
