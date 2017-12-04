@@ -673,7 +673,7 @@ void DumpVersion()
     wsprintf(szBuf, __T("(C) 1999-%d M.K.S"), THISYEAR);
     lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
 
-    lv_OutputString(__DATE__, LOGVIEW_OUTPUTSTRING_CR);
+    lv_OutputString(TEXT(__DATE__), LOGVIEW_OUTPUTSTRING_CR);
 
     lv_OutputString(STRING_VERSION_CONTRIBUTION, LOGVIEW_OUTPUTSTRING_CR);
 }
@@ -692,7 +692,7 @@ LRESULT CALLBACK VersionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
         wsprintf(szBuf, __T("(C) 1999-%d M.K.S"), THISYEAR);
         SetDlgItemText(hDlg, IDC_COPYRIGHT, szBuf);
 
-        SetDlgItemText(hDlg, IDC_NOTE, __DATE__);
+        SetDlgItemText(hDlg, IDC_NOTE, TEXT(__DATE__));
 
         SetDlgItemText(hDlg, IDC_CONTRIBUTION, STRING_VERSION_CONTRIBUTION);
 

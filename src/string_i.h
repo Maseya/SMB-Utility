@@ -79,7 +79,7 @@
 #define STRING_SENDOBJECT_DSTERROR          __T("There are no objects in destination page.")
 #define STRING_SENDOBJECT_OVEROBJ           __T("Can't send any more objects to the destination room.")//__T("送り先のﾙｰﾑには、これ以上ｵﾌﾞｼﾞｪｸﾄを送ることができません。")
 
-#define STRING_UNDO_MENUTEXT                __T("&Undo \")%s\")")
+#define STRING_UNDO_MENUTEXT                __T("&Undo \"%s\"")
 #define STRING_UNDONAME_KEYEDIT             __T("Keyboard Input")
 #define STRING_UNDONAME_DLGEDIT             __T("Dialog Input")
 #define STRING_UNDONAME_SENDOBJ             __T("Send Object")
@@ -173,7 +173,7 @@
 #define STRING_KEYCONFIG_EDIT_PREVWIN       __T("Window:Previous")
 #define STRING_KEYCONFIG_KEYACCEL           __T("Keyboard accelerator")
 #define STRING_KEYCONFIG_EMULATOR           __T("Emulator")
-#define STRING_KEYCONFIG_OVERLAPPED         __T("It is overlapped at %s - \")%s\").")
+#define STRING_KEYCONFIG_OVERLAPPED         __T("It is overlapped at %s - \"%s\".")
 #define STRING_KEYCONFIG_INITIALIZE         __T("Load preset-key?")
 #define STRING_KEYCONFIG_NOTIFY             __T("It is enabled at next start.")
 
