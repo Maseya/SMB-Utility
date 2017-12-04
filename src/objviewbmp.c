@@ -315,7 +315,7 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
         break;
     default://（敵キャラコマンド）
     {
-        //			LPTSTR bit6[]={__T(""), STRING_OBJLIST_HARD};
+        //			LPTSTR bit6[]={STRING_NULL, STRING_OBJLIST_HARD};
         //			wsprintf(lpszBuf, __T("%s%s"), smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
         BYTE bType = lpbBuf[1] & 0x3F;
         int iFireBars[] = {

@@ -244,10 +244,10 @@
 #define STRING_OBJDATA_MAP_B_23             __T("Pipe(Player can't enter.)")
 #define STRING_OBJDATA_MAP_B_24             __T("Pipe(Player can enter.)")
 
-#define STRING_OBJDATA_HELP_B12             __T("")//__T("ｷｬﾗｸﾀの１つ。ｷｬﾗｸﾀｵｰﾊﾞｰで表示されなくなると、ﾏﾘｵが挟まって出れなくなるので注意。")
-#define STRING_OBJDATA_HELP_B13             __T("")//__T("高さ9固定。横からでも上からでも入れる。(横位置＋2)から2ｷｬﾗ分は、先に指定された障害物を消す。")
-#define STRING_OBJDATA_HELP_B14             __T("")//__T("やたらと使用しないこと。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。")
-#define STRING_OBJDATA_HELP_B23             __T("")//__T("長さを1にしても必ず2になる。")
+#define STRING_OBJDATA_HELP_B12             STRING_NULL//__T("ｷｬﾗｸﾀの１つ。ｷｬﾗｸﾀｵｰﾊﾞｰで表示されなくなると、ﾏﾘｵが挟まって出れなくなるので注意。")
+#define STRING_OBJDATA_HELP_B13             STRING_NULL//__T("高さ9固定。横からでも上からでも入れる。(横位置＋2)から2ｷｬﾗ分は、先に指定された障害物を消す。")
+#define STRING_OBJDATA_HELP_B14             STRING_NULL//__T("やたらと使用しないこと。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。")
+#define STRING_OBJDATA_HELP_B23             STRING_NULL//__T("長さを1にしても必ず2になる。")
 
 #define STRING_OBJDATA_MAP_C_01             __T("Hole")
 #define STRING_OBJDATA_MAP_C_02             __T("Balance's horizontal rope")
@@ -258,9 +258,9 @@
 #define STRING_OBJDATA_MAP_C_07             __T("Horizontal ?Blocks(Coin, V=3)")
 #define STRING_OBJDATA_MAP_C_08             __T("Horizontal ?Blocks(Coin, V=7)")
 
-#define STRING_OBJDATA_HELP_C01             __T("")//__T("縦位置8から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
-#define STRING_OBJDATA_HELP_C02             __T("")//__T("縦位置0固定")
-#define STRING_OBJDATA_HELP_C06             __T("")//__T("縦位置10から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
+#define STRING_OBJDATA_HELP_C01             STRING_NULL//__T("縦位置8から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
+#define STRING_OBJDATA_HELP_C02             STRING_NULL//__T("縦位置0固定")
+#define STRING_OBJDATA_HELP_C06             STRING_NULL//__T("縦位置10から12の先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
 
 #define STRING_OBJDATA_MAP_D_01             __T("Page skip")
 #define STRING_OBJDATA_MAP_D_02             __T("Reverse L pipe")
@@ -277,13 +277,13 @@
 #define STRING_OBJDATA_MAP_D_14             __T("?")
 #define STRING_OBJDATA_MAP_D_15             __T("*Freeze")
 
-#define STRING_OBJDATA_HELP_D01             __T("")
-#define STRING_OBJDATA_HELP_D03             __T("")//__T("やたらと使用しない事。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。")
-#define STRING_OBJDATA_HELP_D04             __T("")//__T("縦位置6固定")
-#define STRING_OBJDATA_HELP_D05             __T("")//__T("縦位置7固定")
-#define STRING_OBJDATA_HELP_D06             __T("")//__T("縦位置8、長さ13固定")
-#define STRING_OBJDATA_HELP_D12             __T("")//__T("連続出現ｷｬﾗを出した後、暴走を防ぐためにﾎﾟｰﾙを出す前に指定。")
-#define STRING_OBJDATA_HELP_D13             __T("")//__T("ﾍﾟｰｼﾞ送りｺﾏﾝﾄﾞとｾｯﾄでﾙｰﾌﾟを形成する。")
+#define STRING_OBJDATA_HELP_D01             STRING_NULL
+#define STRING_OBJDATA_HELP_D03             STRING_NULL//__T("やたらと使用しない事。1ﾙｰﾑに2回以上使用すると暴走しやすくなるので注意。")
+#define STRING_OBJDATA_HELP_D04             STRING_NULL//__T("縦位置6固定")
+#define STRING_OBJDATA_HELP_D05             STRING_NULL//__T("縦位置7固定")
+#define STRING_OBJDATA_HELP_D06             STRING_NULL//__T("縦位置8、長さ13固定")
+#define STRING_OBJDATA_HELP_D12             STRING_NULL//__T("連続出現ｷｬﾗを出した後、暴走を防ぐためにﾎﾟｰﾙを出す前に指定。")
+#define STRING_OBJDATA_HELP_D13             STRING_NULL//__T("ﾍﾟｰｼﾞ送りｺﾏﾝﾄﾞとｾｯﾄでﾙｰﾌﾟを形成する。")
 
 #define STRING_OBJDATA_MAP_E_01             __T("Basic brick & scenery")
 #define STRING_OBJDATA_MAP_E_02             __T("Change background")
@@ -297,11 +297,11 @@
 #define STRING_OBJDATA_MAP_F_07             __T("Vertical balls")
 #define STRING_OBJDATA_MAP_F_08             __T("Nothing")
 
-#define STRING_OBJDATA_HELP_F01             __T("")//__T("縦位置0、長さ13固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
-#define STRING_OBJDATA_HELP_F02             __T("")//__T("縦位置1固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
-#define STRING_OBJDATA_HELP_F03             __T("")//__T("やたらと使用しないこと。多く使用すると暴走しやすくなる。")
-#define STRING_OBJDATA_HELP_F05             __T("")//__T("長さ0～3 問題なし。\n長さ4～6 ｸﾞﾗﾌｨｯｸｽが潰れる。長さ7 ｸﾞﾗﾌｨｯｸｽが潰れる。(横位置+16)の位置に縦位置7の壊せないﾌﾞﾛｯｸ1個。")
-#define STRING_OBJDATA_HELP_F07             __T("")//__T("ﾂﾀのようにつかまって上下移動が可能。縦位置2固定")
+#define STRING_OBJDATA_HELP_F01             STRING_NULL//__T("縦位置0、長さ13固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
+#define STRING_OBJDATA_HELP_F02             STRING_NULL//__T("縦位置1固定。指定横位置において、先指定したすべてのﾏｯﾌﾟｷｬﾗを消す。")
+#define STRING_OBJDATA_HELP_F03             STRING_NULL//__T("やたらと使用しないこと。多く使用すると暴走しやすくなる。")
+#define STRING_OBJDATA_HELP_F05             STRING_NULL//__T("長さ0～3 問題なし。\n長さ4～6 ｸﾞﾗﾌｨｯｸｽが潰れる。長さ7 ｸﾞﾗﾌｨｯｸｽが潰れる。(横位置+16)の位置に縦位置7の壊せないﾌﾞﾛｯｸ1個。")
+#define STRING_OBJDATA_HELP_F07             STRING_NULL//__T("ﾂﾀのようにつかまって上下移動が可能。縦位置2固定")
 
 #define STRING_OBJDATA_BB_01                __T("Brick:None")
 #define STRING_OBJDATA_BB_02                __T("Brick:Surface")

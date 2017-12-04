@@ -509,7 +509,7 @@ static HWND CreateListView(HWND hwndParent)
 
     hwndListView = CreateWindowEx(0,          // ex style
                                   WC_LISTVIEW,               // class name - defined in commctrl.h
-                                  __T(""),                        // dummy text
+                                  STRING_NULL,                        // dummy text
                                   WS_TABSTOP | WS_CHILD | WS_VISIBLE |
                                   LVS_AUTOARRANGE | LVS_REPORT |
                                   LVS_SHOWSELALWAYS | LVS_SINGLESEL,                   // style
