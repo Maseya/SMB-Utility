@@ -264,7 +264,7 @@ BOOL ShadeRect(HDC hDC, int x, int y, COLORREF  crHighlightColor)
     HDC       hMemDC;
     RECT      rcRect = {0, 0, 0, 0}, rcDstRect;
 
-    // The bitmap bits are for a monochrome __T("every-other-pixel"
+    // The bitmap bits are for a monochrome "every-other-pixel"
     //     bitmap (for a pattern brush)
     WORD      Bits[8] = {0x0055, 0x00aa, 0x0055, 0x00aa,
                           0x0055, 0x00aa, 0x0055, 0x00aa};
@@ -978,7 +978,7 @@ void ShowPopupMenu(HWND hwnd, POINT point, LPTSTR lpMenuName)
      */
     ClientToScreen(hwnd, (LPPOINT)&point);
 
-    /* Draw and track the __T("floating" popup */
+    /* Draw and track the "floating" popup */
     TrackPopupMenu(hMenuTrackPopup, 0, point.x, point.y, 0, hwnd, NULL);
 
     /* Destroy the menu since were are done with it. */
@@ -1404,7 +1404,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         {
             CopyMemory(&TestPlayPos, &MouseInput, sizeof(OBJVIEWMOUSEINPUT));
 
-            /* Draw the __T("floating" popup in the app's client area */
+            /* Draw the "floating" popup in the app's client area */
             GetClientRect(hWnd, (LPRECT)&rc);
 
             // Temporary porting macro

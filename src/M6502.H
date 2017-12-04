@@ -23,11 +23,11 @@
  * neil@synthcom.com for details.
  *
  * Synthcom Systems, Inc, and Neil Bradley will not be held responsible for
- * any damage done by the use of M6502. It is purely __T("as-is".
+ * any damage done by the use of M6502. It is purely "as-is".
  *
  * If you use M6502 in a freeware application, credit in the following text:
  *
- * __T("Multi-6502 CPU emulator by Neil Bradley (neil@synthcom.com)"
+ * "Multi-6502 CPU emulator by Neil Bradley (neil@synthcom.com)"
  *
  * must accompany the freeware application within the application itself or
  * in the documentation.
@@ -63,7 +63,7 @@
 #endif
 
 #ifdef __cplusplus
-extern __T("C" {
+extern "C" {
 #endif
 
     extern UINT32 m6502nmi(void);
