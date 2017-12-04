@@ -539,7 +539,7 @@ BOOL LoadCHRROMFromFile(LPTSTR pFileName, BOOL fLoadAll)
     }
 
     fread(&CHRHead, 1, sizeof(INESHEADER), fp);
-    if (memcmp(CHRHead.cType, __T("NES\x1a"), 4) || (CHRHead.bNum_CHARs != SMB_NUM_CHARS || CHRHead.bNum_PRGs != SMB_NUM_PRGS))
+    if (memcmp(CHRHead.cType, "NES\x1a", 4) || (CHRHead.bNum_CHARs != SMB_NUM_CHARS || CHRHead.bNum_PRGs != SMB_NUM_PRGS))
     {
         Msg(STRING_FILEERROR_FILEFORMAT, MB_OK | MB_ICONWARNING);
         fclose(fp);

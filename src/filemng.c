@@ -72,7 +72,7 @@ BOOL LoadROM(LPTSTR pFilename)
     }
 
     fread(&Head, 1, sizeof(INESHEADER), fp);
-    if (memcmp(Head.cType, __T("NES\x1a"), 4) || (Head.bNum_CHARs != SMB_NUM_CHARS || Head.bNum_PRGs != SMB_NUM_PRGS) || ((Head.bROM_Type & 0x01) != 0x01))
+    if (memcmp(Head.cType, "NES\x1a", 4) || (Head.bNum_CHARs != SMB_NUM_CHARS || Head.bNum_PRGs != SMB_NUM_PRGS) || ((Head.bROM_Type & 0x01) != 0x01))
     {
         Msg(STRING_FILEERROR_FILEFORMAT, MB_OK | MB_ICONWARNING);
         fclose(fp);
