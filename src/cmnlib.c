@@ -9,9 +9,7 @@
  ************************************************************************************/
 #include <windows.h>
 #include <shlwapi.h>
-#ifdef WIN64
 #include <intrin.h>
-#endif
 #include <tchar.h>
 #include "cmnlib.h"
 
