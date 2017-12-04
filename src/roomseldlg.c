@@ -18,7 +18,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     BYTE bRoomID;
     int iPage;
     BOOL blSuccess;
-    char cBuf[10];
+    TCHAR cBuf[10];
     HWND hPVWnd;
     HDC hPVdc;
     RECT rcPV;
@@ -65,7 +65,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     {
         BYTE bRoomIDs[SMB_NUM_ADDRESSDATA];
         int n;
-        char cBuf[5];
+        TCHAR cBuf[5];
         LPROOMSELECT lpRoomSelect = (LPROOMSELECT)lParam;
 
         //
@@ -103,7 +103,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         {
         case IDOK:
         {
-            char cBuf[20];
+            TCHAR cBuf[20];
             BOOL blSuccess;
             BYTE bRoomID;
             UINT iPage;

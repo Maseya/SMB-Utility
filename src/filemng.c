@@ -12,7 +12,7 @@
  // 外部エディタ変更対応
 FILETIME gFileTime;
 BOOL gblFileCmpEnable;
-extern char gFilePath[MAX_PATH];
+extern TCHAR gFilePath[MAX_PATH];
 
 static BOOL GetFileLastWrite(LPFILETIME lpFileTime)
 {

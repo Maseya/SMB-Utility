@@ -53,10 +53,11 @@ SMBSTRINGINFO smbStringData[] = {STRING_STRINGDATA_01, 5,  0, 0x8755,
                                STRING_STRINGDATA_19, 13, 1, 0x1fb6,
                                STRING_STRINGDATA_20, 13, 1, 0x1fc6};
 
-static char ConvertData2Char(BYTE bData)
+static TCHAR ConvertData2Char(BYTE bData)
 {
-    char cRet;
+    TCHAR cRet;
 
+    // All ASCII characters will correctly cast to TCHAR.
     switch (bData)
     {
     case 0x00:cRet = '0'; break;
@@ -108,7 +109,7 @@ static char ConvertData2Char(BYTE bData)
     return cRet;
 }
 
-static BYTE ConvertChr2Data(char cChar, BOOL *blUnknown)
+static BYTE ConvertChr2Data(TCHAR cChar, BOOL *blUnknown)
 {
     BYTE bRet;
 
@@ -195,7 +196,7 @@ static void ChangeString(UINT iStringNum, LPTSTR pString)
             bTmp = ConvertChr2Data(*(pString + n), &blUnknown);
             if (blUnknown)
             {
-                char cTmp[4] = {0};
+                TCHAR cTmp[4] = {0};
                 memcpy(cTmp, &pString[n], 3);
                 sscanf(cTmp, "#%hhx", &bTmp);
                 n += 3;
@@ -242,7 +243,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     case WM_INITDIALOG:
     {
         int i;
-        char cBuf[SMB_STRING_MAXCHARS + 1];
+        TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
         //
         sblWritten = FALSE;
@@ -269,7 +270,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             if (HIWORD(wParam) == CBN_SELCHANGE)
             {
                 int iSel = 0, iMaxLen;
-                char cBuf[SMB_STRING_MAXCHARS + 1];
+                TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
                 memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
                 iSel = SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
@@ -288,7 +289,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         if (LOWORD(wParam) == IDOK)//IDC_STRINGWRITE)
         {
             int iSel = 0;
-            char cBuf[SMB_STRING_MAXCHARS + 1];
+            TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
             memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
 
@@ -323,7 +324,7 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
     case WM_INITDIALOG:
     {
         BYTE *bTmp;
-        char cBuf[34];
+        TCHAR cBuf[34];
 
         bTmp = bPRGROM + SMBADDRESS_LOOP_WORLD;
         sprintf(cBuf, "%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x", bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
@@ -351,7 +352,7 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
         {
             BYTE bTmp[4][11] = {0};
             BYTE bData[2] = {0};
-            char cBuf[34];
+            TCHAR cBuf[34];
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_WORLD, cBuf, 34);
@@ -430,7 +431,7 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
     {
     case WM_INITDIALOG:
     {
-        char cBuf[20];
+        TCHAR cBuf[20];
         BYTE bNewFlower[] = "\xEA\xEA\xEA\xEA\xEA";
         int n, i;
 
@@ -730,7 +731,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
     {
     case WM_INITDIALOG:
     {
-        char cBuf[50];
+        TCHAR cBuf[50];
         int n;
         ADDRESSDATA adKoopa;
         extern struct

@@ -1527,7 +1527,7 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         {
         case IDOK:
         {
-            CHAR cBuf[10];
+            TCHAR cBuf[10];
             BOOL blSuccess;
             UINT uRet;
 

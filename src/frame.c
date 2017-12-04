@@ -126,8 +126,8 @@ UINT CALLBACK OFNHookProc(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 BOOL GetFileName(LPTSTR lpPath, HWND hWnd)
 {
     OPENFILENAME fname;
-    char filename[64] = {0};
-    char filefilter[] = NES_ALL_FILTER;
+    TCHAR filename[64] = {0};
+    TCHAR filefilter[] = NES_ALL_FILTER;
 
     memset(&fname, 0, sizeof(OPENFILENAME));
     fname.lStructSize = sizeof(fname);
@@ -611,7 +611,7 @@ BOOL SetSaveFileName(HWND hWnd)
 {
     OPENFILENAME fname;
     TCHAR filename[65];
-    char filefilter[] = NES_ONLY_FILTER;
+    TCHAR filefilter[] = NES_ONLY_FILTER;
     TCHAR curdir[MAX_PATH];
     TCHAR FilePath[MAX_PATH];
 
@@ -922,8 +922,8 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         case IDM_FILE_OPEN:
         {
             OPENFILENAME fname;
-            char filename[64] = {0};
-            char filefilter[] = NES_ALL_FILTER;
+            TCHAR filename[64] = {0};
+            TCHAR filefilter[] = NES_ALL_FILTER;
             TCHAR curdir[MAX_PATH] = {0};
             TCHAR FilePath[MAX_PATH] = {0};
 
@@ -988,8 +988,8 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         case IDM_FILE_CHRLOAD:
         {
             OPENFILENAME fname;
-            char filename[64] = {0};
-            char filefilter[] = NES_ALL_FILTER;
+            TCHAR filename[64] = {0};
+            TCHAR filefilter[] = NES_ALL_FILTER;
             TCHAR curdir[MAX_PATH] = {0};
             TCHAR filepath[MAX_PATH] = {0};
 

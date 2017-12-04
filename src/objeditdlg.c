@@ -78,7 +78,7 @@ void UpdateBadguysEditDlgPreview(HWND hDlg, BOOL blGetRoomIDFromList)
     BYTE bRoomID;
     int iPage;
     BOOL blSuccess;
-    char cBuf[10];
+    TCHAR cBuf[10];
     HWND hPVWnd;
     HDC hPVdc;
     RECT rcPV;
@@ -127,7 +127,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
     {
         int n, iPage, iOfs;
         BYTE bBuf[3];
-        char cOfs[10];
+        TCHAR cOfs[10];
         RECT rcDlg;
 
         iOfs = GetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf, &iPage);
@@ -155,7 +155,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         if ((bBuf[0] & 0x0F) == 0x0E)
         {
             BYTE bRoomIDs[SMB_NUM_ADDRESSDATA];
-            char cBuf[20];
+            TCHAR cBuf[20];
             int n;
 
             //ワールドの範囲
@@ -200,7 +200,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         }
         else if ((bBuf[0] & 0x0F) == 0x0F)
         {
-            char cBuf[10];
+            TCHAR cBuf[10];
 
             //改ページフラグ
             if (bBuf[1] & 0x80)
@@ -236,7 +236,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         }
         else
         {
-            char cBuf[10];
+            TCHAR cBuf[10];
 
             SetDlgItemInt(hDlg, IDC_XPOS, GetBadGuysXPos(bBuf), TRUE);
             SetDlgItemInt(hDlg, IDC_YPOS, GetBadGuysYPos(bBuf), TRUE);
@@ -270,7 +270,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         {
             if (IsDlgButtonChecked(hDlg, IDC_ISBIN)&BST_CHECKED)
             {
-                char cBuf[20];
+                TCHAR cBuf[20];
                 BYTE bBuf[4];
                 int iSize;
 
@@ -615,7 +615,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     case WM_INITDIALOG:
     {
         int n;
-        char cBuf[10];
+        TCHAR cBuf[10];
         int iOfs;
 
         iOfs = GetMapData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf, &iPage);
@@ -659,7 +659,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             if (IsDlgButtonChecked(hDlg, IDC_ISBIN)&BST_CHECKED)
             {
                 BYTE bBinBuf[3] = {0};
-                char cBinBuf[10] = {0};
+                TCHAR cBinBuf[10] = {0};
                 int iValidSize;
 
                 GetDlgItemText(hDlg, IDC_BIN, cBinBuf, 10);
