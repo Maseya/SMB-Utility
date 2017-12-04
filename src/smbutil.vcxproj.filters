@@ -2,19 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{d0ae4ba2-223f-4d31-b66a-e695981fdd1f}</UniqueIdentifier>
+      <UniqueIdentifier>{f6651e94-171c-4dc7-b83b-207ed612d337}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{45d5b6b6-46e0-4bd9-a07b-9a1d88b8543a}</UniqueIdentifier>
+      <UniqueIdentifier>{7cb29b45-478c-48e9-82d1-884e06c28e2f}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{e7726416-e8ae-4153-b8de-0c59933f3bbb}</UniqueIdentifier>
+      <UniqueIdentifier>{969a7c44-2219-4633-a9f3-37c96ad8e0b3}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
     <Filter Include="Document Files">
-      <UniqueIdentifier>{d329f4df-83ea-438c-8c3f-09b49f67142a}</UniqueIdentifier>
+      <UniqueIdentifier>{b3e40271-3991-458c-97f6-3230fc8b4c26}</UniqueIdentifier>
       <Extensions>txt</Extensions>
     </Filter>
   </ItemGroup>
@@ -85,11 +85,6 @@
     <ClCompile Include="undo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resource_j.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmnlib.h">
@@ -170,9 +165,6 @@
     <ClInclude Include="smbutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="string_j.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -183,6 +175,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="versinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="string_j.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -265,5 +260,10 @@
     <None Include="bin\make6502.bat">
       <Filter>Source Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource_j.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
