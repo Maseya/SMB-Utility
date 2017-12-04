@@ -13,8 +13,8 @@
 #include "logview.h"
 #include "ini.h"
 
-#define BORDERWNDCLASSNAME  "BORDER"
-#define LOGVIEWWNDCLASSNAME "LOGVIEW"
+#define BORDERWNDCLASSNAME  __T("BORDER")
+#define LOGVIEWWNDCLASSNAME __T("LOGVIEW")
 
 #define LOGVIEW_EDITBORDER 2
 #define LOGVIEW_EDITID     7777
@@ -112,7 +112,7 @@ LRESULT CALLBACK LogViewWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     case WM_CREATE:
     {
         g_hEditWnd = CreateWindowEx(WS_EX_CLIENTEDGE,
-                                    "EDIT",
+                                    __T("EDIT"),
                                     NULL,
                                     WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | WS_CLIPSIBLINGS |
                                     ES_MULTILINE | ES_READONLY | ES_OEMCONVERT | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
@@ -214,7 +214,7 @@ BOOL lv_Initialize()
     lstrcat(lf.lfFaceName, LOGVIEW_FONTNAME);
 #else
     lf.lfCharSet = ANSI_CHARSET;
-    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAMEI); // lstrcat(lf.lfFaceName, "Arial");
+    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAMEI); // lstrcat(lf.lfFaceName, __T("Arial"));
 #endif
     g_hEditFont = CreateFontIndirect(&lf);
 
@@ -264,7 +264,7 @@ HWND lv_CreateLogView(HWND hWndParent, int nHeight)
 
     hWnd = CreateWindowEx(0,
                           BORDERWNDCLASSNAME,
-                          "",
+                          STRING_EMPTY,
                           WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS,
                           0, nHeight,
                           rc.right - rc.left, LOGVIEW_BORDERWIDTH,
@@ -336,7 +336,7 @@ BOOL lv_OutputString(LPTSTR szText, DWORD dwFlag)
 
     if (dwFlag & LOGVIEW_OUTPUTSTRING_CR)
     {
-        lstrcat(g_szLogBuffer, "\x0D\x0A");
+        lstrcat(g_szLogBuffer, __T("\x0D\x0A"));
     }
 
     if (g_hEditWnd)

@@ -6,8 +6,8 @@
 
 #define LOGVIEW_FONTHEIGHT    12
 
-#define LOGVIEW_FONTNAME      "ＭＳ Ｐゴシック"
-#define LOGVIEW_FONTNAMEI     "MS Sans Serif"
+#define LOGVIEW_FONTNAME      __T("ＭＳ Ｐゴシック")
+#define LOGVIEW_FONTNAMEI     __T("MS Sans Serif")
 
 #define LOGVIEW_OUTPUTSTRING_CR    0x00000001
 #define LOGVIEW_OUTPUTSTRING_BEEP  0x00000002

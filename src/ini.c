@@ -23,7 +23,7 @@
   REG_DWORD  32ビット値
   REG_SZ     文字列
  **************************************/
-BOOL WriteToRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
+BOOL WriteToRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
 {
     HKEY hRegKey;
     BOOL blRet = TRUE;
@@ -42,7 +42,7 @@ dwType
  REG_DWORD  32ビット値
  REG_SZ     文字列
 **************************************/
-BOOL ReadFromRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
+BOOL ReadFromRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
 {
     HKEY hRegKey;
     DWORD dwTypeRet;
@@ -87,13 +87,13 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     GetModuleFileName(GetModuleHandle(NULL), FullPath, MAX_PATH);
     p = FullPath;
 
-    while (*p == '"')
+    while (*p == __T('"'))
         p = CharNext(p);
     pt = p; // "を除いた先頭へのポインタ
 
     // マルチバイト文字数を得る
-    for (; *p && *p != '"'; p = CharNext(p)); // 終端へ"を探す
-    for (; pt < p && *(CharPrev(pt, p)) != '\\'; p = CharPrev(pt, p)); // 終端から\を探す
+    for (; *p && *p != __T('"'); p = CharNext(p)); // 終端へ"を探す
+    for (; pt < p && *(CharPrev(pt, p)) != __T('\\'); p = CharPrev(pt, p)); // 終端から\を探す
 
     //
     cb = p - pt; // バイト数
@@ -104,12 +104,12 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     memcpy(lpBuffer, pt, cb);
 
     //
-    *(LPTSTR)((LPBYTE)lpBuffer + cb) = '\0';
+    *(LPTSTR)((LPBYTE)lpBuffer + cb) = __T('\0');
 
     // ファイル名の指定があれば、それをコピー
     if (lpFileName)
     {
-        if (iBufferSize <= cb + (int)sizeof(TCHAR) + (int)strlen(lpFileName))
+        if (iBufferSize <= cb + (int)sizeof(TCHAR) + (int)_tcslen(lpFileName))
             return 0;
         lstrcat(lpBuffer, lpFileName);
     }
@@ -127,11 +127,11 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
 
         lpCmdLine = GetCommandLine();
 
-        while(*lpCmdLine == '"') lpCmdLine++;
+        while(*lpCmdLine == __T('"')) lpCmdLine++;
         for(iDirNameSize = 0;;iDirNameSize++) {
-            if((*(lpCmdLine + iDirNameSize) == '\0')
-                ||(*(lpCmdLine + iDirNameSize) == '"')
-                ||(*(lpCmdLine + iDirNameSize)==' ')) {
+            if((*(lpCmdLine + iDirNameSize) == __T('\0'))
+                ||(*(lpCmdLine + iDirNameSize) == __T('"'))
+                ||(*(lpCmdLine + iDirNameSize)==__T(' '))) {
                 memcpy(FullPath, lpCmdLine, iDirNameSize * sizeof(TCHAR));
                 FullPath[iDirNameSize] = 0;
                 if(CheckFileExistance(FullPath))
@@ -139,12 +139,12 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
             }
         }
 
-        for(;iDirNameSize >= 0;iDirNameSize--)if(*(lpCmdLine + iDirNameSize - 1) == '\\')break;
+        for(;iDirNameSize >= 0;iDirNameSize--)if(*(lpCmdLine + iDirNameSize - 1) == __T('\\'))break;
 
         if(lpFileName)
         {
             for(iFileNameSize = 0;;iFileNameSize++) {
-                if(*(lpFileName + iFileNameSize) == '\0')
+                if(*(lpFileName + iFileNameSize) == __T('\0'))
                     break;
             }
         }

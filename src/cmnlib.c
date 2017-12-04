@@ -12,6 +12,7 @@
 #ifdef WIN64
 #include <intrin.h>
 #endif
+#include <tchar.h>
 #include "cmnlib.h"
 
 TCHAR g_szTempStringBuffer[TMPSTRBUFSIZ];
@@ -42,7 +43,7 @@ BOOL IsCommonControlSupported(DWORD dwVersion)
     DWORD dwInstalledVersion = 0;
 
     //load the DLL
-    hComCtl = LoadLibrary(TEXT("comctl32.dll"));
+    hComCtl = LoadLibrary(__T("comctl32.dll"));
     if (hComCtl)
     {
         HRESULT           hr = S_OK;
@@ -52,7 +53,7 @@ BOOL IsCommonControlSupported(DWORD dwVersion)
         don't implement this function. That makes the lack of implementation of the
         function a version marker in itself.
         */
-        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hComCtl, TEXT("DllGetVersion"));
+        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hComCtl, "DllGetVersion");
         if (pDllGetVersion)
         {
             DLLVERSIONINFO    dvi;

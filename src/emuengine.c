@@ -27,7 +27,7 @@
 #define EMULATOR_WINDOWFRAMESIZEY  (GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYSIZEFRAME) * 2)
 #define EMULATOR_TIMER_INTERVAL    17
 #define INITCOLORINDEX             0x20
-#define EMUWNDCLASSNAME            TEXT("EMU_WND")
+#define EMUWNDCLASSNAME            __T("EMU_WND")
 
 //-------------
 //
@@ -126,8 +126,8 @@ BOOL SetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[])
 {
     // A, B, SELECT, START, UP, DOWN, LEFT, RIGHTの順
-    aEmuKeys[0] = 'N';
-    aEmuKeys[1] = 'B';
+    aEmuKeys[0] = __T('N');
+    aEmuKeys[1] = __T('B');
     aEmuKeys[2] = VK_BACK;
     aEmuKeys[3] = VK_RETURN;
     aEmuKeys[4] = VK_UP;
@@ -285,7 +285,7 @@ LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         // joystick ID
         for (N = 0; N < 2; N++)
         {
-            wsprintf(szBuf, "%s%d", STRING_EMULATOROPTION_JOYSTICK, N + 1);
+            wsprintf(szBuf, __T("%s%d"), STRING_EMULATOROPTION_JOYSTICK, N + 1);
             SendDlgItemMessage(hDlg, IDC_JOYSTICKID, CB_ADDSTRING, 0, (LPARAM)szBuf);
         }
         SendDlgItemMessage(hDlg, IDC_JOYSTICKID, CB_SETCURSEL, g_uEmuJoyID == JOYSTICKID2 ? 1 : 0, 0);
@@ -1513,12 +1513,12 @@ BOOL SetupEmulator(EMULATORSETUP* psEmuSetup)
     return TRUE;
 }
 
-static BOOL LoadRAMData(LPSTR ResName)
+static BOOL LoadRAMData(LPTSTR ResName)
 {
     HGLOBAL hRAMData;
     BYTE *pbRAMData;
 
-    hRAMData = LoadResource(NULL, FindResource(NULL, ResName, "BINARY"));
+    hRAMData = LoadResource(NULL, FindResource(NULL, ResName, __T("BINARY")));
     if (!hRAMData) return FALSE;
     pbRAMData = (BYTE*)LockResource(hRAMData);
     if (!pbRAMData)
@@ -1538,7 +1538,7 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
     BYTE bTmpBuf;
 
     //
-    if (!LoadRAMData("RAMDATA1")) return;
+    if (!LoadRAMData(__T("RAMDATA1"))) return;
 
     //Reg
     m6502zpGetContext(psM6502);
@@ -1639,7 +1639,7 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 
 void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
 {
-    if (!LoadRAMData("RAMDATA2")) return;
+    if (!LoadRAMData(__T("RAMDATA2"))) return;
 
     //Reg
     m6502zpGetContext(psM6502);
@@ -2034,7 +2034,7 @@ BOOL RegisterEmuWndClass(HINSTANCE hInstance)
     wc.cbClsExtra =
         wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
-    wc.hIcon = LoadIcon(hInstance, "EMUICON");
+    wc.hIcon = LoadIcon(hInstance, __T("EMUICON"));
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszMenuName = NULL;

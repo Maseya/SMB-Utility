@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <tchar.h>
 #include "resource.h"
 #include "common.h"
 #include "frame.h"

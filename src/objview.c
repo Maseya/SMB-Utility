@@ -22,7 +22,7 @@
 
 #define ID_OBJVIEW_OBJSELECT_BASE 8000
 
-#define MAPVIEWWNDCLASSNAME "MAPVIEWWND"
+#define MAPVIEWWNDCLASSNAME __T("MAPVIEWWND")
 #define IDW_YPOSWINDOW      1000
 #define IDW_XPOSWINDOW      1001
 #define IDW_REWVPAGEWINDOW  6000
@@ -548,7 +548,7 @@ HWND CreateObjectViewTooltip()
     if (!ghMapViewWnd) return NULL;
 
     hwndTT = CreateWindowEx(0, TOOLTIPS_CLASS,
-        (LPSTR)NULL,
+        (LPTSTR)NULL,
                             0,
                             CW_USEDEFAULT,
                             CW_USEDEFAULT,
@@ -587,7 +587,7 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
         SendMessage(ghToolTip, TTM_GETTEXT, 0, (LPARAM)(LPTOOLINFO)&ht.ti);
         if (lstrlen(lpText) + lstrlen(ht.ti.lpszText) < TMPSTRBUFSIZ)
         {
-            lstrcat(ht.ti.lpszText, "/");
+            lstrcat(ht.ti.lpszText, __T("/"));
             lstrcat(ht.ti.lpszText, lpText);
         }
         lstrcpy(lpText, ht.ti.lpszText);
@@ -599,7 +599,7 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
     ti.hwnd = ghMapViewWnd;
     ti.hinst = GetModuleHandle(NULL);
     ti.uId = (UINT)id;
-    ti.lpszText = (LPSTR)lpText;
+    ti.lpszText = (LPTSTR)lpText;
     ti.rect.left = x;
     ti.rect.top = y;
     ti.rect.right = x + 16;
@@ -1119,14 +1119,14 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         case IDM_MAPVIEW_SHOWEDITDIALOG:
             if (!gblIsROMLoaded) break;
             if (GetMapEditMode())
-                DialogBox(GetModuleHandle(NULL), "BADGUYSCOMEDITDLG", hWnd, BadGuysComEditDlgProc);
+                DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
             else
-                DialogBox(GetModuleHandle(NULL), "MAPCOMEDITDLG", hWnd, MapComEditDlgProc);
+                DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
             break;
         case IDM_MAPVIEW_SENDOBJECT:
         {
             if (!gblIsROMLoaded) break;
-            DialogBox(GetModuleHandle(NULL), "SENDOBJECTDLG", hWnd, SendObjectDlgProc);
+            DialogBox(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, SendObjectDlgProc);
         }
         break;
         case IDM_MAPVIEW_TESTPLAY:
@@ -1264,9 +1264,9 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
     case WM_LBUTTONDBLCLK:
         if (!gblIsROMLoaded) break;
         if (GetMapEditMode())
-            DialogBox(GetModuleHandle(NULL), "BADGUYSCOMEDITDLG", hWnd, BadGuysComEditDlgProc);
+            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
         else
-            DialogBox(GetModuleHandle(NULL), "MAPCOMEDITDLG", hWnd, MapComEditDlgProc);
+            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
         break;
     case WM_MDIACTIVATE:
     {
@@ -1410,7 +1410,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
             // Temporary porting macro
             LONG2POINT(lParam, pt);
             if (PtInRect((LPRECT)&rc, pt))
-                ShowPopupMenu(hWnd, pt, "MAPVIEW_POPUP");
+                ShowPopupMenu(hWnd, pt, __T("MAPVIEW_POPUP"));
         }
     }
     break;
@@ -1521,7 +1521,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         ghMapViewWnd = hWnd;
 
         ghYPosWnd = CreateWindowEx(/*WS_EX_STATICEDGE*/0,
-                                   "STATIC",
+                                   __T("STATIC"),
                                    NULL,
                                    WS_CHILD | WS_VISIBLE | SS_OWNERDRAW | SS_NOTIFY,
                                    0, XPOSLABEL_HEIGHT, YPOSLABEL_WIDTH, 0,
@@ -1532,7 +1532,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         DrawYPosGauge();
 
         ghXPosWnd = CreateWindowEx(/*WS_EX_STATICEDGE*/0,
-                                   "STATIC",
+                                   __T("STATIC"),
                                    NULL,
                                    WS_CHILD | WS_VISIBLE | SS_OWNERDRAW | SS_NOTIFY,
                                    YPOSLABEL_WIDTH, 0, 0, XPOSLABEL_HEIGHT,
@@ -1543,24 +1543,24 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         DrawXPosGauge();
 
         ghRPBtnWnd = CreateWindow(
-            "BUTTON",
-            "",
+            __T("BUTTON"),
+            STRING_EMPTY,
             WS_CHILD | WS_VISIBLE | BS_BITMAP | BS_CENTER,
             0, 0, YPOSLABEL_WIDTH / 2, XPOSLABEL_HEIGHT,
             hWnd, (HMENU)IDW_REWVPAGEWINDOW,
             GetModuleHandle(NULL),
             NULL);
-        hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), "LF_IMG", IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS);
+        hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), __T("LF_IMG"), IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS);
         SendMessage(ghRPBtnWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBmp);
 
-        ghFPBtnWnd = CreateWindow("BUTTON",
-                                  "",
+        ghFPBtnWnd = CreateWindow(__T("BUTTON"),
+                                  STRING_EMPTY,
                                   WS_CHILD | WS_VISIBLE | BS_BITMAP | BS_CENTER,
                                   YPOSLABEL_WIDTH / 2, 0, YPOSLABEL_WIDTH / 2, XPOSLABEL_HEIGHT,
                                   hWnd, (HMENU)IDW_FWDPAGEWINDOW,
                                   GetModuleHandle(NULL),
                                   NULL);
-        hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), "RG_IMG", IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS);
+        hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), __T("RG_IMG"), IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS);
         SendMessage(ghFPBtnWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBmp);
 
         ghToolTip = CreateObjectViewTooltip();
@@ -1621,7 +1621,7 @@ BOOL RegisterMapViewWndClass(HINSTANCE hInstance)
     wc.cbClsExtra = 0;
     wc.cbWndExtra = CBWNDEXTRA;
     wc.hInstance = hInstance;
-    wc.hIcon = LoadIcon(hInstance, "MAPVIEWICON");
+    wc.hIcon = LoadIcon(hInstance, __T("MAPVIEWICON"));
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszMenuName = NULL;

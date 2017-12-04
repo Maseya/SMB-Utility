@@ -12,7 +12,7 @@
  // 外部エディタ変更対応
 FILETIME gFileTime;
 BOOL gblFileCmpEnable;
-extern char gFilePath[MAX_PATH];
+extern TCHAR gFilePath[MAX_PATH];
 
 static BOOL GetFileLastWrite(LPFILETIME lpFileTime)
 {
@@ -58,14 +58,14 @@ BOOL CheckROMFileTime()
     return FALSE;
 }
 
-BOOL LoadROM(LPSTR pFilename)
+BOOL LoadROM(LPTSTR pFilename)
 {
     FILE *fp;
 
     iTrainer = 0;
     gblIsROMLoaded = FALSE;
 
-    if ((fp = fopen(pFilename, "rb")) == NULL)
+    if ((fp = _tfopen(pFilename, __T("rb"))) == NULL)
     {
         Msg(STRING_FILEERROR_NOTFOUND, MB_OK | MB_ICONWARNING);
         return FALSE;
@@ -98,11 +98,11 @@ BOOL LoadROM(LPSTR pFilename)
     return TRUE;
 }
 
-BOOL SaveAsFile(LPSTR pFilename)
+BOOL SaveAsFile(LPTSTR pFilename)
 {
     FILE *fp;
 
-    if ((fp = fopen(pFilename, "w+b")) == NULL) return FALSE;
+    if ((fp = _tfopen(pFilename, __T("w+b"))) == NULL) return FALSE;
 
     fwrite(&Head, sizeof(INESHEADER), 1, fp);
     if (iTrainer) fwrite(bPRGROM + 0x7000, INES_TRAINERSIZE, 1, fp);

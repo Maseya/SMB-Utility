@@ -415,9 +415,9 @@ static HTREEITEM InsertRoomDependencyTreeViewItem(LPROOMINFO *lpRoomInfo, int *p
 
         // Set the text of the item.
         if (hParentItem == TVI_ROOT)
-            wsprintf(cStrBuf, "%d-%d (%d) [%.2xH]", (*lpRoomInfo)[nCurRoom].iWorld + 1, (*lpRoomInfo)[nCurRoom].iArea + 1, (*lpRoomInfo)[nCurRoom].iAreaIndex, (*lpRoomInfo)[nCurRoom].bRoomID);
+            wsprintf(cStrBuf, __T("%d-%d (%d) [%.2xH]"), (*lpRoomInfo)[nCurRoom].iWorld + 1, (*lpRoomInfo)[nCurRoom].iArea + 1, (*lpRoomInfo)[nCurRoom].iAreaIndex, (*lpRoomInfo)[nCurRoom].bRoomID);
         else
-            wsprintf(cStrBuf, "[%.2xH] p=%d", (*lpRoomInfo)[nCurRoom].bRoomID, (*lpRoomInfo)[nCurRoom].iPage);
+            wsprintf(cStrBuf, __T("[%.2xH] p=%d"), (*lpRoomInfo)[nCurRoom].bRoomID, (*lpRoomInfo)[nCurRoom].iPage);
         tvi.pszText = cStrBuf;
         tvi.cchTextMax = lstrlen(cStrBuf);
 
@@ -611,13 +611,13 @@ static BOOL SetRoomDepedencyTreeViewImageList(HWND hDlg)
     HIMAGELIST himl;  // handle to image list
     HBITMAP hbmp, hmask;     // handle to bitmap
     int n;
-    LPTSTR lpImgResName[] = {"SEA_IMG","SKY_IMG","UG_IMG","CASTLE_IMG"};
+    LPTSTR lpImgResName[] = {__T("SEA_IMG"),__T("SKY_IMG"),__T("UG_IMG"),__T("CASTLE_IMG")};
 
     // Create the image list.
     if ((himl = ImageList_Create(CX_BITMAP, CY_BITMAP, ILC_MASK, NUM_BITMAPS, 0)) == NULL) return FALSE;
 
     // Add the open file, closed file, and document bitmaps.
-    hmask = LoadBitmap(GetModuleHandle(NULL), "TVMASK");
+    hmask = LoadBitmap(GetModuleHandle(NULL), __T("TVMASK"));
     for (n = 0; n < NUM_BITMAPS; n++)
     {
         hbmp = LoadBitmap(GetModuleHandle(NULL), lpImgResName[n]);
@@ -789,7 +789,7 @@ static void UpdateAreaSortListBox(HWND hDlg)
     LPTSTR szBuf = GetTempStringBuffer();
     int iWorld;
     int iArea;
-    LPSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE};
+    LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE};
 
     //clear all item
     SendDlgItemMessage(hDlg, IDC_AREA, LB_RESETCONTENT, 0, 0);
@@ -798,7 +798,7 @@ static void UpdateAreaSortListBox(HWND hDlg)
     for (n = 0; n < SMB_NUM_AREAS; n++)
     {
         GetWorldArea(&iWorld, &iArea, NULL, n, bAreaData[n]);
-        sprintf(szBuf, "%d-%d %.2xH %s", iWorld + 1, iArea + 1, bAreaData[n], lpAttr[(bAreaData[n] >> 5) & 0x03]);
+        _stprintf(szBuf, __T("%d-%d %.2xH %s"), iWorld + 1, iArea + 1, bAreaData[n], lpAttr[(bAreaData[n] >> 5) & 0x03]);
         SendDlgItemMessage(hDlg, IDC_AREA, LB_ADDSTRING, 0, (LPARAM)szBuf);
     }
 }
@@ -1505,17 +1505,17 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         }
 
         //
-        wsprintf(cBuf, "%.2x", bRoomID & 0x7F);
+        wsprintf(cBuf, __T("%.2x"), bRoomID & 0x7F);
         SetDlgItemText(hDlg, IDC_DATA, cBuf);
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
         {
-            sprintf(cBuf, "%.2x", bRoomIDs[n]);
+            _stprintf(cBuf, __T("%.2x"), bRoomIDs[n]);
             SendDlgItemMessage(hDlg, IDC_DATA, CB_ADDSTRING, 0, (LPARAM)cBuf);
         }
 
         //
-        wsprintf(cBuf, "%d", iPage);
+        wsprintf(cBuf, __T("%d"), iPage);
         SetDlgItemText(hDlg, IDC_PAGEEDIT2, cBuf);
     }
     break;
@@ -1527,12 +1527,12 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         {
         case IDOK:
         {
-            CHAR cBuf[10];
+            TCHAR cBuf[10];
             BOOL blSuccess;
             UINT uRet;
 
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-            if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return TRUE;
+            if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
             if (!IsRoomIDValid(bRoomID)) return TRUE;
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;
