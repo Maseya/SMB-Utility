@@ -79,11 +79,11 @@ void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
         break;
     case 0x0D:
         if (!(lpbBuf[1] & 0x40))
-            wsprintf(lpszBuf, "%s:%.2d", smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
+            wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
         else
         {
             if ((lpbBuf[1] & 0x70) == 0x40)
-                wsprintf(lpszBuf, "%s", smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
+                wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
             else
                 wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
         }
@@ -146,7 +146,7 @@ void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
     default:
         if (!(lpbBuf[1] & 0x70))
         {
-            wsprintf(lpszBuf, "%s", smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
+            wsprintf(lpszBuf, __T("%s"), smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
         }
         else if ((lpbBuf[1] & 0x70) != 0x70)
         {
@@ -176,7 +176,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
             LVITEM lvItem;
 
             //バイナリ
-            wsprintf(cBuf, "%.2x %.2x", ObjSeek.pbData[0], ObjSeek.pbData[1]);
+            wsprintf(cBuf, __T("%.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1]);
 
             if (blQuietUpdate)
             {
@@ -189,7 +189,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
                 lvItem.cchTextMax = TMPSTRBUFSIZ;
                 if (ListView_GetItem(g_hWndListView, &lvItem))
                 {
-                    sscanf(cCurText, "%hhx %hhx", &bBuf[0], &bBuf[1]);
+                    _stscanf(cCurText, __T("%hhx %hhx"), &bBuf[0], &bBuf[1]);
                     if (!memcmp(bBuf, ObjSeek.pbData, 2))
                         goto CANCEL_SET_ITEM_TEXT;
                 }
@@ -206,11 +206,11 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
             }
 
             //ページ
-            wsprintf(cBuf, "%d", ObjSeek.dwPage);
+            wsprintf(cBuf, __T("%d"), ObjSeek.dwPage);
             ListView_SetItemText(g_hWndListView, n, 1, cBuf);
 
             //位置
-            wsprintf(cBuf, "(%d,%d)", GetMapXPos(ObjSeek.pbData), GetMapYPos(ObjSeek.pbData));
+            wsprintf(cBuf, __T("(%d,%d)"), GetMapXPos(ObjSeek.pbData), GetMapYPos(ObjSeek.pbData));
             ListView_SetItemText(g_hWndListView, n, 2, cBuf);
 
             //種類
@@ -232,7 +232,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 ***************************************************/
 void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
 {
-    LPSTR bit6[] = {"", STRING_OBJLIST_HARD};
+    LPTSTR bit6[] = {STRING_NULL, STRING_OBJLIST_HARD};
 
     switch (lpbBuf[0] & 0x0F)
     {
@@ -247,7 +247,7 @@ void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
         break;
     default://（敵キャラコマンド）
     {
-        wsprintf(lpszBuf, "%s%s", smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
+        wsprintf(lpszBuf, __T("%s%s"), smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
     }
     }
 }
@@ -265,9 +265,9 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
 
             //バイナリ
             if (ObjSeek.dwObjLen == 2)
-                wsprintf(cBuf, "%.2x %.2x", ObjSeek.pbData[0], ObjSeek.pbData[1]);
+                wsprintf(cBuf, __T("%.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1]);
             else
-                wsprintf(cBuf, "%.2x %.2x %.2x", ObjSeek.pbData[0], ObjSeek.pbData[1], ObjSeek.pbData[2]);
+                wsprintf(cBuf, __T("%.2x %.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1], ObjSeek.pbData[2]);
 
             if (blQuietUpdate)
             {
@@ -281,7 +281,7 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
                 lvItem.cchTextMax = TMPSTRBUFSIZ;
                 if (ListView_GetItem(g_hWndListView, &lvItem))
                 {
-                    iSizeLV = sscanf(cCurText, "%hhx %hhx %hhx", &bBuf[0], &bBuf[1], &bBuf[2]);
+                    iSizeLV = _stscanf(cCurText, __T("%hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2]);
                     iSizeSrc = BadGuysGetDataLength(ObjSeek.pbData);
                     if (iSizeLV == iSizeSrc && !memcmp(bBuf, ObjSeek.pbData, iSizeSrc))
                         goto CANCEL_SET_ITEM_TEXT;
@@ -299,11 +299,11 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
             }
 
             //ページ
-            wsprintf(cBuf, "%d", ObjSeek.dwPage);
+            wsprintf(cBuf, __T("%d"), ObjSeek.dwPage);
             ListView_SetItemText(g_hWndListView, n, 1, cBuf);
 
             //位置
-            wsprintf(cBuf, "(%d,%d)", GetBadGuysXPos(ObjSeek.pbData), GetBadGuysYPos(ObjSeek.pbData));
+            wsprintf(cBuf, __T("(%d,%d)"), GetBadGuysXPos(ObjSeek.pbData), GetBadGuysYPos(ObjSeek.pbData));
             ListView_SetItemText(g_hWndListView, n, 2, cBuf);
 
             //種類
@@ -383,7 +383,7 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         for (n = 0; n < 16; n++)
         {
             TCHAR cTmp[3];
-            wsprintf(cTmp, "%d", n);
+            wsprintf(cTmp, __T("%d"), n);
             SendDlgItemMessage(hDlg, IDC_PAGE, CB_ADDSTRING, 0, (LPARAM)cTmp);
         }
 
@@ -509,7 +509,7 @@ static HWND CreateListView(HWND hwndParent)
 
     hwndListView = CreateWindowEx(0,          // ex style
                                   WC_LISTVIEW,               // class name - defined in commctrl.h
-                                  "",                        // dummy text
+                                  __T(""),                        // dummy text
                                   WS_TABSTOP | WS_CHILD | WS_VISIBLE |
                                   LVS_AUTOARRANGE | LVS_REPORT |
                                   LVS_SHOWSELALWAYS | LVS_SINGLESEL,                   // style
@@ -635,14 +635,14 @@ long FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
             if (iRet == -1) break;
             iRet = GetSelectedIndex();
             if (GetMapEditMode())
-                DialogBox(GetModuleHandle(NULL), "BADGUYSCOMEDITDLG", hWnd, BadGuysComEditDlgProc);
+                DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
             else
-                DialogBox(GetModuleHandle(NULL), "MAPCOMEDITDLG", hWnd, MapComEditDlgProc);
+                DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
         }
         break;
         case NM_RCLICK:
             if (!gblIsROMLoaded) break;
-            DialogBox(GetModuleHandle(NULL), "SENDOBJECTDLG", hWnd, SendObjectDlgProc);
+            DialogBox(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, SendObjectDlgProc);
             break;
         case NM_CLICK:
         case LVN_KEYDOWN:
@@ -697,7 +697,7 @@ long FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
     return DefMDIChildProc(hWnd, message, wParam, lParam);
 } /* MainWndProc */
 
-#define MAPEDITWNDCLASSNAME  "MAPEDITWND"
+#define MAPEDITWNDCLASSNAME  __T("MAPEDITWND")
 
 BOOL RegisterMapEditWndClass(HINSTANCE hInstance)
 {
@@ -708,7 +708,7 @@ BOOL RegisterMapEditWndClass(HINSTANCE hInstance)
     wc.cbClsExtra = 0;
     wc.cbWndExtra = CBWNDEXTRA;
     wc.hInstance = hInstance;
-    wc.hIcon = LoadIcon(hInstance, "MAPLISTICON");
+    wc.hIcon = LoadIcon(hInstance, __T("MAPLISTICON"));
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszMenuName = NULL;

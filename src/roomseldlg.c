@@ -18,7 +18,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     BYTE bRoomID;
     int iPage;
     BOOL blSuccess;
-    char cBuf[10];
+    TCHAR cBuf[10];
     HWND hPVWnd;
     HDC hPVdc;
     RECT rcPV;
@@ -26,7 +26,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     if (!blGetRoomIDFromList)
     {
         GetDlgItemText(hDlg, IDC_DATA, cBuf, 10);
-        if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return;
+        if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return;
     }
     else
     {
@@ -65,7 +65,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     {
         BYTE bRoomIDs[SMB_NUM_ADDRESSDATA];
         int n;
-        char cBuf[5];
+        TCHAR cBuf[5];
         LPROOMSELECT lpRoomSelect = (LPROOMSELECT)lParam;
 
         //
@@ -74,18 +74,18 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
         {
-            sprintf(cBuf, "%.2x", bRoomIDs[n]);
+            _stprintf(cBuf, __T("%.2x"), bRoomIDs[n]);
             SendDlgItemMessage(hDlg, IDC_DATA, CB_ADDSTRING, 0, (LPARAM)cBuf);
         }
 
         if (lpRoomSelect->blDoInit)
         {
             //
-            sprintf(cBuf, "%.2x", lpRoomSelect->bInitRoomID & 0x7F);
+            _stprintf(cBuf, __T("%.2x"), lpRoomSelect->bInitRoomID & 0x7F);
             SetDlgItemText(hDlg, IDC_DATA, cBuf);
 
             //
-            sprintf(cBuf, "%d", lpRoomSelect->uInitPage);
+            _stprintf(cBuf, __T("%d"), lpRoomSelect->uInitPage);
             SetDlgItemText(hDlg, IDC_PAGEEDIT2, cBuf);
         }
 
@@ -103,14 +103,14 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         {
         case IDOK:
         {
-            char cBuf[20];
+            TCHAR cBuf[20];
             BOOL blSuccess;
             BYTE bRoomID;
             UINT iPage;
             LPROOMSELECT lpRoomSelect;
 
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-            if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return TRUE;
+            if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
             if (!IsRoomIDValid(bRoomID)) return TRUE;
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;
@@ -151,7 +151,7 @@ BOOL RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
 
     if (!lpRoomSelect) return FALSE;
 
-    blRet = DialogBoxParam(GetModuleHandle(NULL), "SENDOBJECTDLG", hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
+    blRet = DialogBoxParam(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
 
     return blRet;
 }

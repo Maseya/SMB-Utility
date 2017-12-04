@@ -26,10 +26,10 @@
 #include "keys.h"
 #include "versinfo.h"
 
-#define FRAMEWNDCLASSNAME "MDIFRAME"
+#define FRAMEWNDCLASSNAME __T("MDIFRAME")
 
-#define NES_ONLY_FILTER "iNES format ROM image (*.nes)\0\0\0"
-#define NES_ALL_FILTER "iNES format ROM image (*.nes)\0*.nes\0All (*.*)\0*.*\0\0\0"
+#define NES_ONLY_FILTER __T("iNES format ROM image (*.nes)\0\0\0")
+#define NES_ALL_FILTER __T("iNES format ROM image (*.nes)\0*.nes\0All (*.*)\0*.*\0\0\0")
 
 HINSTANCE ghInst;
 HWND ghWndMDIClient;
@@ -126,8 +126,8 @@ UINT CALLBACK OFNHookProc(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 BOOL GetFileName(LPTSTR lpPath, HWND hWnd)
 {
     OPENFILENAME fname;
-    char filename[64] = {0};
-    char filefilter[] = NES_ALL_FILTER;
+    TCHAR filename[64] = {0};
+    TCHAR filefilter[] = NES_ALL_FILTER;
 
     memset(&fname, 0, sizeof(OPENFILENAME));
     fname.lStructSize = sizeof(fname);
@@ -141,7 +141,7 @@ BOOL GetFileName(LPTSTR lpPath, HWND hWnd)
     fname.nMaxFileTitle = sizeof(filename);
     fname.lpfnHook = NULL;
     fname.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER | OFN_NOCHANGEDIR;
-    fname.lpstrDefExt = "nes";
+    fname.lpstrDefExt = __T("nes");
 
     if (!GetOpenFileName(&fname)) return FALSE;
 
@@ -223,7 +223,7 @@ void OptionPropertySheet(HWND hwndOwner, int nStartPage)
     //TODO
 #define OPTPS_NUM_PAGES 4
     LPTSTR lpTitle[OPTPS_NUM_PAGES] = {STRING_OPTIONDIALOG_EMULATOR, STRING_OPTIONDIALOG_EDITOR, STRING_OPTIONDIALOG_APPLICATION, STRING_OPTIONDIALOG_OBJECTVIEW};
-    LPTSTR lpDlgResName[OPTPS_NUM_PAGES] = {"EMULATOROPTIONDLG", "EDITOROPTIONDLG", "APPLICATIONOPTIONDLG", "OBJECTVIEWOPTIONDLG"};
+    LPTSTR lpDlgResName[OPTPS_NUM_PAGES] = {__T("EMULATOROPTIONDLG"), __T("EDITOROPTIONDLG"), __T("APPLICATIONOPTIONDLG"), __T("OBJECTVIEWOPTIONDLG")};
     DLGPROC pfnDlgProc[OPTPS_NUM_PAGES] = {EmulatorOptionDlgProc, EditorOptionDlgProc, ApplicationOptionDlgProc, ObjectViewOptionDlgProc};
 
     //Local
@@ -252,7 +252,7 @@ void OptionPropertySheet(HWND hwndOwner, int nStartPage)
     psh.hwndParent = hwndOwner;
     psh.hInstance = GetModuleHandle(NULL);
     psh.pszIcon = NULL;
-    psh.pszCaption = (LPSTR)STRING_OPTIONDIALOG_TITLE;
+    psh.pszCaption = (LPTSTR)STRING_OPTIONDIALOG_TITLE;
     psh.nPages = sizeof(psp) / sizeof(PROPSHEETPAGE);
     psh.nStartPage = nStartPage;
     psh.ppsp = (LPCPROPSHEETPAGE)&psp;
@@ -272,12 +272,12 @@ void RefreshWindowTitle(BOOL fNeedChanged)
     LPTSTR cWndTitle = GetTempStringBuffer();
 
     if (gblIsROMLoaded)
-        wsprintf(cWndTitle, "%s - %s", gFilePath, PROGRAMNAME);
+        wsprintf(cWndTitle, __T("%s - %s"), gFilePath, PROGRAMNAME);
     else
-        wsprintf(cWndTitle, "%s", PROGRAMNAME);
+        wsprintf(cWndTitle, __T("%s"), PROGRAMNAME);
 
     if (fNeedChanged)
-        lstrcat(cWndTitle, "*");
+        lstrcat(cWndTitle, __T("*"));
 
     SetWindowText(ghWndFrame, cWndTitle);
 }
@@ -408,7 +408,7 @@ void SetStatusBarText(LPTSTR lpText)
     if (!g_hSbWnd) return;
 
     GetLocalTime(&st);
-    wsprintf(szBuf, "%d:%.2d:%.2d  ", st.wHour, st.wMinute, st.wSecond);
+    wsprintf(szBuf, __T("%d:%.2d:%.2d  __T("), st.wHour, st.wMinute, st.wSecond);
     lstrcat(szBuf, lpText);
     SendMessage(g_hSbWnd, SB_SETTEXT, 0, (LPARAM)szBuf);
     InvalidateRect(g_hSbWnd, NULL, TRUE);
@@ -426,7 +426,7 @@ void UpdateStatusBarRoomInfoText(HWND hSbWnd)
         WORD wAddrBadGuys, wAddrMap;
         wAddrBadGuys = GetBadGuysAddress(GETADDRESS_CURRENT_EDITTING);
         wAddrMap = GetMapAddress(GETADDRESS_CURRENT_EDITTING);
-        wsprintf(szText, " %d-%d ( %.2XH [ $%.4X, $%.4X ] )", g_iWorld + 1, g_iArea + 1, GetRoomID(), wAddrBadGuys, wAddrMap);
+        wsprintf(szText, __T(" %d-%d ( %.2XH [ $%.4X, $%.4X ] )"), g_iWorld + 1, g_iArea + 1, GetRoomID(), wAddrBadGuys, wAddrMap);
     }
     else
     {
@@ -442,13 +442,13 @@ static void SizeMainWindowStatusBar(HWND hStatusBarWnd, HWND hParentWnd)
     RECT rc;
     SIZE size;
     int iSize[SBPARTS] = {0};
-    TCHAR szExampleText[] = " X-X ( XXH [ $XXXX, $XXXX ] )";
+    TCHAR szExampleText[] = __T(" X-X ( XXH [ $XXXX, $XXXX ] )");
     HDC hDC;
 
     GetClientRect(hParentWnd, &rc);
     iSize[SBPARTS - 1] = rc.right;
     hDC = GetDC(hParentWnd);
-    if (GetTextExtentPoint(hDC, szExampleText, strlen(szExampleText), &size))
+    if (GetTextExtentPoint(hDC, szExampleText, _tcslen(szExampleText), &size))
         iSize[SBPARTS - 2] = iSize[SBPARTS - 1] - (size.cx) - SB_EXTRASPACE;
     ReleaseDC(hParentWnd, hDC);
 
@@ -488,7 +488,7 @@ VOID __cdecl DumpPRGROM(void *pParam)
         wOfs += (iTrainer) ? INES_TRAINERSIZE : 0;
         for(;wAddr >= 0x8000;P += DUMP_BYTESPERLINE, wAddr += DUMP_BYTESPERLINE, wOfs += DUMP_BYTESPERLINE){
             wsprintf(szBuffer,
-                     "$%.4x(%.4x)  %.2X %.2X %.2X %.2X %.2X %.2X %.2X %.2X  %.2X %.2X %.2X %.2X %.2X %.2X %.2X %.2X",
+                     __T("$%.4x(%.4x)  %.2X %.2X %.2X %.2X %.2X %.2X %.2X %.2X  %.2X %.2X %.2X %.2X %.2X %.2X %.2X %.2X"),
                      wAddr, wOfs, P[0], P[1], P[2], P[3], P[4], P[5], P[6], P[7],  P[8], P[9], P[10], P[11], P[12], P[13], P[14], P[15]);
             lv_OutputString(szBuffer, LOGVIEW_OUTPUTSTRING_CR);
         }
@@ -522,7 +522,7 @@ BOOL ConfirmOnExit()
 }
 
 #define SMBCHR_VALID_SIZE 0x1EC0
-BOOL LoadCHRROMFromFile(LPSTR pFileName, BOOL fLoadAll)
+BOOL LoadCHRROMFromFile(LPTSTR pFileName, BOOL fLoadAll)
 {
     FILE *fp;
     INESHEADER CHRHead;
@@ -532,7 +532,7 @@ BOOL LoadCHRROMFromFile(LPSTR pFileName, BOOL fLoadAll)
 
     if (!gblIsROMLoaded) return FALSE;
 
-    if ((fp = fopen(pFileName, "rb")) == NULL)
+    if ((fp = _tfopen(pFileName, __T("rb"))) == NULL)
     {
         Msg(STRING_FILEERROR_NOTFOUND, MB_OK | MB_ICONWARNING);
         return FALSE;
@@ -611,7 +611,7 @@ BOOL SetSaveFileName(HWND hWnd)
 {
     OPENFILENAME fname;
     TCHAR filename[65];
-    char filefilter[] = NES_ONLY_FILTER;
+    TCHAR filefilter[] = NES_ONLY_FILTER;
     TCHAR curdir[MAX_PATH];
     TCHAR FilePath[MAX_PATH];
 
@@ -630,7 +630,7 @@ BOOL SetSaveFileName(HWND hWnd)
     fname.nMaxFileTitle = sizeof(filename);
     fname.lpfnHook = (LPOFNHOOKPROC)OFNHookProc;
     fname.Flags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER | OFN_ENABLEHOOK | OFN_NOREADONLYRETURN | OFN_NOCHANGEDIR;
-    fname.lpstrDefExt = "nes";
+    fname.lpstrDefExt = __T("nes");
 
     if (!GetSaveFileName(&fname)) return FALSE;
 
@@ -667,13 +667,13 @@ void DumpVersion()
 {
     LPTSTR szBuf = GetTempStringBuffer();
 
-    wsprintf(szBuf, "----------------- %s Ver.%d.%.2d -----------------", PROGRAMNAME, MAJORVERSION, MINORVERSION);
+    wsprintf(szBuf, __T("----------------- %s Ver.%d.%.2d -----------------"), PROGRAMNAME, MAJORVERSION, MINORVERSION);
     lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
 
-    wsprintf(szBuf, "(C) 1999-%d M.K.S", THISYEAR);
+    wsprintf(szBuf, __T("(C) 1999-%d M.K.S"), THISYEAR);
     lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
 
-    lv_OutputString(__DATE__, LOGVIEW_OUTPUTSTRING_CR);
+    lv_OutputString(TEXT(__DATE__), LOGVIEW_OUTPUTSTRING_CR);
 
     lv_OutputString(STRING_VERSION_CONTRIBUTION, LOGVIEW_OUTPUTSTRING_CR);
 }
@@ -686,13 +686,13 @@ LRESULT CALLBACK VersionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
     {
         LPTSTR szBuf = GetTempStringBuffer();
 
-        wsprintf(szBuf, "%s Ver.%d.%.2d", PROGRAMNAME, MAJORVERSION, MINORVERSION);
+        wsprintf(szBuf, __T("%s Ver.%d.%.2d"), PROGRAMNAME, MAJORVERSION, MINORVERSION);
         SetDlgItemText(hDlg, IDC_TITLE, szBuf);
 
-        wsprintf(szBuf, "(C) 1999-%d M.K.S", THISYEAR);
+        wsprintf(szBuf, __T("(C) 1999-%d M.K.S"), THISYEAR);
         SetDlgItemText(hDlg, IDC_COPYRIGHT, szBuf);
 
-        SetDlgItemText(hDlg, IDC_NOTE, __DATE__);
+        SetDlgItemText(hDlg, IDC_NOTE, TEXT(__DATE__));
 
         SetDlgItemText(hDlg, IDC_CONTRIBUTION, STRING_VERSION_CONTRIBUTION);
 
@@ -922,8 +922,8 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         case IDM_FILE_OPEN:
         {
             OPENFILENAME fname;
-            char filename[64] = {0};
-            char filefilter[] = NES_ALL_FILTER;
+            TCHAR filename[64] = {0};
+            TCHAR filefilter[] = NES_ALL_FILTER;
             TCHAR curdir[MAX_PATH] = {0};
             TCHAR FilePath[MAX_PATH] = {0};
 
@@ -943,7 +943,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
             fname.nMaxFileTitle = sizeof(filename);
             fname.lpfnHook = (LPOFNHOOKPROC)OFNHookProc;
             fname.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER | OFN_ENABLEHOOK | OFN_NOCHANGEDIR;
-            fname.lpstrDefExt = "nes";
+            fname.lpstrDefExt = __T("nes");
 
             if (!GetOpenFileName(&fname)) goto OPENCANCEL;
 
@@ -965,7 +965,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
                     if (IDNO == Msg(STRING_CONFIRM_SAVE, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
                         break;
                 }
-                while (gFilePath[0] == '\0' || !SaveToFile())
+                while (gFilePath[0] == __T('\0') || !SaveToFile())
                 {
                     Msg(STRING_FILEERROR_SAVE, MB_OK | MB_ICONWARNING);
                     if (!SetSaveFileName(hWnd)) break;
@@ -988,8 +988,8 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         case IDM_FILE_CHRLOAD:
         {
             OPENFILENAME fname;
-            char filename[64] = {0};
-            char filefilter[] = NES_ALL_FILTER;
+            TCHAR filename[64] = {0};
+            TCHAR filefilter[] = NES_ALL_FILTER;
             TCHAR curdir[MAX_PATH] = {0};
             TCHAR filepath[MAX_PATH] = {0};
 
@@ -1008,9 +1008,9 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
             fname.nMaxFileTitle = sizeof(filename);
             fname.lpfnHook = (LPOFNHOOKPROC)OFNHookProc;
             fname.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER | OFN_ENABLEHOOK | OFN_NOCHANGEDIR | OFN_ENABLETEMPLATE;
-            fname.lpstrDefExt = "nes";
+            fname.lpstrDefExt = __T("nes");
             fname.hInstance = GetModuleHandle(NULL);
-            fname.lpTemplateName = "LOADCHROPTION";
+            fname.lpTemplateName = __T("LOADCHROPTION");
 
             if (!GetOpenFileName(&fname)) break;
 
@@ -1034,7 +1034,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         {
             if (gblIsROMLoaded)
             {
-                DialogBox(ghInst, "ROOMSELECTDLG", hWnd, AreaSettingDlgProc);
+                DialogBox(ghInst, __T("ROOMSELECTDLG"), hWnd, AreaSettingDlgProc);
                 if (g_hTbWnd)
                 {
                     LPARAM dwState;
@@ -1052,7 +1052,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         case IDM_SETTING_MAPHEAD:
         {
             if (gblIsROMLoaded)
-                DialogBox(ghInst, "MAPCOMHEADEDITDLG", hWnd, MapComHeadEditDlgProc);
+                DialogBox(ghInst, __T("MAPCOMHEADEDITDLG"), hWnd, MapComHeadEditDlgProc);
         }
         break;
         case IDM_SETTING_MAP:
@@ -1123,13 +1123,13 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         }
         break;
         case IDM_EDIT_STRINGS:
-            if (gblIsROMLoaded) DialogBox(ghInst, "STRINGEDITDLG", hWnd, StringEditDlgProc);
+            if (gblIsROMLoaded) DialogBox(ghInst, __T("STRINGEDITDLG"), hWnd, StringEditDlgProc);
             break;
         case IDM_EDIT_LOOP:
-            if (gblIsROMLoaded) DialogBox(ghInst, "LOOPEDITDLG", hWnd, LoopEditDlgProc);
+            if (gblIsROMLoaded) DialogBox(ghInst, __T("LOOPEDITDLG"), hWnd, LoopEditDlgProc);
             break;
         case IDM_EDIT_AREASORT:
-            if (gblIsROMLoaded) DialogBox(ghInst, "AREASORTDLG", hWnd, AreaSortDlgProc);
+            if (gblIsROMLoaded) DialogBox(ghInst, __T("AREASORTDLG"), hWnd, AreaSortDlgProc);
             break;
         case IDM_TOOL_WORLDDATAUPDATE:
             if (gblIsROMLoaded
@@ -1137,7 +1137,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
             {
                 LPTSTR szBuf = GetTempStringBuffer();
                 UpdateWorldData(TRUE);
-                wsprintf(szBuf, "$9CB4 : %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH",
+                wsprintf(szBuf, __T("$9CB4 : %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH"),
                          bPRGROM[SMB_WORLD_SETTING],
                          bPRGROM[SMB_WORLD_SETTING + 1],
                          bPRGROM[SMB_WORLD_SETTING + 2],
@@ -1150,7 +1150,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
             }
             break;
         case IDM_TOOL_GENERALSETTING:
-            if (gblIsROMLoaded) DialogBox(ghInst, "GENERALSETTINGDLG", hWnd, GeneralSettingDlgProc);
+            if (gblIsROMLoaded) DialogBox(ghInst, __T("GENERALSETTINGDLG"), hWnd, GeneralSettingDlgProc);
             break;
         case IDM_SETTING_GAME:
             if (gblIsROMLoaded) GameSettingPropertySheet(hWnd);
@@ -1251,7 +1251,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         case IDM_EMULATOR_TESTPLAYSETTING:
             if (gblIsROMLoaded)
             {
-                DialogBox(ghInst, "TESTPLAYSETTINGDLG", hWnd, TestPlaySettingDlgProc);
+                DialogBox(ghInst, __T("TESTPLAYSETTINGDLG"), hWnd, TestPlaySettingDlgProc);
                 if (g_hTbWnd) SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_EMULATOR_TESTPLAYSETTING, (WPARAM)MAKELONG(FALSE, 0));
             }
             break;
@@ -1259,7 +1259,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
             OptionPropertySheet(hWnd, 0);
             break;
         case IDM_TOOL_CUSTOMIZE:
-            DialogBox(ghInst, "CUSTOMIZEDLG", hWnd, CustomizeDlgProc);
+            DialogBox(ghInst, __T("CUSTOMIZEDLG"), hWnd, CustomizeDlgProc);
             break;
         case IDM_WINDOW_CLOSEALL:
             ShowWindow(ghWndMapView, SW_MINIMIZE);
@@ -1288,7 +1288,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         }
         break;
         case IDM_HELP_VERSION:
-            DialogBox(ghInst, "VERSIONDLG", hWnd, VersionDlgProc);
+            DialogBox(ghInst, __T("VERSIONDLG"), hWnd, VersionDlgProc);
             break;
         default:
         {
@@ -1371,15 +1371,15 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         ccs.idFirstChild = IDM_WINDOW_CHILD;
 
         ghWndMDIClient = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
-                                        TEXT("mdiclient"),
-                                        TEXT("mdiclient"),
+                                        __T("mdiclient"),
+                                        __T("mdiclient"),
                                         WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | MDIS_ALLCHILDSTYLES,
                                         0, 0,
                                         0, 0,
                                         hWnd,
                                         (HMENU)IDW_MDICLIENT,
                                         GetModuleHandle(NULL),
-                                        (LPSTR)&ccs);
+                                        (LPTSTR)&ccs);
 
         ShowWindow(ghWndMDIClient, SW_SHOW);
         UpdateWindow(ghWndMDIClient);
@@ -1441,11 +1441,11 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
         wcx.cbClsExtra =
         wcx.cbWndExtra = 0;
     wcx.hInstance = hInstance;
-    wcx.hIcon = LoadIcon(hInstance, "APPICON");
-    wcx.hIconSm = LoadIcon(hInstance, "APPICON");
+    wcx.hIcon = LoadIcon(hInstance, __T("APPICON"));
+    wcx.hIconSm = LoadIcon(hInstance, __T("APPICON"));
     wcx.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcx.hbrBackground = (HBRUSH)(COLOR_APPWORKSPACE + 1);
-    wcx.lpszMenuName = "MAINWNDMENU";
+    wcx.lpszMenuName = __T("MAINWNDMENU");
     wcx.lpszClassName = FRAMEWNDCLASSNAME;
 
     if (!RegisterClassEx(&wcx))return FALSE;
@@ -1511,13 +1511,13 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
 
     lv_AdjustLogView();
 
-    if (strlen(gFilePath) != 0)
+    if (_tcslen(gFilePath) != 0)
         LoadROMFromFile();
 
     return TRUE;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
     MSG msg;
     HACCEL hAccel;
@@ -1529,7 +1529,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     gFilePath[0] = 0;
     if (lstrlen(lpCmdLine))
     {
-        if (lpCmdLine[0] != '"')
+        if (lpCmdLine[0] != __T('"'))
         {
             lstrcpy((LPTSTR)gFilePath, (LPCTSTR)lpCmdLine);
         }

@@ -29,12 +29,12 @@
 
 typedef struct
 {
-    char cType[4];
+    BYTE cType[4];
     BYTE bNum_PRGs;
     BYTE bNum_CHARs;
     BYTE bROM_Type;
     BYTE bROM_Type2;
-    char Reserved[8];
+    BYTE Reserved[8];
 }INESHEADER;
 
 #define SMB_OBJECT_DATA_MAX_SIZE 3
@@ -56,18 +56,18 @@ typedef union
 
 typedef struct
 {
-    LPSTR Name;
+    LPTSTR Name;
     BYTE  bBasicDataMask;
     BYTE  bBasicData;
     BYTE  bIsSizeValid;
     BYTE  bSizeMask;
     int   iSizeDelta;
-    LPSTR Note;
+    LPTSTR Note;
 }SMBMAPOBJECTINFO;
 
 typedef struct _tagSMBBADGUYSINFO
 {
-    LPSTR Name;
+    LPTSTR Name;
     int YDelta;
     BYTE bFixedYPos;
     int XDelta;
