@@ -28,6 +28,9 @@
 
 #define FRAMEWNDCLASSNAME "MDIFRAME"
 
+#define NES_ONLY_FILTER "iNES format ROM image (*.nes)\0\0\0"
+#define NES_ALL_FILTER "iNES format ROM image (*.nes)\0*.nes\0All (*.*)\0*.*\0\0\0"
+
 HINSTANCE ghInst;
 HWND ghWndMDIClient;
 HWND ghWndFrame;
@@ -124,8 +127,7 @@ BOOL GetFileName(LPTSTR lpPath, HWND hWnd)
 {
     OPENFILENAME fname;
     char filename[64] = {0};
-    char filefilter[] = {'i','N','E','S',' ','f','o','r','m','a','t',' ','R','O','M',' ','i','m','a','g','e',' ','(','*','.','n','e','s',')','\0','*','.','n','e','s','\0',
-        'A','l','l',' ','(','*','.','*',')','\0','*','.','*','\0','\0','\0'};
+    char filefilter[] = NES_ALL_FILTER;
 
     memset(&fname, 0, sizeof(OPENFILENAME));
     fname.lStructSize = sizeof(fname);
@@ -609,7 +611,7 @@ BOOL SetSaveFileName(HWND hWnd)
 {
     OPENFILENAME fname;
     TCHAR filename[65];
-    char filefilter[] = {'i','N','E','S',' ','f','o','r','m','a','t',' ','R','O','M',' ','i','m','a','g','e',' ','(','*','.','n','e','s',')','\0','*','.','n','e','s','\0','\0','\0'};
+    char filefilter[] = NES_ONLY_FILTER;
     TCHAR curdir[MAX_PATH];
     TCHAR FilePath[MAX_PATH];
 
@@ -921,8 +923,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         {
             OPENFILENAME fname;
             char filename[64] = {0};
-            char filefilter[] = {'i','N','E','S',' ','f','o','r','m','a','t',' ','R','O','M',' ','i','m','a','g','e',' ','(','*','.','n','e','s',')','\0','*','.','n','e','s','\0',
-                'A','l','l',' ','(','*','.','*',')','\0','*','.','*','\0','\0','\0'};
+            char filefilter[] = NES_ALL_FILTER;
             TCHAR curdir[MAX_PATH] = {0};
             TCHAR FilePath[MAX_PATH] = {0};
 
@@ -988,8 +989,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
         {
             OPENFILENAME fname;
             char filename[64] = {0};
-            char filefilter[] = {'i','N','E','S',' ','f','o','r','m','a','t',' ','R','O','M',' ','i','m','a','g','e',' ','(','*','.','n','e','s',')','\0','*','.','n','e','s','\0',
-                    'A','l','l',' ','(','*','.','*',')','\0','*','.','*','\0','\0','\0'};
+            char filefilter[] = NES_ALL_FILTER;
             TCHAR curdir[MAX_PATH] = {0};
             TCHAR filepath[MAX_PATH] = {0};
 
