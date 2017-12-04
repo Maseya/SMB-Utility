@@ -220,44 +220,44 @@ static UINT FindVkeyIndex(BYTE bVkey)
 //        (UP, DOWN, LEFT, RIGHTは未使用)
 LPTSTR g_szEmuKeyName[EMULATOR_NUM_BUTTONS] =
 {
-    STRING_KEYCONFIG_EMU_A,//"A"),
-    STRING_KEYCONFIG_EMU_B,//"B"),
-    STRING_KEYCONFIG_EMU_SELECT,//"ｾﾚｸﾄ"),
-    STRING_KEYCONFIG_EMU_START,//"ｽﾀｰﾄ"),
-    STRING_KEYCONFIG_EMU_UP,//"上"),
-    STRING_KEYCONFIG_EMU_DOWN,//"下"),
-    STRING_KEYCONFIG_EMU_LEFT,//"左"),
-    STRING_KEYCONFIG_EMU_RIGHT//"右"
+    STRING_KEYCONFIG_EMU_A,//__T("A"),
+    STRING_KEYCONFIG_EMU_B,//__T("B"),
+    STRING_KEYCONFIG_EMU_SELECT,//__T("ｾﾚｸﾄ"),
+    STRING_KEYCONFIG_EMU_START,//__T("ｽﾀｰﾄ"),
+    STRING_KEYCONFIG_EMU_UP,//__T("上"),
+    STRING_KEYCONFIG_EMU_DOWN,//__T("下"),
+    STRING_KEYCONFIG_EMU_LEFT,//__T("左"),
+    STRING_KEYCONFIG_EMU_RIGHT//__T("右"
 };
 
 LPTSTR g_szEditKeyName[KEYACCEL_NUM_COMMANDS] =
 {
-    STRING_KEYCONFIG_EDIT_ADD1,//"種類を+1"),
-    STRING_KEYCONFIG_EDIT_DEC1,//"種類を-1"),
-    STRING_KEYCONFIG_EDIT_ADD16,//"種類を+16"),
-    STRING_KEYCONFIG_EDIT_DEC16,//"種類を-16"),
-    STRING_KEYCONFIG_EDIT_UP,//"位置を上へ"),
-    STRING_KEYCONFIG_EDIT_DOWN,//"位置を下へ"),
-    STRING_KEYCONFIG_EDIT_LEFT,//"位置を左へ"),
-    STRING_KEYCONFIG_EDIT_RIGHT,//"位置を右へ"),
-    STRING_KEYCONFIG_EDIT_NEXTPAGE,//"次のﾍﾟｰｼﾞへ"),
-    STRING_KEYCONFIG_EDIT_PREVPAGE,//"前のﾍﾟｰｼﾞへ"),
-    STRING_KEYCONFIG_EDIT_NEXTOBJ,//"次のｵﾌﾞｼﾞｪｸﾄへ"),
-    STRING_KEYCONFIG_EDIT_PREVOBJ,//"前のｵﾌﾞｼﾞｪｸﾄへ"),
-    STRING_KEYCONFIG_EDIT_SAVEFILE,//"ﾌｧｲﾙ: 上書き保存"),
-    STRING_KEYCONFIG_EDIT_UNDO,//"編集: 元に戻す"),
-    STRING_KEYCONFIG_EDIT_ROOM,//"編集: ﾙｰﾑを開く"),
-    STRING_KEYCONFIG_EDIT_BADGUYS,//"編集: 敵"),
-    STRING_KEYCONFIG_EDIT_MAP,//"編集: 地形"),
-    STRING_KEYCONFIG_EDIT_TESTPLAY,//"ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲ"),
-    STRING_KEYCONFIG_EDIT_PAGETESTPLAY,//"ｴﾐｭﾚｰﾀ: ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ"),
-    STRING_KEYCONFIG_EDIT_PAGETESTPLAY2,//"ｴﾐｭﾚｰﾀ: 途中ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ"),
-    STRING_KEYCONFIG_EDIT_STOP,//"ｴﾐｭﾚｰﾀ: 停止"),
-    STRING_KEYCONFIG_EDIT_SAVEEMU,//"ｴﾐｭﾚｰﾀ: ｾｰﾌﾞ"),
-    STRING_KEYCONFIG_EDIT_LOADEMU,//"ｴﾐｭﾚｰﾀ: ﾛｰﾄﾞ"),
-    STRING_KEYCONFIG_EDIT_EMUSETTING,//"ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲの設定"),
-    STRING_KEYCONFIG_EDIT_NEXTWIN,//"ｳｲﾝﾄﾞｳ: 次へ"),
-    STRING_KEYCONFIG_EDIT_PREVWIN,//"ｳｲﾝﾄﾞｳ: 前へ"
+    STRING_KEYCONFIG_EDIT_ADD1,//__T("種類を+1"),
+    STRING_KEYCONFIG_EDIT_DEC1,//__T("種類を-1"),
+    STRING_KEYCONFIG_EDIT_ADD16,//__T("種類を+16"),
+    STRING_KEYCONFIG_EDIT_DEC16,//__T("種類を-16"),
+    STRING_KEYCONFIG_EDIT_UP,//__T("位置を上へ"),
+    STRING_KEYCONFIG_EDIT_DOWN,//__T("位置を下へ"),
+    STRING_KEYCONFIG_EDIT_LEFT,//__T("位置を左へ"),
+    STRING_KEYCONFIG_EDIT_RIGHT,//__T("位置を右へ"),
+    STRING_KEYCONFIG_EDIT_NEXTPAGE,//__T("次のﾍﾟｰｼﾞへ"),
+    STRING_KEYCONFIG_EDIT_PREVPAGE,//__T("前のﾍﾟｰｼﾞへ"),
+    STRING_KEYCONFIG_EDIT_NEXTOBJ,//__T("次のｵﾌﾞｼﾞｪｸﾄへ"),
+    STRING_KEYCONFIG_EDIT_PREVOBJ,//__T("前のｵﾌﾞｼﾞｪｸﾄへ"),
+    STRING_KEYCONFIG_EDIT_SAVEFILE,//__T("ﾌｧｲﾙ: 上書き保存"),
+    STRING_KEYCONFIG_EDIT_UNDO,//__T("編集: 元に戻す"),
+    STRING_KEYCONFIG_EDIT_ROOM,//__T("編集: ﾙｰﾑを開く"),
+    STRING_KEYCONFIG_EDIT_BADGUYS,//__T("編集: 敵"),
+    STRING_KEYCONFIG_EDIT_MAP,//__T("編集: 地形"),
+    STRING_KEYCONFIG_EDIT_TESTPLAY,//__T("ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲ"),
+    STRING_KEYCONFIG_EDIT_PAGETESTPLAY,//__T("ｴﾐｭﾚｰﾀ: ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ"),
+    STRING_KEYCONFIG_EDIT_PAGETESTPLAY2,//__T("ｴﾐｭﾚｰﾀ: 途中ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ"),
+    STRING_KEYCONFIG_EDIT_STOP,//__T("ｴﾐｭﾚｰﾀ: 停止"),
+    STRING_KEYCONFIG_EDIT_SAVEEMU,//__T("ｴﾐｭﾚｰﾀ: ｾｰﾌﾞ"),
+    STRING_KEYCONFIG_EDIT_LOADEMU,//__T("ｴﾐｭﾚｰﾀ: ﾛｰﾄﾞ"),
+    STRING_KEYCONFIG_EDIT_EMUSETTING,//__T("ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲの設定"),
+    STRING_KEYCONFIG_EDIT_NEXTWIN,//__T("ｳｲﾝﾄﾞｳ: 次へ"),
+    STRING_KEYCONFIG_EDIT_PREVWIN,//__T("ｳｲﾝﾄﾞｳ: 前へ"
 };
 
 #define CUSTOMIZE_KEYIDS 2
