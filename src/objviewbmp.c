@@ -99,7 +99,7 @@ BOOL InitAssistBmp(HWND hWnd)
     //	DWORD nWidth,nHeight;
     HDC hDC;
 
-    hBitmap = LoadImage(GetModuleHandle(NULL), "ASSIST_IMG", IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
+    hBitmap = LoadImage(GetModuleHandle(NULL), __T("ASSIST_IMG"), IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
     if (!hBitmap) return FALSE;
 
     //	if(!GetObject(hBitmap,sizeof(BITMAP),&sBmp)) return FALSE;
@@ -133,13 +133,13 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
     case 0x0D:
         if (!(lpbBuf[1] & 0x40))
         {
-            //wsprintf(lpszBuf, "%s:%.2d", smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
+            //wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
         }
         else
         {
             if ((lpbBuf[1] & 0x70) == 0x40)
             {
-                //wsprintf(lpszBuf, "%s", smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
+                //wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
             }
             else
             {
@@ -225,7 +225,7 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
     default:
         if (!(lpbBuf[1] & 0x70))
         {
-            //wsprintf(lpszBuf,"%s",smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
+            //wsprintf(lpszBuf,__T("%s"),smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
             BYTE bType = lpbBuf[1] & 0x0F;
             int iItemBlocks[] = {
                 MAPASSISTBMPDATAINDEX_QBLOCKPOWERMUSH,
@@ -315,8 +315,8 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
         break;
     default://（敵キャラコマンド）
     {
-        //			LPTSTR bit6[]={"", STRING_OBJLIST_HARD};
-        //			wsprintf(lpszBuf, "%s%s", smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
+        //			LPTSTR bit6[]={__T(""), STRING_OBJLIST_HARD};
+        //			wsprintf(lpszBuf, __T("%s%s"), smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
         BYTE bType = lpbBuf[1] & 0x3F;
         int iFireBars[] = {
             BADGUYSASSISTBMPDATAINDEX_FIREBARRIGHT,

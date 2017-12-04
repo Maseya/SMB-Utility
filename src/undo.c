@@ -37,7 +37,7 @@ void undoPrepare(LPCTSTR lpUndoName)
     iTrainer_undo = iTrainer;
 
     // store undo name
-    wsprintf(g_tcUndoName, "%s", lpUndoName);
+    wsprintf(g_tcUndoName, __T("%s"), lpUndoName);
 
     //
     g_blUndoEnable = TRUE;

@@ -65,14 +65,14 @@ BOOL LoadROM(LPTSTR pFilename)
     iTrainer = 0;
     gblIsROMLoaded = FALSE;
 
-    if ((fp = fopen(pFilename, "rb")) == NULL)
+    if ((fp = fopen(pFilename, __T("rb"))) == NULL)
     {
         Msg(STRING_FILEERROR_NOTFOUND, MB_OK | MB_ICONWARNING);
         return FALSE;
     }
 
     fread(&Head, 1, sizeof(INESHEADER), fp);
-    if (memcmp(Head.cType, "NES\x1a", 4) || (Head.bNum_CHARs != SMB_NUM_CHARS || Head.bNum_PRGs != SMB_NUM_PRGS) || ((Head.bROM_Type & 0x01) != 0x01))
+    if (memcmp(Head.cType, __T("NES\x1a"), 4) || (Head.bNum_CHARs != SMB_NUM_CHARS || Head.bNum_PRGs != SMB_NUM_PRGS) || ((Head.bROM_Type & 0x01) != 0x01))
     {
         Msg(STRING_FILEERROR_FILEFORMAT, MB_OK | MB_ICONWARNING);
         fclose(fp);
@@ -102,7 +102,7 @@ BOOL SaveAsFile(LPTSTR pFilename)
 {
     FILE *fp;
 
-    if ((fp = fopen(pFilename, "w+b")) == NULL) return FALSE;
+    if ((fp = fopen(pFilename, __T("w+b"))) == NULL) return FALSE;
 
     fwrite(&Head, sizeof(INESHEADER), 1, fp);
     if (iTrainer) fwrite(bPRGROM + 0x7000, INES_TRAINERSIZE, 1, fp);

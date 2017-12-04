@@ -198,7 +198,7 @@ static void ChangeString(UINT iStringNum, LPTSTR pString)
             {
                 TCHAR cTmp[4] = {0};
                 memcpy(cTmp, &pString[n], 3);
-                sscanf(cTmp, "#%hhx", &bTmp);
+                sscanf(cTmp, __T("#%hhx"), &bTmp);
                 n += 3;
             }
             else
@@ -222,7 +222,7 @@ static void GetString(UINT iStringNum, LPTSTR pString, UINT iBufSize)
         tcTmp = ConvertData2Char(pbTmp[i]);
         if (tcTmp == '?')
         {
-            sprintf(&pString[n], "#%.2X", pbTmp[i]);
+            sprintf(&pString[n], __T("#%.2X"), pbTmp[i]);
             n += 3;
         }
         else
@@ -327,21 +327,21 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
         TCHAR cBuf[34];
 
         bTmp = bPRGROM + SMBADDRESS_LOOP_WORLD;
-        sprintf(cBuf, "%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x", bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
+        sprintf(cBuf, __T("%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x"), bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
         SetDlgItemText(hDlg, IDC_WORLD, cBuf);
         bTmp = bPRGROM + SMBADDRESS_LOOP_PAGE;
-        sprintf(cBuf, "%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x", bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
+        sprintf(cBuf, __T("%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x"), bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
         SetDlgItemText(hDlg, IDC_PAGE, cBuf);
         bTmp = bPRGROM + SMBADDRESS_LOOP_YPOS;
-        sprintf(cBuf, "%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x", bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
+        sprintf(cBuf, __T("%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x"), bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
         SetDlgItemText(hDlg, IDC_YPOS, cBuf);
         bTmp = bPRGROM + SMBADDRESS_LOOP_RETURNPOS;
-        sprintf(cBuf, "%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x", bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
+        sprintf(cBuf, __T("%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x"), bTmp[0], bTmp[1], bTmp[2], bTmp[3], bTmp[4], bTmp[5], bTmp[6], bTmp[7], bTmp[8], bTmp[9], bTmp[10]);
         SetDlgItemText(hDlg, IDC_RETURNPOS, cBuf);
 
-        sprintf(cBuf, "%.2x", bPRGROM[SMBADDRESS_LOOP_W7DATA1]);
+        sprintf(cBuf, __T("%.2x"), bPRGROM[SMBADDRESS_LOOP_W7DATA1]);
         SetDlgItemText(hDlg, IDC_DATA1, cBuf);
-        sprintf(cBuf, "%.2x", bPRGROM[SMBADDRESS_LOOP_W7DATA2]);
+        sprintf(cBuf, __T("%.2x"), bPRGROM[SMBADDRESS_LOOP_W7DATA2]);
         SetDlgItemText(hDlg, IDC_DATA2, cBuf);
         return TRUE;
     }
@@ -356,27 +356,27 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_WORLD, cBuf, 34);
-            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[0][0], &bTmp[0][1], &bTmp[0][2], &bTmp[0][3], &bTmp[0][4], &bTmp[0][5], &bTmp[0][6], &bTmp[0][7], &bTmp[0][8], &bTmp[0][9], &bTmp[0][10])) return TRUE;
+            if (11 != sscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[0][0], &bTmp[0][1], &bTmp[0][2], &bTmp[0][3], &bTmp[0][4], &bTmp[0][5], &bTmp[0][6], &bTmp[0][7], &bTmp[0][8], &bTmp[0][9], &bTmp[0][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_PAGE, cBuf, 34);
-            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[1][0], &bTmp[1][1], &bTmp[1][2], &bTmp[1][3], &bTmp[1][4], &bTmp[1][5], &bTmp[1][6], &bTmp[1][7], &bTmp[1][8], &bTmp[1][9], &bTmp[1][10])) return TRUE;
+            if (11 != sscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[1][0], &bTmp[1][1], &bTmp[1][2], &bTmp[1][3], &bTmp[1][4], &bTmp[1][5], &bTmp[1][6], &bTmp[1][7], &bTmp[1][8], &bTmp[1][9], &bTmp[1][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_YPOS, cBuf, 34);
-            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[2][0], &bTmp[2][1], &bTmp[2][2], &bTmp[2][3], &bTmp[2][4], &bTmp[2][5], &bTmp[2][6], &bTmp[2][7], &bTmp[2][8], &bTmp[2][9], &bTmp[2][10])) return TRUE;
+            if (11 != sscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[2][0], &bTmp[2][1], &bTmp[2][2], &bTmp[2][3], &bTmp[2][4], &bTmp[2][5], &bTmp[2][6], &bTmp[2][7], &bTmp[2][8], &bTmp[2][9], &bTmp[2][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_RETURNPOS, cBuf, 34);
-            if (11 != sscanf(cBuf, "%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx", &bTmp[3][0], &bTmp[3][1], &bTmp[3][2], &bTmp[3][3], &bTmp[3][4], &bTmp[3][5], &bTmp[3][6], &bTmp[3][7], &bTmp[3][8], &bTmp[3][9], &bTmp[3][10])) return TRUE;
+            if (11 != sscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[3][0], &bTmp[3][1], &bTmp[3][2], &bTmp[3][3], &bTmp[3][4], &bTmp[3][5], &bTmp[3][6], &bTmp[3][7], &bTmp[3][8], &bTmp[3][9], &bTmp[3][10])) return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_DATA1, cBuf, 3);
-            if (1 != sscanf(cBuf, "%hhx", &bData[0]))return TRUE;
+            if (1 != sscanf(cBuf, __T("%hhx"), &bData[0]))return TRUE;
 
             memset(cBuf, 0, 34);
             GetDlgItemText(hDlg, IDC_DATA2, cBuf, 3);
-            if (1 != sscanf(cBuf, "%hhx", &bData[1])) return TRUE;
+            if (1 != sscanf(cBuf, __T("%hhx"), &bData[1])) return TRUE;
 
             undoPrepare(UNDONAME_TOOLLOOPBIN);
 
@@ -455,7 +455,7 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
         //
         for (i = 0; i < 10; i++)
         {
-            sprintf(cBuf, "%d", i * 100);
+            sprintf(cBuf, __T("%d"), i * 100);
             SendDlgItemMessage(hDlg, IDC_TIME400, CB_ADDSTRING, 0, (LPARAM)cBuf);
             SendDlgItemMessage(hDlg, IDC_TIME300, CB_ADDSTRING, 0, (LPARAM)cBuf);
             SendDlgItemMessage(hDlg, IDC_TIME200, CB_ADDSTRING, 0, (LPARAM)cBuf);
@@ -919,7 +919,7 @@ void GameSettingPropertySheet(HWND hwndOwner)
     //TODO
 #define OPTPS_NUM_PAGES 5
     LPTSTR lpTitle[OPTPS_NUM_PAGES] = {STRING_SETTING_WARPZONE, STRING_SETTING_1UP, STRING_SETTING_KOOPA, STRING_SETTING_WORLD, STRING_SETTING_OTHER};
-    LPTSTR lpDlgResName[OPTPS_NUM_PAGES] = {"GAMESETTINGWARPZONEDLG","GAMESETTING1UPDLG","GAMESETTINGKOOPADLG","GAMESETTINGWORLDDLG","GAMESETTINGDLG"};
+    LPTSTR lpDlgResName[OPTPS_NUM_PAGES] = {__T("GAMESETTINGWARPZONEDLG"),__T("GAMESETTING1UPDLG"),__T("GAMESETTINGKOOPADLG"),__T("GAMESETTINGWORLDDLG"),__T("GAMESETTINGDLG")};
     DLGPROC pfnDlgProc[OPTPS_NUM_PAGES] = {GameSettingWarpZoneDlgProc,GameSetting1upDlgProc,GameSettingKoopaDlgProc,GameSettingWorldDlgProc,GameSettingDlgProc};
 
     //Local

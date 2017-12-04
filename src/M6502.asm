@@ -1171,7 +1171,7 @@ RegInst24:
 		or		ah, dl	; OR It in with the original
 		and	dh, 40h	; What we do with the 6th bit
 		shr	dh, 2		; Save this for later
-		or		ah, dh	; OR In our "overflow"
+		or		ah, dh	; OR In our __T("overflow"
 		xor	bh, bh	; Zero this!
 		xor	edx, edx
 		mov	dl, [esi]
@@ -1363,7 +1363,7 @@ readExit14:
 		or		ah, dl	; OR It in with the original
 		and	dh, 40h	; What we do with the 6th bit
 		shr	dh, 2		; Save this for later
-		or		ah, dh	; OR In our "overflow"
+		or		ah, dh	; OR In our __T("overflow"
 		xor	bh, bh	; Zero this!
 		xor	edx, edx
 		mov	dl, [esi]

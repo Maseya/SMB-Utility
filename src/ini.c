@@ -81,7 +81,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
 
     // NOTE : コマンドプロンプトから実行された場合、入力されたコマンド文字列がそのまま取得される。
     //        例えば、WinIPSの置かれているディレクトリ内からコマンドプロンプトで"winips"と起動すると、
-    //        "winips"が取得されるので、以下の方法ではだめ。
+    //        __T("winips"が取得されるので、以下の方法ではだめ。
     // p = GetCommandLine();
     // 実行可能ファイルのフルパス名を取得する
     GetModuleFileName(GetModuleHandle(NULL), FullPath, MAX_PATH);
@@ -89,7 +89,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
 
     while (*p == '"')
         p = CharNext(p);
-    pt = p; // "を除いた先頭へのポインタ
+    pt = p; // __T("を除いた先頭へのポインタ
 
     // マルチバイト文字数を得る
     for (; *p && *p != '"'; p = CharNext(p)); // 終端へ"を探す

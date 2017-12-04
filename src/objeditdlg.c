@@ -57,7 +57,7 @@ static void DisableBadguysEditDlgControls(HWND hDlg, int iDisableFlag)
         int iEditCtrlID[] = {IDC_XPOS,IDC_YPOS,IDC_PAGEEDIT};
 
         for (n = 0; n < (sizeof(iEditCtrlID) / sizeof(int)); n++)
-            SetDlgItemText(hDlg, iEditCtrlID[n], "");
+            SetDlgItemText(hDlg, iEditCtrlID[n], __T(""));
         for (n = 0; n < (sizeof(iCtrlID) / sizeof(int)); n++)
             EnableWindow(GetDlgItem(hDlg, iCtrlID[n]), FALSE);
     }
@@ -67,7 +67,7 @@ static void DisableBadguysEditDlgControls(HWND hDlg, int iDisableFlag)
         int iEditCtrlID[] = {IDC_XPOS2,IDC_DATA,IDC_PAGEEDIT2,IDC_WORLD};
 
         for (n = 0; n < (sizeof(iEditCtrlID) / sizeof(int)); n++)
-            SetDlgItemText(hDlg, iEditCtrlID[n], "");
+            SetDlgItemText(hDlg, iEditCtrlID[n], __T(""));
         for (n = 0; n < (sizeof(iCtrlID) / sizeof(int)); n++)
             EnableWindow(GetDlgItem(hDlg, iCtrlID[n]), FALSE);
     }
@@ -86,7 +86,7 @@ void UpdateBadguysEditDlgPreview(HWND hDlg, BOOL blGetRoomIDFromList)
     if (!blGetRoomIDFromList)
     {
         GetDlgItemText(hDlg, IDC_DATA, cBuf, 10);
-        if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return;
+        if (1 != sscanf(cBuf, __T("%hhx"), &bRoomID)) return;
     }
     else
     {
@@ -147,7 +147,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
         SendDlgItemMessage(hDlg, IDC_PAGEEDITSPIN, UDM_SETRANGE, 0, MAKEWPARAM(0x3F, 0));
 
-        sprintf(cOfs, "%.2XH", iOfs);
+        sprintf(cOfs, __T("%.2XH"), iOfs);
         SetDlgItemText(hDlg, IDC_OFFSET, cOfs);
 
         //page
@@ -167,7 +167,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             //ページの範囲
             SendDlgItemMessage(hDlg, IDC_XPOS2SPIN, UDM_SETRANGE, 0, MAKEWPARAM(0xF, 0));
 
-            sprintf(cBuf, "%.2x %.2x %.2x", bBuf[0], bBuf[1], bBuf[2]);
+            sprintf(cBuf, __T("%.2x %.2x %.2x"), bBuf[0], bBuf[1], bBuf[2]);
             SetDlgItemText(hDlg, IDC_BIN, cBuf);
             CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
 
@@ -181,12 +181,12 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             SetDlgItemInt(hDlg, IDC_PAGEEDIT2, bBuf[2] & 0x1F, TRUE);
 
             //Room ID
-            sprintf(cBuf, "%.2x", bBuf[1] & 0x7F);
+            sprintf(cBuf, __T("%.2x"), bBuf[1] & 0x7F);
             SetDlgItemText(hDlg, IDC_DATA, cBuf);
             GetValidRoomIDs(&bRoomIDs[0]);
             for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
             {
-                sprintf(cBuf, "%.2x", bRoomIDs[n]);
+                sprintf(cBuf, __T("%.2x"), bRoomIDs[n]);
                 SendDlgItemMessage(hDlg, IDC_DATA, CB_ADDSTRING, 0, (LPARAM)cBuf);
             }
 
@@ -218,7 +218,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             CheckDlgButton(hDlg, IDC_ISPAGECOMMAND, BST_CHECKED);
 
             //bin
-            sprintf(cBuf, "%.2x %.2x", bBuf[0], bBuf[1]);
+            sprintf(cBuf, __T("%.2x %.2x"), bBuf[0], bBuf[1]);
             SetDlgItemText(hDlg, IDC_BIN, cBuf);
             CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
 
@@ -241,7 +241,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             SetDlgItemInt(hDlg, IDC_XPOS, GetBadGuysXPos(bBuf), TRUE);
             SetDlgItemInt(hDlg, IDC_YPOS, GetBadGuysYPos(bBuf), TRUE);
             SendDlgItemMessage(hDlg, IDC_TYPE, CB_SETCURSEL, bBuf[1] & 0x3F, 0);
-            sprintf(cBuf, "%.2x %.2x", bBuf[0], bBuf[1]);
+            sprintf(cBuf, __T("%.2x %.2x"), bBuf[0], bBuf[1]);
             SetDlgItemText(hDlg, IDC_BIN, cBuf);
             CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
             if (bBuf[1] & 0x40) CheckDlgButton(hDlg, IDC_BIT6, BST_CHECKED);
@@ -276,7 +276,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
                 //バイナリデータの取得
                 GetDlgItemText(hDlg, IDC_BIN, cBuf, 20);
-                iSize = sscanf(cBuf, "%hhx %hhx %hhx %hhx", &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
+                iSize = sscanf(cBuf, __T("%hhx %hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
                 if (iSize < 1 || iSize>4) return TRUE;
 
                 undoPrepare(UNDONAME_DLGEDIT);
@@ -323,7 +323,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
                     //Xの取得
                     //GetDlgItemText(hDlg,IDC_XPOS,cBuf,20);
-                    //if(1!=sscanf(cBuf,"%d",&bTmp)) return TRUE;
+                    //if(1!=sscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
                     bTmp = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, TRUE);
                     if (!blSuccess) return TRUE;
                     bTmp -= smbBudGuysInfo[bType].XDelta;
@@ -332,7 +332,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
                     //Yの取得
                     //GetDlgItemText(hDlg,IDC_YPOS,cBuf,20);
-                    //if(1!=sscanf(cBuf,"%d",&bTmp)) return TRUE;
+                    //if(1!=sscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
                     bTmp = GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, TRUE);
                     if (!blSuccess) return TRUE;
                     bTmp += abs(smbBudGuysInfo[bType].YDelta);
@@ -374,7 +374,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
                 //
                 GetDlgItemText(hDlg, IDC_DATA, cBuf, 3);
-                if (1 != sscanf(cBuf, "%hhx", &bTmp)) return TRUE;
+                if (1 != sscanf(cBuf, __T("%hhx"), &bTmp)) return TRUE;
                 bBuf[1] |= (bTmp & 0x7F);
 
                 //ワールド
@@ -491,7 +491,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
 void DisableConrols(HWND hDlg)
 {
-    SetDlgItemText(hDlg, IDC_LEN, "");
+    SetDlgItemText(hDlg, IDC_LEN, __T(""));
     EnableWindow(GetDlgItem(hDlg, IDC_LEN), FALSE);
     EnableWindow(GetDlgItem(hDlg, IDC_STATIC_LENGTH), FALSE);
 
@@ -630,10 +630,10 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         for (n = 0; n < 16; n++) SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_ADDSTRING, 0, (LPARAM)smbMapBasicBlock[n].Name);
         for (n = 0; n < 8; n++) SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_ADDSTRING, 0, (LPARAM)smbMapHeadBackColor[n]);
 
-        sprintf(cBuf, "%.2XH", iOfs);
+        sprintf(cBuf, __T("%.2XH"), iOfs);
         SetDlgItemText(hDlg, IDC_OFFSET, cBuf);
 
-        sprintf(cBuf, "%.2x %.2x", bBuf[0], bBuf[1]);
+        sprintf(cBuf, __T("%.2x %.2x"), bBuf[0], bBuf[1]);
         SetDlgItemText(hDlg, IDC_BIN, cBuf);
 
         //PAGE
@@ -663,7 +663,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
                 int iValidSize;
 
                 GetDlgItemText(hDlg, IDC_BIN, cBinBuf, 10);
-                iValidSize = sscanf(cBinBuf, "%hhx %hhx %hhx", &bBinBuf[0], &bBinBuf[1], &bBinBuf[2]);
+                iValidSize = sscanf(cBinBuf, __T("%hhx %hhx %hhx"), &bBinBuf[0], &bBinBuf[1], &bBinBuf[2]);
                 if (iValidSize < 1 || 3 < iValidSize) return TRUE;
 
                 undoPrepare(UNDONAME_DLGEDIT);

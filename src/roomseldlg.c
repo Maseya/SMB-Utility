@@ -26,7 +26,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     if (!blGetRoomIDFromList)
     {
         GetDlgItemText(hDlg, IDC_DATA, cBuf, 10);
-        if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return;
+        if (1 != sscanf(cBuf, __T("%hhx"), &bRoomID)) return;
     }
     else
     {
@@ -74,18 +74,18 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
         {
-            sprintf(cBuf, "%.2x", bRoomIDs[n]);
+            sprintf(cBuf, __T("%.2x"), bRoomIDs[n]);
             SendDlgItemMessage(hDlg, IDC_DATA, CB_ADDSTRING, 0, (LPARAM)cBuf);
         }
 
         if (lpRoomSelect->blDoInit)
         {
             //
-            sprintf(cBuf, "%.2x", lpRoomSelect->bInitRoomID & 0x7F);
+            sprintf(cBuf, __T("%.2x"), lpRoomSelect->bInitRoomID & 0x7F);
             SetDlgItemText(hDlg, IDC_DATA, cBuf);
 
             //
-            sprintf(cBuf, "%d", lpRoomSelect->uInitPage);
+            sprintf(cBuf, __T("%d"), lpRoomSelect->uInitPage);
             SetDlgItemText(hDlg, IDC_PAGEEDIT2, cBuf);
         }
 
@@ -110,7 +110,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             LPROOMSELECT lpRoomSelect;
 
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-            if (1 != sscanf(cBuf, "%hhx", &bRoomID)) return TRUE;
+            if (1 != sscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
             if (!IsRoomIDValid(bRoomID)) return TRUE;
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;
@@ -151,7 +151,7 @@ BOOL RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
 
     if (!lpRoomSelect) return FALSE;
 
-    blRet = DialogBoxParam(GetModuleHandle(NULL), "SENDOBJECTDLG", hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
+    blRet = DialogBoxParam(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
 
     return blRet;
 }
