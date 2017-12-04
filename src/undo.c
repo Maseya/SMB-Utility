@@ -57,7 +57,7 @@ void undoRestore()
         iTrainer = iTrainer_undo;
 
         //
-        g_tcUndoName[0] = '\0';
+        g_tcUndoName[0] = __T('\0');
 
         //
         g_blUndoEnable = FALSE;
@@ -89,7 +89,7 @@ void undoRestore()
 void undoReset()
 {
     g_blUndoEnable = FALSE;
-    g_tcUndoName[0] = '\0';
+    g_tcUndoName[0] = __T('\0');
     g_blKeyCommandUndo = TRUE;
 }
 

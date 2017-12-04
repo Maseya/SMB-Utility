@@ -965,7 +965,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
                     if (IDNO == Msg(STRING_CONFIRM_SAVE, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
                         break;
                 }
-                while (gFilePath[0] == '\0' || !SaveToFile())
+                while (gFilePath[0] == __T('\0') || !SaveToFile())
                 {
                     Msg(STRING_FILEERROR_SAVE, MB_OK | MB_ICONWARNING);
                     if (!SetSaveFileName(hWnd)) break;
@@ -1529,7 +1529,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
     gFilePath[0] = 0;
     if (lstrlen(lpCmdLine))
     {
-        if (lpCmdLine[0] != '"')
+        if (lpCmdLine[0] != __T('"'))
         {
             lstrcpy((LPTSTR)gFilePath, (LPCTSTR)lpCmdLine);
         }

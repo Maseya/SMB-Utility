@@ -126,8 +126,8 @@ BOOL SetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[])
 {
     // A, B, SELECT, START, UP, DOWN, LEFT, RIGHTの順
-    aEmuKeys[0] = 'N';
-    aEmuKeys[1] = 'B';
+    aEmuKeys[0] = __T('N');
+    aEmuKeys[1] = __T('B');
     aEmuKeys[2] = VK_BACK;
     aEmuKeys[3] = VK_RETURN;
     aEmuKeys[4] = VK_UP;

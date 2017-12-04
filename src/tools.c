@@ -57,54 +57,53 @@ static TCHAR ConvertData2Char(BYTE bData)
 {
     TCHAR cRet;
 
-    // All ASCII characters will correctly cast to TCHAR.
     switch (bData)
     {
-    case 0x00:cRet = '0'; break;
-    case 0x01:cRet = '1'; break;
-    case 0x02:cRet = '2'; break;
-    case 0x03:cRet = '3'; break;
-    case 0x04:cRet = '4'; break;
-    case 0x05:cRet = '5'; break;
-    case 0x06:cRet = '6'; break;
-    case 0x07:cRet = '7'; break;
-    case 0x08:cRet = '8'; break;
-    case 0x09:cRet = '9'; break;
-    case 0x0A:cRet = 'A'; break;
-    case 0x0B:cRet = 'B'; break;
-    case 0x0C:cRet = 'C'; break;
-    case 0x0D:cRet = 'D'; break;
-    case 0x0E:cRet = 'E'; break;
-    case 0x0F:cRet = 'F'; break;
-    case 0x10:cRet = 'G'; break;
-    case 0x11:cRet = 'H'; break;
-    case 0x12:cRet = 'I'; break;
-    case 0x13:cRet = 'J'; break;
-    case 0x14:cRet = 'K'; break;
-    case 0x15:cRet = 'L'; break;
-    case 0x16:cRet = 'M'; break;
-    case 0x17:cRet = 'N'; break;
-    case 0x18:cRet = 'O'; break;
-    case 0x19:cRet = 'P'; break;
-    case 0x1A:cRet = 'Q'; break;
-    case 0x1B:cRet = 'R'; break;
-    case 0x1C:cRet = 'S'; break;
-    case 0x1D:cRet = 'T'; break;
-    case 0x1E:cRet = 'U'; break;
-    case 0x1F:cRet = 'V'; break;
-    case 0x20:cRet = 'W'; break;
-    case 0x21:cRet = 'X'; break;
-    case 0x22:cRet = 'Y'; break;
-    case 0x23:cRet = 'Z'; break;
-    case 0x24:cRet = ' '; break;
+    case 0x00:cRet = __T('0'); break;
+    case 0x01:cRet = __T('1'); break;
+    case 0x02:cRet = __T('2'); break;
+    case 0x03:cRet = __T('3'); break;
+    case 0x04:cRet = __T('4'); break;
+    case 0x05:cRet = __T('5'); break;
+    case 0x06:cRet = __T('6'); break;
+    case 0x07:cRet = __T('7'); break;
+    case 0x08:cRet = __T('8'); break;
+    case 0x09:cRet = __T('9'); break;
+    case 0x0A:cRet = __T('A'); break;
+    case 0x0B:cRet = __T('B'); break;
+    case 0x0C:cRet = __T('C'); break;
+    case 0x0D:cRet = __T('D'); break;
+    case 0x0E:cRet = __T('E'); break;
+    case 0x0F:cRet = __T('F'); break;
+    case 0x10:cRet = __T('G'); break;
+    case 0x11:cRet = __T('H'); break;
+    case 0x12:cRet = __T('I'); break;
+    case 0x13:cRet = __T('J'); break;
+    case 0x14:cRet = __T('K'); break;
+    case 0x15:cRet = __T('L'); break;
+    case 0x16:cRet = __T('M'); break;
+    case 0x17:cRet = __T('N'); break;
+    case 0x18:cRet = __T('O'); break;
+    case 0x19:cRet = __T('P'); break;
+    case 0x1A:cRet = __T('Q'); break;
+    case 0x1B:cRet = __T('R'); break;
+    case 0x1C:cRet = __T('S'); break;
+    case 0x1D:cRet = __T('T'); break;
+    case 0x1E:cRet = __T('U'); break;
+    case 0x1F:cRet = __T('V'); break;
+    case 0x20:cRet = __T('W'); break;
+    case 0x21:cRet = __T('X'); break;
+    case 0x22:cRet = __T('Y'); break;
+    case 0x23:cRet = __T('Z'); break;
+    case 0x24:cRet = __T(' '); break;
 
         //
-    case 0x28:cRet = '-'; break;
-    case 0x29:cRet = '*'; break;
-    case 0x2B:cRet = '!'; break;
-    case 0xCF:cRet = '@'; break;
-    case 0xAF:cRet = '.'; break;
-    default:cRet = '?'; break;//Space
+    case 0x28:cRet = __T('-'); break;
+    case 0x29:cRet = __T('*'); break;
+    case 0x2B:cRet = __T('!'); break;
+    case 0xCF:cRet = __T('@'); break;
+    case 0xAF:cRet = __T('.'); break;
+    default:cRet = __T('?'); break;//Space
     }
     return cRet;
 }
@@ -116,50 +115,50 @@ static BYTE ConvertChr2Data(TCHAR cChar, BOOL *blUnknown)
     *blUnknown = FALSE;
     switch (cChar)
     {
-    case '0':bRet = 0x0; break;
-    case '1':bRet = 0x1; break;
-    case '2':bRet = 0x2; break;
-    case '3':bRet = 0x3; break;
-    case '4':bRet = 0x4; break;
-    case '5':bRet = 0x5; break;
-    case '6':bRet = 0x6; break;
-    case '7':bRet = 0x7; break;
-    case '8':bRet = 0x8; break;
-    case '9':bRet = 0x9; break;
-    case 'a':bRet = 0xa; break;
-    case 'b':bRet = 0xb; break;
-    case 'c':bRet = 0xc; break;
-    case 'd':bRet = 0xd; break;
-    case 'e':bRet = 0xe; break;
-    case 'f':bRet = 0xf; break;
-    case 'g':bRet = 0x10; break;
-    case 'h':bRet = 0x11; break;
-    case 'i':bRet = 0x12; break;
-    case 'j':bRet = 0x13; break;
-    case 'k':bRet = 0x14; break;
-    case 'l':bRet = 0x15; break;
-    case 'm':bRet = 0x16; break;
-    case 'n':bRet = 0x17; break;
-    case 'o':bRet = 0x18; break;
-    case 'p':bRet = 0x19; break;
-    case 'q':bRet = 0x1a; break;
-    case 'r':bRet = 0x1b; break;
-    case 's':bRet = 0x1c; break;
-    case 't':bRet = 0x1d; break;
-    case 'u':bRet = 0x1e; break;
-    case 'v':bRet = 0x1f; break;
-    case 'w':bRet = 0x20; break;
-    case 'x':bRet = 0x21; break;
-    case 'y':bRet = 0x22; break;
-    case 'z':bRet = 0x23; break;
-    case ' ':bRet = 0x24; break;
+    case __T('0'):bRet = 0x0; break;
+    case __T('1'):bRet = 0x1; break;
+    case __T('2'):bRet = 0x2; break;
+    case __T('3'):bRet = 0x3; break;
+    case __T('4'):bRet = 0x4; break;
+    case __T('5'):bRet = 0x5; break;
+    case __T('6'):bRet = 0x6; break;
+    case __T('7'):bRet = 0x7; break;
+    case __T('8'):bRet = 0x8; break;
+    case __T('9'):bRet = 0x9; break;
+    case __T('a'):bRet = 0xa; break;
+    case __T('b'):bRet = 0xb; break;
+    case __T('c'):bRet = 0xc; break;
+    case __T('d'):bRet = 0xd; break;
+    case __T('e'):bRet = 0xe; break;
+    case __T('f'):bRet = 0xf; break;
+    case __T('g'):bRet = 0x10; break;
+    case __T('h'):bRet = 0x11; break;
+    case __T('i'):bRet = 0x12; break;
+    case __T('j'):bRet = 0x13; break;
+    case __T('k'):bRet = 0x14; break;
+    case __T('l'):bRet = 0x15; break;
+    case __T('m'):bRet = 0x16; break;
+    case __T('n'):bRet = 0x17; break;
+    case __T('o'):bRet = 0x18; break;
+    case __T('p'):bRet = 0x19; break;
+    case __T('q'):bRet = 0x1a; break;
+    case __T('r'):bRet = 0x1b; break;
+    case __T('s'):bRet = 0x1c; break;
+    case __T('t'):bRet = 0x1d; break;
+    case __T('u'):bRet = 0x1e; break;
+    case __T('v'):bRet = 0x1f; break;
+    case __T('w'):bRet = 0x20; break;
+    case __T('x'):bRet = 0x21; break;
+    case __T('y'):bRet = 0x22; break;
+    case __T('z'):bRet = 0x23; break;
+    case __T(' '):bRet = 0x24; break;
 
         //
-    case '-':bRet = 0x28; break;
-    case '*':bRet = 0x29; break;
-    case '!':bRet = 0x2B; break;
-    case '@':bRet = 0xCF; break;
-    case '.':bRet = 0xAF; break;
+    case __T('-'):bRet = 0x28; break;
+    case __T('*'):bRet = 0x29; break;
+    case __T('!'):bRet = 0x2B; break;
+    case __T('@'):bRet = 0xCF; break;
+    case __T('.'):bRet = 0xAF; break;
     default:
     {
         bRet = 0x24;
@@ -188,7 +187,7 @@ static void ChangeString(UINT iStringNum, LPTSTR pString)
     pbTmp += smbStringData[iStringNum].wOffset;
     for (i = 0, n = 0; i < smbStringData[iStringNum].bMaxLen; i++)
     {
-        if (*(pString + n) == '\0')
+        if (*(pString + n) == __T('\0'))
             blEOB = TRUE;
         bTmp = 0x24;// space
         if (!blEOB)
@@ -220,7 +219,7 @@ static void GetString(UINT iStringNum, LPTSTR pString, UINT iBufSize)
     for (i = 0, n = 0; (i < smbStringData[iStringNum].bMaxLen) && (n < iBufSize); i++)
     {
         tcTmp = ConvertData2Char(pbTmp[i]);
-        if (tcTmp == '?')
+        if (tcTmp == __T('?'))
         {
             _stprintf(&pString[n], __T("#%.2X"), pbTmp[i]);
             n += 3;
