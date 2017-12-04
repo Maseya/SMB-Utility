@@ -264,7 +264,7 @@ HWND lv_CreateLogView(HWND hWndParent, int nHeight)
 
     hWnd = CreateWindowEx(0,
                           BORDERWNDCLASSNAME,
-                          STRING_NULL,
+                          STRING_EMPTY,
                           WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS,
                           0, nHeight,
                           rc.right - rc.left, LOGVIEW_BORDERWIDTH,

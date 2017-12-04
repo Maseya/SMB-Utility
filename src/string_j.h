@@ -14,7 +14,9 @@
 
 #define STRING_VERSION_CONTRIBUTION         __T("Multi-6502 CPU emulator by Neil Bradley (neil@synthcom.com)")
 
-#define STRING_NULL                         __T("")
+#ifndef STRING_EMPTY
+#define STRING_EMPTY                         __T("")
+#endif
 #define STRING_UNKNOWN                      __T("不明")
 
 #define STRING_LOGVIEW_FILESAVE             __T("%sに保存しました。")

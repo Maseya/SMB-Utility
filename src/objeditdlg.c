@@ -57,7 +57,7 @@ static void DisableBadguysEditDlgControls(HWND hDlg, int iDisableFlag)
         int iEditCtrlID[] = {IDC_XPOS,IDC_YPOS,IDC_PAGEEDIT};
 
         for (n = 0; n < (sizeof(iEditCtrlID) / sizeof(int)); n++)
-            SetDlgItemText(hDlg, iEditCtrlID[n], STRING_NULL);
+            SetDlgItemText(hDlg, iEditCtrlID[n], STRING_EMPTY);
         for (n = 0; n < (sizeof(iCtrlID) / sizeof(int)); n++)
             EnableWindow(GetDlgItem(hDlg, iCtrlID[n]), FALSE);
     }
@@ -67,7 +67,7 @@ static void DisableBadguysEditDlgControls(HWND hDlg, int iDisableFlag)
         int iEditCtrlID[] = {IDC_XPOS2,IDC_DATA,IDC_PAGEEDIT2,IDC_WORLD};
 
         for (n = 0; n < (sizeof(iEditCtrlID) / sizeof(int)); n++)
-            SetDlgItemText(hDlg, iEditCtrlID[n], STRING_NULL);
+            SetDlgItemText(hDlg, iEditCtrlID[n], STRING_EMPTY);
         for (n = 0; n < (sizeof(iCtrlID) / sizeof(int)); n++)
             EnableWindow(GetDlgItem(hDlg, iCtrlID[n]), FALSE);
     }
@@ -491,7 +491,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
 void DisableConrols(HWND hDlg)
 {
-    SetDlgItemText(hDlg, IDC_LEN, STRING_NULL);
+    SetDlgItemText(hDlg, IDC_LEN, STRING_EMPTY);
     EnableWindow(GetDlgItem(hDlg, IDC_LEN), FALSE);
     EnableWindow(GetDlgItem(hDlg, IDC_STATIC_LENGTH), FALSE);
 

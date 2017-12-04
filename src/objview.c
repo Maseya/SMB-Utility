@@ -1544,7 +1544,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 
         ghRPBtnWnd = CreateWindow(
             __T("BUTTON"),
-            STRING_NULL,
+            STRING_EMPTY,
             WS_CHILD | WS_VISIBLE | BS_BITMAP | BS_CENTER,
             0, 0, YPOSLABEL_WIDTH / 2, XPOSLABEL_HEIGHT,
             hWnd, (HMENU)IDW_REWVPAGEWINDOW,
@@ -1554,7 +1554,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         SendMessage(ghRPBtnWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBmp);
 
         ghFPBtnWnd = CreateWindow(__T("BUTTON"),
-                                  STRING_NULL,
+                                  STRING_EMPTY,
                                   WS_CHILD | WS_VISIBLE | BS_BITMAP | BS_CENTER,
                                   YPOSLABEL_WIDTH / 2, 0, YPOSLABEL_WIDTH / 2, XPOSLABEL_HEIGHT,
                                   hWnd, (HMENU)IDW_FWDPAGEWINDOW,

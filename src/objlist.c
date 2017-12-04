@@ -232,7 +232,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 ***************************************************/
 void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
 {
-    LPTSTR bit6[] = {STRING_NULL, STRING_OBJLIST_HARD};
+    LPTSTR bit6[] = {STRING_EMPTY, STRING_OBJLIST_HARD};
 
     switch (lpbBuf[0] & 0x0F)
     {
@@ -509,7 +509,7 @@ static HWND CreateListView(HWND hwndParent)
 
     hwndListView = CreateWindowEx(0,          // ex style
                                   WC_LISTVIEW,               // class name - defined in commctrl.h
-                                  STRING_NULL,                        // dummy text
+                                  STRING_EMPTY,                        // dummy text
                                   WS_TABSTOP | WS_CHILD | WS_VISIBLE |
                                   LVS_AUTOARRANGE | LVS_REPORT |
                                   LVS_SHOWSELALWAYS | LVS_SINGLESEL,                   // style
