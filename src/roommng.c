@@ -798,7 +798,7 @@ static void UpdateAreaSortListBox(HWND hDlg)
     for (n = 0; n < SMB_NUM_AREAS; n++)
     {
         GetWorldArea(&iWorld, &iArea, NULL, n, bAreaData[n]);
-        sprintf(szBuf, __T("%d-%d %.2xH %s"), iWorld + 1, iArea + 1, bAreaData[n], lpAttr[(bAreaData[n] >> 5) & 0x03]);
+        _stprintf(szBuf, __T("%d-%d %.2xH %s"), iWorld + 1, iArea + 1, bAreaData[n], lpAttr[(bAreaData[n] >> 5) & 0x03]);
         SendDlgItemMessage(hDlg, IDC_AREA, LB_ADDSTRING, 0, (LPARAM)szBuf);
     }
 }
@@ -1510,7 +1510,7 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
         {
-            sprintf(cBuf, __T("%.2x"), bRoomIDs[n]);
+            _stprintf(cBuf, __T("%.2x"), bRoomIDs[n]);
             SendDlgItemMessage(hDlg, IDC_DATA, CB_ADDSTRING, 0, (LPARAM)cBuf);
         }
 
@@ -1532,7 +1532,7 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             UINT uRet;
 
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-            if (1 != sscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
+            if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
             if (!IsRoomIDValid(bRoomID)) return TRUE;
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;

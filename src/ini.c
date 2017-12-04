@@ -109,7 +109,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     // ファイル名の指定があれば、それをコピー
     if (lpFileName)
     {
-        if (iBufferSize <= cb + (int)sizeof(TCHAR) + (int)strlen(lpFileName))
+        if (iBufferSize <= cb + (int)sizeof(TCHAR) + (int)_tcslen(lpFileName))
             return 0;
         lstrcat(lpBuffer, lpFileName);
     }

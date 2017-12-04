@@ -189,7 +189,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
                 lvItem.cchTextMax = TMPSTRBUFSIZ;
                 if (ListView_GetItem(g_hWndListView, &lvItem))
                 {
-                    sscanf(cCurText, __T("%hhx %hhx"), &bBuf[0], &bBuf[1]);
+                    _stscanf(cCurText, __T("%hhx %hhx"), &bBuf[0], &bBuf[1]);
                     if (!memcmp(bBuf, ObjSeek.pbData, 2))
                         goto CANCEL_SET_ITEM_TEXT;
                 }
@@ -281,7 +281,7 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
                 lvItem.cchTextMax = TMPSTRBUFSIZ;
                 if (ListView_GetItem(g_hWndListView, &lvItem))
                 {
-                    iSizeLV = sscanf(cCurText, __T("%hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2]);
+                    iSizeLV = _stscanf(cCurText, __T("%hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2]);
                     iSizeSrc = BadGuysGetDataLength(ObjSeek.pbData);
                     if (iSizeLV == iSizeSrc && !memcmp(bBuf, ObjSeek.pbData, iSizeSrc))
                         goto CANCEL_SET_ITEM_TEXT;

@@ -65,7 +65,7 @@ BOOL LoadROM(LPTSTR pFilename)
     iTrainer = 0;
     gblIsROMLoaded = FALSE;
 
-    if ((fp = fopen(pFilename, __T("rb"))) == NULL)
+    if ((fp = _tfopen(pFilename, __T("rb"))) == NULL)
     {
         Msg(STRING_FILEERROR_NOTFOUND, MB_OK | MB_ICONWARNING);
         return FALSE;
@@ -102,7 +102,7 @@ BOOL SaveAsFile(LPTSTR pFilename)
 {
     FILE *fp;
 
-    if ((fp = fopen(pFilename, __T("w+b"))) == NULL) return FALSE;
+    if ((fp = _tfopen(pFilename, __T("w+b"))) == NULL) return FALSE;
 
     fwrite(&Head, sizeof(INESHEADER), 1, fp);
     if (iTrainer) fwrite(bPRGROM + 0x7000, INES_TRAINERSIZE, 1, fp);

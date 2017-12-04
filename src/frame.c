@@ -448,7 +448,7 @@ static void SizeMainWindowStatusBar(HWND hStatusBarWnd, HWND hParentWnd)
     GetClientRect(hParentWnd, &rc);
     iSize[SBPARTS - 1] = rc.right;
     hDC = GetDC(hParentWnd);
-    if (GetTextExtentPoint(hDC, szExampleText, strlen(szExampleText), &size))
+    if (GetTextExtentPoint(hDC, szExampleText, _tcslen(szExampleText), &size))
         iSize[SBPARTS - 2] = iSize[SBPARTS - 1] - (size.cx) - SB_EXTRASPACE;
     ReleaseDC(hParentWnd, hDC);
 
@@ -532,7 +532,7 @@ BOOL LoadCHRROMFromFile(LPTSTR pFileName, BOOL fLoadAll)
 
     if (!gblIsROMLoaded) return FALSE;
 
-    if ((fp = fopen(pFileName, __T("rb"))) == NULL)
+    if ((fp = _tfopen(pFileName, __T("rb"))) == NULL)
     {
         Msg(STRING_FILEERROR_NOTFOUND, MB_OK | MB_ICONWARNING);
         return FALSE;
@@ -1511,13 +1511,13 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
 
     lv_AdjustLogView();
 
-    if (strlen(gFilePath) != 0)
+    if (_tcslen(gFilePath) != 0)
         LoadROMFromFile();
 
     return TRUE;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
+int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
     MSG msg;
     HACCEL hAccel;
