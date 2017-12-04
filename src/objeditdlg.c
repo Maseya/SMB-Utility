@@ -24,13 +24,13 @@ extern SMBMAPOBJECTINFO smbMapObjectInfoE[];
 extern SMBMAPOBJECTINFO smbMapObjectInfoF[];
 extern struct
 {
-    LPSTR Name;
+    LPTSTR Name;
 }smbMapBasicBlock[];
-extern LPSTR smbMapHeadTime[];
-extern LPSTR smbMapHeadPosition[];
-extern LPSTR smbMapHeadBackColor[];
-extern LPSTR smbMapHeadMapType[];
-extern LPSTR smbMapHeadView[];
+extern LPTSTR smbMapHeadTime[];
+extern LPTSTR smbMapHeadPosition[];
+extern LPTSTR smbMapHeadBackColor[];
+extern LPTSTR smbMapHeadMapType[];
+extern LPTSTR smbMapHeadView[];
 extern SMBBADGUYSINFO smbBudGuysInfo[];
 extern int GetNum0BMapObject();
 extern int GetNumCMapObject();

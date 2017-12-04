@@ -548,7 +548,7 @@ HWND CreateObjectViewTooltip()
     if (!ghMapViewWnd) return NULL;
 
     hwndTT = CreateWindowEx(0, TOOLTIPS_CLASS,
-        (LPSTR)NULL,
+        (LPTSTR)NULL,
                             0,
                             CW_USEDEFAULT,
                             CW_USEDEFAULT,
@@ -599,7 +599,7 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
     ti.hwnd = ghMapViewWnd;
     ti.hinst = GetModuleHandle(NULL);
     ti.uId = (UINT)id;
-    ti.lpszText = (LPSTR)lpText;
+    ti.lpszText = (LPTSTR)lpText;
     ti.rect.left = x;
     ti.rect.top = y;
     ti.rect.right = x + 16;

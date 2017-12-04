@@ -23,7 +23,7 @@
   REG_DWORD  32ビット値
   REG_SZ     文字列
  **************************************/
-BOOL WriteToRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
+BOOL WriteToRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
 {
     HKEY hRegKey;
     BOOL blRet = TRUE;
@@ -42,7 +42,7 @@ dwType
  REG_DWORD  32ビット値
  REG_SZ     文字列
 **************************************/
-BOOL ReadFromRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
+BOOL ReadFromRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
 {
     HKEY hRegKey;
     DWORD dwTypeRet;

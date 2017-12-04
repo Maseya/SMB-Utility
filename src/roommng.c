@@ -789,7 +789,7 @@ static void UpdateAreaSortListBox(HWND hDlg)
     LPTSTR szBuf = GetTempStringBuffer();
     int iWorld;
     int iArea;
-    LPSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE};
+    LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE};
 
     //clear all item
     SendDlgItemMessage(hDlg, IDC_AREA, LB_RESETCONTENT, 0, 0);

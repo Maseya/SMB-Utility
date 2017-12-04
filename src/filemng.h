@@ -24,9 +24,9 @@ typedef struct _tagINESHEADER
 #define INES_VROMBANKSIZE  0x2000
 #define INES_TRAINERSIZE   0x200
 
-BOOL SaveAsFile(LPSTR pFilename);
+BOOL SaveAsFile(LPTSTR pFilename);
 
-BOOL LoadROM(LPSTR pFilename);
+BOOL LoadROM(LPTSTR pFilename);
 
 // 書き換えられた - TRUE, 同じ - FALSE
 BOOL CheckROMFileTime();

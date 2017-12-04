@@ -250,7 +250,7 @@ void OptionPropertySheet(HWND hwndOwner, int nStartPage)
     psh.hwndParent = hwndOwner;
     psh.hInstance = GetModuleHandle(NULL);
     psh.pszIcon = NULL;
-    psh.pszCaption = (LPSTR)STRING_OPTIONDIALOG_TITLE;
+    psh.pszCaption = (LPTSTR)STRING_OPTIONDIALOG_TITLE;
     psh.nPages = sizeof(psp) / sizeof(PROPSHEETPAGE);
     psh.nStartPage = nStartPage;
     psh.ppsp = (LPCPROPSHEETPAGE)&psp;
@@ -520,7 +520,7 @@ BOOL ConfirmOnExit()
 }
 
 #define SMBCHR_VALID_SIZE 0x1EC0
-BOOL LoadCHRROMFromFile(LPSTR pFileName, BOOL fLoadAll)
+BOOL LoadCHRROMFromFile(LPTSTR pFileName, BOOL fLoadAll)
 {
     FILE *fp;
     INESHEADER CHRHead;
@@ -1379,7 +1379,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
                                         hWnd,
                                         (HMENU)IDW_MDICLIENT,
                                         GetModuleHandle(NULL),
-                                        (LPSTR)&ccs);
+                                        (LPTSTR)&ccs);
 
         ShowWindow(ghWndMDIClient, SW_SHOW);
         UpdateWindow(ghWndMDIClient);
@@ -1517,7 +1517,7 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
     MSG msg;
     HACCEL hAccel;

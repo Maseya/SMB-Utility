@@ -45,8 +45,8 @@
 
 #define INI_INSTALL_DIR                "INSTALL_DIR"
 
-BOOL WriteToRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
-BOOL ReadFromRegistry(LPSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
+BOOL WriteToRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
+BOOL ReadFromRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
 
 // アンインストール時に呼び出す
 BOOL DeleteRegistryEntries();

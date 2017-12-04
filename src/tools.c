@@ -24,7 +24,7 @@ BOOL g_blOK;
 *****************/
 typedef struct
 {
-    LPSTR pName;
+    LPTSTR pName;
     BYTE bMaxLen; //Max characters
     BYTE bRomType;//0=PRGROM 1=CHRROM
     WORD wOffset; //
@@ -174,7 +174,7 @@ static int GetNumStrings()
     return sizeof(smbStringData) / sizeof(SMBSTRINGINFO);
 }
 
-static void ChangeString(UINT iStringNum, LPSTR pString)
+static void ChangeString(UINT iStringNum, LPTSTR pString)
 {
     BYTE *pbTmp;
     BYTE bTmp;
@@ -207,7 +207,7 @@ static void ChangeString(UINT iStringNum, LPSTR pString)
     }
 }
 
-static void GetString(UINT iStringNum, LPSTR pString, UINT iBufSize)
+static void GetString(UINT iStringNum, LPTSTR pString, UINT iBufSize)
 {
     UINT i, n;
     BYTE *pbTmp;
@@ -409,7 +409,7 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 
 typedef struct
 {
-    LPSTR Name;
+    LPTSTR Name;
     BYTE bGfxData[4];
 }POLEGFXDATAINFO;
 
@@ -735,7 +735,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
         ADDRESSDATA adKoopa;
         extern struct
         {
-            LPSTR Name; int YDelta; BYTE bFixedYPos; int XDelta;
+            LPTSTR Name; int YDelta; BYTE bFixedYPos; int XDelta;
         }smbBudGuysInfo[];
 
         ADDRESSDATA_LOAD(adKoopa, SMB_KOOPAREALCHARCTER_ADDRESS);
@@ -943,7 +943,7 @@ void GameSettingPropertySheet(HWND hwndOwner)
     psh.hwndParent = hwndOwner;
     psh.hInstance = GetModuleHandle(NULL);
     psh.pszIcon = NULL;
-    psh.pszCaption = (LPSTR)STRING_SETTING_TITLE;
+    psh.pszCaption = (LPTSTR)STRING_SETTING_TITLE;
     psh.nPages = sizeof(psp) / sizeof(PROPSHEETPAGE);
     psh.nStartPage = 0;
     psh.ppsp = (LPCPROPSHEETPAGE)&psp;

@@ -232,7 +232,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 ***************************************************/
 void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
 {
-    LPSTR bit6[] = {"", STRING_OBJLIST_HARD};
+    LPTSTR bit6[] = {"", STRING_OBJLIST_HARD};
 
     switch (lpbBuf[0] & 0x0F)
     {

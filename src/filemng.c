@@ -58,7 +58,7 @@ BOOL CheckROMFileTime()
     return FALSE;
 }
 
-BOOL LoadROM(LPSTR pFilename)
+BOOL LoadROM(LPTSTR pFilename)
 {
     FILE *fp;
 
@@ -98,7 +98,7 @@ BOOL LoadROM(LPSTR pFilename)
     return TRUE;
 }
 
-BOOL SaveAsFile(LPSTR pFilename)
+BOOL SaveAsFile(LPTSTR pFilename)
 {
     FILE *fp;
 

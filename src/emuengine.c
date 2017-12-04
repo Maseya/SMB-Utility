@@ -1622,7 +1622,7 @@ BOOL SetupEmulator(EMULATORSETUP* psEmuSetup)
     return TRUE;
 }
 
-static BOOL LoadRAMData(LPSTR ResName)
+static BOOL LoadRAMData(LPTSTR ResName)
 {
     HGLOBAL hRAMData;
     BYTE *pbRAMData;

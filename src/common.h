@@ -56,18 +56,18 @@ typedef union
 
 typedef struct
 {
-    LPSTR Name;
+    LPTSTR Name;
     BYTE  bBasicDataMask;
     BYTE  bBasicData;
     BYTE  bIsSizeValid;
     BYTE  bSizeMask;
     int   iSizeDelta;
-    LPSTR Note;
+    LPTSTR Note;
 }SMBMAPOBJECTINFO;
 
 typedef struct _tagSMBBADGUYSINFO
 {
-    LPSTR Name;
+    LPTSTR Name;
     int YDelta;
     BYTE bFixedYPos;
     int XDelta;
