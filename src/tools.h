@@ -40,6 +40,8 @@
 #define SMB_DIFFICULTYAREA               0x9044
 #define SMB_SEABLOCKWORLD                0x9476
 
+void InitToolData();
+
 LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 

@@ -32,26 +32,7 @@ typedef struct
 
 #define SMB_STRING_MAXCHARS (27 * 3 + 1)
 
-SMBSTRINGINFO smbStringData[] = {STRING_STRINGDATA_01, 5,  0, 0x8755,
-                               STRING_STRINGDATA_02, 5,  0, 0x879B,
-                               STRING_STRINGDATA_03, 5,  0, 0x87AE,
-                               STRING_STRINGDATA_04, 5,  0, 0x87ed,
-                               STRING_STRINGDATA_05, 11, 0, 0x875D,
-                               STRING_STRINGDATA_06, 5,  0, 0x8786,
-                               STRING_STRINGDATA_07, 7,  0, 0x87a3,
-                               STRING_STRINGDATA_08, 9,  0, 0x87b6,
-                               STRING_STRINGDATA_09, 21, 0, 0x87c3,
-                               STRING_STRINGDATA_10, 16, 0, 0x8d57,
-                               STRING_STRINGDATA_11, 16, 0, 0x8d6b,
-                               STRING_STRINGDATA_12, 22, 0, 0x8d7f,
-                               STRING_STRINGDATA_13, 15, 0, 0x8d98,
-                               STRING_STRINGDATA_14, 19, 0, 0x8dab,
-                               STRING_STRINGDATA_15, 27, 0, 0x8dc2,
-                               STRING_STRINGDATA_16, 13, 0, 0x8de1,
-                               STRING_STRINGDATA_17, 17, 0, 0x8df2,
-                               STRING_STRINGDATA_18, 14, 1, 0x1fa5,
-                               STRING_STRINGDATA_19, 13, 1, 0x1fb6,
-                               STRING_STRINGDATA_20, 13, 1, 0x1fc6};
+SMBSTRINGINFO *smbStringData;
 
 static TCHAR ConvertData2Char(BYTE bData)
 {
@@ -413,15 +394,12 @@ typedef struct
     BYTE bGfxData[4];
 }POLEGFXDATAINFO;
 
-POLEGFXDATAINFO PoleGfxInfo[] = {
-    STRING_POLEGFX_DEFAULT, "\x24\x2F\x24\x3D",
-    STRING_POLEGFX_ROPE,    "\xA2\xA2\xA3\xA3",
-    STRING_POLEGFX_TREE,    "\xBE\xBE\xBF\xBF",
-    STRING_POLEGFX_OTHER,   "\xFF\xFF\xFF\xFF"};
+POLEGFXDATAINFO *PoleGfxInfo;
+int PoleGfxInfoSize;
 
 int GetPoleGfxDatas()
 {
-    return (sizeof(PoleGfxInfo) / sizeof(POLEGFXDATAINFO));
+    return PoleGfxInfoSize;
 }
 
 LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -736,7 +714,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
         extern struct
         {
             LPTSTR Name; int YDelta; BYTE bFixedYPos; int XDelta;
-        }smbBudGuysInfo[];
+        }*smbBudGuysInfo;
 
         ADDRESSDATA_LOAD(adKoopa, SMB_KOOPAREALCHARCTER_ADDRESS);
 
@@ -962,4 +940,56 @@ void GameSettingPropertySheet(HWND hwndOwner)
     }
 
     return;
+}
+
+void InitSmbStringData()
+{
+    SMBSTRINGINFO tmp[] =
+    {
+        STRING_STRINGDATA_01, 5,  0, 0x8755,
+        STRING_STRINGDATA_02, 5,  0, 0x879B,
+        STRING_STRINGDATA_03, 5,  0, 0x87AE,
+        STRING_STRINGDATA_04, 5,  0, 0x87ed,
+        STRING_STRINGDATA_05, 11, 0, 0x875D,
+        STRING_STRINGDATA_06, 5,  0, 0x8786,
+        STRING_STRINGDATA_07, 7,  0, 0x87a3,
+        STRING_STRINGDATA_08, 9,  0, 0x87b6,
+        STRING_STRINGDATA_09, 21, 0, 0x87c3,
+        STRING_STRINGDATA_10, 16, 0, 0x8d57,
+        STRING_STRINGDATA_11, 16, 0, 0x8d6b,
+        STRING_STRINGDATA_12, 22, 0, 0x8d7f,
+        STRING_STRINGDATA_13, 15, 0, 0x8d98,
+        STRING_STRINGDATA_14, 19, 0, 0x8dab,
+        STRING_STRINGDATA_15, 27, 0, 0x8dc2,
+        STRING_STRINGDATA_16, 13, 0, 0x8de1,
+        STRING_STRINGDATA_17, 17, 0, 0x8df2,
+        STRING_STRINGDATA_18, 14, 1, 0x1fa5,
+        STRING_STRINGDATA_19, 13, 1, 0x1fb6,
+        STRING_STRINGDATA_20, 13, 1, 0x1fc6
+    };
+
+    smbStringData = (SMBSTRINGINFO*)malloc(sizeof(tmp));
+    memcpy(smbStringData, tmp, sizeof(tmp));
+}
+
+int InitPoleGfxInfo()
+{
+    POLEGFXDATAINFO tmp[] =
+    {
+        STRING_POLEGFX_DEFAULT, "\x24\x2F\x24\x3D",
+        STRING_POLEGFX_ROPE,    "\xA2\xA2\xA3\xA3",
+        STRING_POLEGFX_TREE,    "\xBE\xBE\xBF\xBF",
+        STRING_POLEGFX_OTHER,   "\xFF\xFF\xFF\xFF"
+    };
+
+    PoleGfxInfo = (POLEGFXDATAINFO*)malloc(sizeof(tmp));
+    memcpy(PoleGfxInfo, tmp, sizeof(tmp));
+
+    return sizeof(tmp) / sizeof(POLEGFXDATAINFO);
+}
+
+void InitToolData()
+{
+    InitSmbStringData();
+    PoleGfxInfoSize = InitPoleGfxInfo();
 }
