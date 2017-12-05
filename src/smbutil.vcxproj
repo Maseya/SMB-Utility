@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,9 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>smbutil</ProjectName>
     <SccProjectName />
     <SccLocalPath />
-    <ProjectGuid>{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}</ProjectGuid>
+    <ProjectGuid>{399D7190-41B6-44ED-AD84-05538FC86230}</ProjectGuid>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -35,7 +36,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -48,7 +49,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -83,7 +84,6 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -99,17 +99,15 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\Release\smbutil.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -193,13 +191,14 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>$(IntDir)smbutil_i.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <SDLCheck>
+      </SDLCheck>
+      <MultiProcessorCompilation>
+      </MultiProcessorCompilation>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -225,12 +224,6 @@
       <AdditionalDependencies>winmm.lib;comctl32.lib;imm32.lib;libcmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers />
     </Link>
-    <Manifest>
-      <OutputManifestFile />
-    </Manifest>
-    <ManifestResourceCompile>
-      <ResourceOutputFileName />
-    </ManifestResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -293,6 +286,7 @@
     <ClCompile Include="keyaccel.c" />
     <ClCompile Include="keys.c" />
     <ClCompile Include="logview.c" />
+    <ClCompile Include="objdata.c" />
     <ClCompile Include="objeditcom.c" />
     <ClCompile Include="objeditdlg.c" />
     <ClCompile Include="objlib.c" />
@@ -303,6 +297,7 @@
     <ClCompile Include="objwndcmn.c" />
     <ClCompile Include="roommng.c" />
     <ClCompile Include="roomseldlg.c" />
+    <ClCompile Include="strings.c" />
     <ClCompile Include="tools.c" />
     <ClCompile Include="undo.c" />
   </ItemGroup>
@@ -323,6 +318,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmnlib.h" />
@@ -352,7 +350,6 @@
     <ClInclude Include="roomseldlg.h" />
     <ClInclude Include="smbutil.h" />
     <ClInclude Include="strings.h" />
-    <ClInclude Include="string_j.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="undo.h" />
     <ClInclude Include="versinfo.h" />
@@ -380,9 +377,6 @@
     <Text Include="document\todo.txt" />
     <Text Include="misc\history.txt" />
     <Text Include="misc\readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resource_j.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

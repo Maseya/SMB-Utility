@@ -17,21 +17,21 @@
 #include "objmng.h"
 #include "resource.h"
 
-extern SMBMAPOBJECTINFO smbMapObjectInfo0B[];
-extern SMBMAPOBJECTINFO smbMapObjectInfoC[];
-extern SMBMAPOBJECTINFO smbMapObjectInfoD[];
-extern SMBMAPOBJECTINFO smbMapObjectInfoE[];
-extern SMBMAPOBJECTINFO smbMapObjectInfoF[];
+extern SMBMAPOBJECTINFO *smbMapObjectInfo0B;
+extern SMBMAPOBJECTINFO *smbMapObjectInfoC;
+extern SMBMAPOBJECTINFO *smbMapObjectInfoD;
+extern SMBMAPOBJECTINFO *smbMapObjectInfoE;
+extern SMBMAPOBJECTINFO *smbMapObjectInfoF;
 extern struct
 {
     LPTSTR Name;
-}smbMapBasicBlock[];
-extern LPTSTR smbMapHeadTime[];
-extern LPTSTR smbMapHeadPosition[];
-extern LPTSTR smbMapHeadBackColor[];
-extern LPTSTR smbMapHeadMapType[];
-extern LPTSTR smbMapHeadView[];
-extern SMBBADGUYSINFO smbBudGuysInfo[];
+}*smbMapBasicBlock;
+extern LPTSTR *smbMapHeadTime;
+extern LPTSTR *smbMapHeadPosition;
+extern LPTSTR *smbMapHeadBackColor;
+extern LPTSTR *smbMapHeadMapType;
+extern LPTSTR *smbMapHeadView;
+extern SMBBADGUYSINFO *smbBudGuysInfo;
 extern int GetNum0BMapObject();
 extern int GetNumCMapObject();
 extern int GetNumDMapObject();
