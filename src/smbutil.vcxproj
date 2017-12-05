@@ -286,6 +286,7 @@
     <ClCompile Include="keyaccel.c" />
     <ClCompile Include="keys.c" />
     <ClCompile Include="logview.c" />
+    <ClCompile Include="M6502.c" />
     <ClCompile Include="objdata.c" />
     <ClCompile Include="objeditcom.c" />
     <ClCompile Include="objeditdlg.c" />
@@ -304,20 +305,6 @@
   <ItemGroup>
     <CustomBuild Include="data\ram1.bin" />
     <CustomBuild Include="data\ram2.bin" />
-    <CustomBuild Include="M6502.asm">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nasm -f win32 -o $(IntDir)m6502.obj %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm -f win64 -o $(IntDir)m6502.obj %(FullPath)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">creating M6502.obj...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">creating M6502.obj...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nasm -f win32 -o $(IntDir)m6502.obj %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm -f win64 -o $(IntDir)m6502.obj %(FullPath)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">creating M6502.obj...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">creating M6502.obj...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\m6502.obj;%(Outputs)</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc" />
