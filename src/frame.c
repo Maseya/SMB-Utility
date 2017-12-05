@@ -9,6 +9,7 @@
  ************************************************************************************/
 #include "smbutil.h"
 #include "emulator.h"
+#include "objdata.h"
 #include "objlist.h"
 #include "objlib.h"
 #include "objmng.h"
@@ -25,6 +26,7 @@
 #include "ini.h"
 #include "keys.h"
 #include "versinfo.h"
+#include "strings.h"
 
 #define FRAMEWNDCLASSNAME __T("MDIFRAME")
 
@@ -1517,10 +1519,23 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
+void InitializeResources(LANGID locale)
+{
+    SetThreadLocale(locale);
+    SetThreadUILanguage(locale);
+
+    InitResourceStrings();
+    InitObjectData();
+    InitToolData();
+    InitKeys();
+}
+
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
     MSG msg;
     HACCEL hAccel;
+
+    InitializeResources(0x409);
 
     // Ensure that the common control DLL is loaded
     InitCommonControls();

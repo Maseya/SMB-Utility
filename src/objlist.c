@@ -555,7 +555,7 @@ static BOOL InitListView(HWND hwndListView)
 {
     LV_COLUMN lvColumn;
     int i;
-    TCHAR szString[LISTVIEW_COLUMNS][20] = {STRING_OBJLIST_COLUMN_BIN,
+    LPTSTR szString[LISTVIEW_COLUMNS] = {STRING_OBJLIST_COLUMN_BIN,
                                             STRING_OBJLIST_COLUMN_PAGE,
                                             STRING_OBJLIST_COLUMN_POS,
                                             STRING_OBJLIST_COLUMN_TYPE};

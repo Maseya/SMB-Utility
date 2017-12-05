@@ -14,7 +14,7 @@
     <ProjectName>smbutil</ProjectName>
     <SccProjectName />
     <SccLocalPath />
-    <ProjectGuid>{97E7738D-3BFC-40EB-B3F3-F3FC3A1D8035}</ProjectGuid>
+    <ProjectGuid>{399D7190-41B6-44ED-AD84-05538FC86230}</ProjectGuid>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -76,12 +76,12 @@
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <TypeLibraryName>.\Release\smbutil.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release\smbutil_i.tlb</TypeLibraryName>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
     </Midl>
     <ResourceCompile>
-      <Culture>0x0411</Culture>
+      <Culture>0x0409</Culture>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Bscmake>
@@ -122,12 +122,12 @@
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <TypeLibraryName>.\Debug\smbutil.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug\smbutil_i.tlb</TypeLibraryName>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
     </Midl>
     <ResourceCompile>
-      <Culture>0x0411</Culture>
+      <Culture>0x0409</Culture>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Bscmake>
@@ -155,6 +155,7 @@
     <ClCompile Include="keyaccel.c" />
     <ClCompile Include="keys.c" />
     <ClCompile Include="logview.c" />
+    <ClCompile Include="objdata.c" />
     <ClCompile Include="objeditcom.c" />
     <ClCompile Include="objeditdlg.c" />
     <ClCompile Include="objlib.c" />
@@ -165,6 +166,7 @@
     <ClCompile Include="objwndcmn.c" />
     <ClCompile Include="roommng.c" />
     <ClCompile Include="roomseldlg.c" />
+    <ClCompile Include="strings.c" />
     <ClCompile Include="tools.c" />
     <ClCompile Include="undo.c" />
   </ItemGroup>
@@ -181,7 +183,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource_j.rc" />
+    <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmnlib.h" />
@@ -211,7 +213,6 @@
     <ClInclude Include="roomseldlg.h" />
     <ClInclude Include="smbutil.h" />
     <ClInclude Include="strings.h" />
-    <ClInclude Include="string_j.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="undo.h" />
     <ClInclude Include="versinfo.h" />

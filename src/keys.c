@@ -218,47 +218,67 @@ static UINT FindVkeyIndex(BYTE bVkey)
 // NOTE : A, B, SELECT, STARTが最初にくることを前提にして、
 //        ジョイスティックのボタン設定を実装している
 //        (UP, DOWN, LEFT, RIGHTは未使用)
-LPTSTR g_szEmuKeyName[EMULATOR_NUM_BUTTONS] =
-{
-    STRING_KEYCONFIG_EMU_A,//__T("A"),
-    STRING_KEYCONFIG_EMU_B,//__T("B"),
-    STRING_KEYCONFIG_EMU_SELECT,//__T("ｾﾚｸﾄ"),
-    STRING_KEYCONFIG_EMU_START,//__T("ｽﾀｰﾄ"),
-    STRING_KEYCONFIG_EMU_UP,//__T("上"),
-    STRING_KEYCONFIG_EMU_DOWN,//__T("下"),
-    STRING_KEYCONFIG_EMU_LEFT,//__T("左"),
-    STRING_KEYCONFIG_EMU_RIGHT//__T("右"
-};
+LPTSTR g_szEmuKeyName[EMULATOR_NUM_BUTTONS];
 
-LPTSTR g_szEditKeyName[KEYACCEL_NUM_COMMANDS] =
+LPTSTR g_szEditKeyName[KEYACCEL_NUM_COMMANDS];
+
+void InitEmuKeyName()
 {
-    STRING_KEYCONFIG_EDIT_ADD1,//__T("種類を+1"),
-    STRING_KEYCONFIG_EDIT_DEC1,//__T("種類を-1"),
-    STRING_KEYCONFIG_EDIT_ADD16,//__T("種類を+16"),
-    STRING_KEYCONFIG_EDIT_DEC16,//__T("種類を-16"),
-    STRING_KEYCONFIG_EDIT_UP,//__T("位置を上へ"),
-    STRING_KEYCONFIG_EDIT_DOWN,//__T("位置を下へ"),
-    STRING_KEYCONFIG_EDIT_LEFT,//__T("位置を左へ"),
-    STRING_KEYCONFIG_EDIT_RIGHT,//__T("位置を右へ"),
-    STRING_KEYCONFIG_EDIT_NEXTPAGE,//__T("次のﾍﾟｰｼﾞへ"),
-    STRING_KEYCONFIG_EDIT_PREVPAGE,//__T("前のﾍﾟｰｼﾞへ"),
-    STRING_KEYCONFIG_EDIT_NEXTOBJ,//__T("次のｵﾌﾞｼﾞｪｸﾄへ"),
-    STRING_KEYCONFIG_EDIT_PREVOBJ,//__T("前のｵﾌﾞｼﾞｪｸﾄへ"),
-    STRING_KEYCONFIG_EDIT_SAVEFILE,//__T("ﾌｧｲﾙ: 上書き保存"),
-    STRING_KEYCONFIG_EDIT_UNDO,//__T("編集: 元に戻す"),
-    STRING_KEYCONFIG_EDIT_ROOM,//__T("編集: ﾙｰﾑを開く"),
-    STRING_KEYCONFIG_EDIT_BADGUYS,//__T("編集: 敵"),
-    STRING_KEYCONFIG_EDIT_MAP,//__T("編集: 地形"),
-    STRING_KEYCONFIG_EDIT_TESTPLAY,//__T("ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲ"),
-    STRING_KEYCONFIG_EDIT_PAGETESTPLAY,//__T("ｴﾐｭﾚｰﾀ: ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ"),
-    STRING_KEYCONFIG_EDIT_PAGETESTPLAY2,//__T("ｴﾐｭﾚｰﾀ: 途中ﾍﾟｰｼﾞﾃｽﾄﾌﾟﾚｲ"),
-    STRING_KEYCONFIG_EDIT_STOP,//__T("ｴﾐｭﾚｰﾀ: 停止"),
-    STRING_KEYCONFIG_EDIT_SAVEEMU,//__T("ｴﾐｭﾚｰﾀ: ｾｰﾌﾞ"),
-    STRING_KEYCONFIG_EDIT_LOADEMU,//__T("ｴﾐｭﾚｰﾀ: ﾛｰﾄﾞ"),
-    STRING_KEYCONFIG_EDIT_EMUSETTING,//__T("ｴﾐｭﾚｰﾀ: ﾃｽﾄﾌﾟﾚｲの設定"),
-    STRING_KEYCONFIG_EDIT_NEXTWIN,//__T("ｳｲﾝﾄﾞｳ: 次へ"),
-    STRING_KEYCONFIG_EDIT_PREVWIN,//__T("ｳｲﾝﾄﾞｳ: 前へ"
-};
+    LPTSTR tmp[EMULATOR_NUM_BUTTONS] =
+    {
+        STRING_KEYCONFIG_EMU_A,
+        STRING_KEYCONFIG_EMU_B,
+        STRING_KEYCONFIG_EMU_SELECT,
+        STRING_KEYCONFIG_EMU_START,
+        STRING_KEYCONFIG_EMU_UP,
+        STRING_KEYCONFIG_EMU_DOWN,
+        STRING_KEYCONFIG_EMU_LEFT,
+        STRING_KEYCONFIG_EMU_RIGHT
+    };
+
+    memcpy(g_szEmuKeyName, tmp, sizeof(tmp));
+}
+
+void InitEditKeyName()
+{
+    LPTSTR tmp[KEYACCEL_NUM_COMMANDS] =
+    {
+        STRING_KEYCONFIG_EDIT_ADD1         ,
+        STRING_KEYCONFIG_EDIT_DEC1         ,
+        STRING_KEYCONFIG_EDIT_ADD16        ,
+        STRING_KEYCONFIG_EDIT_DEC16        ,
+        STRING_KEYCONFIG_EDIT_UP           ,
+        STRING_KEYCONFIG_EDIT_DOWN         ,
+        STRING_KEYCONFIG_EDIT_LEFT         ,
+        STRING_KEYCONFIG_EDIT_RIGHT        ,
+        STRING_KEYCONFIG_EDIT_NEXTPAGE     ,
+        STRING_KEYCONFIG_EDIT_PREVPAGE     ,
+        STRING_KEYCONFIG_EDIT_NEXTOBJ      ,
+        STRING_KEYCONFIG_EDIT_PREVOBJ      ,
+        STRING_KEYCONFIG_EDIT_SAVEFILE     ,
+        STRING_KEYCONFIG_EDIT_UNDO         ,
+        STRING_KEYCONFIG_EDIT_ROOM         ,
+        STRING_KEYCONFIG_EDIT_BADGUYS      ,
+        STRING_KEYCONFIG_EDIT_MAP          ,
+        STRING_KEYCONFIG_EDIT_TESTPLAY     ,
+        STRING_KEYCONFIG_EDIT_PAGETESTPLAY ,
+        STRING_KEYCONFIG_EDIT_PAGETESTPLAY2,
+        STRING_KEYCONFIG_EDIT_STOP         ,
+        STRING_KEYCONFIG_EDIT_SAVEEMU      ,
+        STRING_KEYCONFIG_EDIT_LOADEMU      ,
+        STRING_KEYCONFIG_EDIT_EMUSETTING   ,
+        STRING_KEYCONFIG_EDIT_NEXTWIN      ,
+        STRING_KEYCONFIG_EDIT_PREVWIN      ,
+    };
+
+    memcpy(g_szEditKeyName, tmp, sizeof(tmp));
+}
+
+void InitKeys()
+{
+    InitEmuKeyName();
+    InitEditKeyName();
+}
 
 #define CUSTOMIZE_KEYIDS 2
 

@@ -10,6 +10,8 @@
 #ifndef KEYS_H
 #define KEYS_H
 
+void InitKeys();
+
 LRESULT CALLBACK CustomizeDlgProc(HWND, UINT, WPARAM, LPARAM);
 
 typedef enum _tagWHEELFUNC
