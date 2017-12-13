@@ -22,10 +22,9 @@ int m6502zppc()
     return context.m6502pc;
 }
 
-UINT32 cyclesRemaining;
-UINT32 elapsedTicks;
+int cyclesRemaining;
+int elapsedTicks;
 UINT32 status;
-UINT8 AltFlags;
 
 #define I context.m6502MemoryRead
 #define O context.m6502MemoryWrite
@@ -50,223 +49,260 @@ UINT8 AltFlags;
 #define VMask (1<<6)
 #define NMask (1<<7)
 
-#define GetWord(_addr) \
-(Memory[_addr] | Memory[(UINT16)((_addr)+1)])
+UINT16 GetPageWrap(UINT16 value, UINT8 index)
+{
+    int result = value + index;
+    if ((result & ~0xFF) != (value & ~0xFF))
+    {
+        cyclesRemaining--;
+        elapsedTicks++;
+    }
 
-#define Immediate(_value) ((UINT8)(_value))
+    return (UINT16)result;
+}
 
-#define ZeroPage(_value) (Memory[Immediate(_value)])
-#define ZeroPageX(_value) (ZeroPage((_value)+X))
-#define ZeroPageY(_value) (ZeroPage((_value)+Y))
+UINT8 GetImmediate8(UINT16 addr)
+{
+    //return Memory[addr];
+    for (struct MemoryReadByte* read = I; (UINT16)read->lowAddr != 0xFFFF; )
+    {
+        if (addr < read->lowAddr)
+        {
+            read++;
+            continue;
+        }
 
-#define Absolute(_value) (Memory[(UINT16)(_value)])
-#define AbsoluteX(_value) (Absolute(Wrap((_value)+X)))
-#define AbsoluteY(_value) (Absolute(Wrap((_value)+Y)))
+        if (addr <= read->highAddr)
+        {
+            return read->memoryCall(addr, read);
+        }
 
-#define Indirect(_value) (Absolute(ZeroPage(_value)))
-#define IndexedIndirect(_value) (Indirect((_value)+X))
-#define IndirectIndexed(_value) (AbsoluteY(Indirect(_value)))
+        break;
+    }
+
+    return Memory[addr];
+}
+UINT16 GetImmediate16(UINT16 addr)
+{
+    UINT16 result = GetImmediate8(addr) | (GetImmediate8(addr + 1) << 8);
+    return result;
+}
+
+void SetImmediate8(UINT16 addr, UINT8 value)
+{
+    //return Memory[addr];
+    for (struct MemoryWriteByte* write = O; (UINT16)write->lowAddr != 0xFFFF; )
+    {
+        if (addr < write->lowAddr)
+        {
+            write++;
+            continue;
+        }
+
+        if (addr <= write->highAddr)
+        {
+            return write->memoryCall(addr, value, write);
+        }
+
+        break;
+    }
+
+    Memory[addr] = value;
+}
+
+UINT8* ZeroPage(UINT16 addr)
+{
+    return Memory + GetImmediate8(addr);
+}
+UINT8* ZeroPageX(UINT16 addr)
+{
+    return ZeroPage(addr + X);
+}
+UINT8* ZeroPageY(UINT16 addr)
+{
+    return ZeroPage(addr + Y);
+}
+
+UINT8* Absolute(UINT16 addr)
+{
+    UINT16 code = GetImmediate16(addr);
+    UINT8* result = Memory + code;
+    return result;
+}
+UINT8* AbsoluteX(UINT16 addr)
+{
+    int code = GetPageWrap(GetImmediate16(addr), X);
+    return Memory + code;
+}
+UINT8* AbsoluteY(UINT16 addr)
+{
+    int code = GetPageWrap(GetImmediate16(addr), Y);
+    return Memory + code;
+}
+
+UINT8* IndirectX(UINT16 addr)
+{
+    int addr16 = *ZeroPageX(addr) | (*ZeroPageX(addr + 1) << 8);
+    return Absolute(addr16);
+}
+UINT8* IndirectY(UINT16 addr)
+{
+    int addr16 = GetImmediate8(addr);
+    return AbsoluteY(addr16);
+}
 
 #define SetFlag(_i) Flags |= (_i)
 #define ClearFlag(_i) Flags &= ~(_i)
 #define CheckFlag(_i) (Flags & (_i))
 #define WriteFlag(_i, _value) if (_value)SetFlag(_i);else ClearFlag(_i)
 
-#define SetCarry SetFlag(0)
-#define ClearCarry ClearFlag(0)
-#define CheckCarry CheckFlag(0)
+#define SetCarry SetFlag(CMask)
+#define ClearCarry ClearFlag(CMask)
+#define CheckCarry CheckFlag(CMask)
 
 #define CreateReadInstructions(_name) \
-\
 void _name##Immediate()\
 {\
-    _name(Immediate(Op));\
-    PC++;\
+    _name(GetImmediate8(PC++));\
 }\
-\
 void _name##ZeroPage()\
 {\
-    _name(ZeroPage(Op));\
-    PC++;\
+    _name(*ZeroPage(PC++));\
 }\
-\
 void _name##ZeroPageX()\
 {\
-    _name(ZeroPageX(Op));\
-    PC++;\
+    _name(*ZeroPageX(PC++));\
 }\
-\
 void _name##ZeroPageY()\
 {\
-    _name(ZeroPageY(Op));\
-    PC++;\
+    _name(*ZeroPageY(PC++));\
 }\
-\
 void _name##Absolute()\
 {\
-    _name(Absolute(Op));\
+    _name(GetImmediate8(Absolute(PC) - Memory));\
     PC += 2;\
 }\
-\
 void _name##AbsoluteX()\
 {\
-    _name(AbsoluteX(Op));\
+    _name(GetImmediate8(AbsoluteX(PC) - Memory));\
     PC += 2;\
 }\
-\
 void _name##AbsoluteY()\
 {\
-    _name(AbsoluteY(Op));\
+    _name(GetImmediate8(AbsoluteY(PC) - Memory));\
     PC += 2;\
 }\
-\
-void _name##Indirect()\
+void _name##IndirectX()\
 {\
-    _name(Indirect(Op));\
-    PC++;\
+    _name(GetImmediate8(IndirectX(PC++) - Memory));\
 }\
-\
-void _name##IndexedIndirect()\
+void _name##IndirectY()\
 {\
-    _name(IndexedIndirect(Op));\
-    PC++;\
-}\
-\
-void _name##IndirectIndexed()\
-{\
-    _name(IndirectIndexed(Op));\
-    PC++;\
+    _name(GetImmediate8(IndirectY(PC++) - Memory));\
 }
 
 #define CreateWriteInstructions(_name, _op) \
-\
 void _name##ZeroPage()\
 {\
-    ZeroPage(Op) _op _name();\
-    PC++;\
+    *ZeroPage(PC++) _op _name();\
 }\
-\
 void _name##ZeroPageX()\
 {\
-    ZeroPageX(Op) _op _name();\
-    PC++;\
+    *ZeroPageX(PC++) _op _name();\
 }\
-\
 void _name##ZeroPageY()\
 {\
-    ZeroPageY(Op) _op _name();\
-    PC++;\
+    *ZeroPageY(PC++) _op _name();\
 }\
-\
 void _name##Absolute()\
 {\
-    Absolute(Op) _op _name();\
-    PC += 2;\
+INT8* addr = Absolute(PC);\
+INT8 result = *addr;\
+result _op _name();\
+SetImmediate8(addr - Memory, result); \
+PC += 2; \
 }\
-\
 void _name##AbsoluteX()\
 {\
-    AbsoluteX(Op) _op _name();\
-    PC += 2;\
+INT8* addr = AbsoluteX(PC);\
+INT8 result = *addr;\
+result _op _name();\
+SetImmediate8(addr - Memory, result); \
+PC += 2; \
 }\
-\
 void _name##AbsoluteY()\
 {\
-    AbsoluteY(Op) _op _name();\
-    PC += 2;\
+INT8* addr = AbsoluteY(PC);\
+INT8 result = *addr;\
+result _op _name();\
+SetImmediate8(addr - Memory, result); \
+PC += 2; \
 }\
-\
-void _name##Indirect()\
+void _name##IndirectX()\
 {\
-    Indirect(Op) _op _name();\
-    PC++;\
+INT8* addr = IndirectX(PC++);\
+INT8 result = *addr;\
+result _op _name();\
+SetImmediate8(addr - Memory, result); \
 }\
-\
-void _name##IndexedIndirect()\
+void _name##IndirectY()\
 {\
-    IndexedIndirect(Op) _op _name();\
-    PC++;\
-}\
-\
-void _name##IndirectIndexed()\
-{\
-    IndirectIndexed(Op) _op _name();\
-    PC++;\
+INT8* addr = IndirectY(PC++);\
+INT8 result = *addr;\
+result _op _name();\
+SetImmediate8(addr - Memory, result); \
 }
 
 #define CreateRefInstructions(_name) \
-\
 void _name##A()\
 {\
     _name(&A);\
 }\
-\
 void _name##X()\
 {\
     _name(&X);\
 }\
-\
 void _name##Y()\
 {\
     _name(&Y);\
 }\
-\
 void _name##ZeroPage()\
 {\
-    _name(&ZeroPage(Op));\
-    PC++;\
+    _name(ZeroPage(PC++));\
 }\
-\
 void _name##ZeroPageX()\
 {\
-    _name(&ZeroPageX(Op));\
-    PC++;\
+    _name(ZeroPageX(PC++));\
 }\
-\
 void _name##ZeroPageY()\
 {\
-    _name(&ZeroPageY(Op));\
-    PC++;\
+    _name(ZeroPageY(PC++));\
 }\
-\
 void _name##Absolute()\
 {\
-    _name(&Absolute(Op));\
+    _name(Absolute(PC));\
     PC += 2;\
 }\
-\
 void _name##AbsoluteX()\
 {\
-    _name(&AbsoluteX(Op));\
+    _name(AbsoluteX(PC));\
     PC += 2;\
 }\
-\
 void _name##AbsoluteY()\
 {\
-    _name(&AbsoluteY(Op));\
+    _name(AbsoluteY(PC));\
     PC += 2;\
 }\
-\
-void _name##Indirect()\
+void _name##IndirectX()\
 {\
-    _name(&Indirect(Op));\
-    PC++;\
+    _name(IndirectX(PC++));\
 }\
-\
-void _name##IndexedIndirect()\
+void _name##IndirectY()\
 {\
-    _name(&IndexedIndirect(Op));\
-    PC++;\
-}\
-\
-void _name##IndirectIndexed()\
-{\
-    _name(&IndirectIndexed(Op));\
-    PC++;\
+    _name(IndirectY(PC++));\
 }
 
-static const UINT8 M2X[0x100];
-static const UINT8 X2M[0x100];
+static const UINT8 OpSize[0x100];
 static const UINT8 CycleCost[0x100];
 
 typedef void(*Instruction)();
@@ -292,8 +328,8 @@ void Push(UINT8 value)
 
 void PushWord(UINT16 value)
 {
-    Push((UINT8)value);
     Push((UINT8)(value >> 8));
+    Push((UINT8)value);
 }
 
 void PushState()
@@ -304,12 +340,12 @@ void PushState()
 
 UINT8 Pull()
 {
-    return Memory[0x100 | S++];
+    return Memory[0x100 | ++S];
 }
 
 UINT16 PullWord()
 {
-    return (Pull() << 8) | Pull();
+    return Pull() | (Pull() << 8);
 }
 
 void WriteNZFlags(UINT8 value)
@@ -330,10 +366,15 @@ void BRK()
     SetFlag(BMask);
 }
 
+void LDN(UINT8 *n, UINT8 value)
+{
+    *n = value;
+    WriteNZFlags(*n);
+}
+
 #define LD(_n) void LD##_n(UINT8 value)\
 {\
-    _n = value;\
-    WriteNZFlags(value);\
+    LDN(&_n, value);\
 }\
 CreateReadInstructions(LD##_n)\
 
@@ -380,15 +421,35 @@ CreateWriteInstructions(STY, =)
 
 void INC(UINT8* value)
 {
-    (*value)++;
-    WriteNZFlags(*value);
+    if (value != &A && value != &X && value != &Y)
+    {
+        UINT16 addr = value - Memory;
+        UINT8 result = GetImmediate8(addr) + 1;
+        SetImmediate8(addr, result);
+        WriteNZFlags(result);
+    }
+    else
+    {
+        (*value)++;
+        WriteNZFlags(*value);
+    }
 }
 CreateRefInstructions(INC)
 
 void DEC(UINT8* value)
 {
-    (*value)--;
-    WriteNZFlags(*value);
+    if (value != &A && value != &X && value != &Y)
+    {
+        UINT16 addr = value - Memory;
+        UINT8 result = GetImmediate8(addr) - 1;
+        SetImmediate8(addr, result);
+        WriteNZFlags(result);
+    }
+    else
+    {
+        (*value)--;
+        WriteNZFlags(*value);
+    }
 }
 CreateRefInstructions(DEC)
 
@@ -428,7 +489,7 @@ void Compare(UINT8 left, UINT8 right)
 {
     int result = left - right;
     WriteFlag(CMask, left >= right);
-    WriteFlag(ZMask, result);
+    WriteFlag(ZMask, !result);
     WriteFlag(NMask, result & 0x80);
 }
 
@@ -468,6 +529,8 @@ void Branch(int test)
 
         PC = result;
     }
+    else
+        PC++;
 }
 
 void BCC()
@@ -550,9 +613,18 @@ void ASL(UINT8* value)
     WriteFlag(CMask, *value & 0x80);
     WriteFlag(VMask, *value & 0x40);
 
-    *value <<= 1;
-
-    WriteNZFlags(*value);
+    if (value != &A && value != &X && value != &Y)
+    {
+        UINT16 addr = value - Memory;
+        UINT8 result = GetImmediate8(addr) << 1;
+        SetImmediate8(addr, result);
+        WriteNZFlags(result);
+    }
+    else
+    {
+        (*value) <<= 1;
+        WriteNZFlags(*value);
+    }
 }
 CreateRefInstructions(ASL)
 
@@ -561,30 +633,65 @@ void LSR(UINT8 *value)
     WriteFlag(CMask, *value & 1);
     ClearFlag(NMask);
 
-    *value >>= 1;
-
-    WriteFlag(ZMask, !*value);
+    if (value != &A && value != &X && value != &Y)
+    {
+        UINT16 addr = value - Memory;
+        UINT8 result = GetImmediate8(addr) >> 1;
+        SetImmediate8(addr, result);
+        WriteNZFlags(result);
+    }
+    else
+    {
+        (*value) >>= 1;
+        WriteNZFlags(*value);
+    }
 }
 CreateRefInstructions(LSR)
 
 void ROL(UINT8 *value)
 {
     UINT8 carry = CheckCarry;
-    ASL(value);
 
-    *value |= carry;
+    WriteFlag(CMask, *value & 0x80);
+
+    if (value != &A && value != &X && value != &Y)
+    {
+        UINT16 addr = value - Memory;
+        UINT8 result = GetImmediate8(addr);
+        result <<= 1;
+        result |= carry;
+        SetImmediate8(addr, result);
+        WriteNZFlags(result);
+    }
+    else
+    {
+        (*value) <<= 1;
+        (*value) |= carry;
+        WriteNZFlags(*value);
+    }
 }
 CreateRefInstructions(ROL)
 
 void ROR(UINT8* value)
 {
     UINT8 carry = CheckCarry;
-    LSR(value);
 
-    if (carry)
+    WriteFlag(CMask, *value & 1);
+
+    if (value != &A && value != &X && value != &Y)
     {
-        *value |= 0x80;
-        SetFlag(NMask);
+        UINT16 addr = value - Memory;
+        UINT8 result = GetImmediate8(addr);
+        result >>= 1;
+        result |= carry << 7;
+        SetImmediate8(addr, result);
+        WriteNZFlags(result);
+    }
+    else
+    {
+        (*value) >>= 1;
+        (*value) |= carry << 7;
+        WriteNZFlags(*value);
     }
 }
 CreateRefInstructions(ROR)
@@ -620,14 +727,25 @@ void JMP(int value)
     // If (byte)value == 0xFF, the behavior is undefined.
     PC = value;
 }
-CreateReadInstructions(JMP)
+void JMPAbsolute()
+{
+    JMP(GetImmediate16(PC));
+}
+
+void JMPIndirect()
+{
+    JMP(GetImmediate16(GetImmediate16(PC)));
+}
 
 void JSR(int value)
 {
-    PushWord(PC);
+    PushWord(PC + 1);
     JMP(value);
 }
-CreateReadInstructions(JSR)
+void JSRAbsolute()
+{
+    JSR(GetImmediate16(PC));
+}
 
 void RTS()
 {
@@ -635,12 +753,15 @@ void RTS()
     PC++;
 }
 
+void Transfer(UINT8 n, UINT8* m)
+{
+    LDN(m, n);
+}
+
 #define TNM(_n, _m)\
 void T##_n##_m()\
 {\
-    int dummy = _n;\
-    LD##_n(_m);\
-    _m = _n;\
+    Transfer(_n, &_m);\
 }
 
 TNM(A, X)
@@ -655,6 +776,11 @@ void NOP()
     // Do nothing. Program counter and cycle count are updated in main loop.
 }
 
+UINT16 GetWord(UINT16 addr)
+{
+    return Memory[addr] | (Memory[(UINT16)(addr + 1)] << 8);
+}
+
 void m6502zpreset()
 {
     X = 0;
@@ -664,7 +790,7 @@ void m6502zpreset()
     AF = 0x2200;
 
     // Set PC to RESET vector.
-    PC = Memory[ResetVector];
+    PC = GetWord(ResetVector);
 }
 
 void ClearInterrupt()
@@ -687,7 +813,7 @@ UINT32 m6502zpint(UINT32 cycles)
     ClearInterrupt();
 
     // Set PC to Interrupt vector.
-    PC = Memory[InterruptVector];
+    PC = GetWord(InterruptVector);
 
     // Indicate we've taken the interrupt.
     return IrqPending = 0;
@@ -699,7 +825,7 @@ UINT32 m6502zpnmi()
     ClearInterrupt();
 
     // Set PC to NMI vector.
-    PC = Memory[NmiVector];
+    PC = GetWord(NmiVector);
 
     // Indicate that we took the NMI.
     return 0;
@@ -708,10 +834,6 @@ UINT32 m6502zpnmi()
 UINT32 m6502zpexec(UINT32 cycles)
 {
     cyclesRemaining = cycles;
-
-    AltFlags = Flags & 0x3C;
-    Flags = M2X[Flags];
-
     UINT8 ticks;
 
     do
@@ -743,59 +865,24 @@ UINT32 m6502zpexec(UINT32 cycles)
     return M6502_STATUS_OK;
 }
 
-#undef I
-#undef O
-#undef X
-#undef Y
-#undef IrqPending
-#undef S
-#undef AF
-#undef AFL
-#undef AFH
-#undef PC
-#undef PCL
-#undef PCH
-#undef Base
-#undef SetPC
-
-static const UINT8 M2X[0x100] =
+static const UINT8 OpSize[0x100] =
 {
-    0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43, 0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43,
-    0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43, 0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43,
-    0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43, 0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43,
-    0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43, 0x00, 0x01, 0x40, 0x41, 0x02, 0x03, 0x42, 0x43,
-    0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53, 0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53,
-    0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53, 0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53,
-    0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53, 0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53,
-    0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53, 0x10, 0x11, 0x50, 0x51, 0x12, 0x13, 0x52, 0x53,
-    0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3, 0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3,
-    0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3, 0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3,
-    0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3, 0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3,
-    0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3, 0x80, 0x81, 0xc0, 0xc1, 0x82, 0x83, 0xc2, 0xc3,
-    0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3, 0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3,
-    0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3, 0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3,
-    0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3, 0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3,
-    0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3, 0x90, 0x91, 0xd0, 0xd1, 0x92, 0x93, 0xd2, 0xd3,
-};
-
-static const UINT8 X2M[0x100] =
-{
-    0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01,
-    0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41,
-    0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01,
-    0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41, 0x40, 0x41,
-    0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03,
-    0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43,
-    0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03, 0x02, 0x03,
-    0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43, 0x42, 0x43,
-    0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81,
-    0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1,
-    0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81, 0x80, 0x81,
-    0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1, 0xc0, 0xc1,
-    0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83,
-    0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3,
-    0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83, 0x82, 0x83,
-    0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3, 0xc2, 0xc3,
+    0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 2, 2, 0,
+    1, 1, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 2, 2, 0,
+    2, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 2, 2, 0,
+    0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 2, 2, 0,
+    0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 2, 2, 0,
+    0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 1, 1, 1, 0, 0, 2, 0, 0, 0, 2, 0, 0,
+    1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 1, 1, 1, 0, 0, 2, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 2, 2, 0,
+    1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 2, 2, 2, 0,
+    1, 1, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 2, 2, 0,
 };
 
 static const UINT8 CycleCost[0x100] =
@@ -821,7 +908,7 @@ static const UINT8 CycleCost[0x100] =
 static const Instruction Instructions[0x100] =
 {
     BRK,// $00
-    ORAIndirectIndexed,// $01
+    ORAIndirectX,// $01
     NULL,// $02
     NULL,// $03
     NULL,// $04
@@ -838,7 +925,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $0F
 
     BPL,// $10
-    ORAIndexedIndirect,// $11
+    ORAIndirectY,// $11
     NULL,// $12
     NULL,// $13
     NULL,// $14
@@ -855,7 +942,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $1F
 
     JSRAbsolute,// $20
-    ANDIndirectIndexed,// $21
+    ANDIndirectX,// $21
     NULL,// $22
     NULL,// $23
     BITZeroPage,// $24
@@ -872,7 +959,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $2F
 
     BMI,// $30
-    ANDIndexedIndirect,// $31
+    ANDIndirectY,// $31
     NULL,// $32
     NULL,// $33
     NULL,// $34
@@ -889,7 +976,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $3F
 
     RTI,// $40
-    EORIndirectIndexed,// $41
+    EORIndirectX,// $41
     NULL,// $42
     NULL,// $43
     NULL,// $44
@@ -898,7 +985,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $47
     PHA,// $48
     EORImmediate,// $49
-    LSRAbsolute,// $4A
+    LSRA,// $4A
     NULL,// $4B
     JMPAbsolute,// $4C
     EORAbsolute,// $4D
@@ -906,7 +993,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $4F
 
     BVC,// $50
-    EORIndexedIndirect,// $51
+    EORIndirectY,// $51
     NULL,// $52
     NULL,// $53
     NULL,// $54
@@ -923,7 +1010,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $5F
 
     RTS,// $60
-    ADCIndirectIndexed,// $61
+    ADCIndirectX,// $61
     NULL,// $62
     NULL,// $63
     NULL,// $64
@@ -940,7 +1027,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $6F
 
     BVS,// $70
-    ADCIndexedIndirect,// $71
+    ADCIndirectY,// $71
     NULL,// $72
     NULL,// $73
     NULL,// $74
@@ -957,7 +1044,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $7F
 
     NULL,// $80
-    STAIndirectIndexed,// $81
+    STAIndirectX,// $81
     NULL,// $82
     NULL,// $83
     STYZeroPage,// $84
@@ -974,7 +1061,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $8F
 
     BCC,// $90
-    STAIndexedIndirect,// $91
+    STAIndirectY,// $91
     NULL,// $92
     NULL,// $93
     STYZeroPageX,// $94
@@ -991,7 +1078,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $9F
 
     LDYImmediate,// $A0
-    LDAIndirectIndexed,// $A1
+    LDAIndirectX,// $A1
     LDXImmediate,// $A2
     NULL,// $A3
     LDYZeroPage,// $A4
@@ -1008,7 +1095,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $AF
 
     BCS,// $B0
-    LDAIndexedIndirect,// $B1
+    LDAIndirectY,// $B1
     NULL,// $B2
     NULL,// $B3
     LDYZeroPageX,// $B4
@@ -1025,7 +1112,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $BF
 
     CPYImmediate,// $C0
-    CMPIndirectIndexed,// $C1
+    CMPIndirectX,// $C1
     NULL,// $C2
     NULL,// $C3
     CPYZeroPage,// $C4
@@ -1042,7 +1129,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $CF
 
     BNE,// $D0
-    CMPIndexedIndirect,// $D1
+    CMPIndirectY,// $D1
     NULL,// $D2
     NULL,// $D3
     NULL,// $D4
@@ -1059,7 +1146,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $DF
 
     CPXImmediate,// $E0
-    SBCIndirectIndexed,// $E1
+    SBCIndirectX,// $E1
     NULL,// $E2
     NULL,// $E3
     CPXZeroPage,// $E4
@@ -1076,7 +1163,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $EF
 
     BEQ,// $F0
-    SBCIndexedIndirect,// $F1
+    SBCIndirectY,// $F1
     NULL,// $F2
     NULL,// $F3
     NULL,// $F4
