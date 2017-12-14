@@ -91,9 +91,6 @@
     <ClCompile Include="strings.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="M6502.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmnlib.h">
@@ -127,9 +124,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="logview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="M6502.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="nespal.h">

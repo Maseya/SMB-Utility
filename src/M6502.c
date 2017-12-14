@@ -41,15 +41,23 @@ UINT32 status;
 #define Memory context.m6502Base
 #define Op Memory[PC]
 
-#define CMask (1<<0)
-#define ZMask (1<<1)
-#define IMask (1<<2)
-#define DMask (1<<3)
-#define BMask (1<<4)
-#define VMask (1<<6)
-#define NMask (1<<7)
+#define CBit 0
+#define ZBit 1
+#define IBit 2
+#define DBit 3
+#define BBit 4
+#define VBit 6
+#define NBit 7
 
-UINT16 GetPageWrap(UINT16 value, UINT8 index)
+#define CMask (1<<CBit)
+#define ZMask (1<<ZBit)
+#define IMask (1<<IBit)
+#define DMask (1<<DBit)
+#define BMask (1<<BBit)
+#define VMask (1<<VBit)
+#define NMask (1<<NBit)
+
+UINT16 AddWithPageCross(UINT16 value, UINT8 index)
 {
     int result = value + index;
     if ((result & ~0xFF) != (value & ~0xFF))
@@ -63,21 +71,17 @@ UINT16 GetPageWrap(UINT16 value, UINT8 index)
 
 UINT8 GetImmediate8(UINT16 addr)
 {
-    //return Memory[addr];
-    for (struct MemoryReadByte* read = I; (UINT16)read->lowAddr != 0xFFFF; )
+    if (!I)
     {
-        if (addr < read->lowAddr)
-        {
-            read++;
-            continue;
-        }
+        return Memory[addr];
+    }
 
-        if (addr <= read->highAddr)
+    for (struct MemoryReadByte* read = I; (UINT16)read->lowAddr != 0xFFFF; read++)
+    {
+        if (addr >= read->lowAddr && addr <= read->highAddr)
         {
             return read->memoryCall(addr, read);
         }
-
-        break;
     }
 
     return Memory[addr];
@@ -90,21 +94,19 @@ UINT16 GetImmediate16(UINT16 addr)
 
 void SetImmediate8(UINT16 addr, UINT8 value)
 {
-    //return Memory[addr];
-    for (struct MemoryWriteByte* write = O; (UINT16)write->lowAddr != 0xFFFF; )
+    if (!O)
     {
-        if (addr < write->lowAddr)
-        {
-            write++;
-            continue;
-        }
+        Memory[addr] = value;
+        return;
+    }
 
-        if (addr <= write->highAddr)
+    for (struct MemoryWriteByte* write = O; (UINT16)write->lowAddr != 0xFFFF; write++)
+    {
+        if (addr >= write->lowAddr && addr <= write->highAddr)
         {
-            return write->memoryCall(addr, value, write);
+            write->memoryCall(addr, value, write);
+            return;
         }
-
-        break;
     }
 
     Memory[addr] = value;
@@ -112,7 +114,8 @@ void SetImmediate8(UINT16 addr, UINT8 value)
 
 UINT8* ZeroPage(UINT16 addr)
 {
-    return Memory + GetImmediate8(addr);
+    int code = GetImmediate8(addr);
+    return Memory + code;
 }
 UINT8* ZeroPageX(UINT16 addr)
 {
@@ -125,18 +128,17 @@ UINT8* ZeroPageY(UINT16 addr)
 
 UINT8* Absolute(UINT16 addr)
 {
-    UINT16 code = GetImmediate16(addr);
-    UINT8* result = Memory + code;
-    return result;
+    int code = GetImmediate16(addr);
+    return Memory + code;
 }
 UINT8* AbsoluteX(UINT16 addr)
 {
-    int code = GetPageWrap(GetImmediate16(addr), X);
+    int code = AddWithPageCross(GetImmediate16(addr), X);
     return Memory + code;
 }
 UINT8* AbsoluteY(UINT16 addr)
 {
-    int code = GetPageWrap(GetImmediate16(addr), Y);
+    int code = AddWithPageCross(GetImmediate16(addr), Y);
     return Memory + code;
 }
 
@@ -179,18 +181,21 @@ void _name##ZeroPageY()\
 }\
 void _name##Absolute()\
 {\
-    _name(GetImmediate8(Absolute(PC) - Memory));\
+    UINT16 addr = Absolute(PC) - Memory;\
     PC += 2;\
+    _name(GetImmediate8(addr));\
 }\
 void _name##AbsoluteX()\
 {\
-    _name(GetImmediate8(AbsoluteX(PC) - Memory));\
+    UINT16 addr = AbsoluteX(PC) - Memory;\
     PC += 2;\
+    _name(GetImmediate8(addr));\
 }\
 void _name##AbsoluteY()\
 {\
-    _name(GetImmediate8(AbsoluteY(PC) - Memory));\
+    UINT16 addr = AbsoluteY(PC) - Memory;\
     PC += 2;\
+    _name(GetImmediate8(addr));\
 }\
 void _name##IndirectX()\
 {\
@@ -216,39 +221,39 @@ void _name##ZeroPageY()\
 }\
 void _name##Absolute()\
 {\
-INT8* addr = Absolute(PC);\
-INT8 result = *addr;\
+UINT8* addr = Absolute(PC);\
+PC += 2; \
+UINT8 result = *addr;\
 result _op _name();\
 SetImmediate8(addr - Memory, result); \
-PC += 2; \
 }\
 void _name##AbsoluteX()\
 {\
-INT8* addr = AbsoluteX(PC);\
-INT8 result = *addr;\
+UINT8* addr = AbsoluteX(PC);\
+PC += 2; \
+UINT8 result = *addr;\
 result _op _name();\
 SetImmediate8(addr - Memory, result); \
-PC += 2; \
 }\
 void _name##AbsoluteY()\
 {\
-INT8* addr = AbsoluteY(PC);\
-INT8 result = *addr;\
+UINT8* addr = AbsoluteY(PC);\
+PC += 2; \
+UINT8 result = *addr;\
 result _op _name();\
 SetImmediate8(addr - Memory, result); \
-PC += 2; \
 }\
 void _name##IndirectX()\
 {\
-INT8* addr = IndirectX(PC++);\
-INT8 result = *addr;\
+UINT8* addr = IndirectX(PC++);\
+UINT8 result = *addr;\
 result _op _name();\
 SetImmediate8(addr - Memory, result); \
 }\
 void _name##IndirectY()\
 {\
-INT8* addr = IndirectY(PC++);\
-INT8 result = *addr;\
+UINT8* addr = IndirectY(PC++);\
+UINT8 result = *addr;\
 result _op _name();\
 SetImmediate8(addr - Memory, result); \
 }
@@ -280,18 +285,21 @@ void _name##ZeroPageY()\
 }\
 void _name##Absolute()\
 {\
-    _name(Absolute(PC));\
+    UINT8* addr = Absolute(PC);\
     PC += 2;\
+    _name(addr);\
 }\
 void _name##AbsoluteX()\
 {\
-    _name(AbsoluteX(PC));\
+    UINT8* addr = AbsoluteX(PC);\
     PC += 2;\
+    _name(addr);\
 }\
 void _name##AbsoluteY()\
 {\
-    _name(AbsoluteY(PC));\
+    UINT8* addr = AbsoluteY(PC);\
     PC += 2;\
+    _name(addr);\
 }\
 void _name##IndirectX()\
 {\
@@ -834,35 +842,39 @@ UINT32 m6502zpnmi()
 UINT32 m6502zpexec(UINT32 cycles)
 {
     cyclesRemaining = cycles;
-    UINT8 ticks;
 
     do
     {
-        // Get opcode instruction.
-        Instruction instruction = Instructions[Op];
-
-        // Check for invalid instruction (NULL)
-        if (!instruction)
-        {
-            // Return address of instruction (not successful run).
-            return PC;
-        }
-
-        // Update cycle count for this operation.
-        ticks = CycleCost[Op];
-        cyclesRemaining -= ticks;
-        elapsedTicks += ticks;
-
-        // Update PC to next byte before executing instruction.
-        PC++;
-
-        // Perform opcode instruction.
-        instruction();
+        ExecuteInstruction();
     }
     while (cyclesRemaining > 0);
 
     // Return success
     return M6502_STATUS_OK;
+}
+
+void ExecuteInstruction()
+{
+    // Get opcode instruction.
+    Instruction instruction = Instructions[Op];
+
+    // Check for invalid instruction (NULL)
+    if (!instruction)
+    {
+        // Return address of instruction (not successful run).
+        return PC;
+    }
+
+    // Update cycle count for this operation.
+    UINT8 ticks = CycleCost[Op];
+    cyclesRemaining -= ticks;
+    elapsedTicks += ticks;
+
+    // Update PC to next byte before executing instruction.
+    PC++;
+
+    // Perform opcode instruction.
+    instruction();
 }
 
 static const UINT8 OpSize[0x100] =
