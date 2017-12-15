@@ -59,14 +59,14 @@ UINT32 status;
 
 UINT16 AddWithPageCross(UINT16 value, UINT8 index)
 {
-    int result = value + index;
+    UINT16 result = value + index;
     if ((result & ~0xFF) != (value & ~0xFF))
     {
         cyclesRemaining--;
         elapsedTicks++;
     }
 
-    return (UINT16)result;
+    return result;
 }
 
 UINT8 GetImmediate8(UINT16 addr)
@@ -114,16 +114,18 @@ void SetImmediate8(UINT16 addr, UINT8 value)
 
 UINT8* ZeroPage(UINT16 addr)
 {
-    int code = GetImmediate8(addr);
+    UINT8 code = GetImmediate8(addr);
     return Memory + code;
 }
 UINT8* ZeroPageX(UINT16 addr)
 {
-    return ZeroPage(addr + X);
+    UINT8 code = GetImmediate8(addr) + X;
+    return Memory + code;
 }
 UINT8* ZeroPageY(UINT16 addr)
 {
-    return ZeroPage(addr + Y);
+    UINT8 code = GetImmediate8(addr) + Y;
+    return Memory + code;
 }
 
 UINT8* Absolute(UINT16 addr)
