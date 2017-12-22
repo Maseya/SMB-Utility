@@ -30,7 +30,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     }
     else
     {
-        int iSel;
+        LRESULT iSel;
         BYTE bID[SMB_NUM_ADDRESSDATA];
 
         GetValidRoomIDs(bID);

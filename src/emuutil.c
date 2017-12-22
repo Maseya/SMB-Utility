@@ -933,7 +933,7 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
             }
             g_fUseStartPosYHack = iSPH;
 
-            iRet = SendDlgItemMessage(hDlg, IDC_MARIOSTATE, CB_GETCURSEL, 0, 0);
+            iRet = (int)SendDlgItemMessage(hDlg, IDC_MARIOSTATE, CB_GETCURSEL, 0, 0);
             if (iRet == CB_ERR) return TRUE;
             giMarioState = iRet;
 

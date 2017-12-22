@@ -445,7 +445,7 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
             memcpy(bPRGROM + GetMapAddress(GETADDRESS_CURRENT_EDITTING), bBuf, 2);
 
-            iNewAttr = SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_GETCURSEL, 0, 0);
+            iNewAttr = (int)SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_GETCURSEL, 0, 0);
 
             ChangeRoomAttribute(GetRoomID(), iNewAttr & 0x03);
 

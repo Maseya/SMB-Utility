@@ -90,7 +90,7 @@ void UpdateBadguysEditDlgPreview(HWND hDlg, BOOL blGetRoomIDFromList)
     }
     else
     {
-        int iSel;
+        LRESULT iSel;
         BYTE bID[SMB_NUM_ADDRESSDATA];
 
         GetValidRoomIDs(bID);
@@ -650,7 +650,8 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         case IDOK:
         {
             BYTE bTmp;
-            int iSel, iSize;
+            LRESULT iSel;
+            UINT iSize;
             BOOL blSuccess;
             SMBMAPOBJECTINFO* psObjInfo;
             BYTE bNewData[2];
@@ -734,7 +735,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
                     iSize += psObjInfo[iSel].iSizeDelta;
 
                     if (iSize<0 || iSize>psObjInfo[iSel].bSizeMask) return TRUE;
-                    bNewData[1] += iSize;
+                    bNewData[1] += (BYTE)iSize;
                 }
 
                 //
@@ -791,7 +792,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             if (HIWORD(wParam) == CBN_SELCHANGE)
             {
                 BYTE bTmp;
-                int iSel;
+                LRESULT iSel;
                 BOOL blSuccess;
                 SMBMAPOBJECTINFO* psObjInfo;
 
