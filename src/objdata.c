@@ -314,8 +314,8 @@ void InitSmbBadBuysInfo()
         STRING_OBJDATA_BADGUYS_25,  0, 0x00,  0
     };
 
-    smbBudGuysInfo = (SMBBADGUYSINFO*)malloc(sizeof(tmp));
-    memcpy(smbBudGuysInfo, tmp, sizeof(tmp));
+    smbBadGuysInfo = (SMBBADGUYSINFO*)malloc(sizeof(tmp));
+    memcpy(smbBadGuysInfo, tmp, sizeof(tmp));
 }
 
 void InitObjectData()

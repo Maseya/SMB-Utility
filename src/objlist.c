@@ -247,7 +247,7 @@ void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
         break;
     default://（敵キャラコマンド）
     {
-        wsprintf(lpszBuf, __T("%s%s"), smbBudGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
+        wsprintf(lpszBuf, __T("%s%s"), smbBadGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
     }
     }
 }

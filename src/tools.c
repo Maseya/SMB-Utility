@@ -714,7 +714,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
         extern struct
         {
             LPTSTR Name; int YDelta; BYTE bFixedYPos; int XDelta;
-        }*smbBudGuysInfo;
+        }*smbBadGuysInfo;
 
         ADDRESSDATA_LOAD(adKoopa, SMB_KOOPAREALCHARCTER_ADDRESS);
 
@@ -735,7 +735,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             //
             for (n = 0; n < 0x40; n++)
             {
-                SendDlgItemMessage(hDlg, IDC_KOOPA, CB_ADDSTRING, 0, (LPARAM)smbBudGuysInfo[n].Name);
+                SendDlgItemMessage(hDlg, IDC_KOOPA, CB_ADDSTRING, 0, (LPARAM)smbBadGuysInfo[n].Name);
             }
             SendDlgItemMessage(hDlg, IDC_KOOPA, CB_SETCURSEL, lpbBuf[iCurSel], 0);
         }

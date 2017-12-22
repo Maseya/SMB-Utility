@@ -31,7 +31,7 @@ extern LPTSTR *smbMapHeadPosition;
 extern LPTSTR *smbMapHeadBackColor;
 extern LPTSTR *smbMapHeadMapType;
 extern LPTSTR *smbMapHeadView;
-extern SMBBADGUYSINFO *smbBudGuysInfo;
+extern SMBBADGUYSINFO *smbBadGuysInfo;
 extern int GetNum0BMapObject();
 extern int GetNumCMapObject();
 extern int GetNumDMapObject();
@@ -142,7 +142,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         MoveWindow(hDlg, rcDlg.left, rcDlg.top, BADGUYS_EDITDLG_NOPREVIEWSIZE, rcDlg.bottom - rcDlg.top, TRUE);
 
         for (n = 0; n < 64; n++)
-            SendDlgItemMessage(hDlg, IDC_TYPE, CB_ADDSTRING, 0, (LPARAM)smbBudGuysInfo[n].Name);
+            SendDlgItemMessage(hDlg, IDC_TYPE, CB_ADDSTRING, 0, (LPARAM)smbBadGuysInfo[n].Name);
         SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15, 0));
 
         SendDlgItemMessage(hDlg, IDC_PAGEEDITSPIN, UDM_SETRANGE, 0, MAKEWPARAM(0x3F, 0));
@@ -248,10 +248,10 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             if (bBuf[1] & 0x80)  CheckDlgButton(hDlg, IDC_PAGEFLAG, BST_CHECKED);
 
             //y位置の範囲の設定
-            SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBudGuysInfo[bBuf[1] & 0x3F].YDelta));
+            SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBadGuysInfo[bBuf[1] & 0x3F].YDelta));
 
             //x位置の範囲の設定
-            SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBudGuysInfo[bBuf[1] & 0x3F].XDelta, smbBudGuysInfo[bBuf[1] & 0x3F].XDelta));
+            SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBadGuysInfo[bBuf[1] & 0x3F].XDelta, smbBadGuysInfo[bBuf[1] & 0x3F].XDelta));
 
             blIs3BytesObj = FALSE;
             DisableBadguysEditDlgControls(hDlg, DISABLE_3BYTES);
@@ -326,7 +326,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
                     //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
                     bTmp = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, TRUE);
                     if (!blSuccess) return TRUE;
-                    bTmp -= smbBudGuysInfo[bType].XDelta;
+                    bTmp -= smbBadGuysInfo[bType].XDelta;
                     if (bTmp > 0xF) return TRUE;
                     bBuf[0] |= (bTmp << 4);
 
@@ -335,7 +335,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
                     //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
                     bTmp = GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, TRUE);
                     if (!blSuccess) return TRUE;
-                    bTmp += abs(smbBudGuysInfo[bType].YDelta);
+                    bTmp += abs(smbBadGuysInfo[bType].YDelta);
                     if (bTmp > 0xD) return TRUE;
                     bBuf[0] |= (bTmp & 0x0F);
 
@@ -406,10 +406,10 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             if (bType != CB_ERR)
             {
                 //y位置の範囲の設定
-                SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBudGuysInfo[bType].YDelta));
+                SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBadGuysInfo[bType].YDelta));
 
                 //x位置の範囲の設定
-                SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBudGuysInfo[bType].XDelta, smbBudGuysInfo[bType].XDelta));
+                SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBadGuysInfo[bType].XDelta, smbBadGuysInfo[bType].XDelta));
             }
             if (HIWORD(wParam) == CBN_SELCHANGE)
                 CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);

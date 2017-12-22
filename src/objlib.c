@@ -940,7 +940,7 @@ int GetBadGuysDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL 
 /***************************
 
 ****************************/
-extern SMBBADGUYSINFO *smbBudGuysInfo;
+extern SMBBADGUYSINFO *smbBadGuysInfo;
 int GetBadGuysYPos(BYTE *pbBuf)
 {
     int iRet;
@@ -948,10 +948,10 @@ int GetBadGuysYPos(BYTE *pbBuf)
     {
         if ((pbBuf[0] & 0x0F) != 0x0F)
         {
-            if (smbBudGuysInfo[pbBuf[1] & 0x3F].bFixedYPos)
-                iRet = smbBudGuysInfo[pbBuf[1] & 0x3F].bFixedYPos;
+            if (smbBadGuysInfo[pbBuf[1] & 0x3F].bFixedYPos)
+                iRet = smbBadGuysInfo[pbBuf[1] & 0x3F].bFixedYPos;
             else
-                iRet = (pbBuf[0] & 0x0F) + smbBudGuysInfo[pbBuf[1] & 0x3F].YDelta;
+                iRet = (pbBuf[0] & 0x0F) + smbBadGuysInfo[pbBuf[1] & 0x3F].YDelta;
         }
         else
             iRet = 0x0F;
@@ -966,7 +966,7 @@ int GetBadGuysYPos(BYTE *pbBuf)
 int GetBadGuysXPos(BYTE *pbBuf)
 {
     if ((pbBuf[0] & 0x0F) != 0x0E)
-        return ((pbBuf[0] >> 4) & 0x0F) + smbBudGuysInfo[pbBuf[1] & 0x3F].XDelta;
+        return ((pbBuf[0] >> 4) & 0x0F) + smbBadGuysInfo[pbBuf[1] & 0x3F].XDelta;
     else
         return ((pbBuf[0] >> 4) & 0x0F);
 }

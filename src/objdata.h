@@ -31,7 +31,7 @@ LPTSTR *smbMapHeadBackColor;
 LPTSTR *smbMapHeadMapType;
 LPTSTR *smbMapHeadView;
 
-SMBBADGUYSINFO *smbBudGuysInfo;
+SMBBADGUYSINFO *smbBadGuysInfo;
 
 int GetNum0BMapObject();
 int GetNumCMapObject();

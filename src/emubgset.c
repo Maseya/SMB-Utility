@@ -336,15 +336,15 @@ static int SetMapDataToSpriteRAM(int iPosX, int iPosY, BADGUYSSPRITEINFOEX* psBG
 extern struct
 {
     LPTSTR Name; int YDelta; BYTE bFixedYPos; int XDelta;
-} *smbBudGuysInfo;
+} *smbBadGuysInfo;
 
 static int GetBadGuysYPosPSRAM(BYTE *pbBuf)
 {
     int iRet;
     if ((pbBuf[0] & 0x0F) != 0x0E)
     {
-        if (smbBudGuysInfo[pbBuf[1] & 0x3F].bFixedYPos)
-            iRet = smbBudGuysInfo[pbBuf[1] & 0x3F].bFixedYPos + 1;
+        if (smbBadGuysInfo[pbBuf[1] & 0x3F].bFixedYPos)
+            iRet = smbBadGuysInfo[pbBuf[1] & 0x3F].bFixedYPos + 1;
         else
             iRet = (pbBuf[0] & 0x0F);
     }
