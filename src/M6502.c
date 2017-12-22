@@ -385,7 +385,6 @@ CreateReadInstructions(LD##_n)\
 LD(A)
 LD(X)
 LD(Y)
-LD(S)
 
 #define BIN(_bin, _op) void _bin(UINT8 value)\
 {\
@@ -457,9 +456,9 @@ void DEC(UINT8* value)
 }
 CreateRefInstructions(DEC)
 
-void Add(UINT8 value)
+void ADC(int value)
 {
-    UINT16 result = value + A;
+    UINT16 result = A + value + CheckCarry;
 
     UINT8 sign1 = value & 0x80;
     UINT8 sign2 = A & 0x80;
@@ -468,24 +467,36 @@ void Add(UINT8 value)
     LDA((UINT8)result);
 
     // Carry occurs when result exceeds data range (255).
-    int carry = result > A;
+    int carry = result >= 0x100;
 
     // Overflow occurs when signs of input match each other but don't match result.
     int overflow = (sign1 == sign2) & (sign1 != sign3);
 
     WriteFlag(CMask, carry);
     WriteFlag(VMask, overflow);
-}
-
-void ADC(int value)
-{
-    Add(value + CheckCarry);
+    LDA(result);
 }
 CreateReadInstructions(ADC)
 
 void SBC(int value)
 {
-    Add(-value - (1 - CheckCarry));
+    UINT16 result = A - value - (1 - CheckCarry);
+
+    UINT8 sign1 = -value & 0x80;
+    UINT8 sign2 = A & 0x80;
+    UINT8 sign3 = result & 0x80;
+
+    LDA((UINT8)result);
+
+    // Carry occurs when result exceeds data range (255).
+    int carry = result < 0x100;
+
+    // Overflow occurs when signs of input match each other but don't match result.
+    int overflow = (sign1 == sign2) & (sign1 != sign3);
+
+    WriteFlag(CMask, carry);
+    WriteFlag(VMask, overflow);
+    LDA(result);
 }
 CreateReadInstructions(SBC)
 
@@ -765,23 +776,23 @@ void RTS()
     PC++;
 }
 
-void Transfer(UINT8 n, UINT8* m)
-{
-    LDN(m, n);
-}
-
 #define TNM(_n, _m)\
 void T##_n##_m()\
 {\
-    Transfer(_n, &_m);\
+    LDN(&_m, _n);\
 }
 
 TNM(A, X)
 TNM(A, Y)
 TNM(S, X)
 TNM(X, A)
-TNM(X, S)
 TNM(Y, A)
+
+void TXS()
+{
+    // This opcode doesn't affect the state flags.
+    S = X;
+}
 
 void NOP()
 {
