@@ -98,7 +98,7 @@ LRESULT CALLBACK LogViewWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     {
     case WM_CTLCOLORSTATIC:
     {
-        return (long)GetSysColorBrush(COLOR_WINDOW);
+        return (LRESULT)GetSysColorBrush(COLOR_WINDOW);
     }
     break;
     case WM_SIZE:
@@ -238,7 +238,7 @@ VOID lv_DestroyLogView()
 
 static void SetLogViewTexts()
 {
-    int lines, index;
+    LRESULT lines, index;
 
     SetWindowText(g_hEditWnd, g_szLogBuffer);
 
