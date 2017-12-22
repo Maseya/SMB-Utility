@@ -868,7 +868,7 @@ static void SetMenuStateNeedRom(HWND hWnd)
     blPrevLoaded = gblIsROMLoaded;
 }
 
-LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
+WNDPROC APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lParam)
 {
     switch (msg)
     {
@@ -1438,7 +1438,7 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
     WNDCLASSEX            wcx;
 
     wcx.cbSize = sizeof(WNDCLASSEX);
-    wcx.lpfnWndProc = (WNDPROC)MDIFrameWndProc;
+    wcx.lpfnWndProc = MDIFrameWndProc;
     wcx.style =
         wcx.cbClsExtra =
         wcx.cbWndExtra = 0;
