@@ -69,7 +69,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         LPROOMSELECT lpRoomSelect = (LPROOMSELECT)lParam;
 
         //
-        SetWindowLong(hDlg, GWL_USERDATA, (LONG)lpRoomSelect);
+        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG)lpRoomSelect);
 
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
@@ -115,7 +115,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess) return TRUE;
 
-            lpRoomSelect = (LPROOMSELECT)GetWindowLong(hDlg, GWL_USERDATA);
+            lpRoomSelect = (LPROOMSELECT)GetWindowLongPtr(hDlg, GWLP_USERDATA);
             lpRoomSelect->bNewRoomID = bRoomID;
             lpRoomSelect->uNewPage = (UINT)iPage;
 

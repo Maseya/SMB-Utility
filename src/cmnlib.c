@@ -9,6 +9,7 @@
  ************************************************************************************/
 #include <windows.h>
 #include <shlwapi.h>
+#include <intrin.h>
 #include <tchar.h>
 #include "cmnlib.h"
 
@@ -24,14 +25,11 @@ BOOL IsMMXAvailable()
 
     if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
     {
-        __asm {
-            mov eax, 1
-            cpuid
-            test edx, 00800000h
-            jz NOMMX
-            mov blReturn, TRUE
-            NOMMX :
-        }
+        int cpuid[4];
+        __cpuid(cpuid, 1);
+
+        if (cpuid[3] & 0x00800000)
+            blReturn = TRUE;
     }
     return blReturn;
 }

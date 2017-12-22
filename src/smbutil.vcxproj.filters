@@ -126,9 +126,6 @@
     <ClInclude Include="logview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="M6502.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="nespal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -249,20 +246,12 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="M6502.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="data\ram1.bin">
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="data\ram2.bin">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\make6502.bat">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc">
