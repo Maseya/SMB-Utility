@@ -474,7 +474,6 @@ void ADC(int value)
 
     WriteFlag(CMask, carry);
     WriteFlag(VMask, overflow);
-    LDA(result);
 }
 CreateReadInstructions(ADC)
 
@@ -496,7 +495,6 @@ void SBC(int value)
 
     WriteFlag(CMask, carry);
     WriteFlag(VMask, overflow);
-    LDA(result);
 }
 CreateReadInstructions(SBC)
 
@@ -860,7 +858,8 @@ UINT32 m6502zpexec(UINT32 cycles)
 
     do
     {
-        ExecuteInstruction();
+        if (ExecuteInstruction() != M6502_STATUS_OK)
+            return PC;
     }
     while (cyclesRemaining > 0);
 
@@ -868,7 +867,7 @@ UINT32 m6502zpexec(UINT32 cycles)
     return M6502_STATUS_OK;
 }
 
-void ExecuteInstruction()
+int ExecuteInstruction()
 {
     // Get opcode instruction.
     Instruction instruction = Instructions[Op];
@@ -890,6 +889,8 @@ void ExecuteInstruction()
 
     // Perform opcode instruction.
     instruction();
+
+    return M6502_STATUS_OK;
 }
 
 static const UINT8 OpSize[0x100] =
