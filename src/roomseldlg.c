@@ -69,7 +69,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         LPROOMSELECT lpRoomSelect = (LPROOMSELECT)lParam;
 
         //
-        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG)lpRoomSelect);
+        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG_PTR)lpRoomSelect);
 
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)

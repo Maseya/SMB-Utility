@@ -684,7 +684,7 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
 
         SetRoomDepedencyTreeViewImageList(hDlg);
         lpRoomInfo = (LPROOMINFO)UpdateRoomDepedencyTreeView(hDlg);
-        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG)lpRoomInfo);
+        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG_PTR)lpRoomInfo);
         return 0;
     }
     case WM_DESTROY:
