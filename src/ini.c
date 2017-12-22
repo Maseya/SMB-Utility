@@ -73,7 +73,7 @@ static BOOL CheckFileExistance(LPTSTR lpFile)
     return (0xFFFFFFFF != GetFileAttributes(lpFile)) ? TRUE : FALSE;
 }
 
-int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
+size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
 {
     TCHAR FullPath[MAX_PATH];
     LPTSTR pt, p;

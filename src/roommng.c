@@ -755,7 +755,7 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
 
 static void UpdateAreaSortPreview(HWND hDlg)
 {
-    int I, P;
+    LRESULT I;
     BOOL fTranslated;
     HWND hPWnd;
     HDC hPDC;
@@ -764,7 +764,7 @@ static void UpdateAreaSortPreview(HWND hDlg)
     I = SendDlgItemMessage(hDlg, IDC_AREA, LB_GETCURSEL, 0, 0);
     if (I == LB_ERR) return;
 
-    P = GetDlgItemInt(hDlg, IDC_PAGEEDIT, &fTranslated, FALSE);
+    INT P = GetDlgItemInt(hDlg, IDC_PAGEEDIT, &fTranslated, FALSE);
     if (!fTranslated) return;
 
     hPWnd = GetDlgItem(hDlg, IDC_VIEW);
@@ -852,7 +852,7 @@ LRESULT CALLBACK AreaSortDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
         return TRUE;
         case IDC_UP:
         {
-            int iSel;
+            LRESULT iSel;
             BYTE bTmp;
 
             iSel = SendDlgItemMessage(hDlg, IDC_AREA, LB_GETCURSEL, 0, 0);
@@ -871,7 +871,7 @@ LRESULT CALLBACK AreaSortDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
         return TRUE;
         case IDC_DOWN:
         {
-            int iSel;
+            LRESULT iSel;
             BYTE bTmp;
 
             iSel = SendDlgItemMessage(hDlg, IDC_AREA, LB_GETCURSEL, 0, 0);
@@ -893,7 +893,7 @@ LRESULT CALLBACK AreaSortDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
             if (wNotifyCode == LBN_DBLCLK)
             {
                 ROOMSELECT sRoomSel;
-                int iTmpCurSel;
+                LRESULT iTmpCurSel;
 
                 iTmpCurSel = SendDlgItemMessage(hDlg, IDC_AREA, LB_GETCURSEL, 0, 0);
                 if (iTmpCurSel == LB_ERR) return TRUE;
