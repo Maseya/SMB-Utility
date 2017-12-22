@@ -30,7 +30,7 @@
 #define KEYACCEL_PRESETID_DESKTOP 0
 #define KEYACCEL_PRESETID_NOTE    1
 
-BOOL GetPresetEditorKeys(WORD aEditKeys[], DWORD dwID);
+BOOL GetPresetEditorKeys(WORD aEditKeys[], INT_PTR dwID);
 BOOL GetEditorVKeys(WORD aEditKeys[]);
 HACCEL CreateEditCommandAccel();
 

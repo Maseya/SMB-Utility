@@ -12,7 +12,7 @@
 #include "ini.h"
 #include "keyaccel.h"
 
-BOOL GetPresetEditorKeys(WORD aEditKeys[], DWORD dwID)
+BOOL GetPresetEditorKeys(WORD aEditKeys[], INT_PTR dwID)
 {
     WORD wKeys[KEYACCEL_NUM_PRESETS][KEYACCEL_NUM_COMMANDS] =
     {
