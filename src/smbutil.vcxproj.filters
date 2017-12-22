@@ -91,6 +91,9 @@
     <ClCompile Include="strings.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="M6502.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmnlib.h">
@@ -178,6 +181,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="versinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="M6502.H">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

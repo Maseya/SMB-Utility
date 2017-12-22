@@ -290,6 +290,7 @@
     <ClCompile Include="keyaccel.c" />
     <ClCompile Include="keys.c" />
     <ClCompile Include="logview.c" />
+    <ClCompile Include="M6502.c" />
     <ClCompile Include="objdata.c" />
     <ClCompile Include="objeditcom.c" />
     <ClCompile Include="objeditdlg.c" />
@@ -324,6 +325,7 @@
     <ClInclude Include="keyaccel.h" />
     <ClInclude Include="keys.h" />
     <ClInclude Include="logview.h" />
+    <ClInclude Include="M6502.H" />
     <ClInclude Include="nespal.h" />
     <ClInclude Include="objdata.h" />
     <ClInclude Include="objeditcom.h" />
