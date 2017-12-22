@@ -336,7 +336,7 @@ static int SetMapDataToSpriteRAM(int iPosX, int iPosY, BADGUYSSPRITEINFOEX* psBG
 extern struct
 {
     LPTSTR Name; int YDelta; BYTE bFixedYPos; int XDelta;
-} smbBudGuysInfo[];
+} *smbBudGuysInfo;
 
 static int GetBadGuysYPosPSRAM(BYTE *pbBuf)
 {
