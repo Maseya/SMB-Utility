@@ -96,7 +96,7 @@ size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     for (; pt < p && *(CharPrev(pt, p)) != __T('\\'); p = CharPrev(pt, p)); // 終端から\を探す
 
     //
-    cb = p - pt; // バイト数
+    cb = (p - pt) * sizeof(TCHAR); // バイト数
     if (iBufferSize <= cb + (int)sizeof(TCHAR)) // + NULL文字
         return 0;
 
@@ -104,7 +104,7 @@ size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     memcpy(lpBuffer, pt, cb);
 
     //
-    *(LPTSTR)((LPBYTE)lpBuffer + cb) = __T('\0');
+    lpBuffer[cb / sizeof(TCHAR)] = __T('\0');
 
     // ファイル名の指定があれば、それをコピー
     if (lpFileName)
@@ -114,7 +114,7 @@ size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
         lstrcat(lpBuffer, lpFileName);
     }
 
-    return cb;
+    return cb / sizeof(TCHAR);
 
     /*
         TCHAR FullPath[MAX_PATH];
