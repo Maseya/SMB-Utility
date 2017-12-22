@@ -77,7 +77,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
 {
     TCHAR FullPath[MAX_PATH];
     LPTSTR pt, p;
-    int cb;
+    size_t cb;
 
     // NOTE : コマンドプロンプトから実行された場合、入力されたコマンド文字列がそのまま取得される。
     //        例えば、WinIPSの置かれているディレクトリ内からコマンドプロンプトで"winips"と起動すると、
