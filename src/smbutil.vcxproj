@@ -367,11 +367,6 @@
     <Text Include="misc\history.txt" />
     <Text Include="misc\readme.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="M6502.vcxproj">
-      <Project>{655b8247-5811-4abc-a011-70b9eb7f7215}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
