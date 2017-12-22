@@ -23,7 +23,7 @@
 #define M6502_STATUS_OK 0x80000000
 
 UINT32 m6502zpnmi(void);
-UINT32 m6502zpint(UINT32);
+UINT32 m6502zpint();
 UINT32 m6502zpexec(UINT32);
 void ExecuteInstruction();
 void m6502zpreset(void);

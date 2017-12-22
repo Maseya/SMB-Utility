@@ -112,47 +112,41 @@ void SetImmediate8(UINT16 addr, UINT8 value)
     Memory[addr] = value;
 }
 
-UINT8* ZeroPage(UINT16 addr)
+UINT8 ZeroPage(UINT16 addr)
 {
-    UINT8 code = GetImmediate8(addr);
-    return Memory + code;
+    return GetImmediate8(addr);
 }
-UINT8* ZeroPageX(UINT16 addr)
+UINT8 ZeroPageX(UINT16 addr)
 {
-    UINT8 code = GetImmediate8(addr) + X;
-    return Memory + code;
+    return GetImmediate8(addr) + X;
 }
-UINT8* ZeroPageY(UINT16 addr)
+UINT8 ZeroPageY(UINT16 addr)
 {
-    UINT8 code = GetImmediate8(addr) + Y;
-    return Memory + code;
+    return GetImmediate8(addr) + Y;
 }
 
-UINT8* Absolute(UINT16 addr)
+UINT16 Absolute(UINT16 addr)
 {
-    int code = GetImmediate16(addr);
-    return Memory + code;
+    return GetImmediate16(addr);
 }
-UINT8* AbsoluteX(UINT16 addr)
+UINT16 AbsoluteX(UINT16 addr)
 {
-    int code = AddWithPageCross(GetImmediate16(addr), X);
-    return Memory + code;
+    return AddWithPageCross(GetImmediate16(addr), X);
 }
-UINT8* AbsoluteY(UINT16 addr)
+UINT16 AbsoluteY(UINT16 addr)
 {
-    int code = AddWithPageCross(GetImmediate16(addr), Y);
-    return Memory + code;
+    return AddWithPageCross(GetImmediate16(addr), Y);
 }
 
-UINT8* IndirectX(UINT16 addr)
+UINT16 IndirectX(UINT16 addr)
 {
-    int addr16 = *ZeroPageX(addr) | (*ZeroPageX(addr + 1) << 8);
-    return Absolute(addr16);
+    int index = Memory[ZeroPageX(addr)] | (Memory[ZeroPageX(addr + 1)] << 8);
+    return Absolute(index);
 }
-UINT8* IndirectY(UINT16 addr)
+UINT16 IndirectY(UINT16 addr)
 {
-    int addr16 = GetImmediate8(addr);
-    return AbsoluteY(addr16);
+    UINT8 index = GetImmediate8(addr);
+    return AbsoluteY(index);
 }
 
 #define SetFlag(_i) Flags |= (_i)
@@ -171,93 +165,93 @@ void _name##Immediate()\
 }\
 void _name##ZeroPage()\
 {\
-    _name(*ZeroPage(PC++));\
+    _name(Memory[ZeroPage(PC++)]);\
 }\
 void _name##ZeroPageX()\
 {\
-    _name(*ZeroPageX(PC++));\
+    _name(Memory[ZeroPageX(PC++)]);\
 }\
 void _name##ZeroPageY()\
 {\
-    _name(*ZeroPageY(PC++));\
+    _name(Memory[ZeroPageY(PC++)]);\
 }\
 void _name##Absolute()\
 {\
-    UINT16 addr = Absolute(PC) - Memory;\
+    UINT16 addr = Absolute(PC);\
     PC += 2;\
     _name(GetImmediate8(addr));\
 }\
 void _name##AbsoluteX()\
 {\
-    UINT16 addr = AbsoluteX(PC) - Memory;\
+    UINT16 addr = AbsoluteX(PC);\
     PC += 2;\
     _name(GetImmediate8(addr));\
 }\
 void _name##AbsoluteY()\
 {\
-    UINT16 addr = AbsoluteY(PC) - Memory;\
+    UINT16 addr = AbsoluteY(PC);\
     PC += 2;\
     _name(GetImmediate8(addr));\
 }\
 void _name##IndirectX()\
 {\
-    _name(GetImmediate8(IndirectX(PC++) - Memory));\
+    _name(GetImmediate8(IndirectX(PC++)));\
 }\
 void _name##IndirectY()\
 {\
-    _name(GetImmediate8(IndirectY(PC++) - Memory));\
+    _name(GetImmediate8(IndirectY(PC++)));\
 }
 
 #define CreateWriteInstructions(_name, _op) \
 void _name##ZeroPage()\
 {\
-    *ZeroPage(PC++) _op _name();\
+    Memory[ZeroPage(PC++)] _op _name();\
 }\
 void _name##ZeroPageX()\
 {\
-    *ZeroPageX(PC++) _op _name();\
+    Memory[ZeroPageX(PC++)] _op _name();\
 }\
 void _name##ZeroPageY()\
 {\
-    *ZeroPageY(PC++) _op _name();\
+    Memory[ZeroPageY(PC++)] _op _name();\
 }\
 void _name##Absolute()\
 {\
-UINT8* addr = Absolute(PC);\
+UINT16 addr = Absolute(PC);\
 PC += 2; \
-UINT8 result = *addr;\
+UINT8 result = Memory[addr];\
 result _op _name();\
-SetImmediate8(addr - Memory, result); \
+SetImmediate8(addr, result); \
 }\
 void _name##AbsoluteX()\
 {\
-UINT8* addr = AbsoluteX(PC);\
+UINT16 addr = AbsoluteX(PC);\
 PC += 2; \
-UINT8 result = *addr;\
+UINT8 result = Memory[addr];\
 result _op _name();\
-SetImmediate8(addr - Memory, result); \
+SetImmediate8(addr, result); \
 }\
 void _name##AbsoluteY()\
 {\
-UINT8* addr = AbsoluteY(PC);\
+UINT16 addr = AbsoluteY(PC);\
 PC += 2; \
-UINT8 result = *addr;\
+UINT8 result = Memory[addr];\
 result _op _name();\
-SetImmediate8(addr - Memory, result); \
+SetImmediate8(addr, result); \
 }\
 void _name##IndirectX()\
 {\
-UINT8* addr = IndirectX(PC++);\
-UINT8 result = *addr;\
+UINT16 addr = IndirectX(PC++);\
+UINT8 result = Memory[addr];\
 result _op _name();\
-SetImmediate8(addr - Memory, result); \
+SetImmediate8(addr, result); \
 }\
 void _name##IndirectY()\
 {\
-UINT8* addr = IndirectY(PC++);\
-UINT8 result = *addr;\
+UINT16 addr = IndirectY(PC++);\
+UINT8 result = Memory[addr];\
 result _op _name();\
-SetImmediate8(addr - Memory, result); \
+SetImmediate8(addr, result); \
 }
 
 #define CreateRefInstructions(_name) \
@@ -275,41 +269,41 @@ void _name##Y()\
 }\
 void _name##ZeroPage()\
 {\
-    _name(ZeroPage(PC++));\
+    _name(Memory + ZeroPage(PC++));\
 }\
 void _name##ZeroPageX()\
 {\
-    _name(ZeroPageX(PC++));\
+    _name(Memory + ZeroPageX(PC++));\
 }\
 void _name##ZeroPageY()\
 {\
-    _name(ZeroPageY(PC++));\
+    _name(Memory + ZeroPageY(PC++));\
 }\
 void _name##Absolute()\
 {\
-    UINT8* addr = Absolute(PC);\
+    UINT16 addr = Absolute(PC);\
     PC += 2;\
-    _name(addr);\
+    _name(Memory + addr);\
 }\
 void _name##AbsoluteX()\
 {\
-    UINT8* addr = AbsoluteX(PC);\
+    UINT16 addr = AbsoluteX(PC);\
     PC += 2;\
-    _name(addr);\
+    _name(Memory + addr);\
 }\
 void _name##AbsoluteY()\
 {\
-    UINT8* addr = AbsoluteY(PC);\
+    UINT16 addr = AbsoluteY(PC);\
     PC += 2;\
-    _name(addr);\
+    _name(Memory + addr);\
 }\
 void _name##IndirectX()\
 {\
-    _name(IndirectX(PC++));\
+    _name(Memory + IndirectX(PC++));\
 }\
 void _name##IndirectY()\
 {\
-    _name(IndirectY(PC++));\
+    _name(Memory + IndirectY(PC++));\
 }
 
 static const UINT8 OpSize[0x100];
@@ -400,7 +394,7 @@ LD(S)
 CreateReadInstructions(_bin)\
 
 BIN(AND, &)
-BIN(ORA, | )
+BIN(ORA, |)
 BIN(EOR, ^)
 
 void BIT(UINT8 value)
@@ -465,11 +459,11 @@ CreateRefInstructions(DEC)
 
 void Add(UINT8 value)
 {
-    int result = value + A;
+    UINT16 result = value + A;
 
-    int sign1 = value & 0x80;
-    int sign2 = A & 0x80;
-    int sign3 = result & 0x80;
+    UINT8 sign1 = value & 0x80;
+    UINT8 sign2 = A & 0x80;
+    UINT8 sign3 = result & 0x80;
 
     LDA((UINT8)result);
 
@@ -497,10 +491,9 @@ CreateReadInstructions(SBC)
 
 void Compare(UINT8 left, UINT8 right)
 {
-    int result = left - right;
     WriteFlag(CMask, left >= right);
-    WriteFlag(ZMask, !result);
-    WriteFlag(NMask, result & 0x80);
+    WriteFlag(ZMask, left == right);
+    WriteFlag(NMask, (left - right) & 0x80);
 }
 
 void CMP(UINT8 value)
@@ -528,10 +521,11 @@ void Branch(int test)
         cyclesRemaining--;
         elapsedTicks++;
 
-        int result = PC + (INT8)Op + 1;
+        // Don't forget the INT8 cast for signed branching.
+        int result = PC + (INT8)Memory[PC] + 1;
 
         // Branch crossed page.
-        if ((result & 0x100) ^ (PC ^ 0x100))
+        if ((result & 0x100) != (PC ^ 0x100))
         {
             cyclesRemaining -= 2;
             elapsedTicks += 2;
@@ -596,6 +590,10 @@ void CLD()
 void CLI()
 {
     ClearFlag(IMask);
+    if (IrqPending)
+    {
+        m6502zpint();
+    }
 }
 
 void CLV()
@@ -621,7 +619,6 @@ void SEI()
 void ASL(UINT8* value)
 {
     WriteFlag(CMask, *value & 0x80);
-    WriteFlag(VMask, *value & 0x40);
 
     if (value != &A && value != &X && value != &Y)
     {
@@ -641,7 +638,6 @@ CreateRefInstructions(ASL)
 void LSR(UINT8 *value)
 {
     WriteFlag(CMask, *value & 1);
-    ClearFlag(NMask);
 
     if (value != &A && value != &X && value != &Y)
     {
@@ -729,7 +725,13 @@ void PLP()
 void RTI()
 {
     Flags = Pull();
+    Flags |= 0x20;
     PC = PullWord();
+
+    if (!CheckFlag(IMask) && IrqPending)
+    {
+        m6502zpint();
+    }
 }
 
 void JMP(int value)
@@ -810,7 +812,7 @@ void ClearInterrupt()
     Flags |= 0x24;
 }
 
-UINT32 m6502zpint(UINT32 cycles)
+UINT32 m6502zpint()
 {
     // Are interrupts disabled?
     if (CheckFlag(IMask))
@@ -944,7 +946,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $13
     NULL,// $14
     ORAZeroPageX,// $15
-    NULL,// $16
+    ASLZeroPageX,// $16
     NULL,// $17
     CLC,// $18
     ORAAbsoluteY,// $19
@@ -952,7 +954,7 @@ static const Instruction Instructions[0x100] =
     NULL,// $1B
     NULL,// $1C
     ORAAbsoluteX,// $1D
-    NULL,// $1E
+    ASLAbsoluteX,// $1E
     NULL,// $1F
 
     JSRAbsolute,// $20
