@@ -145,11 +145,11 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     return FALSE;
 }
 
-BOOL RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
+INT_PTR RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
 {
-    BOOL blRet;
+    INT_PTR blRet;
 
-    if (!lpRoomSelect) return FALSE;
+    if (!lpRoomSelect) return NULL;
 
     blRet = DialogBoxParam(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
 

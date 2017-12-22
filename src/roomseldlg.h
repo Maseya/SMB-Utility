@@ -21,6 +21,6 @@ typedef struct _tagROOMSELECT
     UINT uNewPage;
 }ROOMSELECT, FAR * LPROOMSELECT;
 
-BOOL RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect);
+INT_PTR RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect);
 
 #endif
