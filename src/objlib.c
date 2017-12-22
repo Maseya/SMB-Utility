@@ -940,7 +940,7 @@ int GetBadGuysDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL 
 /***************************
 
 ****************************/
-extern SMBBADGUYSINFO smbBudGuysInfo[];
+extern SMBBADGUYSINFO *smbBudGuysInfo;
 int GetBadGuysYPos(BYTE *pbBuf)
 {
     int iRet;
