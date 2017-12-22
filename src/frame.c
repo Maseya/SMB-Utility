@@ -868,7 +868,7 @@ static void SetMenuStateNeedRom(HWND hWnd)
     blPrevLoaded = gblIsROMLoaded;
 }
 
-WNDPROC APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lParam)
+LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lParam)
 {
     switch (msg)
     {
@@ -1574,5 +1574,5 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
         }
     }
 
-    return msg.wParam;
+    return (int)msg.wParam;
 }
