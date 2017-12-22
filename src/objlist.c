@@ -601,7 +601,7 @@ static void SaveListViewColumnWidth()
   メインウインドウ
 
 *********************/
-long FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {

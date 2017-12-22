@@ -1071,7 +1071,7 @@ static BOOL ObjviewInvertObject(HWND hWnd, LPOBJVIEWMOUSEINPUT lpMouseInput)
     return TRUE;
 }
 
-long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static BOOL fObjectIsGrabed = FALSE, fObjViewActive = FALSE;
     static OBJVIEWMOUSEINPUT GrabedObject, TestPlayPos;
