@@ -357,7 +357,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
     static WORD bEditVKeys[KEYACCEL_NUM_COMMANDS];
     static DWORD dwEmuJoyButtons[EMULATOR_NUM_JOYBUTTONS];
     static WHEELFUNC wfWheelFunc[CUSTOMIZE_WHEEL_NUMFUNCS];
-    static UINT uKeyID, uKey, uKeyValue;
+    static LRESULT uKeyID, uKey, uKeyValue;
     switch (message)
     {
     case WM_INITDIALOG:
@@ -634,7 +634,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         break;
         case IDC_WHEELLIST:
         {
-            int L;
+            LRESULT L;
             if (wNotifyCode == LBN_SELCHANGE)
             {
                 L = SendDlgItemMessage(hDlg, IDC_WHEELLIST, LB_GETCURSEL, 0, 0);
@@ -647,7 +647,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         break;
         case IDC_WHEELCOMMAND:
         {
-            int L, C, N;
+            LRESULT L, C, N;
             WHEELFUNC T;
             if (wNotifyCode == CBN_SELCHANGE)
             {
@@ -680,7 +680,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         break;
         case IDC_JOYBUTTONLIST:
         {
-            int L;
+            LRESULT L;
             if (wNotifyCode == LBN_SELCHANGE)
             {
                 L = SendDlgItemMessage(hDlg, IDC_JOYBUTTONLIST, LB_GETCURSEL, 0, 0);
@@ -693,7 +693,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         break;
         case IDC_JOYBUTTONVALUE:
         {
-            int L, V, N;
+            LRESULT L, V, N;
             DWORD dwNewButton, T;
             if (wNotifyCode == CBN_SELCHANGE)
             {
