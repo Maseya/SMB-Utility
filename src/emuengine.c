@@ -1986,7 +1986,7 @@ long FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
         WMSZ_TOPLEFT     Top-left corner
         WMSZ_TOPRIGHT    Top-right corner
         */
-        DWORD fwSide = wParam;         // edge of window being sized
+        WPARAM fwSide = wParam;         // edge of window being sized
         LPRECT lprc = (LPRECT)lParam;  // screen coordinates of drag rectangle
         int iSizeRate, iLength;
         switch (fwSide)

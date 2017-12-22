@@ -393,7 +393,7 @@ LD(Y)
 CreateReadInstructions(_bin)\
 
 BIN(AND, &)
-BIN(ORA, |)
+BIN(ORA, | )
 BIN(EOR, ^)
 
 void BIT(UINT8 value)
@@ -426,7 +426,7 @@ void INC(UINT8* value)
 {
     if (value != &A && value != &X && value != &Y)
     {
-        UINT16 addr = value - Memory;
+        UINT16 addr = (UINT16)(value - Memory);
         UINT8 result = GetImmediate8(addr) + 1;
         SetImmediate8(addr, result);
         WriteNZFlags(result);
@@ -443,7 +443,7 @@ void DEC(UINT8* value)
 {
     if (value != &A && value != &X && value != &Y)
     {
-        UINT16 addr = value - Memory;
+        UINT16 addr = (UINT16)(value - Memory);
         UINT8 result = GetImmediate8(addr) - 1;
         SetImmediate8(addr, result);
         WriteNZFlags(result);
@@ -631,7 +631,7 @@ void ASL(UINT8* value)
 
     if (value != &A && value != &X && value != &Y)
     {
-        UINT16 addr = value - Memory;
+        UINT16 addr = (UINT16)(value - Memory);
         UINT8 result = GetImmediate8(addr) << 1;
         SetImmediate8(addr, result);
         WriteNZFlags(result);
@@ -650,7 +650,7 @@ void LSR(UINT8 *value)
 
     if (value != &A && value != &X && value != &Y)
     {
-        UINT16 addr = value - Memory;
+        UINT16 addr = (UINT16)(value - Memory);
         UINT8 result = GetImmediate8(addr) >> 1;
         SetImmediate8(addr, result);
         WriteNZFlags(result);
@@ -671,7 +671,7 @@ void ROL(UINT8 *value)
 
     if (value != &A && value != &X && value != &Y)
     {
-        UINT16 addr = value - Memory;
+        UINT16 addr = (UINT16)(value - Memory);
         UINT8 result = GetImmediate8(addr);
         result <<= 1;
         result |= carry;
@@ -695,7 +695,7 @@ void ROR(UINT8* value)
 
     if (value != &A && value != &X && value != &Y)
     {
-        UINT16 addr = value - Memory;
+        UINT16 addr = (UINT16)(value - Memory);
         UINT8 result = GetImmediate8(addr);
         result >>= 1;
         result |= carry << 7;

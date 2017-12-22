@@ -149,7 +149,7 @@ INT_PTR RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
 {
     INT_PTR blRet;
 
-    if (!lpRoomSelect) return NULL;
+    if (!lpRoomSelect) return 0;
 
     blRet = DialogBoxParam(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
 

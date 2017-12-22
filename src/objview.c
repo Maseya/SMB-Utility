@@ -613,8 +613,8 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
 
 BOOL DeleteAllToolObjectViewToolTip()
 {
-    UINT iTools = SendMessage(ghToolTip, TTM_GETTOOLCOUNT, 0, 0);
-    UINT t;
+    LRESULT iTools = SendMessage(ghToolTip, TTM_GETTOOLCOUNT, 0, 0);
+    LRESULT t;
     TOOLINFO ti = {0};
 
     ti.cbSize = sizeof(TOOLINFO);
@@ -1290,7 +1290,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
         break;
     case WM_LBUTTONDOWN:
     {
-        DWORD fwKeys = wParam;        // key flags
+        WPARAM fwKeys = wParam;        // key flags
         int iNewIndex;
         GETINDEXINFO sGetIndex;
         OBJVIEWMOUSEINPUT MouseInput;
@@ -1417,7 +1417,7 @@ long FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
     case WM_MOUSEMOVE:
     {
         MSG   msg;
-        DWORD fwKeys = wParam;        // key flags
+        WPARAM fwKeys = wParam;        // key flags
         OBJVIEWMOUSEINPUT MouseInput;
 
         if (ghToolTip)
