@@ -30,7 +30,7 @@ void UpdatePreview(HWND hDlg, BOOL blGetRoomIDFromList)
     }
     else
     {
-        int iSel;
+        LRESULT iSel;
         BYTE bID[SMB_NUM_ADDRESSDATA];
 
         GetValidRoomIDs(bID);
@@ -69,7 +69,7 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         LPROOMSELECT lpRoomSelect = (LPROOMSELECT)lParam;
 
         //
-        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG)lpRoomSelect);
+        SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG_PTR)lpRoomSelect);
 
         GetValidRoomIDs(bRoomIDs);
         for (n = 0; n < SMB_NUM_ADDRESSDATA; n++)
@@ -145,11 +145,11 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     return FALSE;
 }
 
-BOOL RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
+INT_PTR RoomSelectDialogBox(HWND hWnd, LPROOMSELECT lpRoomSelect)
 {
-    BOOL blRet;
+    INT_PTR blRet;
 
-    if (!lpRoomSelect) return FALSE;
+    if (!lpRoomSelect) return 0;
 
     blRet = DialogBoxParam(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, RoomSelectDlgProc, (LPARAM)lpRoomSelect);
 

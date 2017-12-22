@@ -73,11 +73,11 @@ static BOOL CheckFileExistance(LPTSTR lpFile)
     return (0xFFFFFFFF != GetFileAttributes(lpFile)) ? TRUE : FALSE;
 }
 
-int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
+size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
 {
     TCHAR FullPath[MAX_PATH];
     LPTSTR pt, p;
-    int cb;
+    size_t cb;
 
     // NOTE : コマンドプロンプトから実行された場合、入力されたコマンド文字列がそのまま取得される。
     //        例えば、WinIPSの置かれているディレクトリ内からコマンドプロンプトで"winips"と起動すると、
@@ -96,7 +96,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     for (; pt < p && *(CharPrev(pt, p)) != __T('\\'); p = CharPrev(pt, p)); // 終端から\を探す
 
     //
-    cb = p - pt; // バイト数
+    cb = (p - pt) * sizeof(TCHAR); // バイト数
     if (iBufferSize <= cb + (int)sizeof(TCHAR)) // + NULL文字
         return 0;
 
@@ -104,7 +104,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     memcpy(lpBuffer, pt, cb);
 
     //
-    *(LPTSTR)((LPBYTE)lpBuffer + cb) = __T('\0');
+    lpBuffer[cb / sizeof(TCHAR)] = __T('\0');
 
     // ファイル名の指定があれば、それをコピー
     if (lpFileName)
@@ -114,7 +114,7 @@ int GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
         lstrcat(lpBuffer, lpFileName);
     }
 
-    return cb;
+    return cb / sizeof(TCHAR);
 
     /*
         TCHAR FullPath[MAX_PATH];

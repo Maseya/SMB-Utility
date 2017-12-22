@@ -155,7 +155,7 @@ static int GetNumStrings()
     return sizeof(smbStringData) / sizeof(SMBSTRINGINFO);
 }
 
-static void ChangeString(UINT iStringNum, LPTSTR pString)
+static void ChangeString(LRESULT iStringNum, LPTSTR pString)
 {
     BYTE *pbTmp;
     BYTE bTmp;
@@ -253,7 +253,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
                 TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
                 memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
-                iSel = SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
+                iSel = (int)SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
                 if (iSel == CB_ERR) return TRUE;
                 GetString(iSel, cBuf, SMB_STRING_MAXCHARS);
                 SetDlgItemText(hDlg, IDC_STRING, cBuf);
@@ -268,7 +268,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     case BN_CLICKED:
         if (LOWORD(wParam) == IDOK)//IDC_STRINGWRITE)
         {
-            int iSel = 0;
+            LRESULT iSel = 0;
             TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
             memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
@@ -470,8 +470,8 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
         case PSN_APPLY:
         {
             BOOL blSuccess;
-            int iRet;
-            int iPoleGfx;
+            LRESULT iRet;
+            LRESULT iPoleGfx;
             BYTE bFlower[] = "\x0D\x5F\x07\xF0\x2B";
             BYTE bNewFlower[] = "\xEA\xEA\xEA\xEA\xEA";
 
@@ -488,7 +488,7 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
                 SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
-            bPRGROM[SMB_MARIO_LEFT] = iRet;
+            bPRGROM[SMB_MARIO_LEFT] = (BYTE)iRet;
 
             //パックンフラワー
             if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_FLOWER))
@@ -506,11 +506,11 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
 
             //
             iRet = SendDlgItemMessage(hDlg, IDC_TIME400, CB_GETCURSEL, 0, 0);
-            if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME] = iRet;
+            if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME] = (BYTE)iRet;
             iRet = SendDlgItemMessage(hDlg, IDC_TIME300, CB_GETCURSEL, 0, 0);
-            if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME + 1] = iRet;
+            if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME + 1] = (BYTE)iRet;
             iRet = SendDlgItemMessage(hDlg, IDC_TIME200, CB_GETCURSEL, 0, 0);
-            if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME + 2] = iRet;
+            if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME + 2] = (BYTE)iRet;
             return TRUE;
         }
         break;
@@ -526,7 +526,7 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
 LRESULT CALLBACK GameSetting1upDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static BYTE lpbBuf[SMB_NUM_WORLDS];
-    static int iCurSel;
+    static LRESULT iCurSel;
     switch (message)
     {
     case WM_INITDIALOG:
@@ -565,7 +565,7 @@ LRESULT CALLBACK GameSetting1upDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         {
             if (HIWORD(wParam) == CBN_SELCHANGE)
             {
-                int iRet;
+                LRESULT iRet;
                 iRet = SendDlgItemMessage(hDlg, IDC_WORLD, CB_GETCURSEL, 0, 0);
                 if (iRet != CB_ERR)
                 {
@@ -702,7 +702,7 @@ LRESULT CALLBACK GameSettingWarpZoneDlgProc(HWND hDlg, UINT message, WPARAM wPar
 LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static BYTE lpbBuf[SMB_NUM_WORLDS];
-    static int iCurSel;
+    static LRESULT iCurSel;
 
     switch (message)
     {
@@ -755,7 +755,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
         {
             if (HIWORD(wParam) == CBN_SELCHANGE)
             {
-                int iRet;
+                LRESULT iRet;
 
                 iRet = SendDlgItemMessage(hDlg, IDC_KOOPAWORLD, CB_GETCURSEL, 0, 0);
                 if (iRet != CB_ERR)
@@ -771,7 +771,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
         {
             if (HIWORD(wParam) == CBN_SELCHANGE)
             {
-                int iRet;
+                LRESULT iRet;
                 iRet = SendDlgItemMessage(hDlg, IDC_KOOPA, CB_GETCURSEL, 0, 0);
                 if (lpbBuf && iCurSel < GetNumWorlds() && iRet != CB_ERR)
                     lpbBuf[iCurSel] = (BYTE)iRet;

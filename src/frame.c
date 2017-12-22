@@ -450,7 +450,7 @@ static void SizeMainWindowStatusBar(HWND hStatusBarWnd, HWND hParentWnd)
     GetClientRect(hParentWnd, &rc);
     iSize[SBPARTS - 1] = rc.right;
     hDC = GetDC(hParentWnd);
-    if (GetTextExtentPoint(hDC, szExampleText, _tcslen(szExampleText), &size))
+    if (GetTextExtentPoint32(hDC, szExampleText, (int)_tcslen(szExampleText), &size))
         iSize[SBPARTS - 2] = iSize[SBPARTS - 1] - (size.cx) - SB_EXTRASPACE;
     ReleaseDC(hParentWnd, hDC);
 
@@ -868,7 +868,7 @@ static void SetMenuStateNeedRom(HWND hWnd)
     blPrevLoaded = gblIsROMLoaded;
 }
 
-LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
+LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lParam)
 {
     switch (msg)
     {
@@ -1016,7 +1016,7 @@ LONG APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, UINT	wParam, LONG	lParam)
 
             if (!GetOpenFileName(&fname)) break;
 
-            if (LoadCHRROMFromFile(filepath, fname.lCustData))
+            if (LoadCHRROMFromFile(filepath, (BOOL)fname.lCustData))
             {
                 //キャラロムの前処理
                 PrepareVROMData(bCHRROM);
@@ -1438,7 +1438,7 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
     WNDCLASSEX            wcx;
 
     wcx.cbSize = sizeof(WNDCLASSEX);
-    wcx.lpfnWndProc = (WNDPROC)MDIFrameWndProc;
+    wcx.lpfnWndProc = MDIFrameWndProc;
     wcx.style =
         wcx.cbClsExtra =
         wcx.cbWndExtra = 0;
@@ -1574,5 +1574,5 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
         }
     }
 
-    return msg.wParam;
+    return (int)msg.wParam;
 }
