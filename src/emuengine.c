@@ -1894,7 +1894,7 @@ BOOL SaveEmulatorState()
 
 *********************/
 
-long FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static RECT rcClient;
     switch (message)
