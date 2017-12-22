@@ -25,7 +25,7 @@
 UINT32 m6502zpnmi(void);
 UINT32 m6502zpint();
 UINT32 m6502zpexec(UINT32);
-void ExecuteInstruction();
+int ExecuteInstruction();
 void m6502zpreset(void);
 UINT32 m6502zpGetElapsedTicks(UINT32);
 
