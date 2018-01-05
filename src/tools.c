@@ -150,9 +150,11 @@ static BYTE ConvertChr2Data(TCHAR cChar, BOOL *blUnknown)
     return bRet;
 }
 
+static int numStrings;
+
 static int GetNumStrings()
 {
-    return sizeof(smbStringData) / sizeof(SMBSTRINGINFO);
+    return numStrings;
 }
 
 static void ChangeString(LRESULT iStringNum, LPTSTR pString)
@@ -942,7 +944,7 @@ void GameSettingPropertySheet(HWND hwndOwner)
     return;
 }
 
-void InitSmbStringData()
+int InitSmbStringData()
 {
     SMBSTRINGINFO tmp[] =
     {
@@ -970,6 +972,8 @@ void InitSmbStringData()
 
     smbStringData = (SMBSTRINGINFO*)malloc(sizeof(tmp));
     memcpy(smbStringData, tmp, sizeof(tmp));
+
+    return sizeof(tmp) / sizeof(SMBSTRINGINFO);
 }
 
 int InitPoleGfxInfo()
@@ -990,6 +994,6 @@ int InitPoleGfxInfo()
 
 void InitToolData()
 {
-    InitSmbStringData();
+    numStrings = InitSmbStringData();
     PoleGfxInfoSize = InitPoleGfxInfo();
 }
