@@ -174,7 +174,7 @@ BOOL BadGuysSeekNext(OBJECTSEEKINFO *psObjSeek)
 
     if (g_blIsLengthValid
         && (!BadGuysCheckDataLength(psObjSeek)
-        || psObjSeek->dwOfs > 0xFF)) // 1ルームに存在できる最大オブジェクト数
+            || psObjSeek->dwOfs > 0xFF)) // 1ルームに存在できる最大オブジェクト数
         return FALSE;
 
     return TRUE;
@@ -271,7 +271,7 @@ BOOL MapSeekNext(OBJECTSEEKINFO *psObjSeek)
 
     if (g_blIsLengthValid
         && (!MapCheckDataLength(psObjSeek)
-        || psObjSeek->dwOfs > 0xFF)) // 1ルームに存在できる最大オブジェクト数
+            || psObjSeek->dwOfs > 0xFF)) // 1ルームに存在できる最大オブジェクト数
         return FALSE;
 
     return TRUE;

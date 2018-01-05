@@ -784,7 +784,7 @@ static void ClearMapViewBackBufferSpecialObjectArea(int iPage)
 
     rc.top = 0;
     rc.left = 0;
-    rc.right = iPage*NES_SCREENSIZEX;
+    rc.right = iPage * NES_SCREENSIZEX;
     rc.bottom = MAPVIEW_CLIENTHEIGHT;
 
     if (ghMemdcMapViewWnd) FillRect(ghMemdcMapViewWnd, &rc, GetSysColorBrush(COLOR_WINDOW));
@@ -954,7 +954,7 @@ void ChangeMapViewScreenSize(int iPages)
 
     //マップビューウインドウの幅を取得
     GetWindowRect(ghMapViewWnd, &rcWnd);
-    SetWindowPos(ghMapViewWnd, NULL, 0, 0, ONE_PAGE_SIZE + NES_SCREENSIZEX*(iPages - 1) - 1, MAPVIEW_WINDOWHEIGHT/*rcWnd.bottom-rcWnd.top*/, SWP_NOMOVE | SWP_NOZORDER);
+    SetWindowPos(ghMapViewWnd, NULL, 0, 0, ONE_PAGE_SIZE + NES_SCREENSIZEX * (iPages - 1) - 1, MAPVIEW_WINDOWHEIGHT/*rcWnd.bottom-rcWnd.top*/, SWP_NOMOVE | SWP_NOZORDER);
 }
 
 void ShowPopupMenu(HWND hwnd, POINT point, LPTSTR lpMenuName)
@@ -1033,7 +1033,7 @@ static BOOL ObjviewObjPos2MousePos(LPOBJVIEWMOUSEINPUT lpMouseInput, LPPOINT lpP
         return FALSE;
 
     // charcters
-    lpPt->x = CHARCTERS_PER_PAGE*(lpMouseInput->Page - giMapViewPageBase);
+    lpPt->x = CHARCTERS_PER_PAGE * (lpMouseInput->Page - giMapViewPageBase);
     if (lpPt->x < 0) return FALSE;
     lpPt->x += lpMouseInput->X;
     lpPt->y = lpMouseInput->Y + 1;
@@ -1087,9 +1087,9 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             switch (HIWORD(wParam))
             {
             case BN_CLICKED:
-                SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_NEXTPAGE, 0), 0);
-                SetFocus(hWnd);
-                break;
+            SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_NEXTPAGE, 0), 0);
+            SetFocus(hWnd);
+            break;
             }
         }
         break;
@@ -1098,9 +1098,9 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             switch (HIWORD(wParam))
             {
             case BN_CLICKED:
-                SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_PREVPAGE, 0), 0);
-                SetFocus(hWnd);
-                break;
+            SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_PREVPAGE, 0), 0);
+            SetFocus(hWnd);
+            break;
             }
         }
         break;
@@ -1117,12 +1117,12 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case IDM_MAPVIEW_SHOWEDITDIALOG:
-            if (!gblIsROMLoaded) break;
-            if (GetMapEditMode())
-                DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-            else
-                DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-            break;
+        if (!gblIsROMLoaded) break;
+        if (GetMapEditMode())
+            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
+        else
+            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
+        break;
         case IDM_MAPVIEW_SENDOBJECT:
         {
             if (!gblIsROMLoaded) break;
@@ -1243,7 +1243,7 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         UINT uBasePageSize = ONE_PAGE_SIZE - GetSystemMetrics(SM_CXSIZEFRAME);
         if ((UINT)lpwp->cx > uBasePageSize)
             iPages = (lpwp->cx - (NES_SCREENSIZEX / 2)) / NES_SCREENSIZEX;
-        lpwp->cx = ONE_PAGE_SIZE + NES_SCREENSIZEX*iPages - 1;
+        lpwp->cx = ONE_PAGE_SIZE + NES_SCREENSIZEX * iPages - 1;
         lpwp->cy = MAPVIEW_WINDOWHEIGHT;
         return 0;
     }
@@ -1262,12 +1262,12 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     }
     break;
     case WM_LBUTTONDBLCLK:
-        if (!gblIsROMLoaded) break;
-        if (GetMapEditMode())
-            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-        else
-            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-        break;
+    if (!gblIsROMLoaded) break;
+    if (GetMapEditMode())
+        DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
+    else
+        DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
+    break;
     case WM_MDIACTIVATE:
     {
         HWND hwndChildDeact = (HWND)wParam;        // child being deactivated
@@ -1278,16 +1278,16 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     }
     break;
     case WM_LBUTTONUP:
-        if (fObjectIsGrabed && !fObjViewActive)
-        {
-            ObjviewInvertObject(hWnd, &GrabedObject);
-            fObjectIsGrabed = FALSE;
-            ReleaseCapture();
+    if (fObjectIsGrabed && !fObjViewActive)
+    {
+        ObjviewInvertObject(hWnd, &GrabedObject);
+        fObjectIsGrabed = FALSE;
+        ReleaseCapture();
 
-            //ClipCursor(NULL);
-        }
-        fObjViewActive = FALSE;
-        break;
+        //ClipCursor(NULL);
+    }
+    fObjViewActive = FALSE;
+    break;
     case WM_LBUTTONDOWN:
     {
         WPARAM fwKeys = wParam;        // key flags

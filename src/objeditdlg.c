@@ -260,225 +260,225 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         }
     }
     case WM_PAINT:
-        if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) break;
-        UpdateBadguysEditDlgPreview(hDlg, FALSE);
-        break;
+    if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) break;
+    UpdateBadguysEditDlgPreview(hDlg, FALSE);
+    break;
     case WM_COMMAND:
-        switch (LOWORD(wParam))
+    switch (LOWORD(wParam))
+    {
+    case IDOK:
+    {
+        if (IsDlgButtonChecked(hDlg, IDC_ISBIN)&BST_CHECKED)
         {
-        case IDOK:
+            TCHAR cBuf[20];
+            BYTE bBuf[4];
+            int iSize;
+
+            //バイナリデータの取得
+            GetDlgItemText(hDlg, IDC_BIN, cBuf, 20);
+            iSize = _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
+            if (iSize < 1 || iSize>4) return TRUE;
+
+            undoPrepare(UNDONAME_DLGEDIT);
+            SetBadGuysDataBinary(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf, iSize);
+        }
+        else if (!blIs3BytesObj)
         {
-            if (IsDlgButtonChecked(hDlg, IDC_ISBIN)&BST_CHECKED)
+            BOOL blSuccess;
+            BYTE bBuf[2];
+
+            //						   TCHAR cBuf[20];
+            UINT uRet;
+            BYTE bTmp;
+            BYTE bType;
+
+            memset(bBuf, 0, 2);
+            if (IsDlgButtonChecked(hDlg, IDC_ISPAGECOMMAND) == BST_CHECKED)
             {
-                TCHAR cBuf[20];
-                BYTE bBuf[4];
-                int iSize;
-
-                //バイナリデータの取得
-                GetDlgItemText(hDlg, IDC_BIN, cBuf, 20);
-                iSize = _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
-                if (iSize < 1 || iSize>4) return TRUE;
-
-                undoPrepare(UNDONAME_DLGEDIT);
-                SetBadGuysDataBinary(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf, iSize);
-            }
-            else if (!blIs3BytesObj)
-            {
-                BOOL blSuccess;
-                BYTE bBuf[2];
-
-                //						   TCHAR cBuf[20];
-                UINT uRet;
-                BYTE bTmp;
-                BYTE bType;
-
-                memset(bBuf, 0, 2);
-                if (IsDlgButtonChecked(hDlg, IDC_ISPAGECOMMAND) == BST_CHECKED)
-                {
-                    //
-                    bBuf[0] |= 0x0F;
-
-                    //
-                    uRet = GetDlgItemInt(hDlg, IDC_PAGEEDIT, &blSuccess, FALSE);
-                    if (!blSuccess || uRet > 0x3F) return TRUE;
-                    bBuf[1] = (BYTE)uRet;
-
-                    //XPOS
-                    uRet = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, FALSE);
-                    if (!blSuccess) return TRUE;
-                    bBuf[0] |= ((uRet & 0x0F) << 4);
-
-                    //
-                    if (IsDlgButtonChecked(hDlg, IDC_PAGEFLAG) == BST_CHECKED)
-                        bBuf[1] |= 0x80;
-
-                    //if (IsDlgButtonChecked(hDlg,IDC_BIT6) == BST_CHECKED)
-                    //  bBuf[1] |= 0x40;
-                }
-                else
-                {
-                    //種類の取得
-                    bType = (BYTE)SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
-                    bBuf[1] |= bType;
-
-                    //Xの取得
-                    //GetDlgItemText(hDlg,IDC_XPOS,cBuf,20);
-                    //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
-                    bTmp = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, TRUE);
-                    if (!blSuccess) return TRUE;
-                    bTmp -= smbBadGuysInfo[bType].XDelta;
-                    if (bTmp > 0xF) return TRUE;
-                    bBuf[0] |= (bTmp << 4);
-
-                    //Yの取得
-                    //GetDlgItemText(hDlg,IDC_YPOS,cBuf,20);
-                    //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
-                    bTmp = GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, TRUE);
-                    if (!blSuccess) return TRUE;
-                    bTmp += abs(smbBadGuysInfo[bType].YDelta);
-                    if (bTmp > 0xD) return TRUE;
-                    bBuf[0] |= (bTmp & 0x0F);
-
-                    //改ページフラグの取得
-                    if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_PAGEFLAG))
-                        bBuf[1] |= 0x80;
-
-                    //第2バイトのビット6の取得
-                    if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_BIT6))
-                        bBuf[1] |= 0x40;
-                }
-
-                undoPrepare(UNDONAME_DLGEDIT);
-                SetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf);
-            }
-            else
-            {
-                BYTE bBuf[3];
-                TCHAR cBuf[3];
-                BYTE bTmp;
-                BOOL blSuccess;
-
-                memset(bBuf, 0, 3);
-
-                //XPOS
-                bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_XPOS2, &blSuccess, FALSE);
-                if (!blSuccess || bTmp > 0x0F) return TRUE;
-                bBuf[0] |= ((bTmp & 0x0F) << 4);
-
-                //YPOS
-                bBuf[0] |= 0x0E;
-
-                //改ページフラグ
-                if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_PAGEFLAG2))
-                    bBuf[1] |= 0x80;
+                //
+                bBuf[0] |= 0x0F;
 
                 //
-                GetDlgItemText(hDlg, IDC_DATA, cBuf, 3);
-                if (1 != _stscanf(cBuf, __T("%hhx"), &bTmp)) return TRUE;
-                bBuf[1] |= (bTmp & 0x7F);
+                uRet = GetDlgItemInt(hDlg, IDC_PAGEEDIT, &blSuccess, FALSE);
+                if (!blSuccess || uRet > 0x3F) return TRUE;
+                bBuf[1] = (BYTE)uRet;
 
-                //ワールド
-                bTmp = GetDlgItemInt(hDlg, IDC_WORLD, &blSuccess, FALSE);
-                if (!blSuccess || bTmp > 8) return TRUE;
-                bBuf[2] |= (((bTmp - 1) & 0x07) << 5);
+                //XPOS
+                uRet = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, FALSE);
+                if (!blSuccess) return TRUE;
+                bBuf[0] |= ((uRet & 0x0F) << 4);
 
-                //ページ
-                bTmp = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
-                if (!blSuccess || bTmp > 0x1F) return TRUE;
-                bBuf[2] |= (bTmp & 0x1F);
+                //
+                if (IsDlgButtonChecked(hDlg, IDC_PAGEFLAG) == BST_CHECKED)
+                    bBuf[1] |= 0x80;
 
-                undoPrepare(UNDONAME_DLGEDIT);
-
-                SetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf);
-            }
-        }
-
-        UpdateObjectList(0);
-        UpdateObjectView(0);
-        ObjectListSetCursor(GetSelectedIndex());
-        case IDCANCEL:
-            EndDialog(hDlg, TRUE);
-            return TRUE;
-        case IDC_TYPE:
-        {
-            BYTE bType;
-            bType = (BYTE)SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
-            if (bType != CB_ERR)
-            {
-                //y位置の範囲の設定
-                SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBadGuysInfo[bType].YDelta));
-
-                //x位置の範囲の設定
-                SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBadGuysInfo[bType].XDelta, smbBadGuysInfo[bType].XDelta));
-            }
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-                CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
-            return TRUE;
-        }
-        case IDC_BIN:
-            if (HIWORD(wParam) == EN_CHANGE)
-                CheckDlgButton(hDlg, IDC_ISBIN, BST_CHECKED);
-            return TRUE;
-        case IDC_XPOS:
-        case IDC_YPOS:
-            if (HIWORD(wParam) == EN_CHANGE)
-                CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
-            return TRUE;
-        case IDC_PAGEFLAG:
-        case IDC_BIT6:
-            if (HIWORD(wParam) == BN_CLICKED)
-                CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
-            return TRUE;
-
-            //ルーム間移動
-        case IDC_DATA:
-            if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) return TRUE;
-            if (HIWORD(wParam) == CBN_EDITCHANGE)
-                UpdateBadguysEditDlgPreview(hDlg, FALSE);
-            else if (HIWORD(wParam) == CBN_SELCHANGE)
-                UpdateBadguysEditDlgPreview(hDlg, TRUE);
-            return TRUE;
-        case IDC_PAGEEDIT2:
-            if (HIWORD(wParam) == EN_CHANGE)
-            {
-                if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) return TRUE;
-                UpdateBadguysEditDlgPreview(hDlg, FALSE);
-                return TRUE;
-            }
-        case IDC_OPENPREVIEW:
-        {
-            if (HIWORD(wParam) == BN_CLICKED)
-            {
-                RECT rcDlg;
-
-                GetWindowRect(hDlg, &rcDlg);
-                if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW))
-                    MoveWindow(hDlg, rcDlg.left, rcDlg.top, BADGUYS_EDITDLG_NOPREVIEWSIZE, rcDlg.bottom - rcDlg.top, TRUE);
-                else if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW))
-                {
-                    MoveWindow(hDlg, rcDlg.left, rcDlg.top, BADGUYS_EDITDLG_HASPREVIEWSIZE, rcDlg.bottom - rcDlg.top, TRUE);
-                    UpdateBadguysEditDlgPreview(hDlg, FALSE);
-                }
-            }
-        }
-        return TRUE;
-        case IDC_ISPAGECOMMAND:
-        {
-            if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_ISPAGECOMMAND))
-            {
-                EnableWindow(GetDlgItem(hDlg, IDC_TYPE), FALSE);
-                EnableWindow(GetDlgItem(hDlg, IDC_BIT6), FALSE);
-                EnableWindow(GetDlgItem(hDlg, IDC_PAGEEDIT), TRUE);
+                //if (IsDlgButtonChecked(hDlg,IDC_BIT6) == BST_CHECKED)
+                //  bBuf[1] |= 0x40;
             }
             else
             {
-                EnableWindow(GetDlgItem(hDlg, IDC_TYPE), TRUE);
-                EnableWindow(GetDlgItem(hDlg, IDC_BIT6), TRUE);
-                EnableWindow(GetDlgItem(hDlg, IDC_PAGEEDIT), FALSE);
+                //種類の取得
+                bType = (BYTE)SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
+                bBuf[1] |= bType;
+
+                //Xの取得
+                //GetDlgItemText(hDlg,IDC_XPOS,cBuf,20);
+                //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
+                bTmp = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, TRUE);
+                if (!blSuccess) return TRUE;
+                bTmp -= smbBadGuysInfo[bType].XDelta;
+                if (bTmp > 0xF) return TRUE;
+                bBuf[0] |= (bTmp << 4);
+
+                //Yの取得
+                //GetDlgItemText(hDlg,IDC_YPOS,cBuf,20);
+                //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
+                bTmp = GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, TRUE);
+                if (!blSuccess) return TRUE;
+                bTmp += abs(smbBadGuysInfo[bType].YDelta);
+                if (bTmp > 0xD) return TRUE;
+                bBuf[0] |= (bTmp & 0x0F);
+
+                //改ページフラグの取得
+                if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_PAGEFLAG))
+                    bBuf[1] |= 0x80;
+
+                //第2バイトのビット6の取得
+                if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_BIT6))
+                    bBuf[1] |= 0x40;
+            }
+
+            undoPrepare(UNDONAME_DLGEDIT);
+            SetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf);
+        }
+        else
+        {
+            BYTE bBuf[3];
+            TCHAR cBuf[3];
+            BYTE bTmp;
+            BOOL blSuccess;
+
+            memset(bBuf, 0, 3);
+
+            //XPOS
+            bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_XPOS2, &blSuccess, FALSE);
+            if (!blSuccess || bTmp > 0x0F) return TRUE;
+            bBuf[0] |= ((bTmp & 0x0F) << 4);
+
+            //YPOS
+            bBuf[0] |= 0x0E;
+
+            //改ページフラグ
+            if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_PAGEFLAG2))
+                bBuf[1] |= 0x80;
+
+            //
+            GetDlgItemText(hDlg, IDC_DATA, cBuf, 3);
+            if (1 != _stscanf(cBuf, __T("%hhx"), &bTmp)) return TRUE;
+            bBuf[1] |= (bTmp & 0x7F);
+
+            //ワールド
+            bTmp = GetDlgItemInt(hDlg, IDC_WORLD, &blSuccess, FALSE);
+            if (!blSuccess || bTmp > 8) return TRUE;
+            bBuf[2] |= (((bTmp - 1) & 0x07) << 5);
+
+            //ページ
+            bTmp = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
+            if (!blSuccess || bTmp > 0x1F) return TRUE;
+            bBuf[2] |= (bTmp & 0x1F);
+
+            undoPrepare(UNDONAME_DLGEDIT);
+
+            SetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bBuf);
+        }
+    }
+
+    UpdateObjectList(0);
+    UpdateObjectView(0);
+    ObjectListSetCursor(GetSelectedIndex());
+    case IDCANCEL:
+    EndDialog(hDlg, TRUE);
+    return TRUE;
+    case IDC_TYPE:
+    {
+        BYTE bType;
+        bType = (BYTE)SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
+        if (bType != CB_ERR)
+        {
+            //y位置の範囲の設定
+            SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBadGuysInfo[bType].YDelta));
+
+            //x位置の範囲の設定
+            SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBadGuysInfo[bType].XDelta, smbBadGuysInfo[bType].XDelta));
+        }
+        if (HIWORD(wParam) == CBN_SELCHANGE)
+            CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
+        return TRUE;
+    }
+    case IDC_BIN:
+    if (HIWORD(wParam) == EN_CHANGE)
+        CheckDlgButton(hDlg, IDC_ISBIN, BST_CHECKED);
+    return TRUE;
+    case IDC_XPOS:
+    case IDC_YPOS:
+    if (HIWORD(wParam) == EN_CHANGE)
+        CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
+    return TRUE;
+    case IDC_PAGEFLAG:
+    case IDC_BIT6:
+    if (HIWORD(wParam) == BN_CLICKED)
+        CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
+    return TRUE;
+
+    //ルーム間移動
+    case IDC_DATA:
+    if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) return TRUE;
+    if (HIWORD(wParam) == CBN_EDITCHANGE)
+        UpdateBadguysEditDlgPreview(hDlg, FALSE);
+    else if (HIWORD(wParam) == CBN_SELCHANGE)
+        UpdateBadguysEditDlgPreview(hDlg, TRUE);
+    return TRUE;
+    case IDC_PAGEEDIT2:
+    if (HIWORD(wParam) == EN_CHANGE)
+    {
+        if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) return TRUE;
+        UpdateBadguysEditDlgPreview(hDlg, FALSE);
+        return TRUE;
+    }
+    case IDC_OPENPREVIEW:
+    {
+        if (HIWORD(wParam) == BN_CLICKED)
+        {
+            RECT rcDlg;
+
+            GetWindowRect(hDlg, &rcDlg);
+            if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW))
+                MoveWindow(hDlg, rcDlg.left, rcDlg.top, BADGUYS_EDITDLG_NOPREVIEWSIZE, rcDlg.bottom - rcDlg.top, TRUE);
+            else if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW))
+            {
+                MoveWindow(hDlg, rcDlg.left, rcDlg.top, BADGUYS_EDITDLG_HASPREVIEWSIZE, rcDlg.bottom - rcDlg.top, TRUE);
+                UpdateBadguysEditDlgPreview(hDlg, FALSE);
             }
         }
-        return TRUE;
+    }
+    return TRUE;
+    case IDC_ISPAGECOMMAND:
+    {
+        if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_ISPAGECOMMAND))
+        {
+            EnableWindow(GetDlgItem(hDlg, IDC_TYPE), FALSE);
+            EnableWindow(GetDlgItem(hDlg, IDC_BIT6), FALSE);
+            EnableWindow(GetDlgItem(hDlg, IDC_PAGEEDIT), TRUE);
         }
+        else
+        {
+            EnableWindow(GetDlgItem(hDlg, IDC_TYPE), TRUE);
+            EnableWindow(GetDlgItem(hDlg, IDC_BIT6), TRUE);
+            EnableWindow(GetDlgItem(hDlg, IDC_PAGEEDIT), FALSE);
+        }
+    }
+    return TRUE;
+    }
     }
     return FALSE;
 }
@@ -749,104 +749,104 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             ObjectListSetCursor(GetSelectedIndex());
         }
         case IDCANCEL:
-            EndDialog(hDlg, TRUE);
-            return TRUE;
+        EndDialog(hDlg, TRUE);
+        return TRUE;
         case IDC_YPOS:
-            if (HIWORD(wParam) == EN_CHANGE)
-            {
-                BYTE bTmp;
-                BOOL blSuccess;
+        if (HIWORD(wParam) == EN_CHANGE)
+        {
+            BYTE bTmp;
+            BOOL blSuccess;
 
-                //Yの取得
-                bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, FALSE);
-                if (!blSuccess) return FALSE;
-                bBuf[0] &= 0xF0;
-                bBuf[0] |= (bTmp & 0x0F);
+            //Yの取得
+            bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, FALSE);
+            if (!blSuccess) return FALSE;
+            bBuf[0] &= 0xF0;
+            bBuf[0] |= (bTmp & 0x0F);
 
-                PrepareMapComEditDlg(hDlg, bBuf, iPage, PREPAREDLG_MAPCOMEDIT_YPOS);
-                return TRUE;
-            }
-            break;
+            PrepareMapComEditDlg(hDlg, bBuf, iPage, PREPAREDLG_MAPCOMEDIT_YPOS);
+            return TRUE;
+        }
+        break;
         case IDC_XPOS:
-            if (HIWORD(wParam) == EN_CHANGE)
-            {
-                BYTE bTmp;
-                BOOL blSuccess;
+        if (HIWORD(wParam) == EN_CHANGE)
+        {
+            BYTE bTmp;
+            BOOL blSuccess;
 
-                bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, FALSE);
-                if (!blSuccess) return FALSE;
-                bBuf[0] &= 0x0F;
-                bBuf[0] |= (bTmp << 4);
+            bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, FALSE);
+            if (!blSuccess) return FALSE;
+            bBuf[0] &= 0x0F;
+            bBuf[0] |= (bTmp << 4);
 
-                //PrepareMapComEditDlg(hDlg,bBuf,iPage,PREPAREDLG_MAPCOMEDIT_BININPUTONLY);
-                return TRUE;
-            }
-            break;
+            //PrepareMapComEditDlg(hDlg,bBuf,iPage,PREPAREDLG_MAPCOMEDIT_BININPUTONLY);
+            return TRUE;
+        }
+        break;
         case IDC_LEN:
-            if (HIWORD(wParam) == EN_CHANGE)
-            {
-                return TRUE;
-            }
-            break;
+        if (HIWORD(wParam) == EN_CHANGE)
+        {
+            return TRUE;
+        }
+        break;
         case IDC_TYPE://種類を変更
-            if (HIWORD(wParam) == CBN_SELCHANGE)
+        if (HIWORD(wParam) == CBN_SELCHANGE)
+        {
+            BYTE bTmp;
+            LRESULT iSel;
+            BOOL blSuccess;
+            SMBMAPOBJECTINFO* psObjInfo;
+
+            bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, FALSE);
+            if (!blSuccess) return TRUE;
+
+            iSel = SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
+            if (iSel == CB_ERR) return TRUE;
+
+            switch (bTmp & 0x0F)
             {
-                BYTE bTmp;
-                LRESULT iSel;
-                BOOL blSuccess;
-                SMBMAPOBJECTINFO* psObjInfo;
-
-                bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, FALSE);
-                if (!blSuccess) return TRUE;
-
-                iSel = SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
-                if (iSel == CB_ERR) return TRUE;
-
-                switch (bTmp & 0x0F)
-                {
-                case 0x0C:psObjInfo = smbMapObjectInfoC; break;
-                case 0x0D:psObjInfo = smbMapObjectInfoD; break;
-                case 0x0E:
-                {
-                    psObjInfo = smbMapObjectInfoE;
-                    if (iSel & 0x1)
-                        bBuf[1] |= 0x40;
-                    else
-                        bBuf[1] &= 0xBF;
-                }
-                break;
-                case 0x0F:psObjInfo = smbMapObjectInfoF; break;
-                default:psObjInfo = smbMapObjectInfo0B; break;
-                }
-
-                //
-                if ((bTmp & 0x0F) != 0x0E)
-                {
-                    bBuf[1] &= psObjInfo[iSel].bSizeMask;
-                    bBuf[1] |= psObjInfo[iSel].bBasicData;
-                }
-                PrepareMapComEditDlg(hDlg, bBuf, iPage, PREPAREDLG_MAPCOMEDIT_ALL);
-                return TRUE;
-            }
-            break;
-        case IDC_PAGEFLAG:
-            if (HIWORD(wParam) == BN_CLICKED)
+            case 0x0C:psObjInfo = smbMapObjectInfoC; break;
+            case 0x0D:psObjInfo = smbMapObjectInfoD; break;
+            case 0x0E:
             {
-                if (IsDlgButtonChecked(hDlg, IDC_PAGEFLAG)&BST_CHECKED)
-                {
-                    if (!(bBuf[1] & 0x80)) iPage++;
-                    bBuf[1] |= 0x80;
-                }
+                psObjInfo = smbMapObjectInfoE;
+                if (iSel & 0x1)
+                    bBuf[1] |= 0x40;
                 else
-                {
-                    if (bBuf[1] & 0x80) iPage--;
-                    bBuf[1] &= 0x7F;
-                }
-
-                //PrepareMapComEditDlg(hDlg,bBuf,iPage,PREPAREDLG_MAPCOMEDIT_BININPUTONLY);
-                return TRUE;
+                    bBuf[1] &= 0xBF;
             }
             break;
+            case 0x0F:psObjInfo = smbMapObjectInfoF; break;
+            default:psObjInfo = smbMapObjectInfo0B; break;
+            }
+
+            //
+            if ((bTmp & 0x0F) != 0x0E)
+            {
+                bBuf[1] &= psObjInfo[iSel].bSizeMask;
+                bBuf[1] |= psObjInfo[iSel].bBasicData;
+            }
+            PrepareMapComEditDlg(hDlg, bBuf, iPage, PREPAREDLG_MAPCOMEDIT_ALL);
+            return TRUE;
+        }
+        break;
+        case IDC_PAGEFLAG:
+        if (HIWORD(wParam) == BN_CLICKED)
+        {
+            if (IsDlgButtonChecked(hDlg, IDC_PAGEFLAG)&BST_CHECKED)
+            {
+                if (!(bBuf[1] & 0x80)) iPage++;
+                bBuf[1] |= 0x80;
+            }
+            else
+            {
+                if (bBuf[1] & 0x80) iPage--;
+                bBuf[1] &= 0x7F;
+            }
+
+            //PrepareMapComEditDlg(hDlg,bBuf,iPage,PREPAREDLG_MAPCOMEDIT_BININPUTONLY);
+            return TRUE;
+        }
+        break;
         case IDC_BIN:
         {
             if (HIWORD(wParam) == EN_CHANGE)

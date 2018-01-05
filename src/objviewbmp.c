@@ -128,55 +128,55 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
     {
     case 0x0C:
 
-        //wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoC[(lpbBuf[1] >> 4) & 0x07].Name);
-        break;
+    //wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoC[(lpbBuf[1] >> 4) & 0x07].Name);
+    break;
     case 0x0D:
-        if (!(lpbBuf[1] & 0x40))
+    if (!(lpbBuf[1] & 0x40))
+    {
+        //wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
+    }
+    else
+    {
+        if ((lpbBuf[1] & 0x70) == 0x40)
         {
-            //wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
+            //wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
         }
         else
         {
-            if ((lpbBuf[1] & 0x70) == 0x40)
-            {
-                //wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
-            }
-            else
-            {
-                //wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
-            }
+            //wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
         }
-        break;
+    }
+    break;
     case 0x0E:
-        if (lpbBuf[1] & 0x40)
-        {
-            //wsprintf(lpszBuf, STRING_OBJLIST_BACK, smbMapHeadBackColor[lpbBuf[1] & 0x07]);
-        }
-        else
-        {
-            //wsprintf(lpszBuf, STRING_OBJLIST_VIEWBLOCK, smbMapHeadView[(lpbBuf[1] >> 4) & 0x03], smbMapBasicBlock[lpbBuf[1] & 0x0F].Name);
-        }
-        break;
+    if (lpbBuf[1] & 0x40)
+    {
+        //wsprintf(lpszBuf, STRING_OBJLIST_BACK, smbMapHeadBackColor[lpbBuf[1] & 0x07]);
+    }
+    else
+    {
+        //wsprintf(lpszBuf, STRING_OBJLIST_VIEWBLOCK, smbMapHeadView[(lpbBuf[1] >> 4) & 0x03], smbMapBasicBlock[lpbBuf[1] & 0x0F].Name);
+    }
+    break;
     case 0x0F:
     {
         switch ((lpbBuf[1] >> 4) & 0x07)
         {
         case 0:
 
-            //wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
-            break;
+        //wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
+        break;
 
-            // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
-            // 1と4,5は違う処理
+        // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
+        // 1と4,5は違う処理
         case 1:
 
-            //				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
-            break;
+        //				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
+        break;
         case 4:
         case 5:
 
-            //				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07) + 1].Name);
-            break;
+        //				wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07) + 1].Name);
+        break;
         case 2:
         {
             BYTE bHeight;
@@ -192,72 +192,72 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
         }
         break;
         case 3:
-            if (!((lpbBuf[1] >> 3) & 0x01))
+        if (!((lpbBuf[1] >> 3) & 0x01))
+        {
+            //wsprintf(lpszBuf,STRING_OBJLIST_STEP,(lpbBuf[1]&0x07)+1,(lpbBuf[1]&0x07)+1);
+        }
+        else
+        {
+            BYTE bLower;
+            bLower = (lpbBuf[1] & 0x07);
+            if (0 <= bLower && bLower <= 0x03)
             {
-                //wsprintf(lpszBuf,STRING_OBJLIST_STEP,(lpbBuf[1]&0x07)+1,(lpbBuf[1]&0x07)+1);
+                //wsprintf(lpszBuf, STRING_OBJLIST_STEP98);
             }
-            else
+            else if (0x04 <= bLower && bLower <= 0x06)
             {
-                BYTE bLower;
-                bLower = (lpbBuf[1] & 0x07);
-                if (0 <= bLower && bLower <= 0x03)
-                {
-                    //wsprintf(lpszBuf, STRING_OBJLIST_STEP98);
-                }
-                else if (0x04 <= bLower && bLower <= 0x06)
-                {
-                    //wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
-                }
-                else if (0x07 == bLower)
-                {
-                    //wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
-                }
+                //wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
             }
-            break;
+            else if (0x07 == bLower)
+            {
+                //wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
+            }
+        }
+        break;
         case 6:
         case 7:
 
-            //wsprintf(lpszBuf, STRING_OBJLIST_NONE);
-            break;
+        //wsprintf(lpszBuf, STRING_OBJLIST_NONE);
+        break;
         }
     }
     break;
     default:
-        if (!(lpbBuf[1] & 0x70))
-        {
-            //wsprintf(lpszBuf,__T("%s"),smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
-            BYTE bType = lpbBuf[1] & 0x0F;
-            int iItemBlocks[] = {
-                MAPASSISTBMPDATAINDEX_QBLOCKPOWERMUSH,
-                MAPASSISTBMPDATAINDEX_QBLOCKCOIN,
-                MAPASSISTBMPDATAINDEX_HIDDENCOIN,
-                MAPASSISTBMPDATAINDEX_HIDDEN1UPMUSH,
-                MAPASSISTBMPDATAINDEX_BRICKPOWERMUSH,
-                MAPASSISTBMPDATAINDEX_BRICKIVY,
-                MAPASSISTBMPDATAINDEX_BRICKSTAR,
-                MAPASSISTBMPDATAINDEX_BRICK10COINS,
-                MAPASSISTBMPDATAINDEX_BRICK1UPMUSH};
+    if (!(lpbBuf[1] & 0x70))
+    {
+        //wsprintf(lpszBuf,__T("%s"),smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
+        BYTE bType = lpbBuf[1] & 0x0F;
+        int iItemBlocks[] = {
+            MAPASSISTBMPDATAINDEX_QBLOCKPOWERMUSH,
+            MAPASSISTBMPDATAINDEX_QBLOCKCOIN,
+            MAPASSISTBMPDATAINDEX_HIDDENCOIN,
+            MAPASSISTBMPDATAINDEX_HIDDEN1UPMUSH,
+            MAPASSISTBMPDATAINDEX_BRICKPOWERMUSH,
+            MAPASSISTBMPDATAINDEX_BRICKIVY,
+            MAPASSISTBMPDATAINDEX_BRICKSTAR,
+            MAPASSISTBMPDATAINDEX_BRICK10COINS,
+            MAPASSISTBMPDATAINDEX_BRICK1UPMUSH};
 
-            if (bType < 0x09)
-                iRet = iItemBlocks[bType];
-        }
-        else if ((lpbBuf[1] & 0x70) != 0x70)
-        {
-            //wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
+        if (bType < 0x09)
+            iRet = iItemBlocks[bType];
+    }
+    else if ((lpbBuf[1] & 0x70) != 0x70)
+    {
+        //wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
+    }
+    else
+    {
+        if (lpbBuf[1] & 0x08)
+        {//土管
+//wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
+            iRet = MAPASSISTBMPDATAINDEX_ARROWDOWN;
         }
         else
         {
-            if (lpbBuf[1] & 0x08)
-            {//土管
-//wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
-                iRet = MAPASSISTBMPDATAINDEX_ARROWDOWN;
-            }
-            else
-            {
-                //wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
-            }
+            //wsprintf(lpszBuf, STRING_OBJLIST_LENNAME,(lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
         }
-        break;
+    }
+    break;
     }/* switch */
 
     return iRet;
@@ -312,7 +312,7 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
     case 0x0F://送りコマンド（２バイト）
 
 //		wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1]);
-        break;
+    break;
     default://（敵キャラコマンド）
     {
         //			LPTSTR bit6[]={STRING_EMPTY, STRING_OBJLIST_HARD};
@@ -349,25 +349,25 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
             switch (bType)
             {
             case 0x03:
-                iRet = BADGUYSASSISTBMPDATAINDEX_REDNOKONOKO;
-                break;
+            iRet = BADGUYSASSISTBMPDATAINDEX_REDNOKONOKO;
+            break;
             case 0x0E:
-                iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAJUMP;
-                break;
+            iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAJUMP;
+            break;
             case 0x0F:
-                iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATATOSS;
-                break;
+            iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATATOSS;
+            break;
             case 0x10:
-                iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAROLL;
-                break;
+            iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAROLL;
+            break;
             case 0x14:
             case 0x17:
-                iRet = BADGUYSASSISTBMPDATAINDEX_CONTINUEOUS;
-                break;
+            iRet = BADGUYSASSISTBMPDATAINDEX_CONTINUEOUS;
+            break;
             case 0x04:
             case 0x09:
             case 0x12:
-                iRet = BADGUYSASSISTBMPDATAINDEX_NOMOVE;
+            iRet = BADGUYSASSISTBMPDATAINDEX_NOMOVE;
             }
         }
     }

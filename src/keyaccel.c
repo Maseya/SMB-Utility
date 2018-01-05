@@ -32,9 +32,9 @@ BOOL GetPresetEditorKeys(WORD aEditKeys[], INT_PTR dwID)
 BOOL GetEditorVKeys(WORD aEditKeys[])
 {
     if (!ReadFromRegistry(INI_EDITOR_KEYS,
-        REG_BINARY,
-        aEditKeys,
-        KEYACCEL_NUM_COMMANDS * sizeof(WORD)))
+                          REG_BINARY,
+                          aEditKeys,
+                          KEYACCEL_NUM_COMMANDS * sizeof(WORD)))
     {
         GetPresetEditorKeys(aEditKeys, KEYACCEL_PRESETID_DESKTOP);
         return FALSE;

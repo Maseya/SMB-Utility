@@ -244,104 +244,104 @@ static BOOL BadGuysKeyInput(int iItem, int iVKey)
     switch (iVKey)
     {
     case IDM_EDITCOMMAND_DOWN:
-        if (bBuf[0] == 0xFF) break;
-        if ((bBuf[0] & 0x0F) != 0x0F)
-        {
-            bBuf[0]++;
-            if (SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
-                bRet = TRUE;
-        }
-        break;
+    if (bBuf[0] == 0xFF) break;
+    if ((bBuf[0] & 0x0F) != 0x0F)
+    {
+        bBuf[0]++;
+        if (SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
+            bRet = TRUE;
+    }
+    break;
     case IDM_EDITCOMMAND_UP:
-        if (bBuf[0] == 0xFF) break;
-        if ((bBuf[0] & 0x0F) != 0x00)
-        {
-            bBuf[0]--;
-            if (SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
-                bRet = TRUE;
-        }
-        break;
+    if (bBuf[0] == 0xFF) break;
+    if ((bBuf[0] & 0x0F) != 0x00)
+    {
+        bBuf[0]--;
+        if (SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
+            bRet = TRUE;
+    }
+    break;
     case IDM_EDITCOMMAND_RIGHT:
-        if ((bBuf[0] & 0xF0) != 0xF0)
+    if ((bBuf[0] & 0xF0) != 0xF0)
+    {
+        bBuf[0] += 0x10;
+        if (bBuf[0] == 0xFF) break;
+        SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+        bRet = TRUE;
+    }
+    else if ((bBuf[0] & 0xF0) == 0xF0)//次のページへ
+    {
+        int iCurIndex;
+        int iPage;
+        BYTE bTmp[3];
+
+        iCurIndex = SetDataNextPageBadGuys(iItem);
+        if (iCurIndex != INVALID_OBJECT_INDEX)
         {
-            bBuf[0] += 0x10;
-            if (bBuf[0] == 0xFF) break;
-            SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+            SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING, &iCurIndex, FALSE);
+            SetSelectedItem(iCurIndex, TRUE);//giSelectedItem=iCurIndex;
+
+            //ページ、カーソルの更新
+            GetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bTmp, &iPage);
+            SetMapViewCursoleBadGuys(bTmp, iPage);
             bRet = TRUE;
         }
-        else if ((bBuf[0] & 0xF0) == 0xF0)//次のページへ
-        {
-            int iCurIndex;
-            int iPage;
-            BYTE bTmp[3];
-
-            iCurIndex = SetDataNextPageBadGuys(iItem);
-            if (iCurIndex != INVALID_OBJECT_INDEX)
-            {
-                SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING, &iCurIndex, FALSE);
-                SetSelectedItem(iCurIndex, TRUE);//giSelectedItem=iCurIndex;
-
-                //ページ、カーソルの更新
-                GetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bTmp, &iPage);
-                SetMapViewCursoleBadGuys(bTmp, iPage);
-                bRet = TRUE;
-            }
-        }
-        break;
+    }
+    break;
     case IDM_EDITCOMMAND_LEFT:
-        if ((bBuf[0] & 0xF0) != 0x00)
+    if ((bBuf[0] & 0xF0) != 0x00)
+    {
+        bBuf[0] -= 0x10;
+        if (bBuf[0] == 0xFF) break;
+        SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+        bRet = TRUE;
+    }
+    else if ((bBuf[0] & 0xF0) == 0x00)//前のページへ
+    {
+        int iCurIndex;
+        int iPage;
+        BYTE bTmp[3];
+
+        if ((bBuf[0] | 0xF0) == 0xFF) break;
+        iCurIndex = SetDataPrevPageBadGuys(iItem);
+        if (iCurIndex != INVALID_OBJECT_INDEX)
         {
-            bBuf[0] -= 0x10;
-            if (bBuf[0] == 0xFF) break;
-            SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+            SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING, &iCurIndex, FALSE);
+            SetSelectedItem(iCurIndex, TRUE);//giSelectedItem=iCurIndex;
+
+            //ページ、カーソルの更新
+            GetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bTmp, &iPage);
+            SetMapViewCursoleBadGuys(bTmp, iPage);
             bRet = TRUE;
         }
-        else if ((bBuf[0] & 0xF0) == 0x00)//前のページへ
-        {
-            int iCurIndex;
-            int iPage;
-            BYTE bTmp[3];
-
-            if ((bBuf[0] | 0xF0) == 0xFF) break;
-            iCurIndex = SetDataPrevPageBadGuys(iItem);
-            if (iCurIndex != INVALID_OBJECT_INDEX)
-            {
-                SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING, &iCurIndex, FALSE);
-                SetSelectedItem(iCurIndex, TRUE);//giSelectedItem=iCurIndex;
-
-                //ページ、カーソルの更新
-                GetBadGuysData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bTmp, &iPage);
-                SetMapViewCursoleBadGuys(bTmp, iPage);
-                bRet = TRUE;
-            }
-        }
-        break;
+    }
+    break;
     case IDM_EDITCOMMAND_ADD1TOTYPE:
-        if ((bBuf[1] & 0x3F) != 0x3F) bBuf[1]++;
-        SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
+    if ((bBuf[1] & 0x3F) != 0x3F) bBuf[1]++;
+    SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
     case IDM_EDITCOMMAND_DEC1TOTYPE:
-        if ((bBuf[1] & 0x3F) != 0x00) bBuf[1]--;
-        SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
+    if ((bBuf[1] & 0x3F) != 0x00) bBuf[1]--;
+    SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
     case IDM_EDITCOMMAND_ADD16TOTYPE:
-        if ((bBuf[1] & 0x3F) <= 0x2F)
-            bBuf[1] += 0x10;
-        else
-            bBuf[1] |= 0x3F;
-        SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
+    if ((bBuf[1] & 0x3F) <= 0x2F)
+        bBuf[1] += 0x10;
+    else
+        bBuf[1] |= 0x3F;
+    SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
     case IDM_EDITCOMMAND_DEC16TOTYPE:
-        if ((bBuf[1] & 0x3F) >= 0x10)
-            bBuf[1] -= 0x10;
-        else
-            bBuf[1] &= 0xC0;
-        SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
+    if ((bBuf[1] & 0x3F) >= 0x10)
+        bBuf[1] -= 0x10;
+    else
+        bBuf[1] &= 0xC0;
+    SetBadGuysData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
     case IDM_EDITCOMMAND_REWPAGE:
     {
         int iPage;
@@ -441,191 +441,191 @@ BOOL MapKeyInput(int iItem, int iVKey)
     switch (iVKey)
     {
     case IDM_EDITCOMMAND_DOWN:
-        if (bBuf[0] == 0xFD) break;
-        if ((bBuf[0] & 0x0F) != 0x0F)
-        {
-            bBuf[0]++;
-            if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
-                bRet = TRUE;
-        }
-        break;
+    if (bBuf[0] == 0xFD) break;
+    if ((bBuf[0] & 0x0F) != 0x0F)
+    {
+        bBuf[0]++;
+        if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
+            bRet = TRUE;
+    }
+    break;
     case IDM_EDITCOMMAND_UP:
-        if (bBuf[0] == 0xFD) break;
-        if ((bBuf[0] & 0x0F) != 0x00)
-        {
-            bBuf[0]--;
-            if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
-                bRet = TRUE;
-        }
-        break;
+    if (bBuf[0] == 0xFD) break;
+    if ((bBuf[0] & 0x0F) != 0x00)
+    {
+        bBuf[0]--;
+        if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
+            bRet = TRUE;
+    }
+    break;
     case IDM_EDITCOMMAND_RIGHT:
-        if ((bBuf[0] & 0xF0) != 0xF0)
-        {
-            bBuf[0] += 0x10;
-            if (bBuf[0] == 0xFD) break;
-            if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
-                bRet = TRUE;
-        }
-        else if ((bBuf[0] & 0xF0) == 0xF0)//次のページへ
-        {
-            /*
-            bBuf …　移動するデータ
-            */
-            BYTE bTmp[3] = {0};
-            BYTE bNextPageXPos;
-            int n = 0;
-            int i;
-            BOOL blIsPage;//移動するデータ
-
-            blIsPage = (bBuf[1] & 0x80) ? TRUE : FALSE;
-
-            if (blIsPage)//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っている場合すなわち、1ページに1つしかデータがない場合移動させない
-            {
-                if (-1 == GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp, NULL)) break;
-                if ((bTmp[1] & 0x80) || ((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00)) goto CANCELNEXT;
-            }
-
-            for (i = 1;; i++)
-            {
-                BYTE bData[2];
-
-                if (-1 == GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + i, bData, NULL))
-                    goto CANCELNEXT;
-                if (bData[0] == 0xFD)
-                    goto CANCELNEXT;
-                if ((bData[1] & 0x80) || ((bData[0] & 0x0f) == 0x0D) && ((bData[1] & 0x40) == 0x00))
-                    break;
-            }
-
-            for (n = 1;; n++)
-            {
-                if (-1 == GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bTmp, NULL)) break;
-                if (bTmp[0] == 0xFD) goto CANCELNEXT;
-                SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n - 1, bTmp);
-                if ((bTmp[1] & 0x80))
-                {
-                    bNextPageXPos = 0;
-                    break;
-                }
-                else if (((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00))
-                {
-                    bNextPageXPos = (bTmp[0] & 0xF0);
-                    break;
-                }
-            }
-
-            if (blIsPage)//移動するﾃﾞｰﾀが改ページフラグを持ってい場合
-            {
-                GetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bTmp, NULL);
-                bTmp[1] |= 0x80;
-                SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bTmp);
-            }
-
-            bBuf[0] &= 0x0F;
-            bBuf[0] |= bNextPageXPos;
-            bBuf[1] &= 0x7F;
-
-            SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bBuf);
-
+    if ((bBuf[0] & 0xF0) != 0xF0)
+    {
+        bBuf[0] += 0x10;
+        if (bBuf[0] == 0xFD) break;
+        if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
             bRet = TRUE;
-        }
-    CANCELNEXT:
-        break;
-    case IDM_EDITCOMMAND_LEFT:
-        if ((bBuf[0] & 0xF0) != 0x00)
-        {
-            bBuf[0] -= 0x10;
-            if (bBuf[0] == 0xFD) break;
-            if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
-                bRet = TRUE;
-        }
-        else if ((bBuf[0] & 0xF0) == 0x00)//前のページへ
-        {
-            BYTE bTmp[2] = {0};
-            int n = 0;
-            int iPage;
-
-            if ((bBuf[0] | 0xF0) == 0xFD) break;
-
-            //もし、0ﾍﾟｰｼﾞののデータならキャンセル
-            GetMapData(GETADDRESS_CURRENT_EDITTING, iItem, NULL, &iPage);
-            if (iPage == 0) break;
-
-            if (bBuf[1] & 0x80)//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っている場合すなわち、1ページに1つしかデータがない場合移動させない
-            {
-                if (-1 != GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp, NULL))
-                {
-                    if ((bTmp[1] & 0x80) || ((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00))
-                        goto CANCELPREV;
-                }
-            }
-
-            if (bBuf[1] & 0x80)
-            {
-                GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp, NULL);
-                bTmp[1] |= 0x80;
-                SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp);
-
-                bBuf[0] |= 0xF0;
-                bBuf[1] &= 0x7F;
-                SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-            }
-            else
-            {
-                for (;;)
-                {
-                    n--;
-                    if (iItem + n < 0) goto CANCELPREV;
-                    GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bTmp, NULL);
-                    if (bTmp[0] == 0xFD) goto CANCELPREV;
-                    SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n + 1, bTmp);
-                    if ((bTmp[1] & 0x80) || ((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00)) break;
-                }
-                bBuf[0] |= 0xF0;
-                SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bBuf);
-            }
-            bRet = TRUE;
-        }
-
-    CANCELPREV:
-        break;
-    case IDM_EDITCOMMAND_ADD1TOTYPE:
-        if ((bBuf[1] & 0x7F) != 0x7F) bBuf[1]++;
-        SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
-
-        //	case VK_SUBTRACT:
-        //	case 'Q':
-    case IDM_EDITCOMMAND_DEC1TOTYPE:
-        if ((bBuf[1] & 0x7F) != 0x00) bBuf[1]--;
-        SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
-    case IDM_EDITCOMMAND_ADD16TOTYPE:
-        if ((bBuf[1] & 0x7F) <= 0x6F)
-            bBuf[1] += 0x10;
-        else
-            bBuf[1] |= 0x7F;
-        SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
-    case IDM_EDITCOMMAND_DEC16TOTYPE:
-        if ((bBuf[1] & 0x7F) >= 0x10)
-            bBuf[1] -= 0x10;
-        else
-            bBuf[1] &= 0x80;
-        SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
-        bRet = TRUE;
-        break;
+    }
+    else if ((bBuf[0] & 0xF0) == 0xF0)//次のページへ
+    {
         /*
-    case VK_NUMPAD0:
-        if(bBuf[1]&0x80) bBuf[1]&=0x7F;
-        else bBuf[1]|=0x80;
-        SetMapData(iItem,bBuf);
-        bRet=TRUE;
-        break;
+        bBuf …　移動するデータ
         */
+        BYTE bTmp[3] = {0};
+        BYTE bNextPageXPos;
+        int n = 0;
+        int i;
+        BOOL blIsPage;//移動するデータ
+
+        blIsPage = (bBuf[1] & 0x80) ? TRUE : FALSE;
+
+        if (blIsPage)//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っている場合すなわち、1ページに1つしかデータがない場合移動させない
+        {
+            if (-1 == GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp, NULL)) break;
+            if ((bTmp[1] & 0x80) || ((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00)) goto CANCELNEXT;
+        }
+
+        for (i = 1;; i++)
+        {
+            BYTE bData[2];
+
+            if (-1 == GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + i, bData, NULL))
+                goto CANCELNEXT;
+            if (bData[0] == 0xFD)
+                goto CANCELNEXT;
+            if ((bData[1] & 0x80) || ((bData[0] & 0x0f) == 0x0D) && ((bData[1] & 0x40) == 0x00))
+                break;
+        }
+
+        for (n = 1;; n++)
+        {
+            if (-1 == GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bTmp, NULL)) break;
+            if (bTmp[0] == 0xFD) goto CANCELNEXT;
+            SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n - 1, bTmp);
+            if ((bTmp[1] & 0x80))
+            {
+                bNextPageXPos = 0;
+                break;
+            }
+            else if (((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00))
+            {
+                bNextPageXPos = (bTmp[0] & 0xF0);
+                break;
+            }
+        }
+
+        if (blIsPage)//移動するﾃﾞｰﾀが改ページフラグを持ってい場合
+        {
+            GetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bTmp, NULL);
+            bTmp[1] |= 0x80;
+            SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bTmp);
+        }
+
+        bBuf[0] &= 0x0F;
+        bBuf[0] |= bNextPageXPos;
+        bBuf[1] &= 0x7F;
+
+        SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bBuf);
+
+        bRet = TRUE;
+    }
+CANCELNEXT:
+    break;
+    case IDM_EDITCOMMAND_LEFT:
+    if ((bBuf[0] & 0xF0) != 0x00)
+    {
+        bBuf[0] -= 0x10;
+        if (bBuf[0] == 0xFD) break;
+        if (SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf))
+            bRet = TRUE;
+    }
+    else if ((bBuf[0] & 0xF0) == 0x00)//前のページへ
+    {
+        BYTE bTmp[2] = {0};
+        int n = 0;
+        int iPage;
+
+        if ((bBuf[0] | 0xF0) == 0xFD) break;
+
+        //もし、0ﾍﾟｰｼﾞののデータならキャンセル
+        GetMapData(GETADDRESS_CURRENT_EDITTING, iItem, NULL, &iPage);
+        if (iPage == 0) break;
+
+        if (bBuf[1] & 0x80)//移動するﾃﾞｰﾀが改ページフラグを持っていて、かつ次のデータが改ページフラグを持っている場合すなわち、1ページに1つしかデータがない場合移動させない
+        {
+            if (-1 != GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp, NULL))
+            {
+                if ((bTmp[1] & 0x80) || ((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00))
+                    goto CANCELPREV;
+            }
+        }
+
+        if (bBuf[1] & 0x80)
+        {
+            GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp, NULL);
+            bTmp[1] |= 0x80;
+            SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + 1, bTmp);
+
+            bBuf[0] |= 0xF0;
+            bBuf[1] &= 0x7F;
+            SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+        }
+        else
+        {
+            for (;;)
+            {
+                n--;
+                if (iItem + n < 0) goto CANCELPREV;
+                GetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bTmp, NULL);
+                if (bTmp[0] == 0xFD) goto CANCELPREV;
+                SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n + 1, bTmp);
+                if ((bTmp[1] & 0x80) || ((bTmp[0] & 0x0f) == 0x0D) && ((bTmp[1] & 0x40) == 0x00)) break;
+            }
+            bBuf[0] |= 0xF0;
+            SetMapData(GETADDRESS_CURRENT_EDITTING, iItem + n, bBuf);
+        }
+        bRet = TRUE;
+    }
+
+CANCELPREV:
+    break;
+    case IDM_EDITCOMMAND_ADD1TOTYPE:
+    if ((bBuf[1] & 0x7F) != 0x7F) bBuf[1]++;
+    SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
+
+    //	case VK_SUBTRACT:
+    //	case 'Q':
+    case IDM_EDITCOMMAND_DEC1TOTYPE:
+    if ((bBuf[1] & 0x7F) != 0x00) bBuf[1]--;
+    SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
+    case IDM_EDITCOMMAND_ADD16TOTYPE:
+    if ((bBuf[1] & 0x7F) <= 0x6F)
+        bBuf[1] += 0x10;
+    else
+        bBuf[1] |= 0x7F;
+    SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
+    case IDM_EDITCOMMAND_DEC16TOTYPE:
+    if ((bBuf[1] & 0x7F) >= 0x10)
+        bBuf[1] -= 0x10;
+    else
+        bBuf[1] &= 0x80;
+    SetMapData(GETADDRESS_CURRENT_EDITTING, iItem, bBuf);
+    bRet = TRUE;
+    break;
+    /*
+case VK_NUMPAD0:
+    if(bBuf[1]&0x80) bBuf[1]&=0x7F;
+    else bBuf[1]|=0x80;
+    SetMapData(iItem,bBuf);
+    bRet=TRUE;
+    break;
+    */
     case IDM_EDITCOMMAND_REWPAGE:
     {
         int iPage;

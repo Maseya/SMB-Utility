@@ -241,54 +241,54 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         SetDlgItemInt(hDlg, IDC_LEN, GetStringMaxChars(0), FALSE);
     }
     case WM_COMMAND:
-        switch (LOWORD(wParam))
+    switch (LOWORD(wParam))
+    {
+        //			   case IDOK:
+    case IDCANCEL:
+    EndDialog(hDlg, TRUE);
+    return TRUE;
+    case IDC_STRINGSELECT:
+    {
+        if (HIWORD(wParam) == CBN_SELCHANGE)
         {
-            //			   case IDOK:
-        case IDCANCEL:
-            EndDialog(hDlg, TRUE);
-            return TRUE;
-        case IDC_STRINGSELECT:
-        {
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-            {
-                int iSel = 0, iMaxLen;
-                TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
-
-                memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
-                iSel = (int)SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
-                if (iSel == CB_ERR) return TRUE;
-                GetString(iSel, cBuf, SMB_STRING_MAXCHARS);
-                SetDlgItemText(hDlg, IDC_STRING, cBuf);
-
-                iMaxLen = GetStringMaxChars(iSel);
-                SetDlgItemInt(hDlg, IDC_LEN, iMaxLen, FALSE);
-
-                return TRUE;
-            }
-        }
-        }
-    case BN_CLICKED:
-        if (LOWORD(wParam) == IDOK)//IDC_STRINGWRITE)
-        {
-            LRESULT iSel = 0;
+            int iSel = 0, iMaxLen;
             TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
             memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
-
-            iSel = SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
+            iSel = (int)SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
             if (iSel == CB_ERR) return TRUE;
-            GetDlgItemText(hDlg, IDC_STRING, cBuf, SMB_STRING_MAXCHARS);
-            if (!sblWritten)
-            {
-                undoPrepare(UNDONAME_TOOLSTR);
-                sblWritten = TRUE;
-            }
-            ChangeString(iSel, cBuf);
+            GetString(iSel, cBuf, SMB_STRING_MAXCHARS);
+            SetDlgItemText(hDlg, IDC_STRING, cBuf);
 
-            //					   gblDataChanged=TRUE;
-            fr_SetDataChanged(TRUE);
+            iMaxLen = GetStringMaxChars(iSel);
+            SetDlgItemInt(hDlg, IDC_LEN, iMaxLen, FALSE);
+
             return TRUE;
         }
+    }
+    }
+    case BN_CLICKED:
+    if (LOWORD(wParam) == IDOK)//IDC_STRINGWRITE)
+    {
+        LRESULT iSel = 0;
+        TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
+
+        memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
+
+        iSel = SendDlgItemMessage(hDlg, IDC_STRINGSELECT, CB_GETCURSEL, 0, 0);
+        if (iSel == CB_ERR) return TRUE;
+        GetDlgItemText(hDlg, IDC_STRING, cBuf, SMB_STRING_MAXCHARS);
+        if (!sblWritten)
+        {
+            undoPrepare(UNDONAME_TOOLSTR);
+            sblWritten = TRUE;
+        }
+        ChangeString(iSel, cBuf);
+
+        //					   gblDataChanged=TRUE;
+        fr_SetDataChanged(TRUE);
+        return TRUE;
+    }
     }
     return FALSE;
 }
@@ -328,57 +328,57 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
         return TRUE;
     }
     case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDOK:
-        {
-            BYTE bTmp[4][11] = {0};
-            BYTE bData[2] = {0};
-            TCHAR cBuf[34];
+    switch (LOWORD(wParam))
+    {
+    case IDOK:
+    {
+        BYTE bTmp[4][11] = {0};
+        BYTE bData[2] = {0};
+        TCHAR cBuf[34];
 
-            memset(cBuf, 0, 34);
-            GetDlgItemText(hDlg, IDC_WORLD, cBuf, 34);
-            if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[0][0], &bTmp[0][1], &bTmp[0][2], &bTmp[0][3], &bTmp[0][4], &bTmp[0][5], &bTmp[0][6], &bTmp[0][7], &bTmp[0][8], &bTmp[0][9], &bTmp[0][10])) return TRUE;
+        memset(cBuf, 0, 34);
+        GetDlgItemText(hDlg, IDC_WORLD, cBuf, 34);
+        if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[0][0], &bTmp[0][1], &bTmp[0][2], &bTmp[0][3], &bTmp[0][4], &bTmp[0][5], &bTmp[0][6], &bTmp[0][7], &bTmp[0][8], &bTmp[0][9], &bTmp[0][10])) return TRUE;
 
-            memset(cBuf, 0, 34);
-            GetDlgItemText(hDlg, IDC_PAGE, cBuf, 34);
-            if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[1][0], &bTmp[1][1], &bTmp[1][2], &bTmp[1][3], &bTmp[1][4], &bTmp[1][5], &bTmp[1][6], &bTmp[1][7], &bTmp[1][8], &bTmp[1][9], &bTmp[1][10])) return TRUE;
+        memset(cBuf, 0, 34);
+        GetDlgItemText(hDlg, IDC_PAGE, cBuf, 34);
+        if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[1][0], &bTmp[1][1], &bTmp[1][2], &bTmp[1][3], &bTmp[1][4], &bTmp[1][5], &bTmp[1][6], &bTmp[1][7], &bTmp[1][8], &bTmp[1][9], &bTmp[1][10])) return TRUE;
 
-            memset(cBuf, 0, 34);
-            GetDlgItemText(hDlg, IDC_YPOS, cBuf, 34);
-            if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[2][0], &bTmp[2][1], &bTmp[2][2], &bTmp[2][3], &bTmp[2][4], &bTmp[2][5], &bTmp[2][6], &bTmp[2][7], &bTmp[2][8], &bTmp[2][9], &bTmp[2][10])) return TRUE;
+        memset(cBuf, 0, 34);
+        GetDlgItemText(hDlg, IDC_YPOS, cBuf, 34);
+        if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[2][0], &bTmp[2][1], &bTmp[2][2], &bTmp[2][3], &bTmp[2][4], &bTmp[2][5], &bTmp[2][6], &bTmp[2][7], &bTmp[2][8], &bTmp[2][9], &bTmp[2][10])) return TRUE;
 
-            memset(cBuf, 0, 34);
-            GetDlgItemText(hDlg, IDC_RETURNPOS, cBuf, 34);
-            if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[3][0], &bTmp[3][1], &bTmp[3][2], &bTmp[3][3], &bTmp[3][4], &bTmp[3][5], &bTmp[3][6], &bTmp[3][7], &bTmp[3][8], &bTmp[3][9], &bTmp[3][10])) return TRUE;
+        memset(cBuf, 0, 34);
+        GetDlgItemText(hDlg, IDC_RETURNPOS, cBuf, 34);
+        if (11 != _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &bTmp[3][0], &bTmp[3][1], &bTmp[3][2], &bTmp[3][3], &bTmp[3][4], &bTmp[3][5], &bTmp[3][6], &bTmp[3][7], &bTmp[3][8], &bTmp[3][9], &bTmp[3][10])) return TRUE;
 
-            memset(cBuf, 0, 34);
-            GetDlgItemText(hDlg, IDC_DATA1, cBuf, 3);
-            if (1 != _stscanf(cBuf, __T("%hhx"), &bData[0]))return TRUE;
+        memset(cBuf, 0, 34);
+        GetDlgItemText(hDlg, IDC_DATA1, cBuf, 3);
+        if (1 != _stscanf(cBuf, __T("%hhx"), &bData[0]))return TRUE;
 
-            memset(cBuf, 0, 34);
-            GetDlgItemText(hDlg, IDC_DATA2, cBuf, 3);
-            if (1 != _stscanf(cBuf, __T("%hhx"), &bData[1])) return TRUE;
+        memset(cBuf, 0, 34);
+        GetDlgItemText(hDlg, IDC_DATA2, cBuf, 3);
+        if (1 != _stscanf(cBuf, __T("%hhx"), &bData[1])) return TRUE;
 
-            undoPrepare(UNDONAME_TOOLLOOPBIN);
+        undoPrepare(UNDONAME_TOOLLOOPBIN);
 
-            //					   gblDataChanged=TRUE;
-            fr_SetDataChanged(TRUE);
+        //					   gblDataChanged=TRUE;
+        fr_SetDataChanged(TRUE);
 
-            memcpy(bPRGROM + SMBADDRESS_LOOP_WORLD, bTmp[0], 11);
-            memcpy(bPRGROM + SMBADDRESS_LOOP_PAGE, bTmp[1], 11);
-            memcpy(bPRGROM + SMBADDRESS_LOOP_YPOS, bTmp[2], 11);
-            memcpy(bPRGROM + SMBADDRESS_LOOP_RETURNPOS, bTmp[3], 11);
-            bPRGROM[SMBADDRESS_LOOP_W7DATA1] = bData[0];
-            bPRGROM[SMBADDRESS_LOOP_W7DATA2] = bData[1];
-        }
-        case IDCANCEL:
-        {
-            EndDialog(hDlg, TRUE);
-            return TRUE;
-        }
-        break;
-        }
+        memcpy(bPRGROM + SMBADDRESS_LOOP_WORLD, bTmp[0], 11);
+        memcpy(bPRGROM + SMBADDRESS_LOOP_PAGE, bTmp[1], 11);
+        memcpy(bPRGROM + SMBADDRESS_LOOP_YPOS, bTmp[2], 11);
+        memcpy(bPRGROM + SMBADDRESS_LOOP_RETURNPOS, bTmp[3], 11);
+        bPRGROM[SMBADDRESS_LOOP_W7DATA1] = bData[0];
+        bPRGROM[SMBADDRESS_LOOP_W7DATA2] = bData[1];
+    }
+    case IDCANCEL:
+    {
+        EndDialog(hDlg, TRUE);
+        return TRUE;
+    }
+    break;
+    }
     }
 
     return FALSE;
