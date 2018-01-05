@@ -873,8 +873,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
     switch (msg)
     {
     case WM_UPDATEFRAME:
-        InvalidateRect(ghWndEmu, NULL, FALSE);
-        break;
+    InvalidateRect(ghWndEmu, NULL, FALSE);
+    break;
     case WM_ACTIVATEAPP:
     {
         static BOOL blMsg = FALSE;
@@ -960,21 +960,21 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_FILE_SAVE:
-            if (gblIsROMLoaded)
+        if (gblIsROMLoaded)
+        {
+            if (g_fShowMsgOnSave)
             {
-                if (g_fShowMsgOnSave)
-                {
-                    if (IDNO == Msg(STRING_CONFIRM_SAVE, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
-                        break;
-                }
-                while (gFilePath[0] == __T('\0') || !SaveToFile())
-                {
-                    Msg(STRING_FILEERROR_SAVE, MB_OK | MB_ICONWARNING);
-                    if (!SetSaveFileName(hWnd)) break;
-                }
-                RefreshWindowTitle(FALSE);
+                if (IDNO == Msg(STRING_CONFIRM_SAVE, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
+                    break;
             }
-            break;
+            while (gFilePath[0] == __T('\0') || !SaveToFile())
+            {
+                Msg(STRING_FILEERROR_SAVE, MB_OK | MB_ICONWARNING);
+                if (!SetSaveFileName(hWnd)) break;
+            }
+            RefreshWindowTitle(FALSE);
+        }
+        break;
         case IDM_FILE_SAVEAS:
         {
             if (!gblIsROMLoaded) break;
@@ -1025,8 +1025,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_FILE_EXIT:
-            PostMessage(hWnd, WM_CLOSE, 0, 0);
-            break;
+        PostMessage(hWnd, WM_CLOSE, 0, 0);
+        break;
         case IDM_EDIT_UNDO:
         {
             if (gblIsROMLoaded) undoRestore();
@@ -1125,56 +1125,56 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_EDIT_STRINGS:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("STRINGEDITDLG"), hWnd, StringEditDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("STRINGEDITDLG"), hWnd, StringEditDlgProc);
+        break;
         case IDM_EDIT_LOOP:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("LOOPEDITDLG"), hWnd, LoopEditDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("LOOPEDITDLG"), hWnd, LoopEditDlgProc);
+        break;
         case IDM_EDIT_AREASORT:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("AREASORTDLG"), hWnd, AreaSortDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("AREASORTDLG"), hWnd, AreaSortDlgProc);
+        break;
         case IDM_TOOL_WORLDDATAUPDATE:
-            if (gblIsROMLoaded
-                && (IDOK == Msg(STRING_CONFIRM_UPDATEWORLD, MB_OKCANCEL | MB_ICONINFORMATION)))
-            {
-                LPTSTR szBuf = GetTempStringBuffer();
-                UpdateWorldData(TRUE);
-                wsprintf(szBuf, __T("$9CB4 : %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH"),
-                         bPRGROM[SMB_WORLD_SETTING],
-                         bPRGROM[SMB_WORLD_SETTING + 1],
-                         bPRGROM[SMB_WORLD_SETTING + 2],
-                         bPRGROM[SMB_WORLD_SETTING + 3],
-                         bPRGROM[SMB_WORLD_SETTING + 4],
-                         bPRGROM[SMB_WORLD_SETTING + 5],
-                         bPRGROM[SMB_WORLD_SETTING + 6],
-                         bPRGROM[SMB_WORLD_SETTING + 7]);
-                lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
-            }
-            break;
+        if (gblIsROMLoaded
+            && (IDOK == Msg(STRING_CONFIRM_UPDATEWORLD, MB_OKCANCEL | MB_ICONINFORMATION)))
+        {
+            LPTSTR szBuf = GetTempStringBuffer();
+            UpdateWorldData(TRUE);
+            wsprintf(szBuf, __T("$9CB4 : %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH"),
+                     bPRGROM[SMB_WORLD_SETTING],
+                     bPRGROM[SMB_WORLD_SETTING + 1],
+                     bPRGROM[SMB_WORLD_SETTING + 2],
+                     bPRGROM[SMB_WORLD_SETTING + 3],
+                     bPRGROM[SMB_WORLD_SETTING + 4],
+                     bPRGROM[SMB_WORLD_SETTING + 5],
+                     bPRGROM[SMB_WORLD_SETTING + 6],
+                     bPRGROM[SMB_WORLD_SETTING + 7]);
+            lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
+        }
+        break;
         case IDM_TOOL_GENERALSETTING:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("GENERALSETTINGDLG"), hWnd, GeneralSettingDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("GENERALSETTINGDLG"), hWnd, GeneralSettingDlgProc);
+        break;
         case IDM_SETTING_GAME:
-            if (gblIsROMLoaded) GameSettingPropertySheet(hWnd);
-            break;
+        if (gblIsROMLoaded) GameSettingPropertySheet(hWnd);
+        break;
         case IDM_TOOL_DEMORECORD:
-            if (gblIsROMLoaded)
-            {
-                if (IDCANCEL == Msg(STRING_CONFIRM_DEMORECORD, MB_OKCANCEL | MB_ICONINFORMATION)) break;
+        if (gblIsROMLoaded)
+        {
+            if (IDCANCEL == Msg(STRING_CONFIRM_DEMORECORD, MB_OKCANCEL | MB_ICONINFORMATION)) break;
 
-                OpenIcon(GetEmuWndHandle());
-                SendMessage(ghWndMDIClient, WM_MDIACTIVATE, (WPARAM)GetEmuWndHandle(), 0);
+            OpenIcon(GetEmuWndHandle());
+            SendMessage(ghWndMDIClient, WM_MDIACTIVATE, (WPARAM)GetEmuWndHandle(), 0);
 
-                DemoRecord();
-            }
-            break;
-            /*
-        case IDM_TOOL_DUMPPRG:
-            {
-                _beginthread(DumpPRGROM, 0 , NULL);
-            }
-            break;
-            */
+            DemoRecord();
+        }
+        break;
+        /*
+    case IDM_TOOL_DUMPPRG:
+        {
+            _beginthread(DumpPRGROM, 0 , NULL);
+        }
+        break;
+        */
         case IDM_EMULATOR_NORMALPLAY:
         {
             if (!gblIsROMLoaded) break;
@@ -1227,10 +1227,10 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_EMULATOR_SAVE:
-            if (!gblIsROMLoaded) break;
-            if (SaveEmulatorState())
-                SetStatusBarText(STRING_STATUSBAR_EMUSAVE);
-            break;
+        if (!gblIsROMLoaded) break;
+        if (SaveEmulatorState())
+            SetStatusBarText(STRING_STATUSBAR_EMUSAVE);
+        break;
         case IDM_EMULATOR_LOAD:
         {
             EMULATORSETUP es;
@@ -1251,26 +1251,26 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_EMULATOR_TESTPLAYSETTING:
-            if (gblIsROMLoaded)
-            {
-                DialogBox(ghInst, __T("TESTPLAYSETTINGDLG"), hWnd, TestPlaySettingDlgProc);
-                if (g_hTbWnd) SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_EMULATOR_TESTPLAYSETTING, (WPARAM)MAKELONG(FALSE, 0));
-            }
-            break;
+        if (gblIsROMLoaded)
+        {
+            DialogBox(ghInst, __T("TESTPLAYSETTINGDLG"), hWnd, TestPlaySettingDlgProc);
+            if (g_hTbWnd) SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_EMULATOR_TESTPLAYSETTING, (WPARAM)MAKELONG(FALSE, 0));
+        }
+        break;
         case IDM_TOOL_OPTION:
-            OptionPropertySheet(hWnd, 0);
-            break;
+        OptionPropertySheet(hWnd, 0);
+        break;
         case IDM_TOOL_CUSTOMIZE:
-            DialogBox(ghInst, __T("CUSTOMIZEDLG"), hWnd, CustomizeDlgProc);
-            break;
+        DialogBox(ghInst, __T("CUSTOMIZEDLG"), hWnd, CustomizeDlgProc);
+        break;
         case IDM_WINDOW_CLOSEALL:
-            ShowWindow(ghWndMapView, SW_MINIMIZE);
-            ShowWindow(ghWndMapEdit, SW_MINIMIZE);
-            ShowWindow(GetEmuWndHandle(), SW_MINIMIZE);
-            break;
+        ShowWindow(ghWndMapView, SW_MINIMIZE);
+        ShowWindow(ghWndMapEdit, SW_MINIMIZE);
+        ShowWindow(GetEmuWndHandle(), SW_MINIMIZE);
+        break;
         case IDM_WINDOW_CASCADE:
-            SendMessage(ghWndMDIClient, WM_MDICASCADE, (WPARAM)0, (LPARAM)0);
-            break;
+        SendMessage(ghWndMDIClient, WM_MDICASCADE, (WPARAM)0, (LPARAM)0);
+        break;
         case IDM_WINDOW_NEXT:
         {
             HWND hCurWnd;
@@ -1290,8 +1290,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_HELP_VERSION:
-            DialogBox(ghInst, __T("VERSIONDLG"), hWnd, VersionDlgProc);
-            break;
+        DialogBox(ghInst, __T("VERSIONDLG"), hWnd, VersionDlgProc);
+        break;
         default:
         {
             if (gblIsROMLoaded) MapEditCommand(LOWORD(wParam));
@@ -1390,8 +1390,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         return 0;
     }
     case WM_CLOSE:
-        if (fr_GetDataChanged() && !ConfirmOnExit()) return 0;
-        break;
+    if (fr_GetDataChanged() && !ConfirmOnExit()) return 0;
+    break;
     case WM_DESTROY:
     {
         DWORD dwSetting;
