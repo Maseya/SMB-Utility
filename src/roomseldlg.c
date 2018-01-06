@@ -68,7 +68,6 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         TCHAR cBuf[5];
         LPROOMSELECT lpRoomSelect = (LPROOMSELECT)lParam;
 
-        //
         SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG_PTR)lpRoomSelect);
 
         GetValidRoomIDs(bRoomIDs);
@@ -80,11 +79,9 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
 
         if (lpRoomSelect->blDoInit)
         {
-            //
             _stprintf(cBuf, __T("%.2x"), lpRoomSelect->bInitRoomID & 0x7F);
             SetDlgItemText(hDlg, IDC_DATA, cBuf);
 
-            //
             _stprintf(cBuf, __T("%d"), lpRoomSelect->uInitPage);
             SetDlgItemText(hDlg, IDC_PAGEEDIT2, cBuf);
         }
