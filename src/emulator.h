@@ -60,8 +60,8 @@ typedef struct
     BYTE bBackObject2;//$744
     BYTE bLeftObjOfs[3];
     BYTE bLeftObjNum[3];
-    BYTE bLeftObjData1;//階段$734
-    BYTE bLeftObjData2[3];//キノコの島$737
+    BYTE bLeftObjData1;//階段$734 (stairs)
+    BYTE bLeftObjData2[3];//キノコの島$737 (mushroom island)
     BYTE bMapOfs;//$072C
     BYTE bMapPage;//$072A
     BYTE bMapPageFlag;//$072B
@@ -70,8 +70,8 @@ typedef struct
     BYTE bBadGuysPageFlag;//$073B
     BYTE bBadGuysPage2;//$071B
     BYTE bWorld;
-    BYTE bArea; //$075C 通常のもの
-    BYTE bArea2;//$0760 導入面も１つのエリアに数える
+    BYTE bArea;//$075C 通常のもの (written value for level number)
+    BYTE bArea2;//$0760 導入面も１つのエリアに数える (level number)
     BYTE bIsCleared;//0 -NO, 1 -YES
     BYTE bIsDifficult;
     BYTE bMarioSize;//$0756 0-large 1-small
@@ -84,8 +84,8 @@ typedef struct
     BYTE bRoomID;
     BYTE bPage;
     BYTE bWorld;
-    BYTE bArea;//$075C 通常のもの
-    BYTE bArea2;//$0760 導入面も１つのエリアに数える
+    BYTE bArea;//$075C 通常のもの (written value for level number)
+    BYTE bArea2;//$0760 導入面も１つのエリアに数える (level number)
     BYTE bIsCleared;//0 -NO, 1 -YES
     BYTE bIsDifficult;
     BYTE bMarioSize;//$0756 0-large 1-small
@@ -100,10 +100,7 @@ typedef struct
 
 typedef struct _tagNESCONTEXT
 {
-    //
     CONTEXTM6502 *psM6502;
-
-    //
     BYTE *pb6502CPUMemory;
 
     //PPU Reg
@@ -126,7 +123,6 @@ typedef struct _tagNESCONTEXT
     BYTE bSPRRAMAddr;
     BYTE *pbSPRRAM;
 
-    //
     BYTE bJoy1Read;
     BYTE bJoy2Read;
 
@@ -134,12 +130,12 @@ typedef struct _tagNESCONTEXT
     WORD wScanline;
 }NESCONTEXT, FAR *LPNESCONTEXT;
 
-//
 BOOL RegisterEmuWndClass(HINSTANCE hInstance);
 HWND CreateEmulatorWnd(HINSTANCE hInstance, HWND hWndMDIClient);
 BOOL PrepareVROMData(BYTE *pbSource);
 
-//ｴﾐｭﾚｰﾀ ｳｲﾝﾄﾞｳの基本制御
+// ｴﾐｭﾚｰﾀ ｳｲﾝﾄﾞｳの基本制御
+// Basic control of the emulator window
 void StartEmulator(void);
 void StopEmulator(void);
 BOOL SuspendEmulator(BOOL blState);//blState == TRUE ->suspend, blState == FALSE ->start
@@ -150,9 +146,6 @@ void ClearEmuBackBuffer();
 
 void SetEmuBackBufferPallete(LPBYTE lpPalData);
 
-//HPALETTE GetEmulatorPalette();
-//BOOL RestoreEmulatorPalette(HDC hdc);
-
 BOOL IsEmulatorRunning();
 
 BOOL IsEmulatorSavePresent();
@@ -160,7 +153,6 @@ void FreeEmulatorSaveBuffer();
 BOOL SaveEmulatorState();
 BOOL LoadEmulatorState(EMULATORSETUP* psEmuSetup);
 
-//
 void DrawAllScanline();
 void Run6502Ex(int iFrames);
 
@@ -175,23 +167,28 @@ LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 BOOL LoadEmuKeySetting();
 
 // キーボードのボタン WORD型の要素数EMULATOR_NUM_BUTTONSの配列
+// keyboard buttons array of elements of type WORD EMULATOR_NUM_BUTTONS array
 BOOL GetEmulatorVKeys(WORD aEmuKeys[]);
 BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[]);
 
 // ジョイスティックのボタン DWORD型の要素数EMULATOR_NUM_JOYBUTTONSの配列
+// Array of joystick buttons DWORD type elements EMULATOR_NUM_JOYBUTTONS
 BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[]);
 
 // 方向キーを含めたボタン数
+// number of buttons including direction key
 #define EMULATOR_NUM_BUTTONS 8
 
 // 方向キーを除いたジョイスティックでボタンの入力として受け取るA, B, Select, Startの4つ
+// Four A, B, Select, and Start received as button input with joystick excluding direction key
 #define EMULATOR_NUM_JOYBUTTONS 4
 
 // Win32 API joyGetPosEx()関数で取得可能なボタンの最大数
+// Win32 API Maximum number of buttons that can be obtained with joyGetPosEx() function
 #define JOYSTICK_MAX_BUTTONS 32
 
-//gblDemoRecordがTRUEの場合、ジョイステイックのルーチンから呼び出される。
-//emuutil.cに実装されている。
+// gblDemoRecordがTRUEの場合、ジョイステイックのルーチンから呼び出される。emuutil.cに実装されている。
+// If gblDemoRecord is TRUE, it is called from a joystick routine. It is implemented in emuutil.c.
 void DemoRecorderHandler(BYTE bJoy1Read, BYTE bRet);
 
 #define EMULATOR_NES_COLORS 64

@@ -14,6 +14,8 @@
 
    マップエディト関数
 
+   Map edit function
+
  *********************/
 void InitMapEditGlobalValue();
 
@@ -21,11 +23,9 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
 LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-//
 void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf);
 void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf);
 
-//
 void ObjectListSetCursor(int iIndex);
 void ObjectListClear();
 void ObjectListShowCursor();
