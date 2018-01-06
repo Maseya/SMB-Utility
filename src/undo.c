@@ -22,7 +22,8 @@ int iTrainer_undo = 0;
 TCHAR g_tcUndoName[UNDONAME_BUFFER_SIZE] = {0};
 BOOL g_blUndoEnable = FALSE;
 
-//キー入力に対してUNDOのためのコピーを保存するか
+// キー入力に対してUNDOのためのコピーを保存するか
+// Whether to save a copy for UNDO for key input
 BOOL g_blKeyCommandUndo = TRUE;
 
 void undoPrepare(LPCTSTR lpUndoName)
@@ -39,7 +40,6 @@ void undoPrepare(LPCTSTR lpUndoName)
     // store undo name
     wsprintf(g_tcUndoName, __T("%s"), lpUndoName);
 
-    //
     g_blUndoEnable = TRUE;
 }
 
@@ -56,19 +56,13 @@ void undoRestore()
         //Trainer Present?
         iTrainer = iTrainer_undo;
 
-        //
         g_tcUndoName[0] = __T('\0');
-
-        //
         g_blUndoEnable = FALSE;
-
-        //
         g_blKeyCommandUndo = TRUE;
-
-        //
         rm_UpdateGlobalRoomData();
 
-        //キャラロムの前処理
+        // キャラロムの前処理
+        // Pre-processing of CHR ROM
         PrepareVROMData(bCHRROM);
 
         if (!UpdateObjectViewCursole())
