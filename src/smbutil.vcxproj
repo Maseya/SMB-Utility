@@ -367,7 +367,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="document\todo.txt" />
-    <Text Include="misc\history.txt" />
+    <Text Include="misc\history.en-US.txt" />
+    <Text Include="misc\history.ja-JP.txt" />
     <Text Include="misc\readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

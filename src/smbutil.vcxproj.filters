@@ -238,13 +238,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="misc\history.txt">
-      <Filter>Document Files</Filter>
-    </Text>
     <Text Include="misc\readme.txt">
       <Filter>Document Files</Filter>
     </Text>
     <Text Include="document\todo.txt">
+      <Filter>Document Files</Filter>
+    </Text>
+    <Text Include="misc\history.ja-JP.txt">
+      <Filter>Document Files</Filter>
+    </Text>
+    <Text Include="misc\history.en-US.txt">
       <Filter>Document Files</Filter>
     </Text>
   </ItemGroup>
