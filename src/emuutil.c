@@ -4,6 +4,7 @@
 
   File: emuutil.c
   Description: ビューの表示・テストプレイのためのルーチン
+  Description: Routine for view display · test play
   History:
 
  ************************************************************************************/
@@ -79,21 +80,14 @@ void LoadTestPlaySettings()
     return;
 }
 
-/***********************************
-
-************************************/
 static void TestPlay(int iPage, LPPOINT lpPt)
 {
     TESTPLAYSETUPEX sTPS;
     EMULATORSETUP es;
 
-    //	BYTE bBuf[2];
-
-        //
     StopEmulator();
     ResetEmulator();
 
-    //
     memset(&es, 0, sizeof(EMULATORSETUP));
     es.pbPRGROM = bPRGROM + 0x8000;
     es.pbCHRROM = bCHRROM;
@@ -101,7 +95,6 @@ static void TestPlay(int iPage, LPPOINT lpPt)
 
     SetupEmulator(&es);
 
-    //
     memset(&sTPS, 0, sizeof(TESTPLAYSETUPEX));
 
     sTPS.bRoomID = GetRoomID();
@@ -111,11 +104,15 @@ static void TestPlay(int iPage, LPPOINT lpPt)
     sTPS.bArea = (BYTE)g_iArea;
     sTPS.bArea2 = (BYTE)g_iArea2;
 
-    //
     if (gbIsCleared)
     {
-        sTPS.bIsCleared = 0x01;//クリボー→メット
-        sTPS.bIsDifficult = 0x01;//5-3以降
+        // クリボー→メット
+        // Buzzy Beetle instead of Goomba
+        sTPS.bIsCleared = 0x01;
+
+        // 5-3以降
+        // 5-3 or later
+        sTPS.bIsDifficult = 0x01;
     }
 
     switch (giMarioState)
@@ -140,7 +137,6 @@ static void TestPlay(int iPage, LPPOINT lpPt)
     if (g_bInvincible)
         sTPS.bInvincible = 1;
 
-    //
     if (lpPt)
         sTPS.fPosXHack = TRUE;
     else
@@ -150,7 +146,6 @@ static void TestPlay(int iPage, LPPOINT lpPt)
     else if (g_fUseStartPosXHack)
         sTPS.bPosX = g_bStartPosX;
 
-    //
     if (lpPt)
         sTPS.fPosYHack = TRUE;
     else
@@ -181,9 +176,6 @@ void RunEmulatorTestPlayEx(int iPage, BOOL blHalfPoint, LPPOINT lpPt)
     TestPlay(iPage, lpPt);
 }
 
-/********************************
-
-*********************************/
 extern BOOL gblDemoRecord;
 
 //extern BOOL gblQuit;
@@ -197,7 +189,6 @@ static BYTE g_bDemoJoy;
 
 void InitDemoRecorder()
 {
-    //
     memset(g_bDemoJoyState, 0, DEMO_BUFFER_SIZE);
     memset(g_bDemoJoyTimer, 0, DEMO_BUFFER_SIZE);
     g_bDemoJoy = 0x00;
@@ -212,27 +203,20 @@ void DemoRecorderHandler(BYTE bJoy1Read, BYTE bRet)
 
     if (g_iDemoIndex >= (int)(DEMO_BUFFER_SIZE - 1) /*|| ((g_iDemoIndex!=-1) && !g_bDemoJoy)*/)
     {
-        //
         gblDemoRecord = FALSE;
 
-        //
         SetStatusBarText(STRING_CONFIRM_DEMORECORD2);
         MessageBeep(MB_OK);
 
-        //
-//		gblDataChanged = TRUE;
         fr_SetDataChanged(TRUE);
         undoPrepare(UNDONAME_TOOLDEMORECORDER);
 
-        //
         g_bDemoJoyState[g_iDemoIndex] = 0x00;
         g_bDemoJoyTimer[g_iDemoIndex] = 0xFF;
 
-        //
         memcpy(bPRGROM + DEMO_STATE_ADDRESS, g_bDemoJoyState, DEMO_BUFFER_SIZE);
         memcpy(bPRGROM + DEMO_TIMER_ADDRESS, g_bDemoJoyTimer, DEMO_BUFFER_SIZE);
 
-        //
         return;
     }
 
@@ -283,6 +267,8 @@ void DemoRecord()
     sTPS.MapAddress.word = GetMapAddress(bRoomID);
     sTPS.bRoomID = bRoomID;
 
+    // 初期背景色
+    // Initial background color
     GetMapHeadData(bRoomID, bMapHead);
     if ((bMapHead[0] & 0x07) & 0x04)
     {
@@ -293,10 +279,15 @@ void DemoRecord()
     {
         sTPS.bBackObject1 = (bMapHead[0] & 0x07);
         sTPS.bBackObject2 = 0x00;
-    }//初期背景色
+    }
 
-    sTPS.bBasicBlock = (bMapHead[1] & 0x0F);//初期基本背景ブロック
-    sTPS.bBackView = ((bMapHead[1] >> 4) & 0x03);//初期景色
+    // 初期基本背景ブロック
+    // Initial basic background block
+    sTPS.bBasicBlock = (bMapHead[1] & 0x0F);
+
+    // 初期景色
+    // Initial Landscape
+    sTPS.bBackView = ((bMapHead[1] >> 4) & 0x03);
 
     sTPS.bMarioSize = 0x01;
     sTPS.bMarioCap = 0x00;
@@ -325,9 +316,20 @@ void DemoRecord()
 
     マップに関連したメモリーのセットアップを行う。
 
+  Picture of the map of the page specified by iPage in the room designated by uRoomID
+  Prepare in the back buffer of the emulator window. to uRoomID
+  If you specify the GETADDRESS_CURRENT_EDITTING constant, you are currently editing
+  You have designated a room.
+
+  ● Auxiliary function ●
+    static void PrepareMapRelatedMemory(int iPage, int iMapType, MAPRELATEDMEMORY * psMRM)
+
+    Set up memory related to the map.
+
 **************************************************************/
 
-//エミュレータウインドウを操作するためのグローバル変数
+// エミュレータウインドウを操作するためのグローバル変数
+// Global variable for operating the emulator window
 extern HDC ghMemdcOffScreen;
 extern BOOL gblShowSprite;
 
@@ -341,30 +343,101 @@ typedef struct
     BYTE bExInfo;
 }MAPOBJLEFTINFO;
 
-//bExInfoメンバで有効な値
-#define EXINFO_STEPS    0x01//階段のための特殊処理
-#define EXINFO_ATHLETIC 0x02//アスレチック台とキラーのための特殊処理
+// bExInfoメンバで有効な値
+// Valid values ​​for bExInfo member
 
-MAPOBJLEFTINFO MapObjLeftInfo0B[] = {0x7F,0x0C,0x01,0x03,0x00,0x00,//逆L字型土管「固定」
-                                   0x70,0x10,0x00,0x00,0x0F,0x02,//アスレチック台（要注意）
-                                   0x70,0x20,0x00,0x00,0x0F,0x00,//横に並んだレンガブロック
-                                   0x70,0x30,0x00,0x00,0x0F,0x00,//横に並んだ壊せないブロック
-                                   0x70,0x40,0x00,0x00,0x0F,0x00,//横に並んだコインブロック
-                                   0x70,0x70,0x01,0x01,0x00,0x00};//土管「固定」
-MAPOBJLEFTINFO MapObjLeftInfoC[] = {0x70,0x00,0x00,0x00,0x0F,0x00,//谷
-                                  0x70,0x10,0x00,0x00,0x0F,0x00,//天秤リフトの横ロープ
-                                  0x70,0x20,0x00,0x00,0x0F,0x00,//つり橋
-                                  0x70,0x30,0x00,0x00,0x0F,0x00,//つり橋
-                                  0x70,0x40,0x00,0x00,0x0F,0x00,//つり橋
-                                  0x70,0x50,0x00,0x00,0x0F,0x00,//川
-                                  0x70,0x60,0x00,0x00,0x0F,0x00,//横に並んだ?ブロック（コイン、高さ3）
-                                  0x70,0x70,0x00,0x00,0x0F,0x00};//横に並んだ?ブロック（コイン、高さ7）
-MAPOBJLEFTINFO MapObjLeftInfoD[] = {0x7F,0x40,0x01,0x03,0x00,0x00,
-                                  0x7F,0x44,0x01,0x0C,0x00,0x00};//クッパの橋「固定」
-MAPOBJLEFTINFO MapObjLeftInfoF[] = {0x70,0x20,0x01,0x04,0x00,0x00,//城「固定」
-                                  0x78,0x30,0x00,0x00,0x07,0x01,//階段（可変）
-                                  0x78,0x38,0x01,0x08,0x00,0x01,//階段「固定」
-                                  0x70,0x40,0x01,0x03,0x00,0x00};//逆L字型
+// 階段のための特殊処理
+// Special handling for stairs
+#define EXINFO_STEPS    0x01
+
+// アスレチック台とキラーのための特殊処理
+// Special treatment for athletic base and killer
+#define EXINFO_ATHLETIC 0x02
+
+MAPOBJLEFTINFO MapObjLeftInfo0B[] = {
+
+    // 逆L字型土管「固定」
+    // Inverted L-shaped clay pipe "fixed"
+    0x7F,0x0C,0x01,0x03,0x00,0x00,
+
+    // アスレチック台（要注意）
+    // Athletic stand (be careful)
+    0x70,0x10,0x00,0x00,0x0F,0x02,
+
+    // 横に並んだレンガブロック
+    // side by side brick blocks
+    0x70,0x20,0x00,0x00,0x0F,0x00,
+
+    // 横に並んだ壊せないブロック
+    // Unbreakable block side by side
+    0x70,0x30,0x00,0x00,0x0F,0x00,
+
+    // 横に並んだコインブロック
+    // side by side coin block
+    0x70,0x40,0x00,0x00,0x0F,0x00,
+
+    // 土管「固定」
+    // Clay pipe "fixed"
+    0x70,0x70,0x01,0x01,0x00,0x00};
+
+MAPOBJLEFTINFO MapObjLeftInfoC[] = {
+
+    // 谷
+    // Hole
+    0x70,0x00,0x00,0x00,0x0F,0x00,
+
+    // 天秤リフトの横ロープ
+    // Side rope of balance lever lift
+    0x70,0x10,0x00,0x00,0x0F,0x00,
+
+    // つり橋
+    // suspension bridge
+    0x70,0x20,0x00,0x00,0x0F,0x00,
+
+    // つり橋
+    // suspension bridge
+    0x70,0x30,0x00,0x00,0x0F,0x00,
+
+    // つり橋
+    // suspension bridge
+    0x70,0x40,0x00,0x00,0x0F,0x00,
+
+    // 川
+    // River
+    0x70,0x50,0x00,0x00,0x0F,0x00,
+
+    // 横に並んだ?ブロック（コイン、高さ3）
+    // Where are you side by side? Block (coin, height 3)
+    0x70,0x60,0x00,0x00,0x0F,0x00,
+
+    // 横に並んだ?ブロック（コイン、高さ7）
+    // Were side by side? Block (coin, height 7)
+    0x70,0x70,0x00,0x00,0x0F,0x00};
+
+MAPOBJLEFTINFO MapObjLeftInfoD[] = {
+    0x7F,0x40,0x01,0x03,0x00,0x00,
+
+    // クッパの橋「固定」
+    // Bowser's bridge "fixed"
+    0x7F,0x44,0x01,0x0C,0x00,0x00};
+
+MAPOBJLEFTINFO MapObjLeftInfoF[] = {
+
+    // 城「固定」
+    // Castle "fixed"
+    0x70,0x20,0x01,0x04,0x00,0x00,
+
+    // 階段（可変）
+    // stairs (variable)
+    0x78,0x30,0x00,0x00,0x07,0x01,
+
+    // 階段「固定」
+    // stairs "fixed"
+    0x78,0x38,0x01,0x08,0x00,0x01,
+
+    // 逆L字型
+    // Inverted L shape
+    0x70,0x40,0x01,0x03,0x00,0x00};
 
 int GetNumMapObjLeftInfoC()
 {
@@ -391,8 +464,14 @@ typedef struct
     BYTE bBackObject2;
     BYTE bLeftObjNum[3];
     BYTE bLeftObjOfs[3];
-    BYTE bLeftObjData1;//階段
-    BYTE bLeftObjData2[3];//きのこの島の茎
+
+    // 階段
+    // Stairs
+    BYTE bLeftObjData1;
+
+    // きのこの島の茎
+    // stem of mushrooms island
+    BYTE bLeftObjData2[3];
     BYTE bMapOfs;
     BYTE bMapPageFlag;
 }MAPRELATEDMEMORY;
@@ -412,7 +491,8 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID, int iPage, int iMapType, MAPRE
 
     if (!MapSeekFirst(&ObjSeek, uRoomID)) return TRUE;
     {
-        //0ページのマップデータがない場合に0ページの表示を要求された場合
+        // 0ページのマップデータがない場合に0ページの表示を要求された場合
+        // In case there is no map data of page 0, when display of 0 page is requested
         if (iPage == 0 && (ObjSeek.pbData[1] & 0x80)) return TRUE;
 
         for (;;)
@@ -421,7 +501,8 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID, int iPage, int iMapType, MAPRE
             {
                 blRet = TRUE;
 
-                //ページ送りコマンド
+                // ページ送りコマンド
+                // Page advance command
                 if (((ObjSeek.pbData[0] & 0x0F) == 0x0D) && ((ObjSeek.pbData[1] & 0x40) == 0x00) && ObjSeek.dwPage == (DWORD)iPage)
                     psMRM->bMapPageFlag = 0x00;
                 else
@@ -429,7 +510,6 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID, int iPage, int iMapType, MAPRE
                 break;
             }
 
-            //
             if ((ObjSeek.pbData[0] & 0x0F) == 0x0E)
             {
                 if (ObjSeek.pbData[1] & 0x40)
@@ -442,14 +522,17 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID, int iPage, int iMapType, MAPRE
                     else
                     {
                         psMRM->bBackObject1 = (ObjSeek.pbData[1] & 0x07);
-
-                        //					psMRM->bBackObject2=0x00;
                     }
                 }
                 else
                 {
-                    psMRM->bBasicBlock = (ObjSeek.pbData[1] & 0x0F);//初期基本背景ブロック
-                    psMRM->bBackView = ((ObjSeek.pbData[1] >> 4) & 0x03);//初期景色
+                    // 初期基本背景ブロック
+                    // Initial basic background block
+                    psMRM->bBasicBlock = (ObjSeek.pbData[1] & 0x0F);
+
+                    // 初期景色
+                    // Initial Landscape
+                    psMRM->bBackView = ((ObjSeek.pbData[1] >> 4) & 0x03);
                 }
             }
             else if ((ObjSeek.dwPage + 1) == (DWORD)iPage)
@@ -480,7 +563,9 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID, int iPage, int iMapType, MAPRE
                         iLeftObjNum = (int)(((ObjSeek.pbData[0] >> 4) & 0x0F) + iBasicSize - 0x10);
 
                         if (iLeftObjNum >= 0 && !((psMapObjLeftInfo[n].bExInfo&EXINFO_ATHLETIC) && iMapType == 2))
-                        {//アスレチックオブジェクトで、大砲面ではない
+                        {
+                            // アスレチックオブジェクトで、大砲面ではない
+                            // Athletic object, not artillery
                             psMRM->bLeftObjNum[iLeftDataNum] = (BYTE)iLeftObjNum;
                             psMRM->bLeftObjOfs[iLeftDataNum] = (BYTE)(ObjSeek.dwOfs);
                             if (psMapObjLeftInfo[n].bExInfo&EXINFO_STEPS)
@@ -489,16 +574,16 @@ static BOOL PrepareMapRelatedMemory(UINT uRoomID, int iPage, int iMapType, MAPRE
                                 psMRM->bLeftObjData2[iLeftDataNum] = ((ObjSeek.pbData[1] & psMapObjLeftInfo[n].bSizeMask) / 2);
                             iLeftDataNum--;
                         }
-                    }/* if */
-                }/* if */
-            }/* else if */
+                    }
+                }
+            }
 
             if (!MapSeekNext(&ObjSeek))
             {
                 break;
             }
-        }/* for */
-    }/* if */
+        }
+    }
 
     psMRM->bMapOfs = (BYTE)ObjSeek.dwOfs;
 
@@ -540,6 +625,8 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
 
     sTPS.bPage = iPage;
 
+    // 初期背景色
+    // initial background color
     memset(&sMRM, 0x00, sizeof(MAPRELATEDMEMORY));
     GetMapHeadData(uRoomID, bMapHead);
     if ((bMapHead[0] & 0x07) & 0x04)
@@ -551,10 +638,15 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
     {
         sMRM.bBackObject1 = (bMapHead[0] & 0x07);
         sMRM.bBackObject2 = 0x00;
-    }//初期背景色
+    }
 
-    sMRM.bBasicBlock = (bMapHead[1] & 0x0F);//初期基本背景ブロック
-    sMRM.bBackView = ((bMapHead[1] >> 4) & 0x03);//初期景色
+    // 初期基本背景ブロック
+    // Initial basic background block
+    sMRM.bBasicBlock = (bMapHead[1] & 0x0F);
+
+    // 初期景色
+    // Initial Landscape
+    sMRM.bBackView = ((bMapHead[1] >> 4) & 0x03);
 
     PrepareMapRelatedMemory(uRoomID, iPage, (bMapHead[1] >> 6) & 0x03, &sMRM);
 
@@ -564,8 +656,14 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
     sTPS.bBackView = sMRM.bBackView;
     memcpy(sTPS.bLeftObjNum, sMRM.bLeftObjNum, 3);
     memcpy(sTPS.bLeftObjOfs, sMRM.bLeftObjOfs, 3);
-    sTPS.bLeftObjData1 = sMRM.bLeftObjData1;//階段
-    memcpy(sTPS.bLeftObjData2, sMRM.bLeftObjData2, 3);//きのこの島の茎
+
+    // 階段
+    // Stairs
+    sTPS.bLeftObjData1 = sMRM.bLeftObjData1;
+
+    // きのこの島の茎
+    // stem of mushrooms island
+    memcpy(sTPS.bLeftObjData2, sMRM.bLeftObjData2, 3);
 
     sTPS.bMapOfs = sMRM.bMapOfs;
     sTPS.bMapPageFlag = sMRM.bMapPageFlag;
@@ -578,7 +676,9 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage)
 
     TestPlaySetup(&sTPS);
 
-    Run6502Ex(0x1280);//橙色の土管、夜に注意,0x1280
+    // 橙色の土管、夜に注意,0x1280
+    // Old clay pipe, attention to the night, 0x1280
+    Run6502Ex(0x1280);
 
     SetPrepareBadGuysSpriteInfoStruct(sTPS.bRoomID, sTPS.bWorld, sTPS.bArea, &sPreBgSprInfo);
     PrepareBadGuysSpriteInfo(&sPreBgSprInfo);
@@ -597,6 +697,11 @@ void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int 
 
   エミュレータウインドウのバックバッファーからhDCDestで指定され
   たデバイスコンテキストへBitBltを行う
+
+  blIsStretch TRUE ... iWidth, iHeight is valid. FALSE ... Ignore iWidth, iHeight
+
+  It is specified by hDCDest from the back buffer of the emulator window
+  BitBlt to the device context
 
 **************************************************************/
 void InstallEmulatorPalette(HDC hdc)
@@ -636,6 +741,8 @@ void TransferFromEmuBackBuffer(HDC hDCDest, int iDestX, int iDestY, int iWidth, 
   void RunEmulatorNormal()
 
   エミュレータの通常起動を行う。
+
+  Perform normal startup of the emulator.
 
 ***************************************************************/
 void RunEmulatorNormal()
@@ -879,7 +986,6 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
         if (IsDlgButtonChecked(hDlg, IDC_ISCLEARED) == BST_CHECKED)
             gbIsCleared = 0x01;
 
-        //
         iSPH = SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
         if (iSPH == CB_ERR)
             return FALSE;
@@ -906,7 +1012,6 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
         }
         g_fUseStartPosXHack = iSPH;
 
-        //
         iSPH = SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
         if (iSPH == CB_ERR)
             return FALSE;
