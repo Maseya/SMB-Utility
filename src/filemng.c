@@ -4,12 +4,14 @@
 
   File: filemng.h
   Description: ファイルのロード。セーブを行うルーチン
+  Description: Load file. Save routine
   History:
 
  ************************************************************************************/
 #include "smbutil.h"
 
  // 外部エディタ変更対応
+ // Supports external editor change
 FILETIME gFileTime;
 BOOL gblFileCmpEnable;
 extern TCHAR gFilePath[MAX_PATH];
@@ -45,13 +47,21 @@ void SetROMFileTime()
 //　　同じ…TRUE
 //　違う…FALSE
 //  を返す。
+// Last update time of the file at the time of loading(re)
+// same ... TRUE
+// different ... FALSE
+//  return it.
 BOOL CheckROMFileTime()
 {
     FILETIME TmpFileTime;
 
-    if (!gblFileCmpEnable) return TRUE;//失敗
+    // 失敗
+    // Failure
+    if (!gblFileCmpEnable) return TRUE;
 
-    if (!GetFileLastWrite(&TmpFileTime)) return TRUE;//失敗
+    //失敗
+    // Failure
+    if (!GetFileLastWrite(&TmpFileTime)) return TRUE;
 
     if (!memcmp(&TmpFileTime, &gFileTime, sizeof(FILETIME))) return TRUE;
 
@@ -91,7 +101,6 @@ BOOL LoadROM(LPTSTR pFilename)
 
     fclose(fp);
 
-    //
     gblIsROMLoaded = TRUE;
     SetROMFileTime();
 
@@ -111,8 +120,6 @@ BOOL SaveAsFile(LPTSTR pFilename)
 
     fclose(fp);
 
-    //
-//	gblDataChanged=FALSE;
     fr_SetDataChanged(FALSE);
     SetROMFileTime();
 
