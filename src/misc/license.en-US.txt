@@ -1,0 +1,9 @@
+﻿-------------------------------------------------------
+About SMB Utility 1.08 source code
+-------------------------------------------------------
+· Handling of source code
+As far as the license of the "Multi - 6502 CPU emulator" used internally is concerned, free distribution, modification, duplication may be allowed only for non - commercial use. However, modifying embedding malicious code or distributing game ROM file bundled is strictly prohibited. The copyright shall be in the author (MKS). In addition, the author shall not be obligated to compensate for any damage caused by using it.
+
+In compiling
+· I am using Visual C ++ 6.0.
+· NASM (http://www.nasm.us/) is required for assembling "Multi-6502 CPU emulator". Copy nasm.exe to the bin directory and build it.
