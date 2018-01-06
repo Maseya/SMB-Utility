@@ -366,10 +366,12 @@
     <Image Include="image\ygauge_img.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="document\todo.txt" />
+    <Text Include="document\todo.en-US.txt" />
+    <Text Include="document\todo.ja-JP.txt" />
     <Text Include="misc\history.en-US.txt" />
     <Text Include="misc\history.ja-JP.txt" />
-    <Text Include="misc\readme.txt" />
+    <Text Include="misc\readme.en-US.txt" />
+    <Text Include="misc\readme.ja-JP.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
