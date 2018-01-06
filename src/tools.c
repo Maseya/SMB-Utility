@@ -15,11 +15,14 @@
 #include "objview.h"
 #include "tools.h"
 
- //プロパティシートの戻り値
+ // プロパティシートの戻り値
+ // Property sheet return value
 BOOL g_blOK;
 /****************
 
   文字列の編集
+
+  Edit String
 
 *****************/
 typedef struct
@@ -78,7 +81,6 @@ static TCHAR ConvertData2Char(BYTE bData)
     case 0x23:cRet = __T('Z'); break;
     case 0x24:cRet = __T(' '); break;
 
-        //
     case 0x28:cRet = __T('-'); break;
     case 0x29:cRet = __T('*'); break;
     case 0x2B:cRet = __T('!'); break;
@@ -134,7 +136,6 @@ static BYTE ConvertChr2Data(TCHAR cChar, BOOL *blUnknown)
     case __T('z'):bRet = 0x23; break;
     case __T(' '):bRet = 0x24; break;
 
-        //
     case __T('-'):bRet = 0x28; break;
     case __T('*'):bRet = 0x29; break;
     case __T('!'):bRet = 0x2B; break;
@@ -227,7 +228,6 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         int i;
         TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
 
-        //
         sblWritten = FALSE;
 
         memset(cBuf, 0, SMB_STRING_MAXCHARS + 1);
@@ -243,7 +243,6 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     case WM_COMMAND:
     switch (LOWORD(wParam))
     {
-        //			   case IDOK:
     case IDCANCEL:
     EndDialog(hDlg, TRUE);
     return TRUE;
@@ -268,7 +267,7 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     }
     }
     case BN_CLICKED:
-    if (LOWORD(wParam) == IDOK)//IDC_STRINGWRITE)
+    if (LOWORD(wParam) == IDOK)
     {
         LRESULT iSel = 0;
         TCHAR cBuf[SMB_STRING_MAXCHARS + 1];
@@ -285,7 +284,6 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         }
         ChangeString(iSel, cBuf);
 
-        //					   gblDataChanged=TRUE;
         fr_SetDataChanged(TRUE);
         return TRUE;
     }
@@ -296,6 +294,8 @@ LRESULT CALLBACK StringEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
 /********************
 
   ループコマンド
+
+  Loop command
 
 *********************/
 
@@ -362,7 +362,6 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 
         undoPrepare(UNDONAME_TOOLLOOPBIN);
 
-        //					   gblDataChanged=TRUE;
         fr_SetDataChanged(TRUE);
 
         memcpy(bPRGROM + SMBADDRESS_LOOP_WORLD, bTmp[0], 11);
@@ -387,6 +386,8 @@ LRESULT CALLBACK LoopEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 /*******************
 
   ゲーム全般の設定
+
+  General game settings
 
 ********************/
 
@@ -414,15 +415,18 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
         BYTE bNewFlower[] = "\xEA\xEA\xEA\xEA\xEA";
         int n, i;
 
-        //残りマリオの設定
+        // 残りマリオの設定
+        // Remaining Mario settings
         SendDlgItemMessage(hDlg, IDC_MARIOLEFTSPIN, UDM_SETRANGE, 0, MAKEWPARAM(128, 1));
         SetDlgItemInt(hDlg, IDC_MARIOLEFT, bPRGROM[SMB_MARIO_LEFT] + 1, FALSE);
 
-        //パックンフラワー
+        // パックンフラワー
+        // Fire Flower
         if (!memcmp(bPRGROM + SMB_FLOWER, bNewFlower, 5))
             CheckDlgButton(hDlg, IDC_FLOWER, BST_CHECKED);
 
-        //ポールのグラフィックス
+        // ポールのグラフィックス
+        // Pole GFX
         n = GetPoleGfxDatas() - 1;
         for (i = 0; i < GetPoleGfxDatas(); i++)
         {
@@ -431,7 +435,6 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
         }
         SendDlgItemMessage(hDlg, IDC_POLEGFX, CB_SETCURSEL, n, 0);
 
-        //
         for (i = 0; i < 10; i++)
         {
             _stprintf(cBuf, __T("%d"), i * 100);
@@ -483,7 +486,8 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
                 g_blOK = TRUE;
             }
 
-            //残りマリオ
+            // 残りマリオ
+            // Remaining Mario
             iRet = GetDlgItemInt(hDlg, IDC_MARIOLEFT, &blSuccess, FALSE) - 1;
             if (!blSuccess || (iRet < 0 || iRet>127))
             {
@@ -492,21 +496,25 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
             }
             bPRGROM[SMB_MARIO_LEFT] = (BYTE)iRet;
 
-            //パックンフラワー
+            // パックンフラワー
+            // Fire Flower
             if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_FLOWER))
                 memset(bPRGROM + SMB_FLOWER, 0xEA, 5);
             else if (!memcmp(bPRGROM + SMB_FLOWER, bNewFlower, 5))
                 memcpy(bPRGROM + SMB_FLOWER, bFlower, 5);
 
-            //ポールのグラフィックス
+            // ポールのグラフィックス
+            // Pole GFX
             iPoleGfx = SendDlgItemMessage(hDlg, IDC_POLEGFX, CB_GETCURSEL, 0, 0);
             if (iPoleGfx == CB_ERR)return TRUE;
-            if (iPoleGfx != GetPoleGfxDatas() - 1)//その他でなければ…
+
+            // その他でなければ…
+            // Otherwise ...
+            if (iPoleGfx != GetPoleGfxDatas() - 1)
             {
                 memcpy(bPRGROM + SMB_POLEGFX, PoleGfxInfo[iPoleGfx].bGfxData, 4);
             }
 
-            //
             iRet = SendDlgItemMessage(hDlg, IDC_TIME400, CB_GETCURSEL, 0, 0);
             if (iRet != 10 && iRet != CB_ERR) bPRGROM[SMB_TIME] = (BYTE)iRet;
             iRet = SendDlgItemMessage(hDlg, IDC_TIME300, CB_GETCURSEL, 0, 0);
@@ -523,8 +531,6 @@ LRESULT CALLBACK GameSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
     return FALSE;
 }
 
-//
-
 LRESULT CALLBACK GameSetting1upDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static BYTE lpbBuf[SMB_NUM_WORLDS];
@@ -537,12 +543,12 @@ LRESULT CALLBACK GameSetting1upDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         TCHAR cBuf[20];
         ADDRESSDATA ad1up;
 
-        //lpbBuf=Malloc(GetNumWorlds());
         if (lpbBuf)
         {
             ADDRESSDATA_LOAD(ad1up, SMB_COINSFOR1UP_ADDRESS);
 
-            //１upｷﾉｺのためのｺｲﾝの枚数
+            // １upｷﾉｺのためのｺｲﾝの枚数
+            // Number of coins for 1up mushrooms
             memcpy(lpbBuf, bPRGROM + ADDRESSDATA_GET(ad1up), GetNumWorlds());
 
             for (n = 0; n < GetNumWorlds(); n++)
@@ -553,7 +559,6 @@ LRESULT CALLBACK GameSetting1upDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             SendDlgItemMessage(hDlg, IDC_WORLD, CB_SETCURSEL, 0, 0);
             iCurSel = 0;
 
-            //
             SendDlgItemMessage(hDlg, IDC_COINSFOR1UPSPIN, UDM_SETRANGE, 0, MAKEWPARAM(255, 0));
             SetDlgItemInt(hDlg, IDC_COINSFOR1UP, lpbBuf[iCurSel], FALSE);
         }
@@ -611,9 +616,6 @@ LRESULT CALLBACK GameSetting1upDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
                 }
                 ADDRESSDATA_LOAD(ad1up, SMB_COINSFOR1UP_ADDRESS);
                 memcpy(bPRGROM + ADDRESSDATA_GET(ad1up), lpbBuf, GetNumWorlds());
-
-                //Mfree(lpbBuf);
-                //lpbBuf=NULL;
             }
 
             return TRUE;
@@ -632,7 +634,8 @@ LRESULT CALLBACK GameSettingWarpZoneDlgProc(HWND hDlg, UINT message, WPARAM wPar
     {
     case WM_INITDIALOG:
     {
-        //ワープゾーン
+        // ワープゾーン
+        // Warp zone
         SendDlgItemMessage(hDlg, IDC_WARPASPIN1, UDM_SETRANGE, 0, MAKEWPARAM(255, 0));
         SendDlgItemMessage(hDlg, IDC_WARPASPIN2, UDM_SETRANGE, 0, MAKEWPARAM(255, 0));
         SendDlgItemMessage(hDlg, IDC_WARPASPIN3, UDM_SETRANGE, 0, MAKEWPARAM(255, 0));
@@ -653,7 +656,8 @@ LRESULT CALLBACK GameSettingWarpZoneDlgProc(HWND hDlg, UINT message, WPARAM wPar
         SetDlgItemInt(hDlg, IDC_WARPC2, bPRGROM[SMB_WARPZONE_WORLD_ADDRESS + 9], FALSE);
         SetDlgItemInt(hDlg, IDC_WARPC3, bPRGROM[SMB_WARPZONE_WORLD_ADDRESS + 10], FALSE);
 
-        //プロパテイシートを中央に持ってくる
+        // プロパテイシートを中央に持ってくる
+        // Bring the property sheet to the center
         CenterPropatySheet(hDlg);
 
         return TRUE;
@@ -720,10 +724,10 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
 
         ADDRESSDATA_LOAD(adKoopa, SMB_KOOPAREALCHARCTER_ADDRESS);
 
-        //lpbBuf = Malloc(GetNumWorlds());
         if (lpbBuf)
         {
-            //１upｷﾉｺのためのｺｲﾝの枚数
+            // １upｷﾉｺのためのｺｲﾝの枚数
+            // Number of coins for 1up mushrooms
             memcpy(lpbBuf, bPRGROM + ADDRESSDATA_GET(adKoopa), GetNumWorlds());
 
             for (n = 0; n < GetNumWorlds(); n++)
@@ -734,7 +738,6 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             SendDlgItemMessage(hDlg, IDC_KOOPAWORLD, CB_SETCURSEL, 0, 0);
             iCurSel = 0;
 
-            //
             for (n = 0; n < 0x40; n++)
             {
                 SendDlgItemMessage(hDlg, IDC_KOOPA, CB_ADDSTRING, 0, (LPARAM)smbBadGuysInfo[n].Name);
@@ -742,7 +745,6 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             SendDlgItemMessage(hDlg, IDC_KOOPA, CB_SETCURSEL, lpbBuf[iCurSel], 0);
         }
 
-        //
         SendDlgItemMessage(hDlg, IDC_WORLDSPIN, UDM_SETRANGE, 0, MAKEWPARAM(256, 1));
         SetDlgItemInt(hDlg, IDC_WORLD, bPRGROM[SMB_KOOPAHAMMER] + 1, FALSE);
 
@@ -813,9 +815,6 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             {
                 ADDRESSDATA_LOAD(adKoopa, SMB_KOOPAREALCHARCTER_ADDRESS);
                 memcpy(bPRGROM + ADDRESSDATA_GET(adKoopa), lpbBuf, GetNumWorlds());
-
-                //Mfree(lpbBuf);
-                //lpbBuf = NULL;
             }
 
             return TRUE;
@@ -934,11 +933,8 @@ void GameSettingPropertySheet(HWND hwndOwner)
 
     if (g_blOK)
     {
-        //		gblDataChanged=TRUE;
         fr_SetDataChanged(TRUE);
         UpdateObjectView(0);
-
-        //	UpdateObjectList(0);
     }
 
     return;

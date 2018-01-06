@@ -19,6 +19,8 @@
 
    ユーザー定義メッセージ
 
+   User defined message
+
  *************************/
 #define WM_LVSELCHANGE (WM_USER + 100)
 
@@ -26,18 +28,24 @@
 
    グローバル変数
 
+   Global variables
+
  *******************/
 
- //リストビューのハンドル
+ // リストビューのハンドル
+ // List view handle
 HWND g_hWndListView;
 
 /***************
 
 補助関数
 
+Auxiliary function
+
 ***************/
 
-//リストボックス
+// リストボックス
+// list box
 void ObjectListClear()
 {
     ListView_DeleteAllItems(g_hWndListView);
@@ -57,7 +65,8 @@ void ObjectListShowCursor()
     ListView_EnsureVisible(g_hWndListView, GetSelectedIndex(), FALSE);
 }
 
-//グローバルな変数の初期化
+// グローバルな変数の初期化
+// Initialization of global variables
 void InitMapEditGlobalValue()
 {
     SetSelectedItem(0, TRUE);
@@ -66,6 +75,8 @@ void InitMapEditGlobalValue()
 /*************************************************
 
   マップの情報の表示
+
+  Display information on the map
 
 ***************************************************/
 #include "objdata.h"
@@ -104,6 +115,8 @@ void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
 
         // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
         // 1と4,5は違う処理
+        // Depending on the convenience of the object's database (1, 4, 5, because there is one additional element)
+        // 1, 4 and 5 are different processes
         case 1:
         wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
         break;
@@ -154,13 +167,15 @@ void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
     }
     else
     {
-        if (lpbBuf[1] & 0x08)//土管
+        // 土管
+        // Pipe
+        if (lpbBuf[1] & 0x08)
             wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
         else
             wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
     }
     break;
-    }/* switch */
+    }
 }
 
 static BOOL smbMapCommand(BOOL blQuietUpdate)
@@ -175,7 +190,8 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
             LPTSTR cBuf = GetTempStringBuffer();
             LVITEM lvItem;
 
-            //バイナリ
+            // バイナリ
+            // binary
             wsprintf(cBuf, __T("%.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1]);
 
             if (blQuietUpdate)
@@ -205,22 +221,25 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
                 ListView_InsertItem(g_hWndListView, &lvItem);
             }
 
-            //ページ
+            // ページ
+            // page
             wsprintf(cBuf, __T("%d"), ObjSeek.dwPage);
             ListView_SetItemText(g_hWndListView, n, 1, cBuf);
 
-            //位置
+            // 位置
+            // position
             wsprintf(cBuf, __T("(%d,%d)"), GetMapXPos(ObjSeek.pbData), GetMapYPos(ObjSeek.pbData));
             ListView_SetItemText(g_hWndListView, n, 2, cBuf);
 
-            //種類
+            // 種類
+            // type
             FormatMapString(ObjSeek.pbData, cBuf);
             ListView_SetItemText(g_hWndListView, n, 3, cBuf);
 
         CANCEL_SET_ITEM_TEXT:
             if (!MapSeekNext(&ObjSeek)) break;
-        }/* for */
-    }/* if */
+        }
+    }
 
     return TRUE;
 }
@@ -229,6 +248,8 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 
   敵の情報の表示
 
+  Display enemy information
+
 ***************************************************/
 void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
 {
@@ -236,16 +257,24 @@ void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
 
     switch (lpbBuf[0] & 0x0F)
     {
-    case 0x0E://ルーム間移動の命令（３バイト）
+        // ルーム間移動の命令（３バイト）
+        // Room transfer instruction (3 bytes)
+    case 0x0E:
     {
         LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE};
         wsprintf(lpszBuf, STRING_OBJLIST_ROOM, lpbBuf[1] & 0x7F, lpAttr[(lpbBuf[1] >> 5) & 0x03], ((lpbBuf[2] >> 5) & 0x07) + 1, lpbBuf[2] & 0x1F);
     }
     break;
-    case 0x0F://送りコマンド（２バイト）
+
+    // 送りコマンド（２バイト）
+    // Feed command (2 bytes)
+    case 0x0F:
     wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1] & 0x3F);
     break;
-    default://（敵キャラコマンド）
+    default:
+
+    //（敵キャラコマンド）
+    // (Enemy character command)
     {
         wsprintf(lpszBuf, __T("%s%s"), smbBadGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
     }
@@ -263,7 +292,8 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
             LPTSTR cBuf = GetTempStringBuffer();
             LVITEM lvItem;
 
-            //バイナリ
+            // バイナリ
+            // binary
             if (ObjSeek.dwObjLen == 2)
                 wsprintf(cBuf, __T("%.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1]);
             else
@@ -298,27 +328,32 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
                 ListView_InsertItem(g_hWndListView, &lvItem);
             }
 
-            //ページ
+            // ページ
+            // page
             wsprintf(cBuf, __T("%d"), ObjSeek.dwPage);
             ListView_SetItemText(g_hWndListView, n, 1, cBuf);
 
-            //位置
+            // 位置
+            // position
             wsprintf(cBuf, __T("(%d,%d)"), GetBadGuysXPos(ObjSeek.pbData), GetBadGuysYPos(ObjSeek.pbData));
             ListView_SetItemText(g_hWndListView, n, 2, cBuf);
 
-            //種類
+            // 種類
+            // type
             FormatBadGuysString(ObjSeek.pbData, cBuf);
             ListView_SetItemText(g_hWndListView, n, 3, cBuf);
         CANCEL_SET_ITEM_TEXT:
             if (!BadGuysSeekNext(&ObjSeek)) break;
-        }/* for */
-    }/* if */
+        }
+    }
     return TRUE;
 }
 
 /*************************************************
 
   リストボックスの更新
+
+  Update list box
 
 ***************************************************/
 void UpdateObjectList(DWORD dwUpdateFlag)
@@ -343,6 +378,8 @@ void UpdateObjectList(DWORD dwUpdateFlag)
 /**************************
 
   マップの設定の変更
+
+  Change map settings
 
 ***************************/
 
@@ -373,13 +410,15 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         BYTE bBuf[2];
         LPTSTR AttrName[] = {STRING_SEA,STRING_SKY,STRING_UNDERGROUND,STRING_CASTLE};
 
-        //ルームの属性
+        // ルームの属性
+        // Room attributes
         for (n = 0; n < 4; n++)
             SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_ADDSTRING, 0, (LPARAM)AttrName[n]);
         bRoomID = GetRoomID();
         SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_SETCURSEL, (bRoomID >> 5) & 0x03, 0);
 
-        //途中からのページ
+        // 途中からのページ
+        // Page from halfway
         for (n = 0; n < 16; n++)
         {
             TCHAR cTmp[3];
@@ -449,7 +488,8 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
         ChangeRoomAttribute(GetRoomID(), iNewAttr & 0x03);
 
-        //途中から
+        // 途中から
+        // On the way
         if (!rm_IsSubRoom())
         {
             BYTE bTmp;
@@ -457,7 +497,6 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             BYTE bSel;
             ADDRESSDATA adRestartPageAddress;
 
-            //memcpy(&adRestartPageAddress.byte.bLower,bPRGROM+RESTART_PAGE_ADDRESS,2);
             ADDRESSDATA_LOAD(adRestartPageAddress, RESTART_PAGE_ADDRESS);
 
             bSel = (BYTE)SendDlgItemMessage(hDlg, IDC_PAGE, CB_GETCURSEL, 0, 0);
@@ -468,16 +507,15 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             bTmp &= bMask;
             bTmp |= bSel;
 
-            if (g_iWorld >= 0 && g_iWorld < GetNumWorlds())//ROMの保護のために絶対に必要
+            // ROMの保護のために絶対に必要
+            // Absolutely necessary for ROM protection
+            if (g_iWorld >= 0 && g_iWorld < GetNumWorlds())
                 bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)] = bTmp;
         }
 
-        //					   gblDataChanged = TRUE;
         fr_SetDataChanged(TRUE);
 
         UpdateObjectList(0);
-
-        //RefreshWindowTitle();
         UpdateObjectView(0);
         UpdateStatusBarRoomInfoText(NULL);
     }
@@ -488,10 +526,6 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
     }
     return FALSE;
 }
-
-/**********************
-
-***********************/
 
 static void ResizeListView(HWND hwndListView, HWND hwndParent)
 {
@@ -523,9 +557,6 @@ static HWND CreateListView(HWND hwndParent)
                                   NULL);                     // no extra data
 
     if (!hwndListView) return NULL;
-
-    //	if(IsCommonControlSupported(COMCTRL_V470))
-    //		ListView_SetExtendedListViewStyle(hwndListView,LVS_EX_FULLROWSELECT);
 
     ResizeListView(hwndListView, hwndParent);
 
@@ -564,7 +595,6 @@ static BOOL InitListView(HWND hwndListView)
     //empty the list
     ListView_DeleteAllItems(hwndListView);
 
-    //
     LoadListViewColumnWidth(iWidth);
 
     //initialize the columns
@@ -599,6 +629,8 @@ static void SaveListViewColumnWidth()
 /********************
 
   メインウインドウ
+
+  Main Window
 
 *********************/
 LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -666,7 +698,8 @@ LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     break;
     case WM_SETFOCUS:
 
-    //キーボードフォーカスをリストボックスへ
+    // キーボードフォーカスをリストボックスへ
+    // Keyboard focus to list box
     SetFocus(g_hWndListView);
     break;
     case WM_CREATE:
@@ -695,7 +728,7 @@ LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     return DefMDIChildProc(hWnd, message, wParam, lParam);
     }
     return DefMDIChildProc(hWnd, message, wParam, lParam);
-} /* MainWndProc */
+}
 
 #define MAPEDITWNDCLASSNAME  __T("MAPEDITWND")
 
@@ -723,7 +756,8 @@ HWND CreateMapEditWnd(HINSTANCE hInstance, HWND hWndMDIClient)
 {
     HWND hWnd;
 
-    //WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
+    // WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
+    // If you do not create it with WS_VISIBLE specified, no window is added to the Window menu.
     hWnd = CreateMDIWindow(MAPEDITWNDCLASSNAME,
                            STRING_WINDOW_OBJLIST,
                            WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE,

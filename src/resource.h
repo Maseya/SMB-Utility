@@ -133,7 +133,8 @@
 #define IDC_FIRSTBLOCK                  2022
 #define IDC_MAPATTR                     2023
 
-//マップ全般の設定
+// マップ全般の設定
+// General map settings
 #define IDC_MARIOLEFT                   2030
 #define IDC_MARIOLEFTSPIN               2031
 #define IDC_ISWORLD                     2032
@@ -148,7 +149,8 @@
 #define IDC_DATA3                       2062
 #define IDC_DATA4                       2063
 
-//文字列の編集
+// 文字列の編集
+// Edit string
 #define IDC_STRINGSELECT                2040
 #define IDC_STRING                      2041
 #define IDC_STRINGWRITE                 2042
@@ -192,7 +194,6 @@
 #define IDC_SEABLOCKWORLD               2169
 #define IDC_SEABLOCKWORLDSPIN           2170
 
-//
 #define IDC_ISCLEARED                   2093
 #define IDC_MARIOSTATE                  2094
 #define IDC_FROMCURPAGE                 2095
@@ -262,8 +263,8 @@
 #define IDC_JOYBUTTONVALUE              2203
 #define IDC_JOYBUTTONLIST               2204
 
-//ルーム選択ダイアログボックス
-
+// ルーム選択ダイアログボックス
+// Room selection dialog box
 #define IDW_TOOLBAR 5000
 #define TOOLBAR_IMG 3002
 #define IDW_STATUSBAR 5002

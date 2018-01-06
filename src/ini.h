@@ -12,10 +12,8 @@
 
 #include <tchar.h>
 
- //
 #define REGROOTPATH                      __T("Software\\smbUtil")
 
-//
 #define INI_MDIFRAME_WINDOW              __T("MDIFRAME_WNDPL")
 #define INI_OBJECTLIST_WINDOW            __T("OBJLIST_WNDPL")
 #define INI_MDIFRAME_OTHERSETTING        __T("MDIFRAME_OTHER")
@@ -36,7 +34,8 @@
 #define INI_EDITOR_WHEEL                 __T("EDITOR_WHEEL")
 #define INI_OBJECTVIEW_SETTING           __T("OBJVIEW_SETTING")
 
-// HIWORD(N):高さ LOWORD(N):設定
+ // HIWORD(N):高さ LOWORD(N):設定
+ // HIWORD (N): height LOWORD (N): setting
 #define LOGVIEW_SHOWLOGVIEW            0x00000001
 #define INI_LOGVIEW_SETTING              __T("LOGVIEW_SETTING")
 
@@ -51,6 +50,7 @@ BOOL WriteToRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSi
 BOOL ReadFromRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize);
 
 // アンインストール時に呼び出す
+// Call during uninstallation
 BOOL DeleteRegistryEntries();
 
 #define INIFILE_FILENAME                 __T("smbutil.ini")

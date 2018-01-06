@@ -26,7 +26,6 @@
 #define SMB_MAP_ADDRESS_LOW       0x9D2C
 #define SMB_MAP_ADDRESS_HIGH      0x9D4E
 
-//
 #define MOVEOBJ_ERR_SUCCESS     0
 #define MOVEOBJ_ERR_SRCOBJ      1
 #define MOVEOBJ_ERR_DSTPAGE     2
@@ -37,38 +36,21 @@ extern int g_iWorld;
 extern int g_iArea;
 extern int g_iArea2;
 
-//uRoomIDとして指定すると現在エディットしているアドレスが返ってくる
-// 旧
+// uRoomIDとして指定すると現在エディットしているアドレスが返ってくる旧
+// If specified as uRoomID, the address currently being edited will be returned old
 #define GETADDRESS_CURRENT_EDITTING 0x100
 
 // 新
+// New
 #define CURRENT_ROOMID GETADDRESS_CURRENT_EDITTING
 
-/**************************************
-
-**************************************/
 WORD GetBadGuysAddress(UINT uRoomID);
-
-/**************************************
-
-**************************************/
 WORD GetMapAddress(UINT uRoomID);
-
-/**************************************
-
-**************************************/
 WORD MapGetAllDataLength(UINT uRoomID);
-
-/**************************************
-
-**************************************/
 WORD BadGuysGetAllDataLength(UINT uRoomID);
 
-/**************************************
-
-**************************************/
-
-//現在編集しているルームのルームIDを得る
+// 現在編集しているルームのルームIDを得る
+// Get the room ID of the room you are currently editing
 BYTE GetRoomID();
 BYTE rm_GetStartPage();
 BYTE rm_GetWorld();
@@ -87,9 +69,6 @@ void rm_UpdateGlobalRoomData();
 
 int GetNumWorlds();
 
-/**************************************
-
-**************************************/
 void ChangeRoomAttribute(BYTE bData, int iNewAttr);
 
 void GetValidRoomIDs(LPBYTE pbBuf);
@@ -99,6 +78,8 @@ BOOL IsRoomIDValid(BYTE bRoomID);
 /**************************************
 
   ﾙｰﾑを新たに開いた時の初期化を行う
+
+  Initialize when new room is opened
 
 **************************************/
 void OpenNewRoomProcess();

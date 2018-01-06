@@ -41,6 +41,8 @@ extern int GetNumFMapObject();
 
   敵エデイットダイアログ
 
+  Enemy edit dialog
+
 ************************/
 #define BADGUYS_EDITDLG_NOPREVIEWSIZE 420
 #define BADGUYS_EDITDLG_HASPREVIEWSIZE 625
@@ -158,29 +160,32 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             TCHAR cBuf[20];
             int n;
 
-            //ワールドの範囲
+            // ワールドの範囲
+            // Range of the world
             SendDlgItemMessage(hDlg, IDC_WORLDSPIN, UDM_SETRANGE, 0, MAKEWPARAM(8, 1));
 
-            //ページの範囲
+            // ページの範囲
+            // Scope of the page
             SendDlgItemMessage(hDlg, IDC_PAGEEDIT2SPIN, UDM_SETRANGE, 0, MAKEWPARAM(0x1F, 0));
 
-            //ページの範囲
+            // ページの範囲
+            // Scope of the page
             SendDlgItemMessage(hDlg, IDC_XPOS2SPIN, UDM_SETRANGE, 0, MAKEWPARAM(0xF, 0));
 
             _stprintf(cBuf, __T("%.2x %.2x %.2x"), bBuf[0], bBuf[1], bBuf[2]);
             SetDlgItemText(hDlg, IDC_BIN, cBuf);
             CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
 
-            //XPos
+            // XPos
             SetDlgItemInt(hDlg, IDC_XPOS2, (bBuf[0] >> 4) & 0x0F, TRUE);
 
-            //World
+            // World
             SetDlgItemInt(hDlg, IDC_WORLD, ((bBuf[2] >> 5) & 0x07) + 1, TRUE);
 
-            //Page
+            // Page
             SetDlgItemInt(hDlg, IDC_PAGEEDIT2, bBuf[2] & 0x1F, TRUE);
 
-            //Room ID
+            // Room ID
             _stprintf(cBuf, __T("%.2x"), bBuf[1] & 0x7F);
             SetDlgItemText(hDlg, IDC_DATA, cBuf);
             GetValidRoomIDs(&bRoomIDs[0]);
@@ -190,28 +195,23 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
                 SendDlgItemMessage(hDlg, IDC_DATA, CB_ADDSTRING, 0, (LPARAM)cBuf);
             }
 
-            //
             if (bBuf[1] & 0x80)  CheckDlgButton(hDlg, IDC_PAGEFLAG2, BST_CHECKED);
             blIs3BytesObj = TRUE;
             DisableBadguysEditDlgControls(hDlg, DISABLE_2BYTES);
 
-            //
             return TRUE;
         }
         else if ((bBuf[0] & 0x0F) == 0x0F)
         {
             TCHAR cBuf[10];
 
-            //改ページフラグ
+            // 改ページフラグ
+            // Page break flag
             if (bBuf[1] & 0x80)
                 CheckDlgButton(hDlg, IDC_PAGEFLAG, BST_CHECKED);
 
-            //				   if (bBuf[1] & 0x40)
-            //					   CheckDlgButton(hDlg,IDC_BIT6,BST_CHECKED);
-                               //XPos
             SetDlgItemInt(hDlg, IDC_XPOS, (bBuf[0] >> 4) & 0x0F, TRUE);
 
-            //
             //Page data
             SetDlgItemInt(hDlg, IDC_PAGEEDIT, (int)bBuf[1] & 0x3F, FALSE);
 
@@ -226,9 +226,11 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             DisableBadguysEditDlgControls(hDlg, DISABLE_3BYTES);
 
             // 一応なにか選択しておく
+            // I'd like to select something
             SendDlgItemMessage(hDlg, IDC_TYPE, CB_SETCURSEL, 0, 0);
 
             // 関係のない要素を無効化
+            // Invalidate unrelated elements
             EnableWindow(GetDlgItem(hDlg, IDC_TYPE), FALSE);
             EnableWindow(GetDlgItem(hDlg, IDC_BIT6), FALSE);
 
@@ -247,10 +249,12 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             if (bBuf[1] & 0x40) CheckDlgButton(hDlg, IDC_BIT6, BST_CHECKED);
             if (bBuf[1] & 0x80)  CheckDlgButton(hDlg, IDC_PAGEFLAG, BST_CHECKED);
 
-            //y位置の範囲の設定
+            // y位置の範囲の設定
+            // Set range of y position
             SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBadGuysInfo[bBuf[1] & 0x3F].YDelta));
 
             //x位置の範囲の設定
+            // Set range of x position
             SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBadGuysInfo[bBuf[1] & 0x3F].XDelta, smbBadGuysInfo[bBuf[1] & 0x3F].XDelta));
 
             blIs3BytesObj = FALSE;
@@ -274,7 +278,8 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             BYTE bBuf[4];
             int iSize;
 
-            //バイナリデータの取得
+            // バイナリデータの取得
+            // Obtaining binary data
             GetDlgItemText(hDlg, IDC_BIN, cBuf, 20);
             iSize = _stscanf(cBuf, __T("%hhx %hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2], &bBuf[3]);
             if (iSize < 1 || iSize>4) return TRUE;
@@ -287,7 +292,6 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             BOOL blSuccess;
             BYTE bBuf[2];
 
-            //						   TCHAR cBuf[20];
             UINT uRet;
             BYTE bTmp;
             BYTE bType;
@@ -295,10 +299,7 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             memset(bBuf, 0, 2);
             if (IsDlgButtonChecked(hDlg, IDC_ISPAGECOMMAND) == BST_CHECKED)
             {
-                //
                 bBuf[0] |= 0x0F;
-
-                //
                 uRet = GetDlgItemInt(hDlg, IDC_PAGEEDIT, &blSuccess, FALSE);
                 if (!blSuccess || uRet > 0x3F) return TRUE;
                 bBuf[1] = (BYTE)uRet;
@@ -308,42 +309,39 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
                 if (!blSuccess) return TRUE;
                 bBuf[0] |= ((uRet & 0x0F) << 4);
 
-                //
                 if (IsDlgButtonChecked(hDlg, IDC_PAGEFLAG) == BST_CHECKED)
                     bBuf[1] |= 0x80;
-
-                //if (IsDlgButtonChecked(hDlg,IDC_BIT6) == BST_CHECKED)
-                //  bBuf[1] |= 0x40;
             }
             else
             {
-                //種類の取得
+                // 種類の取得
+                // Get type
                 bType = (BYTE)SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
                 bBuf[1] |= bType;
 
-                //Xの取得
-                //GetDlgItemText(hDlg,IDC_XPOS,cBuf,20);
-                //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
+                // Xの取得
+                // Getting X
                 bTmp = GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, TRUE);
                 if (!blSuccess) return TRUE;
                 bTmp -= smbBadGuysInfo[bType].XDelta;
                 if (bTmp > 0xF) return TRUE;
                 bBuf[0] |= (bTmp << 4);
 
-                //Yの取得
-                //GetDlgItemText(hDlg,IDC_YPOS,cBuf,20);
-                //if(1!=_stscanf(cBuf,__T("%d"),&bTmp)) return TRUE;
+                // Yの取得
+                // Getting Y
                 bTmp = GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, TRUE);
                 if (!blSuccess) return TRUE;
                 bTmp += abs(smbBadGuysInfo[bType].YDelta);
                 if (bTmp > 0xD) return TRUE;
                 bBuf[0] |= (bTmp & 0x0F);
 
-                //改ページフラグの取得
+                // 改ページフラグの取得
+                // Obtain a page break flag
                 if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_PAGEFLAG))
                     bBuf[1] |= 0x80;
 
-                //第2バイトのビット6の取得
+                // 第2バイトのビット6の取得
+                // Acquisition of bit 6 of the second byte
                 if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_BIT6))
                     bBuf[1] |= 0x40;
             }
@@ -368,21 +366,23 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
             //YPOS
             bBuf[0] |= 0x0E;
 
-            //改ページフラグ
+            // 改ページフラグ
+            // Page break flag
             if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_PAGEFLAG2))
                 bBuf[1] |= 0x80;
 
-            //
             GetDlgItemText(hDlg, IDC_DATA, cBuf, 3);
             if (1 != _stscanf(cBuf, __T("%hhx"), &bTmp)) return TRUE;
             bBuf[1] |= (bTmp & 0x7F);
 
-            //ワールド
+            // ワールド
+            // world
             bTmp = GetDlgItemInt(hDlg, IDC_WORLD, &blSuccess, FALSE);
             if (!blSuccess || bTmp > 8) return TRUE;
             bBuf[2] |= (((bTmp - 1) & 0x07) << 5);
 
-            //ページ
+            // ページ
+            // page
             bTmp = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
             if (!blSuccess || bTmp > 0x1F) return TRUE;
             bBuf[2] |= (bTmp & 0x1F);
@@ -405,10 +405,12 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         bType = (BYTE)SendDlgItemMessage(hDlg, IDC_TYPE, CB_GETCURSEL, 0, 0);
         if (bType != CB_ERR)
         {
-            //y位置の範囲の設定
+            // y位置の範囲の設定
+            // Set range of y position
             SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(-1, 13 + smbBadGuysInfo[bType].YDelta));
 
-            //x位置の範囲の設定
+            // x位置の範囲の設定
+            // Set range of x position
             SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15 + smbBadGuysInfo[bType].XDelta, smbBadGuysInfo[bType].XDelta));
         }
         if (HIWORD(wParam) == CBN_SELCHANGE)
@@ -430,7 +432,8 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
     return TRUE;
 
-    //ルーム間移動
+    // ルーム間移動
+    // Move between rooms
     case IDC_DATA:
     if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_OPENPREVIEW)) return TRUE;
     if (HIWORD(wParam) == CBN_EDITCHANGE)
@@ -487,6 +490,8 @@ LRESULT CALLBACK BadGuysComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
   マップエディトダイアログ関数関数
 
+  Map Edit dialog function function
+
 ***********************************/
 
 void DisableConrols(HWND hDlg)
@@ -524,21 +529,22 @@ static void PrepareMapComEditDlg(HWND hDlg, BYTE *bBuf, int iPage, int iPrepareO
 
     CheckDlgButton(hDlg, IDC_ISBIN, BST_UNCHECKED);
 
-    //XPOS
+    // XPOS
     SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(15, 0));
     SetDlgItemInt(hDlg, IDC_XPOS, (bBuf[0] >> 4) & 0x0F, FALSE);
 
-    //PAGE FLAG
+    // PAGE FLAG
     if (bBuf[1] & 0x80)  CheckDlgButton(hDlg, IDC_PAGEFLAG, BST_CHECKED);
 
-    //YPOS
+    // YPOS
     if (iPrepareOption != PREPAREDLG_MAPCOMEDIT_YPOS)
     {
         SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(0, 15));
         SetDlgItemInt(hDlg, IDC_YPOS, bBuf[0] & 0x0F, FALSE);
     }
 
-    //タイプを並べる
+    // タイプを並べる
+    // Arrange types
     DisableConrols(hDlg);
     switch (bBuf[0] & 0x0F)
     {
@@ -577,25 +583,30 @@ static void PrepareMapComEditDlg(HWND hDlg, BYTE *bBuf, int iPage, int iPrepareO
     for (n = 0; n < iMaxNumObjs; n++)
         SendDlgItemMessage(hDlg, IDC_TYPE, CB_ADDSTRING, 0, (LPARAM)psObjInfo[n].Name);
 
-    //
     for (n = 0; n < iMaxNumObjs; n++)
     {
         if ((bBuf[1] & psObjInfo[n].bBasicDataMask) == psObjInfo[n].bBasicData) break;
     }
 
-    //タイプを選択
+    // タイプを選択
+    // Select type
     if (n < iMaxNumObjs)
         SendDlgItemMessage(hDlg, IDC_TYPE, CB_SETCURSEL, n, 0);
-    else//不明なオブジェクトの場合
+
+    // 不明なオブジェクトの場合
+    // For unknown objects
+    else
     {
         SendDlgItemMessage(hDlg, IDC_TYPE, CB_SETCURSEL, -1, 0);
         CheckDlgButton(hDlg, IDC_ISBIN, BST_CHECKED);
     }
 
-    //注意書きを表示
+    // 注意書きを表示
+    // Show notes
     SetDlgItemText(hDlg, IDC_NOTE, psObjInfo[n].Note);
 
-    //YPOSをセット→サイズをセットの順
+    // YPOSをセット→サイズをセットの順
+    // Set YPOS → Size in order of set
     if (psObjInfo[n].bIsSizeValid)
     {
         EnableControl(hDlg, IDC_LEN);
@@ -625,7 +636,6 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             return TRUE;
         }
 
-        //
         for (n = 0; n < 4; n++) SendDlgItemMessage(hDlg, IDC_VIEW, CB_ADDSTRING, 0, (LPARAM)smbMapHeadView[n]);
         for (n = 0; n < 16; n++) SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_ADDSTRING, 0, (LPARAM)smbMapBasicBlock[n].Name);
         for (n = 0; n < 8; n++) SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_ADDSTRING, 0, (LPARAM)smbMapHeadBackColor[n]);
@@ -636,7 +646,7 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
         _stprintf(cBuf, __T("%.2x %.2x"), bBuf[0], bBuf[1]);
         SetDlgItemText(hDlg, IDC_BIN, cBuf);
 
-        //PAGE
+        // PAGE
         SetDlgItemInt(hDlg, IDC_PAGE, iPage, FALSE);
 
         PrepareMapComEditDlg(hDlg, bBuf, iPage, PREPAREDLG_MAPCOMEDIT_ALL);
@@ -673,15 +683,18 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             }
             else
             {
-                //改ページフラグ
+                // 改ページフラグ
+                // Page break flag
                 if (BST_CHECKED&IsDlgButtonChecked(hDlg, IDC_PAGEFLAG)) bNewData[1] |= 0x80;
 
-                //Xの取得
+                // Xの取得
+                // Getting X
                 bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_XPOS, &blSuccess, FALSE);
                 if (!blSuccess || bTmp > 0x0F) return FALSE;
                 bNewData[0] |= ((bTmp & 0x0F) << 4);
 
-                //Yの取得
+                // Yの取得
+                // Getting Y
                 bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, FALSE);
                 if (!blSuccess || bTmp > 0x0F) return FALSE;
                 bNewData[0] |= (bTmp & 0x0F);
@@ -722,23 +735,21 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
                 default:psObjInfo = smbMapObjectInfo0B; break;
                 }
 
-                //
                 bNewData[1] |= psObjInfo[iSel].bBasicData;
 
-                //
                 if (psObjInfo[iSel].bIsSizeValid)
                 {
                     iSize = GetDlgItemInt(hDlg, IDC_LEN, &blSuccess, FALSE);
                     if (!blSuccess) return FALSE;
 
-                    //増加分を足してから、マスクすることは、重要。例えば、長さ８の土管の入力。
+                    // 増加分を足してから、マスクすることは、重要。例えば、長さ８の土管の入力。
+                    // It is important to mask it after adding increment. For example, input of length 8 earth clad.
                     iSize += psObjInfo[iSel].iSizeDelta;
 
                     if (iSize<0 || iSize>psObjInfo[iSel].bSizeMask) return TRUE;
                     bNewData[1] += (BYTE)iSize;
                 }
 
-                //
                 undoPrepare(UNDONAME_DLGEDIT);
                 memcpy(bBuf, bNewData, 2);
                 SetMapData(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bNewData);
@@ -757,7 +768,8 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             BYTE bTmp;
             BOOL blSuccess;
 
-            //Yの取得
+            // Yの取得
+            // Acquisition of Y
             bTmp = (BYTE)GetDlgItemInt(hDlg, IDC_YPOS, &blSuccess, FALSE);
             if (!blSuccess) return FALSE;
             bBuf[0] &= 0xF0;
@@ -778,7 +790,6 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             bBuf[0] &= 0x0F;
             bBuf[0] |= (bTmp << 4);
 
-            //PrepareMapComEditDlg(hDlg,bBuf,iPage,PREPAREDLG_MAPCOMEDIT_BININPUTONLY);
             return TRUE;
         }
         break;
@@ -788,7 +799,10 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             return TRUE;
         }
         break;
-        case IDC_TYPE://種類を変更
+
+        // 種類を変更
+        // Change type
+        case IDC_TYPE:
         if (HIWORD(wParam) == CBN_SELCHANGE)
         {
             BYTE bTmp;
@@ -819,7 +833,6 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
             default:psObjInfo = smbMapObjectInfo0B; break;
             }
 
-            //
             if ((bTmp & 0x0F) != 0x0E)
             {
                 bBuf[1] &= psObjInfo[iSel].bSizeMask;
@@ -843,7 +856,6 @@ LRESULT CALLBACK MapComEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
                 bBuf[1] &= 0x7F;
             }
 
-            //PrepareMapComEditDlg(hDlg,bBuf,iPage,PREPAREDLG_MAPCOMEDIT_BININPUTONLY);
             return TRUE;
         }
         break;

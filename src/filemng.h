@@ -29,6 +29,7 @@ BOOL SaveAsFile(LPTSTR pFilename);
 BOOL LoadROM(LPTSTR pFilename);
 
 // 書き換えられた - TRUE, 同じ - FALSE
+// rewritten - TRUE, same - FALSE
 BOOL CheckROMFileTime();
 
 void SetROMFileTime();

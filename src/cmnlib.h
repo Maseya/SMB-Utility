@@ -17,7 +17,8 @@
 #define COMCTRL_V472  8
 #define COMCTRL_LATER 16
 
- //一時文字列バッファーのサイズ、GetTempStringBuffer()関数で確保されている
+ // 一時文字列バッファーのサイズ、GetTempStringBuffer()関数で確保されている
+ // size of temporary string buffer, reserved by GetTempStringBuffer() function
 #define TMPSTRBUFSIZ 512
 
 #define Malloc(S)     HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS, (S))
