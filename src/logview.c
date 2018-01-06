@@ -203,13 +203,8 @@ BOOL lv_Initialize()
     ZeroMemory(&lf, sizeof(LOGFONT));
     lf.lfHeight = LOGVIEW_FONTHEIGHT;
     lf.lfPitchAndFamily = FIXED_PITCH;
-#ifndef INTERNATIONAL
-    lf.lfCharSet = SHIFTJIS_CHARSET;
-    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAME);
-#else
-    lf.lfCharSet = ANSI_CHARSET;
-    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAMEI); // lstrcat(lf.lfFaceName, __T("Arial"));
-#endif
+    lf.lfCharSet = DEFAULT_CHARSET;
+    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAMEI);
     g_hEditFont = CreateFontIndirect(&lf);
 
     return TRUE;
