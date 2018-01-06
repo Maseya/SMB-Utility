@@ -366,7 +366,6 @@
     <Image Include="image\ygauge_img.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="document\international.txt" />
     <Text Include="document\todo.txt" />
     <Text Include="misc\history.txt" />
     <Text Include="misc\readme.txt" />

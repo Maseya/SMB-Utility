@@ -241,9 +241,6 @@
     <Text Include="misc\history.txt">
       <Filter>Document Files</Filter>
     </Text>
-    <Text Include="document\international.txt">
-      <Filter>Document Files</Filter>
-    </Text>
     <Text Include="misc\readme.txt">
       <Filter>Document Files</Filter>
     </Text>
