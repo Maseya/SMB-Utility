@@ -4,6 +4,7 @@
 
   File: ini.c
   Description: レジストリ、INIファイルアクセスのためのルーチン
+  Description: Registry, routines for INI file access
   History:
 
  ************************************************************************************/
@@ -15,6 +16,8 @@
 
    レジストリアクセス
 
+   Registry Access
+
  *********************/
 
  /*************************************
@@ -22,6 +25,10 @@
   REG_BINARY 任意の形式のバイナリデータ
   REG_DWORD  32ビット値
   REG_SZ     文字列
+
+  REG_BINARY Binary data in any format
+  REG_DWORD  32 bit value
+  REG_SZ     character string
  **************************************/
 BOOL WriteToRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
 {
@@ -41,6 +48,10 @@ dwType
  REG_BINARY 任意の形式のバイナリデータ
  REG_DWORD  32ビット値
  REG_SZ     文字列
+
+ REG_BINARY Binary data in any format
+ REG_DWORD  32 bit value
+ REG_SZ     character string
 **************************************/
 BOOL ReadFromRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSize)
 {
@@ -64,10 +75,6 @@ BOOL DeleteRegistryEntries()
     return TRUE;
 }
 
-/**********************
-
- **********************/
-
 static BOOL CheckFileExistance(LPTSTR lpFile)
 {
     return (0xFFFFFFFF != GetFileAttributes(lpFile)) ? TRUE : FALSE;
@@ -84,29 +91,52 @@ size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     //        "winips"が取得されるので、以下の方法ではだめ。
     // p = GetCommandLine();
     // 実行可能ファイルのフルパス名を取得する
+    // NOTE: When executed from the command prompt, the input command character string is acquired as it is.
+    // For example, if you start "winips" at the command prompt from within the directory where WinIPS is located,
+    // "winips" is acquired, so it can not be done in the following way.
+    // p = GetCommandLine();
+    // Get the full path name of the executable file
     GetModuleFileName(GetModuleHandle(NULL), FullPath, MAX_PATH);
     p = FullPath;
 
     while (*p == __T('"'))
         p = CharNext(p);
-    pt = p; // "を除いた先頭へのポインタ
+
+    // "を除いた先頭へのポインタ
+    // Pointer to the beginning without \"
+    pt = p;
 
     // マルチバイト文字数を得る
-    for (; *p && *p != __T('"'); p = CharNext(p)); // 終端へ"を探す
-    for (; pt < p && *(CharPrev(pt, p)) != __T('\\'); p = CharPrev(pt, p)); // 終端から\を探す
+    // get multibyte character count
+    for (; *p && *p != __T('"'); p = CharNext(p))
+    {
+        // 終端へ"を探す
+        // Search for "to the end
+        continue;
+    }
 
-    //
-    cb = (p - pt) * sizeof(TCHAR); // バイト数
-    if (iBufferSize <= cb + (int)sizeof(TCHAR)) // + NULL文字
+    for (; pt < p && *(CharPrev(pt, p)) != __T('\\'); p = CharPrev(pt, p))
+    {
+        // 終端から\を探す
+        // Look for \ from the end
+        continue;
+    }
+
+    // バイト数
+    // Number of bytes
+    cb = (p - pt) * sizeof(TCHAR);
+
+    // + NULL文字
+    // + NULL character
+    if (iBufferSize <= cb + (int)sizeof(TCHAR))
         return 0;
 
-    //
     memcpy(lpBuffer, pt, cb);
 
-    //
     lpBuffer[cb / sizeof(TCHAR)] = __T('\0');
 
     // ファイル名の指定があれば、それをコピー
+    // Copy the file name if specified
     if (lpFileName)
     {
         if (iBufferSize <= cb + (int)sizeof(TCHAR) + (int)_tcslen(lpFileName))
@@ -115,53 +145,6 @@ size_t GetAppPathName(LPTSTR lpBuffer, int iBufferSize, LPTSTR lpFileName)
     }
 
     return cb / sizeof(TCHAR);
-
-    /*
-        TCHAR FullPath[MAX_PATH];
-        LPTSTR lpCmdLine;
-        int iCopySize;
-        int iDirNameSize;//カレントディレクトリの名前のサイズ
-        int iFileNameSize;//
-
-        if(!lpBuffer) return 0;
-
-        lpCmdLine = GetCommandLine();
-
-        while(*lpCmdLine == __T('"')) lpCmdLine++;
-        for(iDirNameSize = 0;;iDirNameSize++) {
-            if((*(lpCmdLine + iDirNameSize) == __T('\0'))
-                ||(*(lpCmdLine + iDirNameSize) == __T('"'))
-                ||(*(lpCmdLine + iDirNameSize)==__T(' '))) {
-                memcpy(FullPath, lpCmdLine, iDirNameSize * sizeof(TCHAR));
-                FullPath[iDirNameSize] = 0;
-                if(CheckFileExistance(FullPath))
-                    break;
-            }
-        }
-
-        for(;iDirNameSize >= 0;iDirNameSize--)if(*(lpCmdLine + iDirNameSize - 1) == __T('\\'))break;
-
-        if(lpFileName)
-        {
-            for(iFileNameSize = 0;;iFileNameSize++) {
-                if(*(lpFileName + iFileNameSize) == __T('\0'))
-                    break;
-            }
-        }
-        else
-            iFileNameSize = 0;
-
-        memcpy(FullPath, lpCmdLine, iDirNameSize * sizeof(TCHAR));
-        FullPath[iDirNameSize] = 0;
-        if(lpFileName) memcpy(FullPath + iDirNameSize, lpFileName, iFileNameSize);
-
-        iCopySize = (iBufferSize < iDirNameSize + iFileNameSize) ? iBufferSize : iDirNameSize + iFileNameSize;
-
-        memcpy(lpBuffer, FullPath, iCopySize * sizeof(TCHAR));
-        lpBuffer[iCopySize] = 0;
-
-        return iCopySize;
-    */
 }
 
 UINT GetIntegerFromINI(LPCTSTR lpAppName, LPCTSTR lpKeyName, INT nDefault)
