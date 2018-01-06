@@ -3,7 +3,8 @@
                                   smb Utility
 
   File: objwndcmn.c
-  Description:オブジェクトビューとオブジェクトリストで共通のコード
+  Description: オブジェクトビューとオブジェクトリストで共通のコード
+  Description: Common code in object view and object list
   History:
 
  ************************************************************************************/
