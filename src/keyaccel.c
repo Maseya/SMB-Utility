@@ -16,7 +16,6 @@ BOOL GetPresetEditorKeys(WORD aEditKeys[], INT_PTR dwID)
 {
     WORD wKeys[KEYACCEL_NUM_PRESETS][KEYACCEL_NUM_COMMANDS] =
     {
-        //__T("種類を+1"), __T("種類を-1"), __T("種類を+16"), __T("種類を-16"), __T("位置を上へ"), __T("位置を下へ"), __T("位置を左へ"), __T("位置を右へ"), __T("次のﾍﾟｰｼﾞへ"), __T("前のﾍﾟｰｼﾞへ"), __T("次のｵﾌﾞｼﾞｪｸﾄへ"), __T("前のｵﾌﾞｼﾞｪｸﾄへ"),
           VK_ADD, VK_SUBTRACT, VK_MULTIPLY, VK_DIVIDE, VK_NUMPAD8, VK_NUMPAD2, VK_NUMPAD4, VK_NUMPAD6, VK_NUMPAD9, VK_NUMPAD3, VK_NUMPAD7, VK_NUMPAD1, CTRLBIT | 0x53, CTRLBIT | 0x5A, VK_F2, VK_F3, VK_F4, VK_F9, VK_F10, VK_F11, VK_F12, VK_F5, VK_F7, VK_F8, VK_TAB, SHIFTBIT | VK_TAB,
           0x57,   0x51,        0x52,        0x45,      0x53,       0x58,       0x5A,       0x43,       0x44,       0x41,       0x46,       0x56,       CTRLBIT | 0x53, CTRLBIT | 0x5A, VK_F2, VK_F3, VK_F4, VK_F9, VK_F10, VK_F11, VK_F12, VK_F5, VK_F7, VK_F8, VK_TAB, SHIFTBIT | VK_TAB
     };
@@ -32,9 +31,9 @@ BOOL GetPresetEditorKeys(WORD aEditKeys[], INT_PTR dwID)
 BOOL GetEditorVKeys(WORD aEditKeys[])
 {
     if (!ReadFromRegistry(INI_EDITOR_KEYS,
-        REG_BINARY,
-        aEditKeys,
-        KEYACCEL_NUM_COMMANDS * sizeof(WORD)))
+                          REG_BINARY,
+                          aEditKeys,
+                          KEYACCEL_NUM_COMMANDS * sizeof(WORD)))
     {
         GetPresetEditorKeys(aEditKeys, KEYACCEL_PRESETID_DESKTOP);
         return FALSE;
@@ -84,7 +83,6 @@ HACCEL CreateEditCommandAccel()
         WORD wVKey = wVKeys[N];
         LPACCEL lpAccel = &accel[N];
 
-        //
         lpAccel->cmd = uCmd[N];
         lpAccel->fVirt = FNOINVERT | FVIRTKEY;
         if (GETCTRL(wVKey)) lpAccel->fVirt |= FCONTROL;

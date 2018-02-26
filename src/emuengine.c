@@ -4,6 +4,7 @@
 
   File: emuengine.c
   Description: エミュレータの中心的なルーチン
+  Description: Emulator's core routine
   History:
 
  ************************************************************************************/
@@ -68,6 +69,10 @@ BOOL             g_fUseJoyPOV = FALSE;
 // NOTE : A, B, SELECT, STARTが最初にくることを前提にして、
 //        ジョイスティックのボタン設定を実装している
 //        (UP, DOWN, LEFT, RIGHTは未使用)
+// in order of A, B, SELECT, START, UP, DOWN, LEFT, RIGHT
+// NOTE: On the premise that A, B, SELECT, START comes first,
+// Implement the joystick button settings
+// (UP, DOWN, LEFT, RIGHT are not used)
 BYTE             g_EmuKey[EMULATOR_NUM_BUTTONS] = {0};
 DWORD            g_EmuJoyButton[EMULATOR_NUM_JOYBUTTONS] = {0};
 UINT             g_uEmuJoyID = JOYSTICKID1;
@@ -78,7 +83,11 @@ DWORD            g_dwEmuJoyYDown;
 HWND             ghEmuWnd = NULL;
 UINT             g_nTimerID = 0;
 DWORD            dwThreadID = 0;
-CRITICAL_SECTION CriticalSection;//エミュレータのスレッドを複数作成しないためのクリテイカルセクションオブジェクト
+
+// エミュレータのスレッドを複数作成しないためのクリテイカルセクションオブジェクト
+// a critical section object not to create multiple emulator threads
+CRITICAL_SECTION CriticalSection;
+
 HDC              ghMemdcOffScreen = NULL;
 HBITMAP          ghBmOffScreen = NULL;
 HBITMAP          ghOldBmOffScreen = NULL;
@@ -92,11 +101,15 @@ HPALETTE         g_hPal = NULL;
 
 **********************/
 
-//
 // 0: 無効とみなし、セットされない。
 // それ以外: 有効な値とみなす
 // 要素数8つの配列
 // A, B, SELECT, START, UP, DOWN, LEFT, RIGHTの順
+//
+// 0: It is considered invalid and it is not set.
+// other than: regard as a valid value
+// array of 8 elements
+// in order of A, B, SELECT, START, UP, DOWN, LEFT, RIGHT
 BOOL SetEmulatorKeys(WORD aEmuKeys[])
 {
     int i;
@@ -126,6 +139,7 @@ BOOL SetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[])
 {
     // A, B, SELECT, START, UP, DOWN, LEFT, RIGHTの順
+    // in order of A, B, SELECT, START, UP, DOWN, LEFT, RIGHT
     aEmuKeys[0] = __T('N');
     aEmuKeys[1] = __T('B');
     aEmuKeys[2] = VK_BACK;
@@ -140,6 +154,7 @@ BOOL GetDefaultEmulatorKeys(WORD aEmuKeys[])
 BOOL GetDefaultEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 {
     // A, B, SELECT, STARTの順
+    // in order of A, B, SELECT, START
     aEmuJoyButtons[0] = JOY_BUTTON2;
     aEmuJoyButtons[1] = JOY_BUTTON1;
     aEmuJoyButtons[2] = JOY_BUTTON3;
@@ -148,6 +163,7 @@ BOOL GetDefaultEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 }
 
 // 呼び出す前にg_uEmuJoyIDをJOYSTICKID1かJOYSTICKID2で初期化しなければならない。
+// We must initialize g_uEmuJoyID with JOYSTICKID 1 or JOYSTICKID 2 before calling.
 BOOL InitJoystick()
 {
     //	JOYINFO joyInfo;
@@ -198,9 +214,9 @@ JOY_ERROR:
 BOOL GetEmulatorVKeys(WORD aEmuKeys[])
 {
     if (!ReadFromRegistry(INI_EMULATOR_KEYS,
-        REG_BINARY,
-        aEmuKeys,
-        EMULATOR_NUM_BUTTONS * sizeof(WORD)))
+                          REG_BINARY,
+                          aEmuKeys,
+                          EMULATOR_NUM_BUTTONS * sizeof(WORD)))
     {
         GetDefaultEmulatorKeys(aEmuKeys);
         return FALSE;
@@ -212,9 +228,9 @@ BOOL GetEmulatorVKeys(WORD aEmuKeys[])
 BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
 {
     if (!ReadFromRegistry(INI_EMULATOR_JOYBUTTONS,
-        REG_BINARY,
-        aEmuJoyButtons,
-        EMULATOR_NUM_JOYBUTTONS * sizeof(DWORD)))
+                          REG_BINARY,
+                          aEmuJoyButtons,
+                          EMULATOR_NUM_JOYBUTTONS * sizeof(DWORD)))
     {
         GetDefaultEmulatorJoyButtons(aEmuJoyButtons);
         return FALSE;
@@ -223,7 +239,8 @@ BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[])
     return TRUE;
 }
 
-// NOTE : レジストリへの書き込みは、keys.cのダイアログコールバック関数内でOKボタンを押した時に行われる。
+// NOTE: レジストリへの書き込みは、keys.cのダイアログコールバック関数内でOKボタンを押した時に行われる。
+// NOTE: Writing to the registry is done when the OK button is pressed within the dialog callback function of keys.c.
 
 BOOL LoadEmuKeySetting()
 {
@@ -242,11 +259,6 @@ BOOL LoadEmuKeySetting()
     return (blRetk && blRetj) ? TRUE : FALSE;
 }
 
-/******************
-
-********************/
-
-//
 #define ENABLE_JOYSTICK_RELATED_CONTROLS(H, E) {EnableWindow(GetDlgItem((H), IDC_JOYSTICKID), (E)); \
 												EnableWindow(GetDlgItem((H), IDC_USEPOV), (E)); \
 												EnableWindow(GetDlgItem((H), IDC_STATIC_JOYSTICKID), (E));}
@@ -302,12 +314,12 @@ LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         switch (wID)
         {
         case IDC_SKIPJOYREAD:
-            if (wNotifyCode == BN_CLICKED)
-            {
-                BOOL fEnable = (IsDlgButtonChecked(hDlg, IDC_SKIPJOYREAD) == BST_UNCHECKED);
-                ENABLE_JOYSTICK_RELATED_CONTROLS(hDlg, fEnable);
-            }
-            break;
+        if (wNotifyCode == BN_CLICKED)
+        {
+            BOOL fEnable = (IsDlgButtonChecked(hDlg, IDC_SKIPJOYREAD) == BST_UNCHECKED);
+            ENABLE_JOYSTICK_RELATED_CONTROLS(hDlg, fEnable);
+        }
+        break;
         }
     }
     break;
@@ -318,7 +330,6 @@ LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         {
         case PSN_APPLY:
         {
-            //
             g_fUseMMX = FALSE;
             if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_SPEEDOPTIMIZE))
                 g_fUseMMX = TRUE;
@@ -337,6 +348,8 @@ LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
 
             // ジョイスティックにおいて、それ自身や機能のうち、使用できないものは、
             // この関数内でリセットされる。
+            // In the joystick, what you can not use, of itself or function,
+            // Reset within this function.
             InitJoystick();
 
             return TRUE;
@@ -372,7 +385,6 @@ void SaveEmulatorSetting()
 
 BOOL LoadEmulatorSetting()
 {
-    //
     DWORD dwSetting;
     if (ReadFromRegistry(INI_EMULATOR_SETTING, REG_DWORD, &dwSetting, sizeof(DWORD)))
     {
@@ -388,6 +400,8 @@ BOOL LoadEmulatorSetting()
 /******************
 
   グラフィックス
+
+  Graphics
 
 *******************/
 
@@ -445,7 +459,6 @@ static void TrashGraphics()
     if (g_lpBmInfo) Mfree(g_lpBmInfo);
 }
 
-//
 BOOL InitGraphics(HWND hWnd)
 {
     HDC hdc;
@@ -453,7 +466,6 @@ BOOL InitGraphics(HWND hWnd)
 
     hdc = GetDC(hWnd);
 
-    //
     iDevCaps = GetDeviceCaps(hdc, RASTERCAPS);
     if (!(iDevCaps&RC_DIBTODEV))
     {
@@ -465,7 +477,6 @@ BOOL InitGraphics(HWND hWnd)
 
     ReleaseDC(hWnd, hdc);
 
-    //
     g_lpBmInfo = Malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
     if (!g_lpBmInfo) return FALSE;
 
@@ -546,62 +557,18 @@ static void RefreshSpriteLine(DWORD dwLine)
     int iPriority;
     int iIndex;
 
-    //	int iSize;//
     BYTE *pbChrBase;
-    LPBYTE lpbBase = gpbBmBufOffScreen + dwLine*NES_SCREENSIZEX;
+    LPBYTE lpbBase = gpbBmBufOffScreen + dwLine * NES_SCREENSIZEX;
     int iPtr;
     LPBYTE pbVBuf;
 
-    //	int iSpritesPerLine = 0;
-
-#define	iSize 8 //	iSize=(bPPUCtrlReg1&0x20)?16:8;
-/*
-    i=0x100;
-    for(;;)
-    {
-SKIP:
-
-        //C version
-        //i-=4;
-        //if(i<0) break;
-        //y = pbSPRRAM[i] + 1;
-
-        //if ( ( y > dwLine ) || ( y + iSize <= dwLine ) ) continue;
-
-        // Asm version
-        __asm {
-            mov         eax,i
-            sub         eax,4
-            cmp         eax,0
-            jge         NEXT
-            jmp         BREAK
-NEXT:
-
-            // y = pbSPRRAM[i] + 1;
-            xor         ecx,ecx // y==ecx
-            mov         cl,byte ptr pbSPRRAM[eax]
-            inc         ecx
-            mov         i,eax
-            mov         y,ecx
-
-            mov         edx, dwLine
-            cmp         ecx, edx
-            jg          SKIP
-            add         ecx,iSize
-            cmp         edx,ecx
-            jge         SKIP
-        }
-*/
-
-//	bPPUStaReg &= 0xDF;
+#define	iSize 8
 
     for (i = 0xFC; i >= 0; i -= 4)
     {
         y = pbSPRRAM[i] + 1;
 
         if ((y > dwLine) || (y + iSize <= dwLine)) continue;
-
-        //iSpritesPerLine++;
 
         iIndex = pbSPRRAM[i + 1];
         iCol = (pbSPRRAM[i + 2] & 0x03);
@@ -612,25 +579,6 @@ NEXT:
 
         y2 = dwLine - y;
         if (iFlipY) y2 = (iSize - 1) - y2;
-
-        /*
-        if(iSize==16)//スーパーマリオは、8*8
-        {
-            if((iIndex&0x01))
-            {
-                iIndex&=0xFE;
-                iIndex|=0x100;
-            }
-            if(y2>7)
-            {
-                iIndex++;
-                y2&=0x07;
-            }
-        }
-        */
-
-        //		pbChrBase=pbVRAM+(iIndex<<4)+y2;
-        //		if(bPPUCtrlReg1&0x08 && iSize==8) pbChrBase+=0x1000;
 
         pbChrBase = pbVROMData + iIndex * 64 + y2 * 8;
         if ((bPPUCtrlReg1 & 0x08) /*&& iSize==8*/) pbChrBase += 0x4000;
@@ -679,13 +627,8 @@ NEXT:
                     *pbVBuf = iCol + (*pbChrBase);
                 }
             }
-        } /* if(iPriority) else*/
-    } /* for */
-
-//		if(iSpritesPerLine > 7)
-//		{
-//			bPPUStaReg |= 0x20;
-//		}
+        }
+    }
 
     return;
 }
@@ -697,12 +640,11 @@ static void RefreshBackGroundLine(register WORD wLine)
     int iPixelX;
     int iStartY;
 
-    //	int iStartYModEight;
     int iNameTable;
     LPBYTE lp_pbVROMData_iBase_iStartYModEight;
     int iFirst = 1;
     LPBYTE pbChrBase;
-    LPBYTE pbVideoBuf = gpbBmBufOffScreen + wLine*NES_SCREENSIZEX;
+    LPBYTE pbVideoBuf = gpbBmBufOffScreen + wLine * NES_SCREENSIZEX;
     int iColorByte;
     int iCol;
     LARGE_INTEGER qwCol64;
@@ -714,23 +656,12 @@ static void RefreshBackGroundLine(register WORD wLine)
 //	iStartYModEight=((iStartY&7)<<3);
     iNameTable = (((bPPUCtrlReg1 & 0x03) * 0x400) | 0x2000);
 
-    /*
-
-    //縦スクロール
-    if(iStartY>239)
-    {
-        iStartY-=240;
-
-        //対になるネームテーブルのアドレスの計算
-        iNameTable^=0x800;
-    }
-    */
-
-    //タイルの計算
+    // タイルの計算
+    // Calculate tiles
     x = bBGScrlH >> 3;
-    iTileIndex = iNameTable + ((iStartY / 8) * 32);// iTileIndex=((iStartY>>3)<<5)+iNameTable;
+    iTileIndex = iNameTable + ((iStartY / 8) * 32);
 
-    lp_pbVROMData_iBase_iStartYModEight = pbVROMData + ((iStartY & 7) << 3);//iStartYModEight=((iStartY&7)<<3);
+    lp_pbVROMData_iBase_iStartYModEight = pbVROMData + ((iStartY & 7) << 3);
 
     if (bPPUCtrlReg1 & 0x10) lp_pbVROMData_iBase_iStartYModEight += 0x4000;
 
@@ -740,18 +671,15 @@ static void RefreshBackGroundLine(register WORD wLine)
 
         if ((!(x & 1)) || iFirst)
         {
-            //アトリビュートテーブルのデータを取得
+            // アトリビュートテーブルのデータを取得
+            // Retrieve the data of the attribute table
             if ((!(x & 3)) || iFirst)
             {
                 iColorByte = pbVRAM[((iIndex1 & 0x3C00) | (iIndex1 & 0x1F) >> 2) | ((iIndex1 & 0x380) >> 4) | 0x3C0];
             }
 
-            //アトリビュートデータのどの2ビットを使用するかを計算
-            /*
-            int iColorBits= ( (iIndex1&0x40)>>4 ) + (iIndex1&0x02) ;
-            iCol = ( (iColorByte>>iColorBits) & 0x03 ) ;
-            iCol<<=2;
-            */
+            // アトリビュートデータのどの2ビットを使用するかを計算
+            // Calculate which 2 bits of the attribute data to use
             iCol = (((iColorByte >> ((iIndex1 & 0x02) | ((iIndex1 & 0x40) >> 4))) & 0x03) << 2);
             iFirst = 0;
 
@@ -762,22 +690,6 @@ static void RefreshBackGroundLine(register WORD wLine)
         }
 
         pbChrBase = lp_pbVROMData_iBase_iStartYModEight + (pbVRAM[iIndex1] << 6)/**64*/;
-
-        // C version
-/*
-        {
-            int n;
-            n = (iPixelX>0) ? 0 : -iPixelX ;
-            pbChrBase += n;
-
-            do{
-                if(*pbChrBase) *pbVideoBuf = iCol+(*pbChrBase);
-                pbVideoBuf++;
-                pbChrBase++;
-            }while(++n<8);
-            iPixelX+=8;
-        }
-*/
 
         if (!g_fUseMMX)
         {
@@ -840,6 +752,9 @@ static void RefreshLine(WORD wLine)
   キャラロムがエディットされたら
   この関数を呼び出す必要がある
 
+  When CHR ROM is edited
+  I need to call this function
+
 *********************************/
 BOOL PrepareVROMData(BYTE *pbSource)
 {
@@ -896,13 +811,13 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
     }
     case 0x4016:
     {
-        //			JOYINFO joyInfo;
+        // JOYINFO joyInfo;
         JOYINFOEX JoyInfoEx;
 
-        //ジョイスティックの状態をトラップ
+        // ジョイスティックの状態をトラップ
+        // Trap Joystick state
         if (!g_fSkipJoyRead)
         {
-            //				joyGetPos(g_uEmuJoyID,&joyInfo);
             JoyInfoEx.dwSize = sizeof(JOYINFOEX);
             JoyInfoEx.dwFlags = g_fUseJoyPOV ? JOY_RETURNX | JOY_RETURNY | JOY_RETURNBUTTONS | JOY_RETURNPOV : JOY_RETURNX | JOY_RETURNY | JOY_RETURNBUTTONS;
             joyGetPosEx(g_uEmuJoyID, &JoyInfoEx);
@@ -911,65 +826,65 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
         switch (bJoy1Read++)
         {
         case 0://A
-            if (GetAsyncKeyState(g_EmuKey[0])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[0])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
+            bRet |= 0x01;
+        break;
         case 1://B
-            if (GetAsyncKeyState(g_EmuKey[1])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[1])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
+            bRet |= 0x01;
+        break;
         case 2://SELECT
-            if (GetAsyncKeyState(g_EmuKey[2])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[2])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
+            bRet |= 0x01;
+        break;
         case 3://START
-            if (GetAsyncKeyState(g_EmuKey[3])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[3])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
+            bRet |= 0x01;
+        break;
         case 4://UP
-            if (GetAsyncKeyState(g_EmuKey[4])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[4])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwYpos < g_dwEmuJoyYUp) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVFORWARD)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         case 5://DOWN
-            if (GetAsyncKeyState(g_EmuKey[5])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[5])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwYpos > g_dwEmuJoyYDown) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVBACKWARD)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         case 6://LEFT
-            if (GetAsyncKeyState(g_EmuKey[6])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[6])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwXpos < g_dwEmuJoyXLeft) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVLEFT)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         case 7://RIGHT
-            if (GetAsyncKeyState(g_EmuKey[7])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[7])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwXpos > g_dwEmuJoyXRight) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVRIGHT)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         }/* switch */
 
         if (gblDemoRecord)
@@ -979,13 +894,12 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
     }
     case 0x4017:
     {
-        //			JOYINFO joyInfo;
         JOYINFOEX JoyInfoEx;
 
-        //ジョイスティックの状態をトラップ
+        // ジョイスティックの状態をトラップ
+        // Trap Joystick state
         if (!g_fSkipJoyRead)
         {
-            //				joyGetPos(g_uEmuJoyID,&joyInfo);
             JoyInfoEx.dwSize = sizeof(JOYINFOEX);
             JoyInfoEx.dwFlags = g_fUseJoyPOV ? JOY_RETURNX | JOY_RETURNY | JOY_RETURNBUTTONS | JOY_RETURNPOV : JOY_RETURNX | JOY_RETURNY | JOY_RETURNBUTTONS;
             joyGetPosEx(g_uEmuJoyID, &JoyInfoEx);
@@ -994,68 +908,69 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
         switch (bJoy2Read++)
         {
         case 0://A
-            if (GetAsyncKeyState(g_EmuKey[0])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[0])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
+            bRet |= 0x01;
+        break;
         case 1://B
-            if (GetAsyncKeyState(g_EmuKey[1])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[1])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
+            bRet |= 0x01;
+        break;
         case 2://SELECT
-            if (GetAsyncKeyState(g_EmuKey[2])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[2])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
+            bRet |= 0x01;
+        break;
         case 3://START
-            if (GetAsyncKeyState(g_EmuKey[3])
-                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
-                bRet |= 0x01;
-            break;
+        if (GetAsyncKeyState(g_EmuKey[3])
+            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
+            bRet |= 0x01;
+        break;
         case 4://UP
-            if (GetAsyncKeyState(g_EmuKey[4])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[4])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwYpos < g_dwEmuJoyYUp) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVFORWARD)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         case 5://DOWN
-            if (GetAsyncKeyState(g_EmuKey[5])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[5])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwYpos > g_dwEmuJoyYDown) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVBACKWARD)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         case 6://LEFT
-            if (GetAsyncKeyState(g_EmuKey[6])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[6])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwXpos < g_dwEmuJoyXLeft) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVLEFT)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         case 7://RIGHT
-            if (GetAsyncKeyState(g_EmuKey[7])
-                || (!g_fSkipJoyRead &&
-                (
+        if (GetAsyncKeyState(g_EmuKey[7])
+            || (!g_fSkipJoyRead &&
+            (
                 (JoyInfoEx.dwXpos > g_dwEmuJoyXRight) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVRIGHT)
                 )
                 )
-                )
-                bRet |= 0x01;
-            break;
+            )
+            bRet |= 0x01;
+        break;
         }/* switch */
 
-        // Note : DemoRecorderHandler()関数を2Conで呼び出してはいけない。
+        // Note: DemoRecorderHandler()関数を2Conで呼び出してはいけない。
+        // Note: Do not call the DemoRecorderHandler() function with 2Con.
 
         return bRet;
     }
@@ -1084,39 +999,39 @@ void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
     switch (Addr)
     {
     case 0x2000:
-        bPPUCtrlReg1 = Value;
-        break;
+    bPPUCtrlReg1 = Value;
+    break;
     case 0x2001:
-        bPPUCtrlReg2 = Value;
-        break;
+    bPPUCtrlReg2 = Value;
+    break;
     case 0x2005:
-        if (!blBGIsVertical)
-        {
-            bBGScrlH = Value;
-            blBGIsVertical = TRUE;
-            break;
-        }
-        else
-        {
-            //bBGScrlV=Value;
-            blBGIsVertical = FALSE;
-            break;
-        }
+    if (!blBGIsVertical)
+    {
+        bBGScrlH = Value;
+        blBGIsVertical = TRUE;
         break;
+    }
+    else
+    {
+        //bBGScrlV=Value;
+        blBGIsVertical = FALSE;
+        break;
+    }
+    break;
     case 0x2006://Address Write
-        blVRAMFirstRead = TRUE;
-        if (g_blVRAMAddrLow)
-        {
-            wVRAMAddr = (wVRAMAddr & 0xFF00) | Value;
-            g_blVRAMAddrLow = FALSE;
-            break;
-        }
-        else
-        {
-            wVRAMAddr = (wVRAMAddr & 0xFF) | (Value << 8);
-            g_blVRAMAddrLow = TRUE;
-            break;
-        }
+    blVRAMFirstRead = TRUE;
+    if (g_blVRAMAddrLow)
+    {
+        wVRAMAddr = (wVRAMAddr & 0xFF00) | Value;
+        g_blVRAMAddrLow = FALSE;
+        break;
+    }
+    else
+    {
+        wVRAMAddr = (wVRAMAddr & 0xFF) | (Value << 8);
+        g_blVRAMAddrLow = TRUE;
+        break;
+    }
     case 0x2007:
     {
         if ((wVRAMAddr & 0x3000) == 0x2000)
@@ -1139,7 +1054,8 @@ void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
                     memcpy(&g_lpBmInfo->bmiColors[(i << 2)], &rgbNESPal[Value], sizeof(RGBQUAD));
                 }
 
-                //バックグラウンドの色データ
+                // バックグラウンドの色データ
+                // background color data
                 gbBGColor = Value;
             }
         }
@@ -1148,19 +1064,19 @@ void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
     }
     break;
     case 0x4014:
-        memcpy(pbSPRRAM, psM6502->m6502Base + (0x100 * Value), 0x100);
-        break;
+    memcpy(pbSPRRAM, psM6502->m6502Base + (0x100 * Value), 0x100);
+    break;
     case 0x4016:
-        bJoy1Read = bJoy2Read = 0;
-        break;
+    bJoy1Read = bJoy2Read = 0;
+    break;
     case 0x2002:
-        break;
+    break;
     case 0x2003:
-        bSPRRAMAddr = Value;
-        break;
+    bSPRRAMAddr = Value;
+    break;
     case 0x2004:
-        pbSPRRAM[bSPRRAMAddr++] = Value;
-        break;
+    pbSPRRAM[bSPRRAMAddr++] = Value;
+    break;
     }
 }
 
@@ -1199,7 +1115,6 @@ static WORD ExecuteCPU()
     if (wScanline == pbSPRRAM[0] + GetFirstNonTransparentLine(pbSPRRAM[1]))
         bPPUStaReg |= 0x40;
 
-    //
     if (wScanline > 7 && wScanline < 232)
     {
         // Update scanline
@@ -1390,7 +1305,6 @@ BOOL CreateNester()
 
     InitJoystick();
 
-    //
     InitializeCriticalSection(&CriticalSection);
 
     return TRUE;
@@ -1406,7 +1320,8 @@ void ResetEmulator()
 
     // PrepareVROMData(pbVRAM);
 
-    //TODO ここにリセットの処理を追加してください。
+    // TODO ここにリセットの処理を追加してください。
+    // TODO Add the reset process here.
     gblPause = FALSE;
     gblDemoRecord = FALSE;
 
@@ -1537,7 +1452,6 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
     WORD wMapAddr;
     BYTE bTmpBuf;
 
-    //
     if (!LoadRAMData(__T("RAMDATA1"))) return;
 
     //Reg
@@ -1556,21 +1470,27 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 
     wVRAMAddr = 0x0000;
 
-    //ルームの属性
+    // ルームの属性
+    // attribute of room
     pb6502CPUMemory[0x74E] = ((psTPS->bRoomID >> 5) & 0x03);
 
     pb6502CPUMemory[0x750] = (psTPS->bRoomID & 0x1F);
 
-    //マップヘッダの処理
+    // マップヘッダの処理
+    // Process map header
     bTmpBuf = pb6502CPUMemory[psTPS->MapAddress.word];
 
     pb6502CPUMemory[0x741] = psTPS->bBackObject1;
     pb6502CPUMemory[0x744] = psTPS->bBackObject2;
 
-    pb6502CPUMemory[0x710] = ((bTmpBuf >> 3) & 0x07);//出現位置
+    // 出現位置
+    // appearance position
+    pb6502CPUMemory[0x710] = ((bTmpBuf >> 3) & 0x07);
 
+    // 持ち時間
+    // Duration
     if (((bTmpBuf >> 6) & 0x03))
-        pb6502CPUMemory[0x715] = ((bTmpBuf >> 6) & 0x03);//持ち時間
+        pb6502CPUMemory[0x715] = ((bTmpBuf >> 6) & 0x03);
     else
     {
         pb6502CPUMemory[0x715] = 0x00;
@@ -1579,9 +1499,13 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
 
     bTmpBuf = pb6502CPUMemory[psTPS->MapAddress.word + 1];
 
-    pb6502CPUMemory[0x727] = psTPS->bBasicBlock;//初期基本背景ブロック
+    // 初期基本背景ブロック
+    // Initial basic background block
+    pb6502CPUMemory[0x727] = psTPS->bBasicBlock;
 
-    pb6502CPUMemory[0x742] = psTPS->bBackView;//初期景色
+    // 初期景色
+    // Initial Landscape
+    pb6502CPUMemory[0x742] = psTPS->bBackView;
 
     if (((bTmpBuf >> 6) & 0x03) == 0x03)
     {
@@ -1591,7 +1515,8 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
     else
         pb6502CPUMemory[0x733] = ((bTmpBuf >> 6) & 0x03);
 
-    //アドレス
+    // アドレス
+    // address
     wMapAddr = psTPS->MapAddress.word + 2;
     pb6502CPUMemory[0xE7] = (BYTE)(wMapAddr & 0xFF);
     pb6502CPUMemory[0xE8] = (BYTE)((wMapAddr >> 8) & 0xFF);
@@ -1612,8 +1537,13 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
     memcpy(pb6502CPUMemory + 0x72D, psTPS->bLeftObjOfs, 3);
     memcpy(pb6502CPUMemory + 0x730, psTPS->bLeftObjNum, 3);
 
-    pb6502CPUMemory[0x734] = psTPS->bLeftObjData1;//階段
-    memcpy(pb6502CPUMemory + 0x736, psTPS->bLeftObjData2, 3);//きのこの島の茎
+    // 階段
+    // Stairs
+    pb6502CPUMemory[0x734] = psTPS->bLeftObjData1;
+
+    // きのこの島の茎
+    // stem of mushrooms island
+    memcpy(pb6502CPUMemory + 0x736, psTPS->bLeftObjData2, 3);
 
     pb6502CPUMemory[0x72C] = psTPS->bMapOfs;
     pb6502CPUMemory[0x72A] = psTPS->bMapPage;
@@ -1630,7 +1560,8 @@ void TestPlaySetup(TESTPLAYSETUP *psTPS)
     pb6502CPUMemory[0x754] = psTPS->bMarioSize;
     pb6502CPUMemory[0x756] = psTPS->bMarioCap;
 
-    //上の表示をクリアー
+    // 上の表示をクリアー
+    // Clear the above display
     memset(pbVRAM + 0x2000, 0x24, 128);
     memset(pbVRAM + 0x23C0, 0xAA, 0x40);
     memset(pbVRAM + 0x2400, 0x24, 128);
@@ -1650,19 +1581,18 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
     psM6502->m6502s = 0xF9;
     m6502zpSetContext(psM6502);
 
-    //
     bPPUCtrlReg1 = 0x10;
     bPPUCtrlReg2 = 0x1E;
     bPPUStaReg = 0x40;
     wScanline = 0x1F;
 
-    //
     wVRAMAddr = 0x0000;
 
     //----------------------------------
     // マリオの初期位置を設定するハック
+    // Hack to set the initial position of Mario
     //----------------------------------
-    //00009165: B9 16 91	lda $9116,y  ; 初期横位置
+    //00009165: B9 16 91	lda $9116,y  ; 初期横位置 [Initial lateral position]
     if (psTPSEx->fPosXHack)
     {
         pb6502CPUMemory[0x9165] = 0xA9;
@@ -1670,7 +1600,7 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
         pb6502CPUMemory[0x9167] = 0xEA;
     }
 
-    //0000916A: BD 1C 91	lda $911C,x  ; 初期縦位置
+    //0000916A: BD 1C 91	lda $911C,x  ; 初期縦位置 [Initial vertical position]
     if (psTPSEx->fPosYHack)
     {
         pb6502CPUMemory[0x916A] = 0xA9;
@@ -1680,15 +1610,18 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
 
     //-------------
     // 無敵ハック
+    // Invincible Hack
     //-------------
     if (psTPSEx->bInvincible)
     {
         // ファイアバー
+        // Fire bar
         pb6502CPUMemory[0xCE0D] = 0xA9;
         pb6502CPUMemory[0xCE0E] = 0x01;
         pb6502CPUMemory[0xCE0F] = 0xEA;
 
-        //普通の敵
+        // 普通の敵
+        // Ordinary enemies
         pb6502CPUMemory[0xD92C] = 0xA9;
         pb6502CPUMemory[0xD92D] = 0x01;
         pb6502CPUMemory[0xD92E] = 0xEA;
@@ -1696,13 +1629,10 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
 
     //$075A：マリオの残機
     //○ミスすると-1　00でミスをするとFF　-1したときの値が80-FFならゲームオーバー
-
-    //
-    //
-    //
+    // $075A: the remainder of Mario
+    // -If you make a mistake, if you make a mistake at -100, if the value at FF -1 is 80-FF game over
     pb6502CPUMemory[0x715] = pb6502CPUMemory[0x7F8] = 0x00;
 
-    //
     pb6502CPUMemory[0x752] = 0x01;
     pb6502CPUMemory[0x751] = psTPSEx->bPage;
     pb6502CPUMemory[0x750] = psTPSEx->bRoomID;
@@ -1722,6 +1652,7 @@ void TestPlaySetupEx(TESTPLAYSETUPEX *psTPSEx)
     pb6502CPUMemory[0x756] = psTPSEx->bMarioCap;
 
     // 敵を0ページから表示するハック
+    // hack to display enemies from 0 page
     if (psTPSEx->bBadGuyHack)
     {
         pb6502CPUMemory[0xC1BB] = 0x4C;
@@ -1740,6 +1671,8 @@ void DirectWriteToEmulatorRAM(WORD wAddr, LPBYTE lpBuf, WORD wSize)
 /****************
 
   セーブとロード
+
+  Save and load
 
 *****************/
 typedef struct
@@ -1760,7 +1693,6 @@ typedef struct
     BYTE bBGScrlH;
     BYTE bBGScrlV;
 
-    //
     WORD wScanline;
 
     // VRAM
@@ -1806,7 +1738,6 @@ BOOL LoadEmulatorState(EMULATORSETUP* psEmuSetup)
     bBGScrlH = g_psSRS->bBGScrlH;
     bBGScrlV = g_psSRS->bBGScrlV;
 
-    //
     wScanline = g_psSRS->wScanline;
 
     // VRAM
@@ -1866,7 +1797,6 @@ BOOL SaveEmulatorState()
     g_psSRS->bBGScrlH = bBGScrlH;
     g_psSRS->bBGScrlV = bBGScrlV;
 
-    //
     g_psSRS->wScanline = wScanline;
 
     // VRAM
@@ -1889,10 +1819,6 @@ BOOL SaveEmulatorState()
 
     return TRUE;
 }
-
-/********************
-
-*********************/
 
 LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -1927,16 +1853,16 @@ LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         break;
     }
     case WM_SIZE:
-        GetClientRect(hWnd, &rcClient);
-        break;
+    GetClientRect(hWnd, &rcClient);
+    break;
     case WM_MDIACTIVATE:
-        if (!IsEmulatorRunning())
-            break;
-        if ((HWND)lParam == hWnd)
-            SuspendEmulator(FALSE);
-        else
-            SuspendEmulator(TRUE);
+    if (!IsEmulatorRunning())
         break;
+    if ((HWND)lParam == hWnd)
+        SuspendEmulator(FALSE);
+    else
+        SuspendEmulator(TRUE);
+    break;
     case WM_CREATE:
     {
         ghEmuWnd = hWnd;
@@ -1947,7 +1873,8 @@ LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         //Create Emulator
         if (ghEmuWnd)
         {
-            //初期化するために必要な値のロードもあるのでCreateNester()の前の呼び出す。
+            // 初期化するために必要な値のロードもあるのでCreateNester()の前の呼び出す。
+            // There is also loading of the necessary values ​​to initialize, so call before CreateNester().
             LoadEmulatorSetting();
             LoadEmuKeySetting();
             CreateNester();
@@ -1993,27 +1920,27 @@ LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         {
         case WMSZ_TOP:
         case WMSZ_BOTTOM:
-            iLength = lprc->bottom - lprc->top;
-            iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
-            break;
+        iLength = lprc->bottom - lprc->top;
+        iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
+        break;
         case WMSZ_RIGHT:
         case WMSZ_LEFT:
-            iLength = lprc->right - lprc->left;
-            iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEX - NES_SCREENSIZEX / 2) / NES_SCREENSIZEX;
-            break;
+        iLength = lprc->right - lprc->left;
+        iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEX - NES_SCREENSIZEX / 2) / NES_SCREENSIZEX;
+        break;
         case WMSZ_TOPLEFT:
         case WMSZ_TOPRIGHT:
         case WMSZ_BOTTOMLEFT:
         case WMSZ_BOTTOMRIGHT:
-            iLength = lprc->bottom - lprc->top;
-            iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
-            break;
+        iLength = lprc->bottom - lprc->top;
+        iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
+        break;
         }
         if (iSizeRate < 0)
             iSizeRate = 0;
         iSizeRate++;
-        lprc->right = lprc->left + EMULATOR_WINDOWFRAMESIZEX + NES_SCREENSIZEX*iSizeRate;
-        lprc->bottom = lprc->top + EMULATOR_WINDOWFRAMESIZEY + NES_VISIBLESIZEY*iSizeRate;
+        lprc->right = lprc->left + EMULATOR_WINDOWFRAMESIZEX + NES_SCREENSIZEX * iSizeRate;
+        lprc->bottom = lprc->top + EMULATOR_WINDOWFRAMESIZEY + NES_VISIBLESIZEY * iSizeRate;
 
         return TRUE;
     }
@@ -2022,9 +1949,6 @@ LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
     return DefMDIChildProc(hWnd, message, wParam, lParam);
 }
 
-/**************
-
-***************/
 BOOL RegisterEmuWndClass(HINSTANCE hInstance)
 {
     WNDCLASS            wc;
@@ -2050,7 +1974,8 @@ HWND CreateEmulatorWnd(HINSTANCE hInstance, HWND hWndMDIClient)
 
     if (ghEmuWnd) return FALSE;
 
-    //WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
+    // WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
+    // Windows are not added to the Window menu unless you specify WS_VISIBLE.
     hWnd = CreateMDIWindow(EMUWNDCLASSNAME,
                            STRING_WINDOW_EMULATOR,
                            WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE,

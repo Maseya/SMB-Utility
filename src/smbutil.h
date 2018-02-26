@@ -27,6 +27,4 @@
 #include "strings.h"
 #include "logview.h"
 
- // #define INTERNATIONAL
-
 #endif /* SMBUTIL_H */

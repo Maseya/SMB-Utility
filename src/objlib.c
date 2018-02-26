@@ -38,6 +38,7 @@ void LoadEditorOption()
 
 /*
 設定用ダイアログコールバック関数
+Setup dialog callback function
 */
 LRESULT CALLBACK EditorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -78,12 +79,16 @@ LRESULT CALLBACK EditorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPA
 
   直接オブジェクトデータを検索するときの補助関数
 
+  Auxiliary function when searching object data directly
+
 **********************************************/
 /*********
     敵
+    enemy
 **********/
 
-//敵のページについての処理（補助関数）
+// 敵のページについての処理（補助関数）
+// Processing for enemy pages (auxiliary function)
 static void BadGuysSetPage(OBJECTSEEKINFO *psObjSeek)
 {
     if (!psObjSeek) return;
@@ -98,6 +103,11 @@ static void BadGuysSetPage(OBJECTSEEKINFO *psObjSeek)
         // n:改ページフラグ
         // h:5-3以降出現
         // xxxxxx:新しいページ
+        //
+        // nhxx xxxx
+        // n: page break flag
+        // h: Appears after 5-3
+        // xxxxxx: New page
         psObjSeek->dwPage = psObjSeek->pbData[1] & 0x3F;
         psObjSeek->blIsPrevPageCom = TRUE;
     }
@@ -105,7 +115,8 @@ static void BadGuysSetPage(OBJECTSEEKINFO *psObjSeek)
     if (((psObjSeek->pbData[0]) & 0x0F) != 0x0F) psObjSeek->blIsPrevPageCom = FALSE;
 }
 
-//ルーム内のデータならTRUE、ルーム外のデータならFALSEを返す
+// ルーム内のデータならTRUE、ルーム外のデータならFALSEを返す
+// Returns TRUE if the data is in the room, FALSE if it is outside the room
 static BOOL BadGuysCheckDataLength(OBJECTSEEKINFO *psObjSeek)
 {
     if (!psObjSeek) return FALSE;
@@ -116,32 +127,40 @@ static BOOL BadGuysCheckDataLength(OBJECTSEEKINFO *psObjSeek)
     return TRUE;
 }
 
-//敵のデータのサイズを得る
+// 敵のデータのサイズを得る
+// Get enemy data size
 int BadGuysGetDataLength(BYTE *pbBuf)
 {
     return ((pbBuf[0] & 0x0F) == 0x0E) ? 3 : 2;
 }
 
-//敵のデータを検索するためのデータを初期化する
-//uRoomIDには、取得したいルームのデータを指定。
-//GETADDRESS_CURRENT_EDITTINGを指定すると現在エディトしているルーム
+// 敵のデータを検索するためのデータを初期化する
+// uRoomIDには、取得したいルームのデータを指定。
+// GETADDRESS_CURRENT_EDITTINGを指定すると現在エディトしているルーム
+// Initialize data for searching enemy's data
+// Specify the data of the room you want to obtain for uRoomID.
+// If GETADDRESS_CURRENT_EDITTING is specified, the room currently being edited
 BOOL BadGuysSeekFirst(OBJECTSEEKINFO *psObjSeek, UINT uRoomID)
 {
     if (!psObjSeek) return FALSE;
 
-    //構造体を初期化
+    // 構造体を初期化
+    // Initialize structure
     memset(psObjSeek, 0, sizeof(OBJECTSEEKINFO));
     psObjSeek->pbData = bPRGROM + GetBadGuysAddress(uRoomID);
 
     if (psObjSeek->pbData[0] == 0xFF) return FALSE;
 
-    //ページの情報をセット
+    // ページの情報をセット
+    // Set page information
     BadGuysSetPage(psObjSeek);
 
-    //長さの情報をセット
+    // 長さの情報をセット
+    // Set length information
     psObjSeek->dwLength = BadGuysGetAllDataLength(uRoomID);
 
-    //オブジェクトのサイズ
+    // オブジェクトのサイズ
+    // Size of object
     psObjSeek->dwObjLen = BadGuysGetDataLength(psObjSeek->pbData);
 
     if (g_blIsLengthValid && !BadGuysCheckDataLength(psObjSeek)) return FALSE;
@@ -149,32 +168,39 @@ BOOL BadGuysSeekFirst(OBJECTSEEKINFO *psObjSeek, UINT uRoomID)
     return TRUE;
 }
 
-//次のデータを得る
-//正しくデータを取得できた場合は、TRUE,　NULLを渡すか、データの終了の場合は、FALSEを返す。
+// 次のデータを得る
+// 正しくデータを取得できた場合は、TRUE,　NULLを渡すか、データの終了の場合は、FALSEを返す。
+// Obtain the next data
+// If TRUE, NULL is passed if data can be acquired correctly, FALSE is returned in the case of data termination.
 BOOL BadGuysSeekNext(OBJECTSEEKINFO *psObjSeek)
 {
     int iCurObjSize;
     if (!psObjSeek) return FALSE;
 
-    //
     iCurObjSize = BadGuysGetDataLength(psObjSeek->pbData);
     psObjSeek->pbData += iCurObjSize;
     psObjSeek->dwOfs += iCurObjSize;
 
     if (psObjSeek->pbData[0] == 0xFF) return FALSE;
 
-    //ページの情報をセット
+    // ページの情報をセット
+    // Set page information
     BadGuysSetPage(psObjSeek);
 
-    //インデックスをインクリメント
+    // インデックスをインクリメント
+    // Increment index
     psObjSeek->dwIndex++;
 
-    //オブジェクトのサイズ
+    // オブジェクトのサイズ
+    // Size of object
     psObjSeek->dwObjLen = BadGuysGetDataLength(psObjSeek->pbData);
 
     if (g_blIsLengthValid
         && (!BadGuysCheckDataLength(psObjSeek)
-        || psObjSeek->dwOfs > 0xFF)) // 1ルームに存在できる最大オブジェクト数
+
+            // 1ルームに存在できる最大オブジェクト数
+            // maximum number of objects that can exist in one room
+            || psObjSeek->dwOfs > 0xFF))
         return FALSE;
 
     return TRUE;
@@ -191,28 +217,27 @@ DWORD BadGuysIsPageRelatedObject(LPBYTE lpbBuf)
 
 /**********
    マップ
+   map
 ***********/
 
-//ページの処理（補助関数）
+// ページの処理（補助関数）
+// Processing of pages (auxiliary function)
 static void MapSetPage(OBJECTSEEKINFO *psObjSeek)
 {
     if (!psObjSeek) return;
 
-    if (((psObjSeek->pbData[1]) & 0x80) /*&& !psObjSeek->blIsPrevPageCom*/)
+    if (((psObjSeek->pbData[1]) & 0x80))
     {
         psObjSeek->dwPage++;
     }
     else if ((((psObjSeek->pbData[0]) & 0x0F) == 0x0D) && (!((psObjSeek->pbData[1]) & 0x40)))
     {
         psObjSeek->dwPage = ((psObjSeek->pbData[1]) & 0x3F);
-
-        //psObjSeek->blIsPrevPageCom=TRUE;
     }
-
-    //if(!((((psObjSeek->pbData[0])&0x0F)==0x0D) && (!((psObjSeek->pbData[1])&0x40)))) psObjSeek->blIsPrevPageCom=FALSE;
 }
 
-//ルーム内のデータならTRUE、ルーム外のデータならFALSEを返す
+// ルーム内のデータならTRUE、ルーム外のデータならFALSEを返す
+// Returns TRUE if the data is in the room, FALSE if it is outside the room
 static BOOL MapCheckDataLength(OBJECTSEEKINFO *psObjSeek)
 {
     if (!psObjSeek) return FALSE;
@@ -223,26 +248,36 @@ static BOOL MapCheckDataLength(OBJECTSEEKINFO *psObjSeek)
     return TRUE;
 }
 
-//検索するためのデータを初期化する
-//uRoomIDには、取得したいルームのデータを指定。
-//GETADDRESS_CURRENT_EDITTINGを指定すると現在エディトしているルーム
+// 検索するためのデータを初期化する
+// uRoomIDには、取得したいルームのデータを指定。
+// GETADDRESS_CURRENT_EDITTINGを指定すると現在エディトしているルーム
+// Initialize data for searching
+// Specify the data of the room you want to obtain for uRoomID.
+// If GETADDRESS_CURRENT_EDITTING is specified, the room currently being edited
 BOOL MapSeekFirst(OBJECTSEEKINFO *psObjSeek, UINT uRoomID)
 {
     if (!psObjSeek) return FALSE;
 
-    //構造体を初期化
+    // 構造体を初期化
+    // Initialize structure
     memset(psObjSeek, 0, sizeof(OBJECTSEEKINFO));
-    psObjSeek->pbData = bPRGROM + GetMapAddress(uRoomID) + 2;//+2は、ヘッダ分
+
+    // +2は、ヘッダ分
+    // + 2 is the header part
+    psObjSeek->pbData = bPRGROM + GetMapAddress(uRoomID) + 2;
 
     if (psObjSeek->pbData[0] == 0xFD) return FALSE;
 
-    //ページの情報をセット
+    // ページの情報をセット
+    // Set page information
     MapSetPage(psObjSeek);
 
-    //長さの情報をセット
+    // 長さの情報をセット
+    // Set length information
     psObjSeek->dwLength = MapGetAllDataLength(uRoomID);
 
-    //オブジェクトのサイズ
+    // オブジェクトのサイズ
+    // Size of object
     psObjSeek->dwObjLen = 2;
 
     if (g_blIsLengthValid && !MapCheckDataLength(psObjSeek)) return FALSE;
@@ -254,24 +289,29 @@ BOOL MapSeekNext(OBJECTSEEKINFO *psObjSeek)
 {
     if (!psObjSeek) return FALSE;
 
-    //
     psObjSeek->pbData += 2;
     psObjSeek->dwOfs += 2;
 
     if (psObjSeek->pbData[0] == 0xFD) return FALSE;
 
-    //ページの情報をセット
+    // ページの情報をセット
+    // Set page information
     MapSetPage(psObjSeek);
 
-    //インデックスをインクリメント
+    // インデックスをインクリメント
+    // Increment index
     psObjSeek->dwIndex++;
 
-    //オブジェクトのサイズ
+    // オブジェクトのサイズ
+    // Size of object
     psObjSeek->dwObjLen = 2;
 
     if (g_blIsLengthValid
         && (!MapCheckDataLength(psObjSeek)
-        || psObjSeek->dwOfs > 0xFF)) // 1ルームに存在できる最大オブジェクト数
+
+            // 1ルームに存在できる最大オブジェクト数
+            // maximum number of objects that can exist in one room
+            || psObjSeek->dwOfs > 0xFF))
         return FALSE;
 
     return TRUE;
@@ -280,6 +320,8 @@ BOOL MapSeekNext(OBJECTSEEKINFO *psObjSeek)
 /***********************************
 
   マップのデータ変更処理関数
+
+  Map data change processing function
 
 ************************************/
 int GetMapData(UINT uRoomID, int iIndex, BYTE *pbBuf, int *piPage)
@@ -314,8 +356,14 @@ BOOL SortByPosXMap(UINT uRoomID, int *piCurIndex, BOOL IsResort)
     BYTE *pbData;
     BOOL blRet;
     UINT uPageBaseOfs;
-    int iIndexBase;//先頭からの基準インデックス
-    int iIndex;//基準からのインデックス
+
+    // 先頭からの基準インデックス
+    // Base index from the beginning
+    int iIndexBase;
+
+    // 基準からのインデックス
+    // Index from reference
+    int iIndex;
     BOOL blReSortNeed;
     DWORD dwLength;
 
@@ -334,7 +382,8 @@ BOOL SortByPosXMap(UINT uRoomID, int *piCurIndex, BOOL IsResort)
 
         pbPageBase = pbData;
 
-        //１ページ内の検索
+        // １ページ内の検索
+        // Search within one page
         for (;;)
         {
             int n = 0;
@@ -344,11 +393,11 @@ BOOL SortByPosXMap(UINT uRoomID, int *piCurIndex, BOOL IsResort)
                 {
                     BYTE bTmp[2];
 
-                    //
                     if ((pbPageBase[iPageBaseNum] & 0x0F) == 0x0D && (pbPageBase[iPageBaseNum + 1] & 0x70) == 0x00)
                         blReSortNeed = TRUE;
 
-                    //改ページフラグ
+                    // 改ページフラグ
+                    // Page break flag
                     if (pbPageBase[iPageBaseNum + 1] & 0x80)
                     {
                         pbPageBase[iPageBaseNum + n + 1] |= 0x80;
@@ -358,10 +407,12 @@ BOOL SortByPosXMap(UINT uRoomID, int *piCurIndex, BOOL IsResort)
                     memcpy(pbPageBase + iPageBaseNum, pbPageBase + iPageBaseNum + n, 2);
                     memcpy(pbPageBase + iPageBaseNum + n, bTmp, 2);
 
-                    //ﾃﾞｰﾀが変わった
+                    // ﾃﾞｰﾀが変わった
+                    // Data changed
                     blRet = TRUE;
 
-                    //インデックスの処理
+                    // インデックスの処理
+                    // Processing indexes
                     if (piCurIndex)
                     {
                         if ((iIndexBase + iIndex) == *piCurIndex)
@@ -425,7 +476,6 @@ BOOL SetMapData(UINT uRoomID, int iIndex, BYTE *bBuf)
 
     memcpy(ObjSeek.pbData, bBuf, 2);
 
-    //	gblDataChanged=TRUE;
     fr_SetDataChanged(TRUE);
 
     {
@@ -434,11 +484,11 @@ BOOL SetMapData(UINT uRoomID, int iIndex, BYTE *bBuf)
 
         SortByPosXMap(uRoomID, &iIndex, FALSE);
 
-        //giSelectedItem=iIndex;
         SetSelectedItem(iIndex, FALSE);
         GetMapData(uRoomID, iIndex, bTmp, &iPage);
 
-        //カーソルの更新
+        // カーソルの更新
+        // Update cursor
         SetMapViewCursoleMap(bTmp, iPage);
     }
 
@@ -463,7 +513,6 @@ BOOL SetMapDataBinary(UINT uRoomID, int iIndex, BYTE *bBuf, int iValidSize)
 
     memcpy(ObjSeek.pbData, bBuf, iValidSize);
 
-    //	gblDataChanged=TRUE;
     fr_SetDataChanged(TRUE);
 
     {
@@ -472,11 +521,11 @@ BOOL SetMapDataBinary(UINT uRoomID, int iIndex, BYTE *bBuf, int iValidSize)
 
         SortByPosXMap(GETADDRESS_CURRENT_EDITTING, &iIndex, FALSE);
 
-        //giSelectedItem=iIndex;
         SetSelectedItem(iIndex, FALSE);
         GetMapData(GETADDRESS_CURRENT_EDITTING, iIndex, bTmp, &iPage);
 
-        //カーソルの更新
+        // カーソルの更新
+        // Update cursor
         SetMapViewCursoleMap(bTmp, iPage);
     }
 
@@ -487,6 +536,10 @@ BOOL SetMapDataBinary(UINT uRoomID, int iIndex, BYTE *bBuf, int iValidSize)
 
   blPageOverDecは、指定したﾍﾟｰｼﾞを超えてしまった場合に、インデックスを１つ減らすか
   TRUE…減らす FALSE …　減らさない
+
+  If blPageOverDec exceeds the specified page, reduce the index by one
+  TRUE ... decrease FALSE ... do not decrease
+
 *******/
 int GetMapDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL blPageOverDec)
 {
@@ -516,7 +569,6 @@ int GetMapDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL blPa
                 }
                 else if (ObjSeek.dwPage == (DWORD)iPage)
                 {
-                    //if((psGetIndex->dwFlag&GETINDEX_FLAG_BIN) && !memcmp(pbBuf,ObjSeek.pbData,sizeof(pbBuf)))break;
                     if ((psGetIndex->dwFlag & GETINDEX_FLAG_XY)
                         && psGetIndex->x == GetMapXPos(ObjSeek.pbData)
                         && psGetIndex->y == GetMapYPos(ObjSeek.pbData))
@@ -552,6 +604,8 @@ int GetMapDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL blPa
 
   敵のデータ変更処理関数
 
+  Enemy data change processing function
+
 ************************************/
 int GetBadGuysData(UINT uRoomID, int iIndex, BYTE *bBuf, int *piPage)
 {
@@ -576,12 +630,23 @@ int GetBadGuysData(UINT uRoomID, int iIndex, BYTE *bBuf, int *piPage)
 
 static BOOL MemorySwap(BYTE *pbBuf1, int iBuf1Size, BYTE *pbBuf2, int iBuf2Size)
 {
-    BYTE *pbBufSmall;//アドレスの小さい方
+    // アドレスの小さい方
+    // The smaller one
+    BYTE *pbBufSmall;
     BYTE *pbTmpSmall;
-    BYTE *pbBufLarge;//アドレスの大きい方
+
+    // アドレスの大きい方
+    // The one with the larger address
+    BYTE *pbBufLarge;
     BYTE *pbTmpLarge;
-    int iSizeSmall;//アドレスの小さい方のデータのサイズ
-    int iSizeLarge;//アドレスの大きい方のデータのサイズ
+
+    // アドレスの小さい方のデータのサイズ
+    // Size of data with the smaller address
+    int iSizeSmall;
+
+    // アドレスの大きい方のデータのサイズ
+    // Size of data with larger address
+    int iSizeLarge;
 
     if (pbBuf1 == pbBuf2) return FALSE;
 
@@ -625,38 +690,21 @@ static BOOL MemorySwap(BYTE *pbBuf1, int iBuf1Size, BYTE *pbBuf2, int iBuf2Size)
 
 /***************************************************
 並べ替えが起こったらTRUE、そうでなければFALSEを返す。
+Returns TRUE if a sort occurs, FALSE otherwise.
 ****************************************************/
-/*
-BOOL SortByPosXBadGuysEx(UINT uRoomID,int *piCurIndex,BOOL blIsResort)
-{
-    UINT uPage;
-    BOOL blRet=FALSE;
-    OBJECTSEEKINFO ObjSeek;
-    OBJECTSEEKINFO ObjSeekBase;
-
-    if(!BadGuysSeekFirst(&ObjSeekBase,uRoomID)) return FALSE;
-    for(;;){
-        uPage=ObjSeekBase.dwPage;
-        for(;;){
-            memcpy(&ObjSeek,&ObjSeekBase,sizeof(OBJECTSEEKINFO));
-            for(;;){
-                if(!BadGuysSeekNext(&ObjSeek) || uPage!=ObjSeek.dwPage) break;
-                if((ObjSeekBase.pbData[0]&0xF0)>(ObjSeek.pbData[0]&0xF0)){
-                }
-            }
-            if(!BadGuysSeekNext(&ObjSeekBase) || uPage!=ObjSeekBase.dwPage) break;
-        }
-    }
-    return ;
-}
-*/
 BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
 {
     BYTE *pbData;
     BOOL blRet;
     UINT uPageBaseOfs;
-    int iIndexBase;//先頭からの基準インデックス
-    int iIndex;//基準からのインデックス
+
+    // 先頭からの基準インデックス
+    // Base index from the beginning
+    int iIndexBase;
+
+    // 基準からのインデックス
+    // Index from reference
+    int iIndex;
     BOOL blReSortNeed;
     DWORD dwLength;
 
@@ -674,7 +722,8 @@ BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
 
         pbPageBase = pbData;
 
-        //１ページ内のソート
+        // １ページ内のソート
+        // Sort within one page
         for (;;)
         {
             int n = 0;
@@ -692,14 +741,16 @@ BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
                     ((pbPageBase[iPageBaseNum + n] & 0x0F) == 0x0F) ||
                     (g_blIsLengthValid && ((DWORD)(uPageBaseOfs + n + BadGuysGetDataLength(&pbPageBase[iPageBaseNum])) > dwLength))) break;
 
-                //スワップが必要なら行う
+                // スワップが必要なら行う
+                // Do swapping if necessary
                 if ((pbPageBase[iPageBaseNum] & 0xF0) > (pbPageBase[iPageBaseNum + n] & 0xF0))
                 {
                     BYTE bTmp[3];
                     int iData1Size;
                     int iData2Size;
 
-                    //ページのベースが送りコマンドで、それと何かをスワップした場合、再ソートが必要
+                    // ページのベースが送りコマンドで、それと何かをスワップした場合、再ソートが必要
+                    // If the base of the page is a forward command and you swap something with it, you will need resort
                     if ((pbPageBase[iPageBaseNum] & 0x0F) == 0x0F) blReSortNeed = TRUE;
 
                     iData1Size = ((pbPageBase[iPageBaseNum] & 0x0F) == 0x0E) ? 3 : 2;
@@ -722,10 +773,12 @@ BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
                         n += (iData2Size - iData1Size);
                     }
 
-                    //ﾃﾞｰﾀが変わった
+                    // ﾃﾞｰﾀが変わった
+                    // Data changed
                     blRet = TRUE;
 
-                    //インデックスの処理
+                    // インデックスの処理
+                    // Processing indexes
                     if (piCurIndex)
                     {
                         if ((iIndexBase + iIndex) == *piCurIndex)
@@ -737,8 +790,8 @@ BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
                             *piCurIndex = iIndexBase + iIndex;
                         }
                     }
-                }/* if */
-            }/* for */
+                }
+            }
 
             if ((pbPageBase[iPageBaseNum] & 0x0F) != 0x0E)
             {
@@ -757,12 +810,12 @@ BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
                 (pbPageBase[iPageBaseNum] == 0xFF) ||
                 ((pbPageBase[iPageBaseNum] & 0x0F) == 0x0F) ||
                 (g_blIsLengthValid && ((DWORD)(uPageBaseOfs + BadGuysGetDataLength(&pbPageBase[iPageBaseNum])) > dwLength))) break;
-        }/* for */
+        }
 
         pbData += iPageBaseNum;
 
         if (pbData[0] == 0xFF)	break;
-    } /* for */
+    }
 
     if (!blIsResort && blReSortNeed)
     {
@@ -774,7 +827,7 @@ BOOL SortByPosXBadGuys(UINT uRoomID, int *piCurIndex, BOOL blIsResort)
 
 /*
     注意：　データのサイズの違うオブジェクト（ルーム間移動の命令にクリボーなど）を設定しようとすると失敗する
-
+    Attention: Attempting to set an object with different data size (such as a command to move between rooms like Kuribo) fails
 */
 BOOL SetBadGuysData(UINT uRoomID, int iIndex, BYTE *bBuf)
 {
@@ -792,29 +845,29 @@ BOOL SetBadGuysData(UINT uRoomID, int iIndex, BYTE *bBuf)
         if (!BadGuysSeekNext(&ObjSeek)) return FALSE;
     }
 
-    //入力データのサイズを取得
+    // 入力データのサイズを取得
+    // Get size of input data
     iValidSize1 = BadGuysGetDataLength(bBuf);
 
-    //元のデータのサイズを取得
+    // 元のデータのサイズを取得
+    // Get original data size
     iValidSize2 = BadGuysGetDataLength(ObjSeek.pbData);
     if (iValidSize1 != iValidSize2) return FALSE;
     memcpy(ObjSeek.pbData, bBuf, iValidSize1);
 
-    //	gblDataChanged=TRUE;
     fr_SetDataChanged(TRUE);
 
-    //
     {
         int iPage;
         BYTE bTmp[3];
 
         SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING, &iIndex, FALSE);
 
-        //giSelectedItem=iIndex;
         SetSelectedItem(iIndex, FALSE);
         GetBadGuysData(GETADDRESS_CURRENT_EDITTING, iIndex, bTmp, &iPage);
 
-        //マップビューのカーソルの更新
+        // マップビューのカーソルの更新
+        // Update cursor in map view
         SetMapViewCursoleBadGuys(bTmp, iPage);
     }
 
@@ -839,17 +892,16 @@ BOOL SetBadGuysDataBinary(UINT uRoomID, int iIndex, BYTE *bBuf, int iValidSize)
 
     memcpy(ObjSeek.pbData, bBuf, iValidSize);
 
-    //	gblDataChanged=TRUE;
     fr_SetDataChanged(TRUE);
 
-    //マップビュー、カレントセレクトの更新
+    // マップビュー、カレントセレクトの更新
+    // Map view, update current selection
     {
         int iPage;
         BYTE bTmp[3];
 
         SortByPosXBadGuys(GETADDRESS_CURRENT_EDITTING, &iIndex, FALSE);
 
-        //giSelectedItem=iIndex;
         SetSelectedItem(iIndex, FALSE);
         GetBadGuysData(GETADDRESS_CURRENT_EDITTING, iIndex, bTmp, &iPage);
 
@@ -889,7 +941,6 @@ int GetBadGuysDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL 
             }
             else
             {
-                //if((psGetIndex->dwFlag&GETINDEX_FLAG_BIN) && !memcmp(pbBuf,ObjSeek.pbData,sizeof(pbBuf)))break;
                 if (psGetIndex->dwFlag&GETINDEX_FLAG_XY)
                 {
                     int iTmpPage;
@@ -937,9 +988,6 @@ int GetBadGuysDataIndex(UINT uRoomID, GETINDEXINFO *psGetIndex, int iPage, BOOL 
     return iCurIndex;
 }
 
-/***************************
-
-****************************/
 extern SMBBADGUYSINFO *smbBadGuysInfo;
 int GetBadGuysYPos(BYTE *pbBuf)
 {
@@ -971,7 +1019,6 @@ int GetBadGuysXPos(BYTE *pbBuf)
         return ((pbBuf[0] >> 4) & 0x0F);
 }
 
-//
 int GetMapXPos(BYTE *pbBuf)
 {
     return ((pbBuf[0] >> 4) & 0x0F);

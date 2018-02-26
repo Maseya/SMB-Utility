@@ -35,6 +35,7 @@ WORD g_nLogViewBorderPos;
 BOOL g_fShowLogView;
 
 // バッファ管理
+// buffer management
 TCHAR g_szLogBuffer[LOGVIEW_BUFSIZ];
 
 static BOOL AdjustLogView(WORD wBorderPos)
@@ -51,7 +52,6 @@ static BOOL AdjustLogView(WORD wBorderPos)
     w = rc.right - rc.left;
     MoveWindow(g_hBorderWnd, 0, wBorderPos, w, LOGVIEW_BORDERWIDTH, TRUE);
 
-    //
     if (hWndSB)
     {
         GetWindowRect(hWndSB, &rc);
@@ -75,16 +75,13 @@ LRESULT CALLBACK BorderWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     {
         POINT pt;
 
-        //
         ReleaseCapture();
 
-        //
         GetCursorPos(&pt);
         ScreenToClient(GetParent(hWnd), &pt);
         AdjustLogView((WORD)pt.y);
         g_nLogViewBorderPos = (WORD)pt.y;
 
-        //
         PostMessage(GetParent(hWnd), WM_SIZE, 0, 0);
     }
     break;
@@ -163,7 +160,6 @@ BOOL lv_Initialize()
     DWORD dwSetting;
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
-    //
     g_hBorderWnd = NULL;
     g_hLogViewWnd = NULL;
     g_nLogViewBorderPos = LOGVIEW_DEFAULTHEIGHT;
@@ -198,24 +194,17 @@ BOOL lv_Initialize()
 
     if (!RegisterClassEx(&wcx)) return FALSE;
 
-    //
     if (ReadFromRegistry(INI_LOGVIEW_SETTING, REG_DWORD, &dwSetting, sizeof(DWORD)))
     {
         g_nLogViewBorderPos = HIWORD(dwSetting);
         g_fShowLogView = (dwSetting & LOGVIEW_SHOWLOGVIEW) ? TRUE : FALSE;
     }
 
-    //
     ZeroMemory(&lf, sizeof(LOGFONT));
     lf.lfHeight = LOGVIEW_FONTHEIGHT;
     lf.lfPitchAndFamily = FIXED_PITCH;
-#ifndef INTERNATIONAL
-    lf.lfCharSet = SHIFTJIS_CHARSET;
-    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAME);
-#else
-    lf.lfCharSet = ANSI_CHARSET;
-    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAMEI); // lstrcat(lf.lfFaceName, __T("Arial"));
-#endif
+    lf.lfCharSet = DEFAULT_CHARSET;
+    lstrcat(lf.lfFaceName, LOGVIEW_FONTNAMEI);
     g_hEditFont = CreateFontIndirect(&lf);
 
     return TRUE;
@@ -288,13 +277,10 @@ HWND lv_CreateLogView(HWND hWndParent, int nHeight)
 
     g_hLogViewWnd = hWnd;
 
-    //
     AdjustLogView((WORD)nHeight);
 
-    //
     SetLogViewTexts();
 
-    //
     g_fShowLogView = TRUE;
 
     return hWnd;
@@ -307,12 +293,14 @@ BOOL lv_OutputString(LPTSTR szText, DWORD dwFlag)
     if (!szText || szText[0] == 0) return FALSE;
 
     // 単位は、byte
+    // unit is byte
     nNewLen = lstrlen(szText);
     nValidLen = lstrlen(g_szLogBuffer) + 1;
 
     nCR = (dwFlag & LOGVIEW_OUTPUTSTRING_CR) ? 2 : 0;
 
     // 新しい文字列が最大バッファを超えている場合
+    // if the new string exceeds the maximum buffer
     if (nNewLen + nCR + 1 >= LOGVIEW_BUFSIZ)
     {
         g_szLogBuffer[0] = 0;
@@ -321,6 +309,7 @@ BOOL lv_OutputString(LPTSTR szText, DWORD dwFlag)
     }
 
     // 新しい文字列を格納するバッファが足りない場合
+    // When there is not enough buffer to store new character string
     else if (nValidLen + nNewLen + nCR > LOGVIEW_BUFSIZ)
     {
         nNeedLen = (nNewLen + nCR) - (LOGVIEW_BUFSIZ - nValidLen);
@@ -329,6 +318,7 @@ BOOL lv_OutputString(LPTSTR szText, DWORD dwFlag)
     }
 
     // 新しい文字列を格納するバッファが足りている場合
+    // When there is enough buffer to store new character string
     else
     {
         lstrcat(g_szLogBuffer, szText);

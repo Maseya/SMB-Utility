@@ -15,8 +15,6 @@
 #include "objmng.h"
 #include "objview.h"
 #include "objeditcom.h"
-
- //#include "keyaccel.h"
 #include "roommng.h"
 #include "emulator.h"
 #include "emuutil.h"
@@ -38,7 +36,7 @@ HWND ghWndMDIClient;
 HWND ghWndFrame;
 
 HWND ghWndEmu;
-HWND ghWndMapEdit;//マップエディトウインドウへのハンドル
+HWND ghWndMapEdit;
 HWND ghWndMapView;
 
 HWND g_hTbWnd = NULL;
@@ -57,9 +55,6 @@ BOOL gblIsROMLoaded = FALSE;
 BOOL gblDataChanged = FALSE;
 
 BOOL g_fShowMsgOnSave = TRUE;
-/****************
-
-*****************/
 
 HWND fr_GetStatusBar()
 {
@@ -121,7 +116,6 @@ UINT CALLBACK OFNHookProc(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM lParam)
     break;
     }
 
-    //the default dialog box procedure processes the message
     return 0;
 }
 
@@ -150,9 +144,6 @@ BOOL GetFileName(LPTSTR lpPath, HWND hWnd)
     return TRUE;
 }
 
-/*****************************
-
-******************************/
 LRESULT CALLBACK ApplicationOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -195,13 +186,17 @@ LRESULT CALLBACK ApplicationOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam
   この関数は、はじめに表示されるページの
   WM_INITDIALGのハンドラ内で呼び出される。
 
+  This function is used to display the first page
+  It is called in the handler of WM_INITDIALG.
+
 *******************************************/
 void CenterPropatySheet(HWND hDlg)
 {
     HWND hWndParent = GetParent(GetParent(hDlg));
     HWND hWndProp = GetParent(hDlg);
 
-    // プロパテイシートを中央に持っていくためのもの
+    // プロパテイシートを中央に持っていくためのもの。
+    // For bringing the property sheet to the center.
     if (IsZoomed(hWndParent))
     {
         RECT rcDlg;
@@ -222,13 +217,13 @@ void CenterPropatySheet(HWND hDlg)
 
 void OptionPropertySheet(HWND hwndOwner, int nStartPage)
 {
-    //TODO
+    // TODO
 #define OPTPS_NUM_PAGES 4
     LPTSTR lpTitle[OPTPS_NUM_PAGES] = {STRING_OPTIONDIALOG_EMULATOR, STRING_OPTIONDIALOG_EDITOR, STRING_OPTIONDIALOG_APPLICATION, STRING_OPTIONDIALOG_OBJECTVIEW};
     LPTSTR lpDlgResName[OPTPS_NUM_PAGES] = {__T("EMULATOROPTIONDLG"), __T("EDITOROPTIONDLG"), __T("APPLICATIONOPTIONDLG"), __T("OBJECTVIEWOPTIONDLG")};
     DLGPROC pfnDlgProc[OPTPS_NUM_PAGES] = {EmulatorOptionDlgProc, EditorOptionDlgProc, ApplicationOptionDlgProc, ObjectViewOptionDlgProc};
 
-    //Local
+    // Local
     PROPSHEETPAGE psp[OPTPS_NUM_PAGES];
     PROPSHEETHEADER psh;
     int i;
@@ -266,9 +261,6 @@ void OptionPropertySheet(HWND hwndOwner, int nStartPage)
     return;
 }
 
-/***********************
-
-***********************/
 void RefreshWindowTitle(BOOL fNeedChanged)
 {
     LPTSTR cWndTitle = GetTempStringBuffer();
@@ -286,12 +278,10 @@ void RefreshWindowTitle(BOOL fNeedChanged)
 
 BOOL fr_SetDataChanged(BOOL fChanged)
 {
-    //
     BOOL fPrev = gblDataChanged;
 
     gblDataChanged = fChanged;
 
-    //
     if (fPrev != gblDataChanged)
     {
         RefreshWindowTitle(TRUE);
@@ -305,14 +295,9 @@ BOOL fr_GetDataChanged()
     return gblDataChanged;
 }
 
-/***********************
-
-***********************/
 void InitGlobalValue()
 {
     fr_SetDataChanged(FALSE);
-
-    //	gblDataChanged=FALSE;
 
     rm_Initialize();
     InitMapEditGlobalValue();
@@ -322,6 +307,8 @@ void InitGlobalValue()
 /**************
 
   ツールバー
+
+  Toolbar
 
 **************/
 #define TOOLBAR_BUTTONS 13
@@ -347,7 +334,8 @@ static void SetToolBarButtonState(HWND hTBWnd)
         for (i = 0; i < STBBS_NUM_BUTTONS; i++)
             SendMessage(hTBWnd, TB_SETSTATE, uMenuID[i], MAKELONG(TBSTATE_ENABLED, 0));
 
-        //敵とマップの選択
+        // 敵とマップの選択。
+        // Select enemies and maps.
         if (GetMapEditMode())
             SendMessage(hTBWnd, TB_CHECKBUTTON, (LPARAM)IDM_SETTING_BADGUYS, (WPARAM)1);
         else
@@ -391,14 +379,17 @@ static HWND CreateMainWindowToolBar(HWND hWnd)
                              0, 0, 16, 16,
                              sizeof(TBBUTTON));
 
-    //
     SetToolBarButtonState(hWndTb);
 
     return hWndTb;
 }
 
 /*************
+
  ステータスバー
+
+ Status bar
+
 ***************/
 #define SB_BUFSIZ 126
 #define SBPARTS 2
@@ -475,31 +466,12 @@ static HWND CreateMainWindowStatusBar(HWND hWnd)
 
     return hWndSb;
 }
-/*
-#define DUMP_BYTESPERLINE 16
-VOID __cdecl DumpPRGROM(void *pParam)
-{
-    WORD wAddr, wOfs;
-    LPBYTE P;
-    LPTSTR szBuffer = GetTempStringBuffer();
 
-    if(gblIsROMLoaded){
-        P = bPRGROM + 0x8000;
-        wAddr = 0x8000;
-        wOfs = INES_HEADERSIZE;
-        wOfs += (iTrainer) ? INES_TRAINERSIZE : 0;
-        for(;wAddr >= 0x8000;P += DUMP_BYTESPERLINE, wAddr += DUMP_BYTESPERLINE, wOfs += DUMP_BYTESPERLINE){
-            wsprintf(szBuffer,
-                     __T("$%.4x(%.4x)  %.2X %.2X %.2X %.2X %.2X %.2X %.2X %.2X  %.2X %.2X %.2X %.2X %.2X %.2X %.2X %.2X"),
-                     wAddr, wOfs, P[0], P[1], P[2], P[3], P[4], P[5], P[6], P[7],  P[8], P[9], P[10], P[11], P[12], P[13], P[14], P[15]);
-            lv_OutputString(szBuffer, LOGVIEW_OUTPUTSTRING_CR);
-        }
-    }
-}
-*/
 /**************************
 
   ファイルの保存・ロード
+
+  Save and load files
 
 ***************************/
 BOOL ConfirmOnExit()
@@ -583,7 +555,6 @@ BOOL LoadROMFromFile()
     {
         gFilePath[0] = 0;
 
-        //gblIsROMLoaded=FALSE;//LoadROMが失敗した時点でFALSEになっている。
         ObjectListClear();
         ClearObjectViewBackBuffer();
         UpdateObjectView(0);
@@ -594,7 +565,8 @@ BOOL LoadROMFromFile()
         return FALSE;
     }
 
-    //キャラロムの前処理
+    // キャラロムの前処理
+    // Preprocess CHR data.
     PrepareVROMData(bCHRROM);
 
     InitGlobalValue();
@@ -636,7 +608,6 @@ BOOL SetSaveFileName(HWND hWnd)
 
     if (!GetSaveFileName(&fname)) return FALSE;
 
-    //
     memset(curdir, 0, MAX_PATH * sizeof(TCHAR));
     memcpy(curdir, FilePath, fname.nFileOffset * sizeof(TCHAR));
     WriteToRegistry(INI_MDIFRAME_FILEPATH, REG_SZ, curdir, MAX_PATH * sizeof(TCHAR));
@@ -662,6 +633,8 @@ BOOL SaveToFile()
 /********************
 
   バージョン情報
+
+  Version information
 
 *********************/
 
@@ -717,12 +690,10 @@ LRESULT CALLBACK VersionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 
 static void ResizeMDIParentWindow(HWND hWnd)
 {
-    WORD wWidth;  // width of client area
-    WORD wHeight; // height of client area
+    WORD wWidth;
+    WORD wHeight;
     int iToolY, iStatusY, iLogViewY;
     RECT rc;
-
-    //	POINT pt;
 
     iToolY = iStatusY = iLogViewY = 0;
 
@@ -748,7 +719,6 @@ static void ResizeMDIParentWindow(HWND hWnd)
         iLogViewY = rc.bottom - rc.top;
     }
 
-    //
     if (g_hTbWnd)
     {
         MoveWindow(g_hTbWnd, 0, 0, wWidth, iToolY, TRUE);
@@ -873,8 +843,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
     switch (msg)
     {
     case WM_UPDATEFRAME:
-        InvalidateRect(ghWndEmu, NULL, FALSE);
-        break;
+    InvalidateRect(ghWndEmu, NULL, FALSE);
+    break;
     case WM_ACTIVATEAPP:
     {
         static BOOL blMsg = FALSE;
@@ -899,7 +869,7 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         {
             LPNMTTDISPINFO TTtext;
 
-            //tooltip for toolbar
+            // Tooltip for toolbar.
             TTtext = (LPNMTTDISPINFO)lParam;
             switch (TTtext->hdr.idFrom)
             {
@@ -960,21 +930,21 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_FILE_SAVE:
-            if (gblIsROMLoaded)
+        if (gblIsROMLoaded)
+        {
+            if (g_fShowMsgOnSave)
             {
-                if (g_fShowMsgOnSave)
-                {
-                    if (IDNO == Msg(STRING_CONFIRM_SAVE, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
-                        break;
-                }
-                while (gFilePath[0] == __T('\0') || !SaveToFile())
-                {
-                    Msg(STRING_FILEERROR_SAVE, MB_OK | MB_ICONWARNING);
-                    if (!SetSaveFileName(hWnd)) break;
-                }
-                RefreshWindowTitle(FALSE);
+                if (IDNO == Msg(STRING_CONFIRM_SAVE, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
+                    break;
             }
-            break;
+            while (gFilePath[0] == __T('\0') || !SaveToFile())
+            {
+                Msg(STRING_FILEERROR_SAVE, MB_OK | MB_ICONWARNING);
+                if (!SetSaveFileName(hWnd)) break;
+            }
+            RefreshWindowTitle(FALSE);
+        }
+        break;
         case IDM_FILE_SAVEAS:
         {
             if (!gblIsROMLoaded) break;
@@ -1018,15 +988,14 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
 
             if (LoadCHRROMFromFile(filepath, (BOOL)fname.lCustData))
             {
-                //キャラロムの前処理
                 PrepareVROMData(bCHRROM);
                 UpdateObjectView(0);
             }
         }
         break;
         case IDM_FILE_EXIT:
-            PostMessage(hWnd, WM_CLOSE, 0, 0);
-            break;
+        PostMessage(hWnd, WM_CLOSE, 0, 0);
+        break;
         case IDM_EDIT_UNDO:
         {
             if (gblIsROMLoaded) undoRestore();
@@ -1042,9 +1011,11 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
                     LPARAM dwState;
 
                     // ボタンを元に戻す
+                    // Restore button
                     SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_SETTING_AREA, 0);
 
-                    // 途中ページテストプレイのボタンの有効、無効
+                    // 途中ページテストプレイのボタンの有効、無効。
+                    // Enable/Disable the button of the middle page test play.
                     dwState = (rm_IsSubRoom()) ? MAKELPARAM(FALSE, 0) : MAKELPARAM(TRUE, 0);
                     SendMessage(g_hTbWnd, TB_ENABLEBUTTON, IDM_EMULATOR_PAGEPLAYHALF, dwState);
                 }
@@ -1059,7 +1030,6 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         break;
         case IDM_SETTING_MAP:
         {
-            //				if(EDITMODE_MAP == GetMapEditMode()) break;
             ChangeMapEditMode(CHANGEEDITMODE_MAP, FALSE);
             if (gblIsROMLoaded)
             {
@@ -1072,7 +1042,6 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         break;
         case IDM_SETTING_BADGUYS:
         {
-            //				if(EDITMODE_BADGUYS == GetMapEditMode()) break;
             ChangeMapEditMode(CHANGEEDITMODE_BADGUYS, FALSE);
             if (gblIsROMLoaded)
             {
@@ -1125,56 +1094,49 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_EDIT_STRINGS:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("STRINGEDITDLG"), hWnd, StringEditDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("STRINGEDITDLG"), hWnd, StringEditDlgProc);
+        break;
         case IDM_EDIT_LOOP:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("LOOPEDITDLG"), hWnd, LoopEditDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("LOOPEDITDLG"), hWnd, LoopEditDlgProc);
+        break;
         case IDM_EDIT_AREASORT:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("AREASORTDLG"), hWnd, AreaSortDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("AREASORTDLG"), hWnd, AreaSortDlgProc);
+        break;
         case IDM_TOOL_WORLDDATAUPDATE:
-            if (gblIsROMLoaded
-                && (IDOK == Msg(STRING_CONFIRM_UPDATEWORLD, MB_OKCANCEL | MB_ICONINFORMATION)))
-            {
-                LPTSTR szBuf = GetTempStringBuffer();
-                UpdateWorldData(TRUE);
-                wsprintf(szBuf, __T("$9CB4 : %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH"),
-                         bPRGROM[SMB_WORLD_SETTING],
-                         bPRGROM[SMB_WORLD_SETTING + 1],
-                         bPRGROM[SMB_WORLD_SETTING + 2],
-                         bPRGROM[SMB_WORLD_SETTING + 3],
-                         bPRGROM[SMB_WORLD_SETTING + 4],
-                         bPRGROM[SMB_WORLD_SETTING + 5],
-                         bPRGROM[SMB_WORLD_SETTING + 6],
-                         bPRGROM[SMB_WORLD_SETTING + 7]);
-                lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
-            }
-            break;
+        if (gblIsROMLoaded
+            && (IDOK == Msg(STRING_CONFIRM_UPDATEWORLD, MB_OKCANCEL | MB_ICONINFORMATION)))
+        {
+            LPTSTR szBuf = GetTempStringBuffer();
+            UpdateWorldData(TRUE);
+            wsprintf(szBuf, __T("$9CB4 : %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH %.2xH"),
+                     bPRGROM[SMB_WORLD_SETTING],
+                     bPRGROM[SMB_WORLD_SETTING + 1],
+                     bPRGROM[SMB_WORLD_SETTING + 2],
+                     bPRGROM[SMB_WORLD_SETTING + 3],
+                     bPRGROM[SMB_WORLD_SETTING + 4],
+                     bPRGROM[SMB_WORLD_SETTING + 5],
+                     bPRGROM[SMB_WORLD_SETTING + 6],
+                     bPRGROM[SMB_WORLD_SETTING + 7]);
+            lv_OutputString(szBuf, LOGVIEW_OUTPUTSTRING_CR);
+        }
+        break;
         case IDM_TOOL_GENERALSETTING:
-            if (gblIsROMLoaded) DialogBox(ghInst, __T("GENERALSETTINGDLG"), hWnd, GeneralSettingDlgProc);
-            break;
+        if (gblIsROMLoaded) DialogBox(ghInst, __T("GENERALSETTINGDLG"), hWnd, GeneralSettingDlgProc);
+        break;
         case IDM_SETTING_GAME:
-            if (gblIsROMLoaded) GameSettingPropertySheet(hWnd);
-            break;
+        if (gblIsROMLoaded) GameSettingPropertySheet(hWnd);
+        break;
         case IDM_TOOL_DEMORECORD:
-            if (gblIsROMLoaded)
-            {
-                if (IDCANCEL == Msg(STRING_CONFIRM_DEMORECORD, MB_OKCANCEL | MB_ICONINFORMATION)) break;
+        if (gblIsROMLoaded)
+        {
+            if (IDCANCEL == Msg(STRING_CONFIRM_DEMORECORD, MB_OKCANCEL | MB_ICONINFORMATION)) break;
 
-                OpenIcon(GetEmuWndHandle());
-                SendMessage(ghWndMDIClient, WM_MDIACTIVATE, (WPARAM)GetEmuWndHandle(), 0);
+            OpenIcon(GetEmuWndHandle());
+            SendMessage(ghWndMDIClient, WM_MDIACTIVATE, (WPARAM)GetEmuWndHandle(), 0);
 
-                DemoRecord();
-            }
-            break;
-            /*
-        case IDM_TOOL_DUMPPRG:
-            {
-                _beginthread(DumpPRGROM, 0 , NULL);
-            }
-            break;
-            */
+            DemoRecord();
+        }
+        break;
         case IDM_EMULATOR_NORMALPLAY:
         {
             if (!gblIsROMLoaded) break;
@@ -1227,10 +1189,10 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_EMULATOR_SAVE:
-            if (!gblIsROMLoaded) break;
-            if (SaveEmulatorState())
-                SetStatusBarText(STRING_STATUSBAR_EMUSAVE);
-            break;
+        if (!gblIsROMLoaded) break;
+        if (SaveEmulatorState())
+            SetStatusBarText(STRING_STATUSBAR_EMUSAVE);
+        break;
         case IDM_EMULATOR_LOAD:
         {
             EMULATORSETUP es;
@@ -1251,26 +1213,26 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_EMULATOR_TESTPLAYSETTING:
-            if (gblIsROMLoaded)
-            {
-                DialogBox(ghInst, __T("TESTPLAYSETTINGDLG"), hWnd, TestPlaySettingDlgProc);
-                if (g_hTbWnd) SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_EMULATOR_TESTPLAYSETTING, (WPARAM)MAKELONG(FALSE, 0));
-            }
-            break;
+        if (gblIsROMLoaded)
+        {
+            DialogBox(ghInst, __T("TESTPLAYSETTINGDLG"), hWnd, TestPlaySettingDlgProc);
+            if (g_hTbWnd) SendMessage(g_hTbWnd, TB_CHECKBUTTON, (LPARAM)IDM_EMULATOR_TESTPLAYSETTING, (WPARAM)MAKELONG(FALSE, 0));
+        }
+        break;
         case IDM_TOOL_OPTION:
-            OptionPropertySheet(hWnd, 0);
-            break;
+        OptionPropertySheet(hWnd, 0);
+        break;
         case IDM_TOOL_CUSTOMIZE:
-            DialogBox(ghInst, __T("CUSTOMIZEDLG"), hWnd, CustomizeDlgProc);
-            break;
+        DialogBox(ghInst, __T("CUSTOMIZEDLG"), hWnd, CustomizeDlgProc);
+        break;
         case IDM_WINDOW_CLOSEALL:
-            ShowWindow(ghWndMapView, SW_MINIMIZE);
-            ShowWindow(ghWndMapEdit, SW_MINIMIZE);
-            ShowWindow(GetEmuWndHandle(), SW_MINIMIZE);
-            break;
+        ShowWindow(ghWndMapView, SW_MINIMIZE);
+        ShowWindow(ghWndMapEdit, SW_MINIMIZE);
+        ShowWindow(GetEmuWndHandle(), SW_MINIMIZE);
+        break;
         case IDM_WINDOW_CASCADE:
-            SendMessage(ghWndMDIClient, WM_MDICASCADE, (WPARAM)0, (LPARAM)0);
-            break;
+        SendMessage(ghWndMDIClient, WM_MDICASCADE, (WPARAM)0, (LPARAM)0);
+        break;
         case IDM_WINDOW_NEXT:
         {
             HWND hCurWnd;
@@ -1290,8 +1252,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         }
         break;
         case IDM_HELP_VERSION:
-            DialogBox(ghInst, __T("VERSIONDLG"), hWnd, VersionDlgProc);
-            break;
+        DialogBox(ghInst, __T("VERSIONDLG"), hWnd, VersionDlgProc);
+        break;
         default:
         {
             if (gblIsROMLoaded) MapEditCommand(LOWORD(wParam));
@@ -1302,7 +1264,7 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
     case WM_SIZE:
     {
         ResizeMDIParentWindow(hWnd);
-        return 0;//important
+        return 0;
     }
     case WM_INITMENU:
     {
@@ -1390,8 +1352,8 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM	wParam, LPARAM	lPar
         return 0;
     }
     case WM_CLOSE:
-        if (fr_GetDataChanged() && !ConfirmOnExit()) return 0;
-        break;
+    if (fr_GetDataChanged() && !ConfirmOnExit()) return 0;
+    break;
     case WM_DESTROY:
     {
         DWORD dwSetting;
@@ -1474,15 +1436,19 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
 
     if (!ghWndFrame || !ghWndMDIClient) return FALSE;
 
-    //Create MDI Child window
-    //最後にオブジェクトビューを作成すれば、オブジェクトビューがアクティブで起動する。
+    // Create MDI Child window
+    // 最後にオブジェクトビューを作成すれば、オブジェクトビューがアクティブで起動する。
+    // When you create the object review at the end, the object review is activated.
     ghWndEmu = CreateEmulatorWnd(hInstance, ghWndMDIClient);
     ghWndMapEdit = CreateMapEditWnd(hInstance, ghWndMDIClient);
-    ghWndMapView = CreateMapViewWnd(hInstance, ghWndMDIClient);//After Emulator is Created
+
+    // After Emulator is Created.
+    ghWndMapView = CreateMapViewWnd(hInstance, ghWndMDIClient);
 
     if (!ghWndMapEdit || !ghWndEmu || !ghWndMapView) return FALSE;
 
-    //ウインドウメニューのため
+    // ウインドウメニューのため
+    // For the window menu
     Sleep(5);
 
     ShowWindow(ghWndMapView, SW_HIDE);
@@ -1519,6 +1485,12 @@ BOOL RegisterWndClass(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
+/*
+Load resources for a given region.
+
+0x409: English (US)
+0x411: Japanese (J)
+*/
 void InitializeResources(LANGID locale)
 {
     SetThreadLocale(locale);

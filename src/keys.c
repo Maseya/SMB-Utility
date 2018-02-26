@@ -30,29 +30,29 @@ static void ExecuteWheelCommand(WHEELFUNC wf, short zDelta)
     switch (wf)
     {
     case TYPE1:
-        if (zDelta > 0)
-            MapEditCommand(IDM_EDITCOMMAND_ADD1TOTYPE);
-        else if (zDelta)
-            MapEditCommand(IDM_EDITCOMMAND_DEC1TOTYPE);
-        break;
+    if (zDelta > 0)
+        MapEditCommand(IDM_EDITCOMMAND_ADD1TOTYPE);
+    else if (zDelta)
+        MapEditCommand(IDM_EDITCOMMAND_DEC1TOTYPE);
+    break;
     case TYPE16:
-        if (zDelta > 0)
-            MapEditCommand(IDM_EDITCOMMAND_ADD16TOTYPE);
-        else if (zDelta)
-            MapEditCommand(IDM_EDITCOMMAND_DEC16TOTYPE);
-        break;
+    if (zDelta > 0)
+        MapEditCommand(IDM_EDITCOMMAND_ADD16TOTYPE);
+    else if (zDelta)
+        MapEditCommand(IDM_EDITCOMMAND_DEC16TOTYPE);
+    break;
     case PAGE:
-        if (zDelta > 0)
-            MapEditCommand(IDM_EDITCOMMAND_REWPAGE);
-        else if (zDelta)
-            MapEditCommand(IDM_EDITCOMMAND_FWDPAGE);
-        break;
+    if (zDelta > 0)
+        MapEditCommand(IDM_EDITCOMMAND_REWPAGE);
+    else if (zDelta)
+        MapEditCommand(IDM_EDITCOMMAND_FWDPAGE);
+    break;
     case OBJ:
-        if (zDelta > 0)
-            MapEditCommand(IDM_EDITCOMMAND_PREVOBJ);
-        else if (zDelta)
-            MapEditCommand(IDM_EDITCOMMAND_NEXTOBJ);
-        break;
+    if (zDelta > 0)
+        MapEditCommand(IDM_EDITCOMMAND_PREVOBJ);
+    else if (zDelta)
+        MapEditCommand(IDM_EDITCOMMAND_NEXTOBJ);
+    break;
     }
 }
 
@@ -83,9 +83,9 @@ VOID ky_WM_MOUSEWHEEL(WPARAM wParam, LPARAM lParam)
 HANDLE ky_Initialize()
 {
     if (!ReadFromRegistry(INI_EDITOR_WHEEL,
-        REG_BINARY,
-        g_wfWheelFunc,
-        CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC)))
+                          REG_BINARY,
+                          g_wfWheelFunc,
+                          CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC)))
     {
         CopyMemory(g_wfWheelFunc, g_wfWheelFuncDefault, CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC));
     }
@@ -218,6 +218,10 @@ static UINT FindVkeyIndex(BYTE bVkey)
 // NOTE : A, B, SELECT, STARTが最初にくることを前提にして、
 //        ジョイスティックのボタン設定を実装している
 //        (UP, DOWN, LEFT, RIGHTは未使用)
+// in order of A, B, SELECT, START, UP, DOWN, LEFT, RIGHT
+// NOTE: On the premise that A, B, SELECT, START comes first,
+// Implement the joystick button settings
+// (UP, DOWN, LEFT, RIGHT are not used)
 LPTSTR g_szEmuKeyName[EMULATOR_NUM_BUTTONS];
 
 LPTSTR g_szEditKeyName[KEYACCEL_NUM_COMMANDS];
@@ -320,11 +324,11 @@ static LPTSTR FormatOverlappedKeyInformation(LPTSTR szBuf, DWORD dwResult)
     switch (dwResult >> 16)
     {
     case CUSTOMIZE_KEYS_ID_EDIT:
-        wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_KEYACCEL, g_szEditKeyName[dwResult & 0xFFFF]);
-        break;
+    wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_KEYACCEL, g_szEditKeyName[dwResult & 0xFFFF]);
+    break;
     case CUSTOMIZE_KEYS_ID_EMU:
-        wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_EMULATOR, g_szEmuKeyName[dwResult & 0xFFFF]);
-        break;
+    wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_EMULATOR, g_szEmuKeyName[dwResult & 0xFFFF]);
+    break;
     }
     return szBuf;
 }
@@ -332,12 +336,14 @@ static LPTSTR FormatOverlappedKeyInformation(LPTSTR szBuf, DWORD dwResult)
 #define WM_UPDATEKEYVALUE (WM_USER + 1)
 
 // ジョイスティック
+// Joystick
 DWORD g_adwJoyButtonFlags[JOYSTICK_MAX_BUTTONS] = {JOY_BUTTON1,  JOY_BUTTON2,  JOY_BUTTON3, JOY_BUTTON4,   JOY_BUTTON5,  JOY_BUTTON6, JOY_BUTTON7,   JOY_BUTTON8,
                                                    JOY_BUTTON9,  JOY_BUTTON10, JOY_BUTTON11, JOY_BUTTON12, JOY_BUTTON13, JOY_BUTTON14, JOY_BUTTON15, JOY_BUTTON16,
                                                    JOY_BUTTON17, JOY_BUTTON18, JOY_BUTTON19, JOY_BUTTON20, JOY_BUTTON21, JOY_BUTTON22, JOY_BUTTON23, JOY_BUTTON24,
                                                    JOY_BUTTON25, JOY_BUTTON26, JOY_BUTTON27, JOY_BUTTON28, JOY_BUTTON29, JOY_BUTTON30, JOY_BUTTON31, JOY_BUTTON32};
 
 // ジョイスティックの一つのボタンフラグビットからコンボボックスでのインデックスを得る
+// Get index in combo box from one button flag bit of joystick
 static UINT FindJoyButtonIndex(DWORD dwJoyButton)
 {
     DWORD n;
@@ -371,6 +377,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
 
         //---------------
         //  初期化
+        //  Initialization
         //---------------
         //
         GetEditorVKeys(&bEditVKeys[0]);
@@ -379,6 +386,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         CopyMemory(wfWheelFunc, g_wfWheelFunc, sizeof(WHEELFUNC) * CUSTOMIZE_WHEEL_NUMFUNCS);
 
         // キーボード
+        // keyboard
         for (N = 0; N < CUSTOMIZE_KEYIDS; N++)
             SendDlgItemMessage(hDlg, IDC_KEYID, CB_ADDSTRING, 0, (LPARAM)lpKeyID[N]);
         for (N = 0; N < NUM_VKEYINFO; N++)
@@ -388,6 +396,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         SendDlgItemMessage(hDlg, IDC_PRESET, CB_SETCURSEL, 0, 0);
 
         // マウスホイール
+        // Mouse Wheel
         for (N = 0; N < CUSTOMIZE_WHEEL_NUMFUNCS; N++)
             SendDlgItemMessage(hDlg, IDC_WHEELLIST, LB_ADDSTRING, 0, (LPARAM)lpWheel[N]);
         for (N = 0; N < CUSTOMIZE_WHEEL_NUMFUNCS; N++)
@@ -395,30 +404,27 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
 
         // ジョイスティックのボタン
         // リストにコントローラーのボタン名を追加
+        // Joystick button
+        // Add controller button name to the list
         for (N = 0; N < EMULATOR_NUM_JOYBUTTONS; N++)
             SendDlgItemMessage(hDlg, IDC_JOYBUTTONLIST, LB_ADDSTRING, 0, (LPARAM)g_szEmuKeyName[N]);
 
         // コンボボックスにジョイスティックのボタン名を追加
+        // Add joystick button name to combo box
         for (N = 0; N < JOYSTICK_MAX_BUTTONS; N++)
         {
             wsprintf(szButtonName, STRING_KEYCONFIG_BUTTONX, N + 1);
             SendDlgItemMessage(hDlg, IDC_JOYBUTTONVALUE, CB_ADDSTRING, 0, (LPARAM)szButtonName);
         }
 
-        //-----------
-        //
-        //-----------
         uKeyID = uKey = uKeyValue = 0;
 
-        //
         SendDlgItemMessage(hDlg, IDC_KEYID, CB_SETCURSEL, uKeyID, 0);
         SendMessage(hDlg, WM_COMMAND, MAKEWPARAM(IDC_KEYID, CBN_SELCHANGE), 0);
 
-        //
         SendDlgItemMessage(hDlg, IDC_WHEELLIST, LB_SETCURSEL, 0, 0);
         SendMessage(hDlg, WM_COMMAND, MAKEWPARAM(IDC_WHEELLIST, LBN_SELCHANGE), 0);
 
-        //
         SendDlgItemMessage(hDlg, IDC_JOYBUTTONLIST, LB_SETCURSEL, 0, 0);
         SendMessage(hDlg, WM_COMMAND, MAKEWPARAM(IDC_JOYBUTTONLIST, LBN_SELCHANGE), 0);
     }
@@ -427,9 +433,6 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
     {
         BYTE bVKey = 0;
 
-        //----------------
-        //
-        //----------------
         uKey = SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_GETCURSEL, 0, 0);
         if (uKey == LB_ERR)
         {
@@ -449,8 +452,8 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case CUSTOMIZE_KEYS_ID_EMU:
-            bVKey = GETVKEY(bEmuVKeys[uKey]);
-            break;
+        bVKey = GETVKEY(bEmuVKeys[uKey]);
+        break;
         }
 
         uKeyValue = FindVkeyIndex(bVKey);
@@ -469,9 +472,6 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
             {
                 UINT N;
 
-                //----------------
-                //
-                //----------------
                 uKeyID = SendDlgItemMessage(hDlg, IDC_KEYID, CB_GETCURSEL, 0, 0);
                 if (uKeyID == CB_ERR)
                 {
@@ -480,34 +480,31 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                 }
 
                 // キーIDは、1から始まる
+                // Key ID starts with 1
                 uKeyID++;
 
-                //
                 SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_RESETCONTENT, 0, 0);
                 switch (uKeyID)
                 {
                 case CUSTOMIZE_KEYS_ID_EDIT:
-                    for (N = 0; N < KEYACCEL_NUM_COMMANDS; N++)
-                        SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEditKeyName[N]);
-                    EnableAccessoryKey(hDlg, TRUE);
-                    break;
+                for (N = 0; N < KEYACCEL_NUM_COMMANDS; N++)
+                    SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEditKeyName[N]);
+                EnableAccessoryKey(hDlg, TRUE);
+                break;
                 case CUSTOMIZE_KEYS_ID_EMU:
-                    for (N = 0; N < EMULATOR_NUM_BUTTONS; N++)
-                        SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEmuKeyName[N]);
-                    EnableAccessoryKey(hDlg, FALSE);
-                    break;
+                for (N = 0; N < EMULATOR_NUM_BUTTONS; N++)
+                    SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEmuKeyName[N]);
+                EnableAccessoryKey(hDlg, FALSE);
+                break;
                 }
 
-                //---------------
-                //
-                //---------------
                 uKey = 0;
                 SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_SETCURSEL, uKey, 0);
 
                 SendMessage(hDlg, WM_COMMAND, MAKEWPARAM(IDC_KEYLIST, LBN_SELCHANGE), 0);
                 return TRUE;
             }
-        } //　IDC_KEYID
+        }
         break;
         case IDC_KEYLIST:
         {
@@ -515,7 +512,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
             {
                 SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
             }
-        } // IDC_KEYLIST
+        }
         break;
         case IDC_KEYVALUE:
         {
@@ -537,36 +534,42 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                 switch (uKeyID)
                 {
                 case CUSTOMIZE_KEYS_ID_EDIT:
-                    wCurVKey = bEditVKeys[uKey];
-                    wNewKey = GETASSISTKEY(wCurVKey);
-                    SETVKEY(wNewKey, bNewVKey);
-                    dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
-                    if (dwResult
-                        && (CUSTOMIZE_KEYS_ID_EDIT != HIWORD(dwResult) || uKey != LOWORD(dwResult)) // 新たに選択した項目が選択されていたものと同じ項目でなければ
-                        )
-                    {
-                        FormatOverlappedKeyInformation(szBuf, dwResult);
-                        Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
-                        SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
-                        return TRUE;
-                    }
-                    bEditVKeys[uKey] = wNewKey;
-                    break;
+                wCurVKey = bEditVKeys[uKey];
+                wNewKey = GETASSISTKEY(wCurVKey);
+                SETVKEY(wNewKey, bNewVKey);
+                dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
+
+                // 新たに選択した項目が選択されていたものと同じ項目でなければ
+                // If the newly selected item is not the same item that was selected
+                if (dwResult
+                    && (CUSTOMIZE_KEYS_ID_EDIT != HIWORD(dwResult) || uKey != LOWORD(dwResult))
+                    )
+                {
+                    FormatOverlappedKeyInformation(szBuf, dwResult);
+                    Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
+                    SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
+                    return TRUE;
+                }
+                bEditVKeys[uKey] = wNewKey;
+                break;
                 case CUSTOMIZE_KEYS_ID_EMU:
-                    wCurVKey = bEmuVKeys[uKey];
-                    wNewKey = (WORD)bNewVKey;
-                    dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
-                    if (dwResult
-                        && (CUSTOMIZE_KEYS_ID_EMU != HIWORD(dwResult) || uKey != LOWORD(dwResult)) // 新たに選択した項目が選択されていたものと同じ項目でなければ
-                        )
-                    {
-                        FormatOverlappedKeyInformation(szBuf, dwResult);
-                        Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
-                        SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
-                        return TRUE;
-                    }
-                    bEmuVKeys[uKey] = wNewKey;
-                    break;
+                wCurVKey = bEmuVKeys[uKey];
+                wNewKey = (WORD)bNewVKey;
+                dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
+
+                // 新たに選択した項目が選択されていたものと同じ項目でなければ
+                // If the newly selected item is not the same item that was selected
+                if (dwResult
+                    && (CUSTOMIZE_KEYS_ID_EMU != HIWORD(dwResult) || uKey != LOWORD(dwResult))
+                    )
+                {
+                    FormatOverlappedKeyInformation(szBuf, dwResult);
+                    Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
+                    SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
+                    return TRUE;
+                }
+                bEmuVKeys[uKey] = wNewKey;
+                break;
                 }
                 return TRUE;
             }
@@ -587,14 +590,14 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                     switch (wID)
                     {
                     case IDC_SHIFT:
-                        wMask = SHIFTBIT;
-                        break;
+                    wMask = SHIFTBIT;
+                    break;
                     case IDC_ALT:
-                        wMask = ALTBIT;
-                        break;
+                    wMask = ALTBIT;
+                    break;
                     case IDC_CTRL:
-                        wMask = CTRLBIT;
-                        break;
+                    wMask = CTRLBIT;
+                    break;
                     }
                     wNewKey = bEditVKeys[uKey];
                     if (IsDlgButtonChecked(hDlg, wID))
@@ -604,7 +607,9 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
 
                     dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
                     if (dwResult)
-                    { // チェックボックスの状態の変化によって同じキー入力になることはない
+                    {
+                        // チェックボックスの状態の変化によって同じキー入力になることはない
+                        // It will never be the same key input due to change in the state of the check box
                         FormatOverlappedKeyInformation(szBuf, dwResult);
                         Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
                         SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
@@ -657,7 +662,8 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                     C = SendDlgItemMessage(hDlg, IDC_WHEELCOMMAND, CB_GETCURSEL, 0, 0);
                     if (C != CB_ERR)
                     {
-                        //現在設定されている操作を見つける
+                        // 現在設定されている操作を見つける
+                        // Find the currently set operation
                         for (N = 0; N < CUSTOMIZE_WHEEL_NUMFUNCS; N++)
                         {
                             if (wfWheelFunc[N] == (WHEELFUNC)C)
@@ -686,6 +692,7 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                 L = SendDlgItemMessage(hDlg, IDC_JOYBUTTONLIST, LB_GETCURSEL, 0, 0);
 
                 // コンボボックスを更新
+                // Update Combo Box
                 if (L != LB_ERR)
                     SendDlgItemMessage(hDlg, IDC_JOYBUTTONVALUE, CB_SETCURSEL, FindJoyButtonIndex(dwEmuJoyButtons[L]), 0);
             }
@@ -704,25 +711,34 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                     if (V != CB_ERR)
                     {
                         // ボタンの新しい値
+                        // New value for the button
                         dwNewButton = g_adwJoyButtonFlags[V];
 
                         // 重複設定を検出
+                        // Detect duplicate settings
                         for (N = 0; N < EMULATOR_NUM_JOYBUTTONS; N++)
                         {
                             if (dwEmuJoyButtons[N] == dwNewButton)
                                 break;
                         }
                         if (N != EMULATOR_NUM_JOYBUTTONS)
-                        { // 重複がある場合、
-// 重複したボタン設定と新しいボタン設定を入れ替える
+                        {
+                            // 重複がある場合、
+                            // 重複したボタン設定と新しいボタン設定を入れ替える
+                            // If there is duplication,
+                            // Swap duplicate button settings and new button settings
                             T = dwEmuJoyButtons[N];
                             dwEmuJoyButtons[N] = dwEmuJoyButtons[L];
                             dwEmuJoyButtons[L] = T;
                         }
                         else
-                        { // 重複がなければ、
-                      // ジョイスティックのボタンフラグ定数がセットされた
-                      // 配列に新しいデータをセット
+                        {
+                            // 重複がなければ、
+                            // ジョイスティックのボタンフラグ定数がセットされた
+                            // 配列に新しいデータをセット
+                            // Without duplication,
+                            // Joystick button flag constant set
+                            // Set new data to array
                             dwEmuJoyButtons[L] = dwNewButton;
                         }
                     }
@@ -731,28 +747,28 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case IDOK:
-            WriteToRegistry(INI_EMULATOR_KEYS,
-                            REG_BINARY,
-                            bEmuVKeys,
-                            EMULATOR_NUM_BUTTONS * sizeof(WORD));
-            WriteToRegistry(INI_EDITOR_KEYS,
-                            REG_BINARY,
-                            bEditVKeys,
-                            KEYACCEL_NUM_COMMANDS * sizeof(WORD));
-            WriteToRegistry(INI_EDITOR_WHEEL,
-                            REG_BINARY,
-                            wfWheelFunc,
-                            CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC));
-            WriteToRegistry(INI_EMULATOR_JOYBUTTONS,
-                            REG_BINARY,
-                            dwEmuJoyButtons,
-                            EMULATOR_NUM_JOYBUTTONS * sizeof(DWORD));
-            Msg(STRING_KEYCONFIG_NOTIFY, MB_OK | MB_ICONINFORMATION);
+        WriteToRegistry(INI_EMULATOR_KEYS,
+                        REG_BINARY,
+                        bEmuVKeys,
+                        EMULATOR_NUM_BUTTONS * sizeof(WORD));
+        WriteToRegistry(INI_EDITOR_KEYS,
+                        REG_BINARY,
+                        bEditVKeys,
+                        KEYACCEL_NUM_COMMANDS * sizeof(WORD));
+        WriteToRegistry(INI_EDITOR_WHEEL,
+                        REG_BINARY,
+                        wfWheelFunc,
+                        CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC));
+        WriteToRegistry(INI_EMULATOR_JOYBUTTONS,
+                        REG_BINARY,
+                        dwEmuJoyButtons,
+                        EMULATOR_NUM_JOYBUTTONS * sizeof(DWORD));
+        Msg(STRING_KEYCONFIG_NOTIFY, MB_OK | MB_ICONINFORMATION);
         case IDCANCEL:
-            EndDialog(hDlg, FALSE);
-            return TRUE;
-        } //switch(LOWORD(wParam))
-    }//case WM_COMMAND:
+        EndDialog(hDlg, FALSE);
+        return TRUE;
+        }
+    }
     }
 
     return FALSE;

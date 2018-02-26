@@ -1,0 +1,73 @@
+﻿· As you can see the asterisk added to the title bar in the title bar. (Already)
+* If you edited it once from unchanged and undoed, the asterisk will not disappear.
+· When an operation that is impossible when editing mouse or keyboard is canceled, an error is output to the log window.
+- Move an object to a page that is not displayed in the window by moving the object by mouse input
+I can not make it.
+· Display the corresponding key of the keyboard accelerator in the menu (You can change assignment by customization
+It is necessary to dynamically change it).
+· Report function for creating a better level.
+The maximum number of coins that can be earned in the room.
+The possibility that the terrain object will disappear.
+· Define the character string of g_VKeyInfo in keys.c as a constant in string _ ?. h.
+
+NOTE:
+-------------------------------------------------------------------- ------------------------------------------
+In the ExecuteCPU () function of emuengine.c, there are only seven scan lines, 1 to 7 cut.
+-------------------------------------------------------------------- ------------------------------------------
+· The argument of RefreshLine () function is 0 count.
+· Saved data for test play must be rewritten
+· ExecuteCPUNoRefreshScreen () for drawing the object view
+
+// Version with 8 upper scan lines
+// NTSC
+// 0 - 7 the top eight lines are cut off
+// 8 - 231 visible
+// 232 - 239 the bottom eight lines are cut off
+// 240 - 242 an additional 3 scanlines worth of CPU cycles to enter V-Blank.
+// 243 V-Blank flag, NMI
+// 243 - 262 V - Blank period takes a further 20 scanlines worth before the next frame can be drawn.
+static WORD ExecuteCPU()
+{
+	// Execute CPU
+	m6502zpexec(113);
+
+	// Set hity flag, if necessary
+	if(wScanline == pbSPRRAM[0] + GetFirstNonTransparentLine(pbSPRRAM[1]))
+		bPPUStaReg|=0x40;
+	//
+	if(wScanline > 7 && wScanline < 232) { // 8 - 231
+		// Update scanline
+		RefreshLine(wScanline);
+		return ++wScanline;
+	}
+	else if(wScanline == NES_SCANLINE_VBLANK) {
+		PostMessage(GETFRAMEWNDHANDLE(ghEmuWnd), WM_UPDATEFRAME, 0, 0); //g_fUpdate = TRUE;
+		// VBlank begins
+		g_bInVBlank = TRUE;
+		// Set vblank flag
+		bPPUStaReg |= 0x80;
+		// if nessesary, execute NMI.
+		if(bPPUCtrlReg1 & 0x80) m6502zpnmi();
+		return ++wScanline;
+	}
+	else if(wScanline >= NES_SCANLINE_BOTTOM) {
+		// VBlank ends
+		g_bInVBlank = FALSE;
+		// Clear VBlank flag and hity flag
+		bPPUStaReg &= 0x30;
+		// Reset scanline
+		wScanline = 0;
+		return 0; // wScanline == 0 and DO NOT INCREMENT
+	}
+
+	return ++wScanline;
+}
+
+* Starting at the same time as other NES emulator and comparing elapsed time of SMB, it is slow.
+
+You may be able to fix it if you can correct the multimedia timer time.
+I wish I could create a thread and do it in a loop. Not really.
+
+------------------------------------------------
+General settings are set to be undoneable
+------------------------------------------------

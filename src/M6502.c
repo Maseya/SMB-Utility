@@ -313,18 +313,6 @@ typedef void(*Instruction)();
 
 static const Instruction Instructions[0x100];
 
-// When indexing, an extra cycles comes form wrapping around our word boundary.
-UINT16 Wrap(int value)
-{
-    if (value >= 0x10000)
-    {
-        cyclesRemaining--;
-        elapsedTicks++;
-    }
-
-    return value;
-}
-
 void Push(UINT8 value)
 {
     Memory[0x100 | S--] = value;
@@ -358,13 +346,18 @@ void WriteNZFlags(UINT8 value)
     WriteFlag(NMask, value & 0x80);
 }
 
+UINT16 GetWord(UINT16 addr)
+{
+    return Memory[addr] | (Memory[(UINT16)(addr + 1)] << 8);
+}
+
 void BRK()
 {
     // Push program counter and processor status.
     PushState();
 
     // Load IRQ interrupt vector.
-    PC = Memory[InterruptVector];
+    PC = GetWord(InterruptVector);
 
     // Set break flag
     SetFlag(BMask);
@@ -470,7 +463,7 @@ void ADC(int value)
     int carry = result >= 0x100;
 
     // Overflow occurs when signs of input match each other but don't match result.
-    int overflow = (sign1 == sign2) & (sign1 != sign3);
+    int overflow = (sign1 == sign2) && (sign1 != sign3);
 
     WriteFlag(CMask, carry);
     WriteFlag(VMask, overflow);
@@ -534,7 +527,7 @@ void Branch(int test)
         int result = PC + (INT8)Memory[PC] + 1;
 
         // Branch crossed page.
-        if ((result & 0x100) != (PC ^ 0x100))
+        if ((result & 0x100) != (PC & 0x100))
         {
             cyclesRemaining -= 2;
             elapsedTicks += 2;
@@ -795,11 +788,6 @@ void TXS()
 void NOP()
 {
     // Do nothing. Program counter and cycle count are updated in main loop.
-}
-
-UINT16 GetWord(UINT16 addr)
-{
-    return Memory[addr] | (Memory[(UINT16)(addr + 1)] << 8);
 }
 
 void m6502zpreset()

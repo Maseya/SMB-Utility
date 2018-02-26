@@ -67,19 +67,22 @@ HBITMAP ghPrevBitmapMapViewWnd = NULL;
 int giCursorX = -1;
 int giCursorY = -1;
 
-//マップビューの左端に表示されているマップのページ
+// マップビューの左端に表示されているマップのページ
+// The page of the map displayed at the left end of the map view
 int giMapViewPageBase = 0;
 
-//マップビューの左端を0ページとしたときのカーソルのあるページ
+// マップビューの左端を0ページとしたときのカーソルのあるページ
+// Page with cursor when the left end of map view is 0 page
 int giMapViewEditPage = 0;
 
-//カーソルのあるマップのページ
+// カーソルのあるマップのページ
+// The page of the map with the cursor
 int giMapViewPage = 0;
 
-//ウインドウで表示可能なページ数(０起算)
+// ウインドウで表示可能なページ数(０起算)
+// Number of pages that can be displayed in the window (0 count)
 int giWndPages;
 
-//
 int g_iCursoleEnable = 0;
 
 BOOL g_blIsXPosLineDraw = FALSE;
@@ -87,11 +90,6 @@ BOOL g_blIsYPosLineDraw = FALSE;
 
 BOOL g_fNotDrawAssistBmp = FALSE;
 
-//BOOL g_fNoObjSelectPopup = FALSE;
-
-/*****************************
-
-******************************/
 LRESULT CALLBACK ObjectViewOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -106,9 +104,6 @@ LRESULT CALLBACK ObjectViewOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam,
 
         fCheck = g_fNotDrawAssistBmp ? BST_CHECKED : BST_UNCHECKED;
         CheckDlgButton(hDlg, IDC_NOTDRAWASSISTBMP, fCheck);
-
-        //			   fCheck = g_fNoObjSelectPopup ? BST_CHECKED : BST_UNCHECKED;
-        //			   CheckDlgButton(hDlg, IDC_NOOBJSELECTPOPUP, fCheck);
     }
     break;
     case WM_NOTIFY:
@@ -122,9 +117,6 @@ LRESULT CALLBACK ObjectViewOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_NOTDRAWASSISTBMP))
                 g_fNotDrawAssistBmp = TRUE;
 
-            //				   g_fNoObjSelectPopup = FALSE;
-            //				   if(BST_CHECKED==IsDlgButtonChecked(hDlg, IDC_NOOBJSELECTPOPUP))
-            //					   g_fNoObjSelectPopup = TRUE;
             return TRUE;
         }
         break;
@@ -149,9 +141,6 @@ DWORD ObjectViewGetSetting()
     if (g_blIsYPosLineDraw)
         dwSetting |= OBJVIEWSETTING_DRAWYPOSLINE;
 
-    //	if (g_fNoObjSelectPopup)
-    //		dwSetting |= OBJVIEWSETTING_NOPOPUP;
-
     return dwSetting;
 }
 
@@ -160,13 +149,8 @@ void ObjectViewSetSetting(DWORD dwSetting)
     g_fNotDrawAssistBmp = (dwSetting & OBJVIEWSETTING_NOTDRAWASSISTBMP) ? TRUE : FALSE;
     g_blIsXPosLineDraw = (dwSetting & OBJVIEWSETTING_DRAWXPOSLINE) ? TRUE : FALSE;
     g_blIsYPosLineDraw = (dwSetting & OBJVIEWSETTING_DRAWYPOSLINE) ? TRUE : FALSE;
-
-    //	g_fNoObjSelectPopup = (dwSetting & OBJVIEWSETTING_NOPOPUP) ? TRUE : FALSE;
 }
 
-/*************************
-
-**************************/
 void InitMapViewGlobalValue()
 {
     giMapViewPage = 0;
@@ -178,9 +162,6 @@ void InitMapViewGlobalValue()
     giMapViewPageBase = 0;
 }
 
-/*************************
-
-**************************/
 static void RefreshMapViewWindowTitle()
 {
     TCHAR cWndTitle[50];
@@ -202,9 +183,6 @@ static void RefreshMapViewWindowTitle()
         SetWindowText(ghMapViewWnd, STRING_WINDOW_OBJVIEW);
 }
 
-/***********************
-
-************************/
 int ShowMapViewCursole(BOOL blShow)
 {
     if (blShow)
@@ -361,9 +339,6 @@ static void DrawMapViewCursor(int iMode)
     }
 }
 
-/*********************
-
-**********************/
 static void DrawPosLines()
 {
 #define POSLINE_COLOR_NORMAL COLOR_3DLIGHT
@@ -429,9 +404,6 @@ static void DrawPosLines()
     DeleteObject(hPenPage);
 }
 
-/*********************
-
-**********************/
 static void SetColorToGauge(HDC hdc)
 {
 #define GAUGE_COLORS 2
@@ -493,7 +465,6 @@ void DrawXPosGauge()
     rc.bottom = XPOSLABEL_HEIGHT;
     rc.right = XPOSLABEL_WIDTH;
 
-    //
     hBmp = LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_XGAUGE_IMG), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR | LR_LOADMAP3DCOLORS);
     BitmapBltToDC(hBmp, ghMemdcXPos, ghXPosWnd, 0, 0);
     DeleteObject(hBmp);
@@ -540,6 +511,8 @@ void DeleteGauge(HWND hWnd, HDC *lphDC, HBITMAP *lphBmp, HBITMAP *lphPrevBmp)
 
   ツールチップ
 
+  Tooltip
+
 *******************/
 HWND CreateObjectViewTooltip()
 {
@@ -554,7 +527,7 @@ HWND CreateObjectViewTooltip()
                             CW_USEDEFAULT,
                             CW_USEDEFAULT,
                             CW_USEDEFAULT,
-                            ghMapViewWnd,//この指定は必要！！
+                            ghMapViewWnd,
                             (HMENU)NULL,
                             GetModuleHandle(NULL),
                             NULL);
@@ -571,6 +544,7 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
     if (!lpText) return FALSE;
 
     // オブジェクトが複数重なった位置にある場合の検出、および追加のテキスト
+    // Detection when objects are in multiple overlapping positions, and additional text
     ht.hwnd = ghMapViewWnd;
     ht.pt.x = x;
     ht.pt.y = y;
@@ -579,10 +553,12 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
     if (SendMessage(ghToolTip, TTM_HITTEST, 0, (LPARAM)(LPHITTESTINFO)&ht))
     {
         // ht.ti.uIdにヒットしたツールチップのIDが格納されている
+        // The ID of the tool tip hit in ht.ti.uId is stored
         if (!SendMessage(ghToolTip, TTM_GETTOOLINFO, 0, (LPARAM)(LPTOOLINFO)&ht.ti))
             return FALSE;
 
         // lpTextは、GetTempStringBuffer()で確保されたバッファー
+        // lpText is a buffer reserved by GetTempStringBuffer()
         ht.ti.lpszText = GetTempStringBuffer2();
         SendMessage(ghToolTip, TTM_GETTEXT, 0, (LPARAM)(LPTOOLINFO)&ht.ti);
         if (lstrlen(lpText) + lstrlen(ht.ti.lpszText) < TMPSTRBUFSIZ)
@@ -594,6 +570,7 @@ BOOL AddToolToObjectViewToolTip(int x, int y, LPTSTR lpText, UINT id)
     }
 
     // 追加するツールチップ用構造体の初期化
+    // Initialization of tool tip structure to be added
     ti.cbSize = sizeof(TOOLINFO);
     ti.uFlags = 0;
     ti.hwnd = ghMapViewWnd;
@@ -632,6 +609,8 @@ BOOL DeleteAllToolObjectViewToolTip()
 
   マップの補助図形を描画
 
+  Draw auxiliary graphic of map
+
 **************************/
 void DrawAssistObjectMap()
 {
@@ -656,7 +635,9 @@ void DrawAssistObjectMap()
             for (;;)
             {
                 if ((DWORD)giMapViewPageBase <= ObjSeek.dwPage && ObjSeek.dwPage <= (DWORD)giMapViewPageBase + (DWORD)giWndPages + 1)
-                {//最後のページの横位置が負のオブジェクトのために必要
+                {
+                    // 最後のページの横位置が負のオブジェクトのために必要
+                    // The lateral position of the last page is required for negative objects
                     uBaseX = (ObjSeek.dwPage - giMapViewPageBase >= 0) ? (ObjSeek.dwPage - giMapViewPageBase) * 256 : 0;
                     x = GetMapXPos(ObjSeek.pbData) * 16 + uBaseX;
                     y = TOP_16PIXEL + GetMapYPos(ObjSeek.pbData) * 16;
@@ -688,7 +669,7 @@ void DrawAssistObjectMap()
             for (;;)
             {
                 if ((DWORD)giMapViewPageBase <= ObjSeek.dwPage && ObjSeek.dwPage <= (DWORD)giMapViewPageBase + (DWORD)giWndPages + 1)
-                {//
+                {
                     uBaseX = (ObjSeek.dwPage - giMapViewPageBase >= 0) ? (ObjSeek.dwPage - giMapViewPageBase) * 256 : 0;
                     x = GetBadGuysXPos(ObjSeek.pbData) * 16 + uBaseX;
                     y = TOP_16PIXEL + (GetBadGuysYPos(ObjSeek.pbData)) * 16;
@@ -712,7 +693,6 @@ void DrawAssistObjectMap()
                         lpText2 = lpText;
                     AddToolToObjectViewToolTip(XPOSLABEL_HEIGHT + x, YPOSLABEL_WIDTH + y, lpText2, id++);
 
-                    //
                     tx = x;
                     ty = y;
                 }
@@ -737,7 +717,6 @@ BOOL DrawHalfPageMark()
 
     uBaseX = (halfpage - giMapViewPageBase) * 256;
 
-    //
     ABD.iBmpIndex = 3;
     ABD.iPosDeltaX =
         ABD.iPosDeltaY = 0;
@@ -750,6 +729,8 @@ BOOL DrawHalfPageMark()
 /**************************************
 
   バックバッファからの転送と補助の描画
+
+  Transfer from back buffer and auxiliary drawing
 
 ***************************************/
 
@@ -784,7 +765,7 @@ static void ClearMapViewBackBufferSpecialObjectArea(int iPage)
 
     rc.top = 0;
     rc.left = 0;
-    rc.right = iPage*NES_SCREENSIZEX;
+    rc.right = iPage * NES_SCREENSIZEX;
     rc.bottom = MAPVIEW_CLIENTHEIGHT;
 
     if (ghMemdcMapViewWnd) FillRect(ghMemdcMapViewWnd, &rc, GetSysColorBrush(COLOR_WINDOW));
@@ -797,7 +778,8 @@ void UpdateObjectView(DWORD dwUpdateFlag)
 
     if (!gblIsROMLoaded || !ghMapViewWnd || !ghMemdcMapViewWnd) return;
 
-    //マップビューウインドウの幅を取得
+    // マップビューウインドウの幅を取得
+    // Get map view window width
     GetClientRect(ghMapViewWnd, &rcWnd);
     giWndPages = (rcWnd.right - YPOSLABEL_WIDTH) / NES_SCREENSIZEX;
 
@@ -839,9 +821,6 @@ void UpdateObjectView(DWORD dwUpdateFlag)
     RefreshMapViewWindowTitle();
 }
 
-/********************************
-
-*********************************/
 void SetMapViewCursoleBadGuys(BYTE *pbBuf, int iPage)
 {
     int iCurX;
@@ -869,7 +848,6 @@ void SetObjectViewCursole(int iPage)
     int iNewIndex;
     BYTE bBuf[3];
 
-    //
     if (GetMapEditMode())
     {
         iNewIndex = GetBadGuysDataIndex(GETADDRESS_CURRENT_EDITTING, NULL, iPage, TRUE);
@@ -902,11 +880,11 @@ void SetObjectViewCursole(int iPage)
     }
     if (iNewIndex == -1) iNewIndex = 0;
 
-    //giSelectedItem=iNewIndex;
     SetSelectedItem(iNewIndex, TRUE);
 }
 
-//マップビューのカーソルの設定
+// マップビューのカーソルの設定
+// Setting cursor for map view
 BOOL UpdateObjectViewCursole()
 {
     int iPage;
@@ -944,17 +922,15 @@ BOOL UpdateObjectViewCursole()
     }
 }
 
-/***********************
-
-*************************/
 void ChangeMapViewScreenSize(int iPages)
 {
     RECT rcWnd;
     if (IsZoomed(ghMapViewWnd) || IsIconic(ghMapViewWnd)) return;
 
-    //マップビューウインドウの幅を取得
+    // マップビューウインドウの幅を取得
+    // Get map view window width
     GetWindowRect(ghMapViewWnd, &rcWnd);
-    SetWindowPos(ghMapViewWnd, NULL, 0, 0, ONE_PAGE_SIZE + NES_SCREENSIZEX*(iPages - 1) - 1, MAPVIEW_WINDOWHEIGHT/*rcWnd.bottom-rcWnd.top*/, SWP_NOMOVE | SWP_NOZORDER);
+    SetWindowPos(ghMapViewWnd, NULL, 0, 0, ONE_PAGE_SIZE + NES_SCREENSIZEX * (iPages - 1) - 1, MAPVIEW_WINDOWHEIGHT/*rcWnd.bottom-rcWnd.top*/, SWP_NOMOVE | SWP_NOZORDER);
 }
 
 void ShowPopupMenu(HWND hwnd, POINT point, LPTSTR lpMenuName)
@@ -987,6 +963,8 @@ void ShowPopupMenu(HWND hwnd, POINT point, LPTSTR lpMenuName)
 /**************************
 
   マウス入力に対する前処理
+
+  Preprocessing for mouse input
 
 ***************************/
 typedef struct _tagOBJVIEWMOUSEINPUT
@@ -1033,7 +1011,7 @@ static BOOL ObjviewObjPos2MousePos(LPOBJVIEWMOUSEINPUT lpMouseInput, LPPOINT lpP
         return FALSE;
 
     // charcters
-    lpPt->x = CHARCTERS_PER_PAGE*(lpMouseInput->Page - giMapViewPageBase);
+    lpPt->x = CHARCTERS_PER_PAGE * (lpMouseInput->Page - giMapViewPageBase);
     if (lpPt->x < 0) return FALSE;
     lpPt->x += lpMouseInput->X;
     lpPt->y = lpMouseInput->Y + 1;
@@ -1087,9 +1065,9 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             switch (HIWORD(wParam))
             {
             case BN_CLICKED:
-                SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_NEXTPAGE, 0), 0);
-                SetFocus(hWnd);
-                break;
+            SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_NEXTPAGE, 0), 0);
+            SetFocus(hWnd);
+            break;
             }
         }
         break;
@@ -1098,9 +1076,9 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             switch (HIWORD(wParam))
             {
             case BN_CLICKED:
-                SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_PREVPAGE, 0), 0);
-                SetFocus(hWnd);
-                break;
+            SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_PREVPAGE, 0), 0);
+            SetFocus(hWnd);
+            break;
             }
         }
         break;
@@ -1117,12 +1095,12 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case IDM_MAPVIEW_SHOWEDITDIALOG:
-            if (!gblIsROMLoaded) break;
-            if (GetMapEditMode())
-                DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-            else
-                DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-            break;
+        if (!gblIsROMLoaded) break;
+        if (GetMapEditMode())
+            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
+        else
+            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
+        break;
         case IDM_MAPVIEW_SENDOBJECT:
         {
             if (!gblIsROMLoaded) break;
@@ -1243,14 +1221,13 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         UINT uBasePageSize = ONE_PAGE_SIZE - GetSystemMetrics(SM_CXSIZEFRAME);
         if ((UINT)lpwp->cx > uBasePageSize)
             iPages = (lpwp->cx - (NES_SCREENSIZEX / 2)) / NES_SCREENSIZEX;
-        lpwp->cx = ONE_PAGE_SIZE + NES_SCREENSIZEX*iPages - 1;
+        lpwp->cx = ONE_PAGE_SIZE + NES_SCREENSIZEX * iPages - 1;
         lpwp->cy = MAPVIEW_WINDOWHEIGHT;
         return 0;
     }
     break;
     case WM_PAINT:
     {
-        //
         HDC hdc = (HDC)wParam;
         InstallEmulatorPalette(hdc);
         RedrawMapViewWnd();
@@ -1262,46 +1239,44 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     }
     break;
     case WM_LBUTTONDBLCLK:
-        if (!gblIsROMLoaded) break;
-        if (GetMapEditMode())
-            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-        else
-            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-        break;
+    if (!gblIsROMLoaded) break;
+    if (GetMapEditMode())
+        DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
+    else
+        DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
+    break;
     case WM_MDIACTIVATE:
     {
         HWND hwndChildDeact = (HWND)wParam;        // child being deactivated
-
-//			HWND hwndChildAct = (HWND) lParam;          // child being activated
 
         fObjViewActive = (hwndChildDeact == hWnd) ? FALSE : TRUE;
     }
     break;
     case WM_LBUTTONUP:
-        if (fObjectIsGrabed && !fObjViewActive)
-        {
-            ObjviewInvertObject(hWnd, &GrabedObject);
-            fObjectIsGrabed = FALSE;
-            ReleaseCapture();
-
-            //ClipCursor(NULL);
-        }
-        fObjViewActive = FALSE;
-        break;
+    if (fObjectIsGrabed && !fObjViewActive)
+    {
+        ObjviewInvertObject(hWnd, &GrabedObject);
+        fObjectIsGrabed = FALSE;
+        ReleaseCapture();
+    }
+    fObjViewActive = FALSE;
+    break;
     case WM_LBUTTONDOWN:
     {
         WPARAM fwKeys = wParam;        // key flags
         int iNewIndex;
         GETINDEXINFO sGetIndex;
         OBJVIEWMOUSEINPUT MouseInput;
-        BOOL uPopMenuSelected = 0; //ポップアップメニューが　 0：非表示、-1：表示→選択なし、それ以外：表示→選択あり
+
+        // ポップアップメニューが　 0：非表示、-1：表示→選択なし、それ以外：表示→選択あり
+        // The pop-up menu is 0: non-display, -1: display → no selection, otherwise: display → selected
+        BOOL uPopMenuSelected = 0;
 
         if (!gblIsROMLoaded) break;
 
         if (!ObjviewMousePos2ObjPos(LOWORD(lParam), HIWORD(lParam), &MouseInput))
             break;
 
-        //
         sGetIndex.dwFlag = GETINDEX_FLAG_XY;
         sGetIndex.x = MouseInput.X;
         sGetIndex.y = MouseInput.Y;
@@ -1369,7 +1344,7 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         }
         else
         {
-            SetSelectedItem(iNewIndex, TRUE);//giSelectedItem=iNewIndex;
+            SetSelectedItem(iNewIndex, TRUE);
         }
 
         if (uPopMenuSelected != -1)
@@ -1378,11 +1353,8 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             SetMapViewCursor(MouseInput.X, MouseInput.Y);
         }
 
-        //
         UpdateObjectList(1);
         ObjectListShowCursor();
-
-        //
         UpdateObjectView(0);
 
         if (!uPopMenuSelected && !fObjViewActive)
@@ -1504,13 +1476,11 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         HDC hdc;
         HBITMAP hBmp;
 
-        //
         ghMapViewWnd = hWnd;
 
         //DisableIME
         ImmAssociateContext(hWnd, (HIMC)NULL);
 
-        //
         hdc = GetDC(hWnd);
         ghMemdcMapViewWnd = CreateCompatibleDC(hdc);
         ghBitmapMapViewWnd = CreateCompatibleBitmap(hdc, GetSystemMetrics(SM_CXSCREEN), MAPVIEW_CLIENTHEIGHT);
@@ -1520,7 +1490,7 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         ClearObjectViewBackBuffer();
         ghMapViewWnd = hWnd;
 
-        ghYPosWnd = CreateWindowEx(/*WS_EX_STATICEDGE*/0,
+        ghYPosWnd = CreateWindowEx(0,
                                    __T("STATIC"),
                                    NULL,
                                    WS_CHILD | WS_VISIBLE | SS_OWNERDRAW | SS_NOTIFY,
@@ -1531,7 +1501,7 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         PrepareGauge(ghYPosWnd, &ghMemdcYPos, &ghBitmapYPos, YPOSLABEL_WIDTH, MAPVIEW_CLIENTHEIGHT, &ghPrevBitmapYPos);
         DrawYPosGauge();
 
-        ghXPosWnd = CreateWindowEx(/*WS_EX_STATICEDGE*/0,
+        ghXPosWnd = CreateWindowEx(0,
                                    __T("STATIC"),
                                    NULL,
                                    WS_CHILD | WS_VISIBLE | SS_OWNERDRAW | SS_NOTIFY,
@@ -1567,7 +1537,6 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 
         InitAssistBmp(hWnd);
 
-        //
         ChangeMapViewScreenSize(2);
         UpdateObjectView(0);
     }
@@ -1636,7 +1605,8 @@ HWND CreateMapViewWnd(HINSTANCE hInstance, HWND hWndMDIClient)
 {
     HWND hWnd;
 
-    //WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
+    // WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
+    // If you do not create it with WS_VISIBLE specified, no window is added to the Window menu.
     hWnd = CreateMDIWindow(MAPVIEWWNDCLASSNAME,
                            STRING_WINDOW_OBJVIEW,
                            WS_SYSMENU | WS_MINIMIZEBOX | WS_CAPTION | WS_THICKFRAME | WS_CLIPCHILDREN | WS_VISIBLE,
