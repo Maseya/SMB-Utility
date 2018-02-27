@@ -75,7 +75,7 @@ void LoadPrgRom(int prgNumber)
         bPRGROM + 0x8000,
         bpROM + offset,
         0x4000);
-    
+
     offset += (prgNumber * 0x8000);
     memcpy(
         bPRGROM + 0xC000,
