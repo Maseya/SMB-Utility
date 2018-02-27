@@ -1,5 +1,4 @@
 ﻿// M6502 Emulator
-// Based by emulator written by Neil Bradley but written in C, making it build in 64-bit and making it portable to other systems.
 
 #ifndef _M6502_H_
 #define _M6502_H_
