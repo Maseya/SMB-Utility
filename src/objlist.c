@@ -86,44 +86,44 @@ void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
     switch ((lpbBuf[0] & 0x0f))
     {
     case 0x0C:
-    wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoC[(lpbBuf[1] >> 4) & 0x07].Name);
-    break;
+        wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoC[(lpbBuf[1] >> 4) & 0x07].Name);
+        break;
     case 0x0D:
-    if (!(lpbBuf[1] & 0x40))
-        wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
-    else
-    {
-        if ((lpbBuf[1] & 0x70) == 0x40)
-            wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
+        if (!(lpbBuf[1] & 0x40))
+            wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
         else
-            wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
-    }
-    break;
+        {
+            if ((lpbBuf[1] & 0x70) == 0x40)
+                wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
+            else
+                wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
+        }
+        break;
     case 0x0E:
-    if (lpbBuf[1] & 0x40)
-        wsprintf(lpszBuf, STRING_OBJLIST_BACK, smbMapHeadBackColor[lpbBuf[1] & 0x07]);
-    else
-        wsprintf(lpszBuf, STRING_OBJLIST_VIEWBLOCK, smbMapHeadView[(lpbBuf[1] >> 4) & 0x03], smbMapBasicBlock[lpbBuf[1] & 0x0F].Name);
-    break;
+        if (lpbBuf[1] & 0x40)
+            wsprintf(lpszBuf, STRING_OBJLIST_BACK, smbMapHeadBackColor[lpbBuf[1] & 0x07]);
+        else
+            wsprintf(lpszBuf, STRING_OBJLIST_VIEWBLOCK, smbMapHeadView[(lpbBuf[1] >> 4) & 0x03], smbMapBasicBlock[lpbBuf[1] & 0x0F].Name);
+        break;
     case 0x0F:
     {
         switch ((lpbBuf[1] >> 4) & 0x07)
         {
         case 0:
-        wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
-        break;
+            wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
+            break;
 
-        // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
-        // 1と4,5は違う処理
-        // Depending on the convenience of the object's database (1, 4, 5, because there is one additional element)
-        // 1, 4 and 5 are different processes
+            // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
+            // 1と4,5は違う処理
+            // Depending on the convenience of the object's database (1, 4, 5, because there is one additional element)
+            // 1, 4 and 5 are different processes
         case 1:
-        wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
-        break;
+            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
+            break;
         case 4:
         case 5:
-        wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07) + 1].Name);
-        break;
+            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07) + 1].Name);
+            break;
         case 2:
         {
             BYTE bHeight;
@@ -135,46 +135,46 @@ void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
         }
         break;
         case 3:
-        if (!((lpbBuf[1] >> 3) & 0x01))
-            wsprintf(lpszBuf, STRING_OBJLIST_STEP, (lpbBuf[1] & 0x07) + 1, (lpbBuf[1] & 0x07) + 1);
-        else
-        {
-            BYTE bLower;
-            bLower = (lpbBuf[1] & 0x07);
-            if (0 <= bLower && bLower <= 0x03)
-                wsprintf(lpszBuf, STRING_OBJLIST_STEP98);
-            else if (0x04 <= bLower && bLower <= 0x06)
-                wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
-            else if (0x07 == bLower)
-                wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
-        }
-        break;
+            if (!((lpbBuf[1] >> 3) & 0x01))
+                wsprintf(lpszBuf, STRING_OBJLIST_STEP, (lpbBuf[1] & 0x07) + 1, (lpbBuf[1] & 0x07) + 1);
+            else
+            {
+                BYTE bLower;
+                bLower = (lpbBuf[1] & 0x07);
+                if (0 <= bLower && bLower <= 0x03)
+                    wsprintf(lpszBuf, STRING_OBJLIST_STEP98);
+                else if (0x04 <= bLower && bLower <= 0x06)
+                    wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
+                else if (0x07 == bLower)
+                    wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
+            }
+            break;
         case 6:
         case 7:
-        wsprintf(lpszBuf, STRING_OBJLIST_NONE);
-        break;
+            wsprintf(lpszBuf, STRING_OBJLIST_NONE);
+            break;
         }
     }
     break;
     default:
-    if (!(lpbBuf[1] & 0x70))
-    {
-        wsprintf(lpszBuf, __T("%s"), smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
-    }
-    else if ((lpbBuf[1] & 0x70) != 0x70)
-    {
-        wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
-    }
-    else
-    {
-        // 土管
-        // Pipe
-        if (lpbBuf[1] & 0x08)
-            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
+        if (!(lpbBuf[1] & 0x70))
+        {
+            wsprintf(lpszBuf, __T("%s"), smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
+        }
+        else if ((lpbBuf[1] & 0x70) != 0x70)
+        {
+            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
+        }
         else
-            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
-    }
-    break;
+        {
+            // 土管
+            // Pipe
+            if (lpbBuf[1] & 0x08)
+                wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
+            else
+                wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
+        }
+        break;
     }
 }
 
@@ -269,12 +269,12 @@ void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
     // 送りコマンド（２バイト）
     // Feed command (2 bytes)
     case 0x0F:
-    wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1] & 0x3F);
-    break;
+        wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1] & 0x3F);
+        break;
     default:
 
-    //（敵キャラコマンド）
-    // (Enemy character command)
+        //（敵キャラコマンド）
+        // (Enemy character command)
     {
         wsprintf(lpszBuf, __T("%s%s"), smbBadGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
     }
@@ -459,70 +459,70 @@ LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         return TRUE;
     }
     case WM_COMMAND:
-    switch (LOWORD(wParam))
-    {
-    case IDOK:
-    {
-        BYTE bBuf[2] = {0};
-        BYTE bTmp;
-        int iNewAttr;
-
-        undoPrepare(UNDONAME_HEADDLG);
-
-        bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_TIME, CB_GETCURSEL, 0, 0);
-        bBuf[0] |= ((bTmp & 0x3) << 6);
-        bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_POSITION, CB_GETCURSEL, 0, 0);
-        bBuf[0] |= ((bTmp & 0x7) << 3);
-        bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_GETCURSEL, 0, 0);
-        bBuf[0] |= (bTmp & 0x07);
-        bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_GETCURSEL, 0, 0);
-        bBuf[1] |= ((bTmp & 0x3) << 6);
-        bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_VIEW, CB_GETCURSEL, 0, 0);
-        bBuf[1] |= ((bTmp & 0x3) << 4);
-        bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_GETCURSEL, 0, 0);
-        bBuf[1] |= (bTmp & 0x0F);
-
-        memcpy(bPRGROM + GetMapAddress(GETADDRESS_CURRENT_EDITTING), bBuf, 2);
-
-        iNewAttr = (int)SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_GETCURSEL, 0, 0);
-
-        ChangeRoomAttribute(GetRoomID(), iNewAttr & 0x03);
-
-        // 途中から
-        // On the way
-        if (!rm_IsSubRoom())
+        switch (LOWORD(wParam))
         {
+        case IDOK:
+        {
+            BYTE bBuf[2] = {0};
             BYTE bTmp;
-            BYTE bMask = 0xF0;
-            BYTE bSel;
-            ADDRESSDATA adRestartPageAddress;
+            int iNewAttr;
 
-            ADDRESSDATA_LOAD(adRestartPageAddress, RESTART_PAGE_ADDRESS);
+            undoPrepare(UNDONAME_HEADDLG);
 
-            bSel = (BYTE)SendDlgItemMessage(hDlg, IDC_PAGE, CB_GETCURSEL, 0, 0);
-            bSel <<= (!(g_iArea & 0x01)) * 4;
-            bMask >>= (!(g_iArea & 0x01)) * 4;
-            bTmp = bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)];
+            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_TIME, CB_GETCURSEL, 0, 0);
+            bBuf[0] |= ((bTmp & 0x3) << 6);
+            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_POSITION, CB_GETCURSEL, 0, 0);
+            bBuf[0] |= ((bTmp & 0x7) << 3);
+            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_GETCURSEL, 0, 0);
+            bBuf[0] |= (bTmp & 0x07);
+            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_GETCURSEL, 0, 0);
+            bBuf[1] |= ((bTmp & 0x3) << 6);
+            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_VIEW, CB_GETCURSEL, 0, 0);
+            bBuf[1] |= ((bTmp & 0x3) << 4);
+            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_GETCURSEL, 0, 0);
+            bBuf[1] |= (bTmp & 0x0F);
 
-            bTmp &= bMask;
-            bTmp |= bSel;
+            memcpy(bPRGROM + GetMapAddress(GETADDRESS_CURRENT_EDITTING), bBuf, 2);
 
-            // ROMの保護のために絶対に必要
-            // Absolutely necessary for ROM protection
-            if (g_iWorld >= 0 && g_iWorld < GetNumWorlds())
-                bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)] = bTmp;
+            iNewAttr = (int)SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_GETCURSEL, 0, 0);
+
+            ChangeRoomAttribute(GetRoomID(), iNewAttr & 0x03);
+
+            // 途中から
+            // On the way
+            if (!rm_IsSubRoom())
+            {
+                BYTE bTmp;
+                BYTE bMask = 0xF0;
+                BYTE bSel;
+                ADDRESSDATA adRestartPageAddress;
+
+                ADDRESSDATA_LOAD(adRestartPageAddress, RESTART_PAGE_ADDRESS);
+
+                bSel = (BYTE)SendDlgItemMessage(hDlg, IDC_PAGE, CB_GETCURSEL, 0, 0);
+                bSel <<= (!(g_iArea & 0x01)) * 4;
+                bMask >>= (!(g_iArea & 0x01)) * 4;
+                bTmp = bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)];
+
+                bTmp &= bMask;
+                bTmp |= bSel;
+
+                // ROMの保護のために絶対に必要
+                // Absolutely necessary for ROM protection
+                if (g_iWorld >= 0 && g_iWorld < GetNumWorlds())
+                    bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)] = bTmp;
+            }
+
+            fr_SetDataChanged(TRUE);
+
+            UpdateObjectList(0);
+            UpdateObjectView(0);
+            UpdateStatusBarRoomInfoText(NULL);
         }
-
-        fr_SetDataChanged(TRUE);
-
-        UpdateObjectList(0);
-        UpdateObjectView(0);
-        UpdateStatusBarRoomInfoText(NULL);
-    }
-    case IDCANCEL:
-    EndDialog(hDlg, TRUE);
-    return TRUE;
-    }
+        case IDCANCEL:
+            EndDialog(hDlg, TRUE);
+            return TRUE;
+        }
     }
     return FALSE;
 }
@@ -673,9 +673,9 @@ LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case NM_RCLICK:
-        if (!gblIsROMLoaded) break;
-        DialogBox(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, SendObjectDlgProc);
-        break;
+            if (!gblIsROMLoaded) break;
+            DialogBox(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, SendObjectDlgProc);
+            break;
         case NM_CLICK:
         case LVN_KEYDOWN:
         {
@@ -684,7 +684,7 @@ LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         break;
         case NM_SETFOCUS:
 
-        //			case NM_KILLFOCUS:
+            //			case NM_KILLFOCUS:
         {
             if (gblIsROMLoaded)
             {
@@ -698,10 +698,10 @@ LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     break;
     case WM_SETFOCUS:
 
-    // キーボードフォーカスをリストボックスへ
-    // Keyboard focus to list box
-    SetFocus(g_hWndListView);
-    break;
+        // キーボードフォーカスをリストボックスへ
+        // Keyboard focus to list box
+        SetFocus(g_hWndListView);
+        break;
     case WM_CREATE:
     {
         g_hWndListView = CreateListView(hWnd);
@@ -725,7 +725,7 @@ LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     }
     break;
     default:
-    return DefMDIChildProc(hWnd, message, wParam, lParam);
+        return DefMDIChildProc(hWnd, message, wParam, lParam);
     }
     return DefMDIChildProc(hWnd, message, wParam, lParam);
 }

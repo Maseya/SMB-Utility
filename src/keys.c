@@ -30,29 +30,29 @@ static void ExecuteWheelCommand(WHEELFUNC wf, short zDelta)
     switch (wf)
     {
     case TYPE1:
-    if (zDelta > 0)
-        MapEditCommand(IDM_EDITCOMMAND_ADD1TOTYPE);
-    else if (zDelta)
-        MapEditCommand(IDM_EDITCOMMAND_DEC1TOTYPE);
-    break;
+        if (zDelta > 0)
+            MapEditCommand(IDM_EDITCOMMAND_ADD1TOTYPE);
+        else if (zDelta)
+            MapEditCommand(IDM_EDITCOMMAND_DEC1TOTYPE);
+        break;
     case TYPE16:
-    if (zDelta > 0)
-        MapEditCommand(IDM_EDITCOMMAND_ADD16TOTYPE);
-    else if (zDelta)
-        MapEditCommand(IDM_EDITCOMMAND_DEC16TOTYPE);
-    break;
+        if (zDelta > 0)
+            MapEditCommand(IDM_EDITCOMMAND_ADD16TOTYPE);
+        else if (zDelta)
+            MapEditCommand(IDM_EDITCOMMAND_DEC16TOTYPE);
+        break;
     case PAGE:
-    if (zDelta > 0)
-        MapEditCommand(IDM_EDITCOMMAND_REWPAGE);
-    else if (zDelta)
-        MapEditCommand(IDM_EDITCOMMAND_FWDPAGE);
-    break;
+        if (zDelta > 0)
+            MapEditCommand(IDM_EDITCOMMAND_REWPAGE);
+        else if (zDelta)
+            MapEditCommand(IDM_EDITCOMMAND_FWDPAGE);
+        break;
     case OBJ:
-    if (zDelta > 0)
-        MapEditCommand(IDM_EDITCOMMAND_PREVOBJ);
-    else if (zDelta)
-        MapEditCommand(IDM_EDITCOMMAND_NEXTOBJ);
-    break;
+        if (zDelta > 0)
+            MapEditCommand(IDM_EDITCOMMAND_PREVOBJ);
+        else if (zDelta)
+            MapEditCommand(IDM_EDITCOMMAND_NEXTOBJ);
+        break;
     }
 }
 
@@ -324,11 +324,11 @@ static LPTSTR FormatOverlappedKeyInformation(LPTSTR szBuf, DWORD dwResult)
     switch (dwResult >> 16)
     {
     case CUSTOMIZE_KEYS_ID_EDIT:
-    wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_KEYACCEL, g_szEditKeyName[dwResult & 0xFFFF]);
-    break;
+        wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_KEYACCEL, g_szEditKeyName[dwResult & 0xFFFF]);
+        break;
     case CUSTOMIZE_KEYS_ID_EMU:
-    wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_EMULATOR, g_szEmuKeyName[dwResult & 0xFFFF]);
-    break;
+        wsprintf(szBuf, STRING_KEYCONFIG_OVERLAPPED, STRING_KEYCONFIG_EMULATOR, g_szEmuKeyName[dwResult & 0xFFFF]);
+        break;
     }
     return szBuf;
 }
@@ -452,8 +452,8 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case CUSTOMIZE_KEYS_ID_EMU:
-        bVKey = GETVKEY(bEmuVKeys[uKey]);
-        break;
+            bVKey = GETVKEY(bEmuVKeys[uKey]);
+            break;
         }
 
         uKeyValue = FindVkeyIndex(bVKey);
@@ -487,15 +487,15 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                 switch (uKeyID)
                 {
                 case CUSTOMIZE_KEYS_ID_EDIT:
-                for (N = 0; N < KEYACCEL_NUM_COMMANDS; N++)
-                    SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEditKeyName[N]);
-                EnableAccessoryKey(hDlg, TRUE);
-                break;
+                    for (N = 0; N < KEYACCEL_NUM_COMMANDS; N++)
+                        SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEditKeyName[N]);
+                    EnableAccessoryKey(hDlg, TRUE);
+                    break;
                 case CUSTOMIZE_KEYS_ID_EMU:
-                for (N = 0; N < EMULATOR_NUM_BUTTONS; N++)
-                    SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEmuKeyName[N]);
-                EnableAccessoryKey(hDlg, FALSE);
-                break;
+                    for (N = 0; N < EMULATOR_NUM_BUTTONS; N++)
+                        SendDlgItemMessage(hDlg, IDC_KEYLIST, LB_ADDSTRING, 0, (LPARAM)g_szEmuKeyName[N]);
+                    EnableAccessoryKey(hDlg, FALSE);
+                    break;
                 }
 
                 uKey = 0;
@@ -534,42 +534,42 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                 switch (uKeyID)
                 {
                 case CUSTOMIZE_KEYS_ID_EDIT:
-                wCurVKey = bEditVKeys[uKey];
-                wNewKey = GETASSISTKEY(wCurVKey);
-                SETVKEY(wNewKey, bNewVKey);
-                dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
+                    wCurVKey = bEditVKeys[uKey];
+                    wNewKey = GETASSISTKEY(wCurVKey);
+                    SETVKEY(wNewKey, bNewVKey);
+                    dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
 
-                // 新たに選択した項目が選択されていたものと同じ項目でなければ
-                // If the newly selected item is not the same item that was selected
-                if (dwResult
-                    && (CUSTOMIZE_KEYS_ID_EDIT != HIWORD(dwResult) || uKey != LOWORD(dwResult))
-                    )
-                {
-                    FormatOverlappedKeyInformation(szBuf, dwResult);
-                    Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
-                    SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
-                    return TRUE;
-                }
-                bEditVKeys[uKey] = wNewKey;
-                break;
+                    // 新たに選択した項目が選択されていたものと同じ項目でなければ
+                    // If the newly selected item is not the same item that was selected
+                    if (dwResult
+                        && (CUSTOMIZE_KEYS_ID_EDIT != HIWORD(dwResult) || uKey != LOWORD(dwResult))
+                        )
+                    {
+                        FormatOverlappedKeyInformation(szBuf, dwResult);
+                        Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
+                        SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
+                        return TRUE;
+                    }
+                    bEditVKeys[uKey] = wNewKey;
+                    break;
                 case CUSTOMIZE_KEYS_ID_EMU:
-                wCurVKey = bEmuVKeys[uKey];
-                wNewKey = (WORD)bNewVKey;
-                dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
+                    wCurVKey = bEmuVKeys[uKey];
+                    wNewKey = (WORD)bNewVKey;
+                    dwResult = FindOverlappedKeyDefinition(wNewKey, bEditVKeys, bEmuVKeys);
 
-                // 新たに選択した項目が選択されていたものと同じ項目でなければ
-                // If the newly selected item is not the same item that was selected
-                if (dwResult
-                    && (CUSTOMIZE_KEYS_ID_EMU != HIWORD(dwResult) || uKey != LOWORD(dwResult))
-                    )
-                {
-                    FormatOverlappedKeyInformation(szBuf, dwResult);
-                    Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
-                    SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
-                    return TRUE;
-                }
-                bEmuVKeys[uKey] = wNewKey;
-                break;
+                    // 新たに選択した項目が選択されていたものと同じ項目でなければ
+                    // If the newly selected item is not the same item that was selected
+                    if (dwResult
+                        && (CUSTOMIZE_KEYS_ID_EMU != HIWORD(dwResult) || uKey != LOWORD(dwResult))
+                        )
+                    {
+                        FormatOverlappedKeyInformation(szBuf, dwResult);
+                        Msg(szBuf, MB_OK | MB_ICONEXCLAMATION);
+                        SendMessage(hDlg, WM_UPDATEKEYVALUE, 0, 0);
+                        return TRUE;
+                    }
+                    bEmuVKeys[uKey] = wNewKey;
+                    break;
                 }
                 return TRUE;
             }
@@ -590,14 +590,14 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
                     switch (wID)
                     {
                     case IDC_SHIFT:
-                    wMask = SHIFTBIT;
-                    break;
+                        wMask = SHIFTBIT;
+                        break;
                     case IDC_ALT:
-                    wMask = ALTBIT;
-                    break;
+                        wMask = ALTBIT;
+                        break;
                     case IDC_CTRL:
-                    wMask = CTRLBIT;
-                    break;
+                        wMask = CTRLBIT;
+                        break;
                     }
                     wNewKey = bEditVKeys[uKey];
                     if (IsDlgButtonChecked(hDlg, wID))
@@ -747,26 +747,26 @@ LRESULT CALLBACK CustomizeDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case IDOK:
-        WriteToRegistry(INI_EMULATOR_KEYS,
-                        REG_BINARY,
-                        bEmuVKeys,
-                        EMULATOR_NUM_BUTTONS * sizeof(WORD));
-        WriteToRegistry(INI_EDITOR_KEYS,
-                        REG_BINARY,
-                        bEditVKeys,
-                        KEYACCEL_NUM_COMMANDS * sizeof(WORD));
-        WriteToRegistry(INI_EDITOR_WHEEL,
-                        REG_BINARY,
-                        wfWheelFunc,
-                        CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC));
-        WriteToRegistry(INI_EMULATOR_JOYBUTTONS,
-                        REG_BINARY,
-                        dwEmuJoyButtons,
-                        EMULATOR_NUM_JOYBUTTONS * sizeof(DWORD));
-        Msg(STRING_KEYCONFIG_NOTIFY, MB_OK | MB_ICONINFORMATION);
+            WriteToRegistry(INI_EMULATOR_KEYS,
+                            REG_BINARY,
+                            bEmuVKeys,
+                            EMULATOR_NUM_BUTTONS * sizeof(WORD));
+            WriteToRegistry(INI_EDITOR_KEYS,
+                            REG_BINARY,
+                            bEditVKeys,
+                            KEYACCEL_NUM_COMMANDS * sizeof(WORD));
+            WriteToRegistry(INI_EDITOR_WHEEL,
+                            REG_BINARY,
+                            wfWheelFunc,
+                            CUSTOMIZE_WHEEL_NUMFUNCS * sizeof(WHEELFUNC));
+            WriteToRegistry(INI_EMULATOR_JOYBUTTONS,
+                            REG_BINARY,
+                            dwEmuJoyButtons,
+                            EMULATOR_NUM_JOYBUTTONS * sizeof(DWORD));
+            Msg(STRING_KEYCONFIG_NOTIFY, MB_OK | MB_ICONINFORMATION);
         case IDCANCEL:
-        EndDialog(hDlg, FALSE);
-        return TRUE;
+            EndDialog(hDlg, FALSE);
+            return TRUE;
         }
     }
     }
