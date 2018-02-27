@@ -751,48 +751,48 @@ LRESULT CALLBACK AreaSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
         return TRUE;
     }
     case WM_COMMAND:
-    switch (LOWORD(wParam))
-    {
-    case IDOK:
-    {
-        HTREEITEM hSelItem;
-        TVITEM tviSelItem;
-        LPROOMINFO lpRoomInfo;
-        int iIndex;
-
-        // Get handle of selected item
-        hSelItem = (HTREEITEM)SendDlgItemMessage(hDlg, IDC_ROOM, TVM_GETNEXTITEM, (WPARAM)TVGN_CARET, (LPARAM)NULL);
-        if (hSelItem)
+        switch (LOWORD(wParam))
         {
-            memset(&tviSelItem, 0, sizeof(TVITEM));
-            tviSelItem.mask = TVIF_HANDLE;
-            tviSelItem.hItem = hSelItem;
-            if (SendDlgItemMessage(hDlg, IDC_ROOM, TVM_GETITEM, 0, (LPARAM)&tviSelItem))
-            {
-                lpRoomInfo = (LPROOMINFO)GetWindowLongPtr(hDlg, GWLP_USERDATA);
-                if (lpRoomInfo)
-                {
-                    iIndex = (int)tviSelItem.lParam;
+        case IDOK:
+        {
+            HTREEITEM hSelItem;
+            TVITEM tviSelItem;
+            LPROOMINFO lpRoomInfo;
+            int iIndex;
 
-                    g_iAreaIndex = lpRoomInfo[iIndex].iAreaIndex;
-                    g_bRoomID = lpRoomInfo[iIndex].bRoomID;
-                    g_iWorld = lpRoomInfo[iIndex].iWorld;
-                    g_iArea = lpRoomInfo[iIndex].iArea;
-                    g_iArea2 = lpRoomInfo[iIndex].iArea2;
-                    g_iPage = lpRoomInfo[iIndex].iPage;
-                    g_fSubRoom = 1;
-                    if (lpRoomInfo[iIndex].blAreaStart) g_fSubRoom = 0;
+            // Get handle of selected item
+            hSelItem = (HTREEITEM)SendDlgItemMessage(hDlg, IDC_ROOM, TVM_GETNEXTITEM, (WPARAM)TVGN_CARET, (LPARAM)NULL);
+            if (hSelItem)
+            {
+                memset(&tviSelItem, 0, sizeof(TVITEM));
+                tviSelItem.mask = TVIF_HANDLE;
+                tviSelItem.hItem = hSelItem;
+                if (SendDlgItemMessage(hDlg, IDC_ROOM, TVM_GETITEM, 0, (LPARAM)&tviSelItem))
+                {
+                    lpRoomInfo = (LPROOMINFO)GetWindowLongPtr(hDlg, GWLP_USERDATA);
+                    if (lpRoomInfo)
+                    {
+                        iIndex = (int)tviSelItem.lParam;
+
+                        g_iAreaIndex = lpRoomInfo[iIndex].iAreaIndex;
+                        g_bRoomID = lpRoomInfo[iIndex].bRoomID;
+                        g_iWorld = lpRoomInfo[iIndex].iWorld;
+                        g_iArea = lpRoomInfo[iIndex].iArea;
+                        g_iArea2 = lpRoomInfo[iIndex].iArea2;
+                        g_iPage = lpRoomInfo[iIndex].iPage;
+                        g_fSubRoom = 1;
+                        if (lpRoomInfo[iIndex].blAreaStart) g_fSubRoom = 0;
+                    }
                 }
             }
-        }
 
-        OpenNewRoomProcess();
-    }
-    case IDCANCEL:
-    EndDialog(hDlg, TRUE);
-    return TRUE;
-    }
-    break;
+            OpenNewRoomProcess();
+        }
+        case IDCANCEL:
+            EndDialog(hDlg, TRUE);
+            return TRUE;
+        }
+        break;
     }
     return FALSE;
 }
@@ -860,11 +860,11 @@ LRESULT CALLBACK AreaSortDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
     switch (message)
     {
     case WM_PAINT:
-    UpdateAreaSortPreview(hDlg);
+        UpdateAreaSortPreview(hDlg);
 
-    // 重要
-    // important
-    return FALSE;
+        // 重要
+        // important
+        return FALSE;
     case WM_INITDIALOG:
     {
         sblWritten = FALSE;
@@ -884,17 +884,17 @@ LRESULT CALLBACK AreaSortDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
         switch (LOWORD(wParam))
         {
         case IDCANCEL:
-        if (sblWritten)
-        {
-            undoPrepare(UNDONAME_TOOLAREAROOM);
-            SaveCommandAddrData();
-            OpenNewRoomProcess();
-            UpdateWorldData(FALSE);
+            if (sblWritten)
+            {
+                undoPrepare(UNDONAME_TOOLAREAROOM);
+                SaveCommandAddrData();
+                OpenNewRoomProcess();
+                UpdateWorldData(FALSE);
 
-            fr_SetDataChanged(TRUE);
-        }
-        EndDialog(hDlg, TRUE);
-        return TRUE;
+                fr_SetDataChanged(TRUE);
+            }
+            EndDialog(hDlg, TRUE);
+            return TRUE;
         case IDC_PAGEEDIT:
         {
             if (wNotifyCode == EN_CHANGE)
@@ -998,33 +998,33 @@ LRESULT CALLBACK GeneralSettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
     }
     break;
     case WM_COMMAND:
-    switch (LOWORD(wParam))
-    {
-    case IDOK:
-    {
-        BOOL blSuccess;
-        int iRet;
-        if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_ISCLEARWORLD))
+        switch (LOWORD(wParam))
         {
-            iRet = GetDlgItemInt(hDlg, IDC_CLEARWORLD, &blSuccess, FALSE);
-            if (blSuccess && (iRet > 0 && iRet <= 8))
+        case IDOK:
+        {
+            BOOL blSuccess;
+            int iRet;
+            if (BST_UNCHECKED == IsDlgButtonChecked(hDlg, IDC_ISCLEARWORLD))
             {
-                SetClearWorld(iRet - 1);
-                SetNumWorlds(iRet);
+                iRet = GetDlgItemInt(hDlg, IDC_CLEARWORLD, &blSuccess, FALSE);
+                if (blSuccess && (iRet > 0 && iRet <= 8))
+                {
+                    SetClearWorld(iRet - 1);
+                    SetNumWorlds(iRet);
+                }
+                else
+                    return TRUE;
             }
-            else
-                return TRUE;
-        }
 
-        fr_SetDataChanged(TRUE);
-    }
-    case IDCANCEL:
-    {
-        EndDialog(hDlg, TRUE);
-        return TRUE;
-    }
-    break;
-    }
+            fr_SetDataChanged(TRUE);
+        }
+        case IDCANCEL:
+        {
+            EndDialog(hDlg, TRUE);
+            return TRUE;
+        }
+        break;
+        }
     }
 
     return FALSE;
@@ -1583,14 +1583,14 @@ static void ShowSendDlgError(UINT uError)
     switch (uError)
     {
     case MOVEOBJ_ERR_SRCOBJ:
-    szError = STRING_SENDOBJECT_SRCERROR;
-    break;
+        szError = STRING_SENDOBJECT_SRCERROR;
+        break;
     case MOVEOBJ_ERR_DSTPAGE:
-    szError = STRING_SENDOBJECT_DSTERROR;
-    break;
+        szError = STRING_SENDOBJECT_DSTERROR;
+        break;
     case MOVEOBJ_ERR_OBJOVER:
-    szError = STRING_SENDOBJECT_OVEROBJ;
-    break;
+        szError = STRING_SENDOBJECT_OVEROBJ;
+        break;
     }
 
     Msg(szError, MB_OK | MB_ICONWARNING);
@@ -1634,81 +1634,81 @@ LRESULT CALLBACK SendObjectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     }
     break;
     case WM_PAINT:
-    UpdateBadguysEditDlgPreview(hDlg, FALSE);
-    break;
+        UpdateBadguysEditDlgPreview(hDlg, FALSE);
+        break;
     case WM_COMMAND:
-    switch (LOWORD(wParam))
-    {
-    case IDOK:
-    {
-        TCHAR cBuf[10];
-        BOOL blSuccess;
-        UINT uRet;
-
-        GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-        if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
-        if (!IsRoomIDValid(bRoomID)) return TRUE;
-        iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
-        if (!blSuccess) return TRUE;
-
-        if (GetMapEditMode())
+        switch (LOWORD(wParam))
         {
-            undoPrepare(UNDONAME_SENDOBJ);
-            uRet = BadGuysMoveObject(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bRoomID, iPage);
-            if (uRet == MOVEOBJ_ERR_SUCCESS)
+        case IDOK:
+        {
+            TCHAR cBuf[10];
+            BOOL blSuccess;
+            UINT uRet;
+
+            GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
+            if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
+            if (!IsRoomIDValid(bRoomID)) return TRUE;
+            iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
+            if (!blSuccess) return TRUE;
+
+            if (GetMapEditMode())
             {
-                SortByPosXBadGuys(bRoomID, NULL, FALSE);
-                if (bRoomID != GetRoomID() && GetSelectedIndex() > 0) SetSelectedItem(GetSelectedIndex() - 1, TRUE);
-                UpdateObjectViewCursole();
+                undoPrepare(UNDONAME_SENDOBJ);
+                uRet = BadGuysMoveObject(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bRoomID, iPage);
+                if (uRet == MOVEOBJ_ERR_SUCCESS)
+                {
+                    SortByPosXBadGuys(bRoomID, NULL, FALSE);
+                    if (bRoomID != GetRoomID() && GetSelectedIndex() > 0) SetSelectedItem(GetSelectedIndex() - 1, TRUE);
+                    UpdateObjectViewCursole();
+                }
+                else
+                {
+                    undoRestore();
+                    ShowSendDlgError(uRet);
+                    return TRUE;
+                }
             }
             else
             {
-                undoRestore();
-                ShowSendDlgError(uRet);
-                return TRUE;
+                undoPrepare(UNDONAME_SENDOBJ);
+                uRet = MapMoveObject(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bRoomID, iPage);
+                if (uRet == MOVEOBJ_ERR_SUCCESS)
+                {
+                    SortByPosXMap(bRoomID, NULL, FALSE);
+                    if (bRoomID != GetRoomID() && GetSelectedIndex() > 0) SetSelectedItem(GetSelectedIndex() - 1, TRUE);
+                    UpdateObjectViewCursole();
+                }
+                else
+                {
+                    undoRestore();
+                    ShowSendDlgError(uRet);
+                    return TRUE;
+                }
             }
+
+            fr_SetDataChanged(TRUE);
+
+            UpdateObjectList(0);
+            UpdateObjectView(0);
         }
-        else
+        case IDCANCEL:
         {
-            undoPrepare(UNDONAME_SENDOBJ);
-            uRet = MapMoveObject(GETADDRESS_CURRENT_EDITTING, GetSelectedIndex(), bRoomID, iPage);
-            if (uRet == MOVEOBJ_ERR_SUCCESS)
+            EndDialog(hDlg, TRUE);
+            return TRUE;
+        }
+        case IDC_DATA:
+            if (HIWORD(wParam) == CBN_EDITCHANGE)
+                UpdateBadguysEditDlgPreview(hDlg, FALSE);
+            else if (HIWORD(wParam) == CBN_SELCHANGE)
+                UpdateBadguysEditDlgPreview(hDlg, TRUE);
+            return TRUE;
+        case IDC_PAGEEDIT2:
+            if (HIWORD(wParam) == EN_CHANGE)
             {
-                SortByPosXMap(bRoomID, NULL, FALSE);
-                if (bRoomID != GetRoomID() && GetSelectedIndex() > 0) SetSelectedItem(GetSelectedIndex() - 1, TRUE);
-                UpdateObjectViewCursole();
-            }
-            else
-            {
-                undoRestore();
-                ShowSendDlgError(uRet);
+                UpdateBadguysEditDlgPreview(hDlg, FALSE);
                 return TRUE;
             }
         }
-
-        fr_SetDataChanged(TRUE);
-
-        UpdateObjectList(0);
-        UpdateObjectView(0);
-    }
-    case IDCANCEL:
-    {
-        EndDialog(hDlg, TRUE);
-        return TRUE;
-    }
-    case IDC_DATA:
-    if (HIWORD(wParam) == CBN_EDITCHANGE)
-        UpdateBadguysEditDlgPreview(hDlg, FALSE);
-    else if (HIWORD(wParam) == CBN_SELCHANGE)
-        UpdateBadguysEditDlgPreview(hDlg, TRUE);
-    return TRUE;
-    case IDC_PAGEEDIT2:
-    if (HIWORD(wParam) == EN_CHANGE)
-    {
-        UpdateBadguysEditDlgPreview(hDlg, FALSE);
-        return TRUE;
-    }
-    }
     }
 
     return FALSE;

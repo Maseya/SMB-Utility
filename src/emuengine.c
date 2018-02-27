@@ -314,12 +314,12 @@ LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, L
         switch (wID)
         {
         case IDC_SKIPJOYREAD:
-        if (wNotifyCode == BN_CLICKED)
-        {
-            BOOL fEnable = (IsDlgButtonChecked(hDlg, IDC_SKIPJOYREAD) == BST_UNCHECKED);
-            ENABLE_JOYSTICK_RELATED_CONTROLS(hDlg, fEnable);
-        }
-        break;
+            if (wNotifyCode == BN_CLICKED)
+            {
+                BOOL fEnable = (IsDlgButtonChecked(hDlg, IDC_SKIPJOYREAD) == BST_UNCHECKED);
+                ENABLE_JOYSTICK_RELATED_CONTROLS(hDlg, fEnable);
+            }
+            break;
         }
     }
     break;
@@ -826,65 +826,65 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
         switch (bJoy1Read++)
         {
         case 0://A
-        if (GetAsyncKeyState(g_EmuKey[0])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[0])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
+                bRet |= 0x01;
+            break;
         case 1://B
-        if (GetAsyncKeyState(g_EmuKey[1])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[1])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
+                bRet |= 0x01;
+            break;
         case 2://SELECT
-        if (GetAsyncKeyState(g_EmuKey[2])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[2])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
+                bRet |= 0x01;
+            break;
         case 3://START
-        if (GetAsyncKeyState(g_EmuKey[3])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[3])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
+                bRet |= 0x01;
+            break;
         case 4://UP
-        if (GetAsyncKeyState(g_EmuKey[4])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwYpos < g_dwEmuJoyYUp) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVFORWARD)
+            if (GetAsyncKeyState(g_EmuKey[4])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwYpos < g_dwEmuJoyYUp) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVFORWARD)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         case 5://DOWN
-        if (GetAsyncKeyState(g_EmuKey[5])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwYpos > g_dwEmuJoyYDown) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVBACKWARD)
+            if (GetAsyncKeyState(g_EmuKey[5])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwYpos > g_dwEmuJoyYDown) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVBACKWARD)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         case 6://LEFT
-        if (GetAsyncKeyState(g_EmuKey[6])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwXpos < g_dwEmuJoyXLeft) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVLEFT)
+            if (GetAsyncKeyState(g_EmuKey[6])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwXpos < g_dwEmuJoyXLeft) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVLEFT)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         case 7://RIGHT
-        if (GetAsyncKeyState(g_EmuKey[7])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwXpos > g_dwEmuJoyXRight) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVRIGHT)
+            if (GetAsyncKeyState(g_EmuKey[7])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwXpos > g_dwEmuJoyXRight) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVRIGHT)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         }/* switch */
 
         if (gblDemoRecord)
@@ -908,65 +908,65 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
         switch (bJoy2Read++)
         {
         case 0://A
-        if (GetAsyncKeyState(g_EmuKey[0])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[0])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[0])))//JOY_BUTTON2)))
+                bRet |= 0x01;
+            break;
         case 1://B
-        if (GetAsyncKeyState(g_EmuKey[1])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[1])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[1])))//JOY_BUTTON1)))
+                bRet |= 0x01;
+            break;
         case 2://SELECT
-        if (GetAsyncKeyState(g_EmuKey[2])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[2])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[2])))//JOY_BUTTON3)))
+                bRet |= 0x01;
+            break;
         case 3://START
-        if (GetAsyncKeyState(g_EmuKey[3])
-            || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
-            bRet |= 0x01;
-        break;
+            if (GetAsyncKeyState(g_EmuKey[3])
+                || (!g_fSkipJoyRead && (JoyInfoEx.dwButtons&g_EmuJoyButton[3])))//JOY_BUTTON4)))
+                bRet |= 0x01;
+            break;
         case 4://UP
-        if (GetAsyncKeyState(g_EmuKey[4])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwYpos < g_dwEmuJoyYUp) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVFORWARD)
+            if (GetAsyncKeyState(g_EmuKey[4])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwYpos < g_dwEmuJoyYUp) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVFORWARD)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         case 5://DOWN
-        if (GetAsyncKeyState(g_EmuKey[5])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwYpos > g_dwEmuJoyYDown) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVBACKWARD)
+            if (GetAsyncKeyState(g_EmuKey[5])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwYpos > g_dwEmuJoyYDown) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVBACKWARD)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         case 6://LEFT
-        if (GetAsyncKeyState(g_EmuKey[6])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwXpos < g_dwEmuJoyXLeft) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVLEFT)
+            if (GetAsyncKeyState(g_EmuKey[6])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwXpos < g_dwEmuJoyXLeft) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVLEFT)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         case 7://RIGHT
-        if (GetAsyncKeyState(g_EmuKey[7])
-            || (!g_fSkipJoyRead &&
-            (
-                (JoyInfoEx.dwXpos > g_dwEmuJoyXRight) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVRIGHT)
+            if (GetAsyncKeyState(g_EmuKey[7])
+                || (!g_fSkipJoyRead &&
+                (
+                    (JoyInfoEx.dwXpos > g_dwEmuJoyXRight) || (g_fUseJoyPOV && JoyInfoEx.dwPOV == JOY_POVRIGHT)
+                    )
+                    )
                 )
-                )
-            )
-            bRet |= 0x01;
-        break;
+                bRet |= 0x01;
+            break;
         }/* switch */
 
         // Note: DemoRecorderHandler()関数を2Conで呼び出してはいけない。
@@ -1137,39 +1137,39 @@ void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
     switch (Addr)
     {
     case 0x2000:
-    bPPUCtrlReg1 = Value;
-    break;
+        bPPUCtrlReg1 = Value;
+        break;
     case 0x2001:
-    bPPUCtrlReg2 = Value;
-    break;
+        bPPUCtrlReg2 = Value;
+        break;
     case 0x2005:
-    if (!blBGIsVertical)
-    {
-        bBGScrlH = Value;
-        blBGIsVertical = TRUE;
+        if (!blBGIsVertical)
+        {
+            bBGScrlH = Value;
+            blBGIsVertical = TRUE;
+            break;
+        }
+        else
+        {
+            //bBGScrlV=Value;
+            blBGIsVertical = FALSE;
+            break;
+        }
         break;
-    }
-    else
-    {
-        //bBGScrlV=Value;
-        blBGIsVertical = FALSE;
-        break;
-    }
-    break;
     case 0x2006://Address Write
-    blVRAMFirstRead = TRUE;
-    if (g_blVRAMAddrLow)
-    {
-        wVRAMAddr = (wVRAMAddr & 0xFF00) | Value;
-        g_blVRAMAddrLow = FALSE;
-        break;
-    }
-    else
-    {
-        wVRAMAddr = (wVRAMAddr & 0xFF) | (Value << 8);
-        g_blVRAMAddrLow = TRUE;
-        break;
-    }
+        blVRAMFirstRead = TRUE;
+        if (g_blVRAMAddrLow)
+        {
+            wVRAMAddr = (wVRAMAddr & 0xFF00) | Value;
+            g_blVRAMAddrLow = FALSE;
+            break;
+        }
+        else
+        {
+            wVRAMAddr = (wVRAMAddr & 0xFF) | (Value << 8);
+            g_blVRAMAddrLow = TRUE;
+            break;
+        }
     case 0x2007:
     {
         if ((wVRAMAddr & 0x3000) == 0x2000)
@@ -1202,19 +1202,19 @@ void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
     }
     break;
     case 0x4014:
-    memcpy(pbSPRRAM, psM6502->m6502Base + (0x100 * Value), 0x100);
-    break;
+        memcpy(pbSPRRAM, psM6502->m6502Base + (0x100 * Value), 0x100);
+        break;
     case 0x4016:
-    bJoy1Read = bJoy2Read = 0;
-    break;
+        bJoy1Read = bJoy2Read = 0;
+        break;
     case 0x2002:
-    break;
+        break;
     case 0x2003:
-    bSPRRAMAddr = Value;
-    break;
+        bSPRRAMAddr = Value;
+        break;
     case 0x2004:
-    pbSPRRAM[bSPRRAMAddr++] = Value;
-    break;
+        pbSPRRAM[bSPRRAMAddr++] = Value;
+        break;
     }
 }
 
@@ -1992,16 +1992,16 @@ LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         break;
     }
     case WM_SIZE:
-    GetClientRect(hWnd, &rcClient);
-    break;
-    case WM_MDIACTIVATE:
-    if (!IsEmulatorRunning())
+        GetClientRect(hWnd, &rcClient);
         break;
-    if ((HWND)lParam == hWnd)
-        SuspendEmulator(FALSE);
-    else
-        SuspendEmulator(TRUE);
-    break;
+    case WM_MDIACTIVATE:
+        if (!IsEmulatorRunning())
+            break;
+        if ((HWND)lParam == hWnd)
+            SuspendEmulator(FALSE);
+        else
+            SuspendEmulator(TRUE);
+        break;
     case WM_CREATE:
     {
         ghEmuWnd = hWnd;
@@ -2059,21 +2059,21 @@ LRESULT FAR PASCAL EmuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         {
         case WMSZ_TOP:
         case WMSZ_BOTTOM:
-        iLength = lprc->bottom - lprc->top;
-        iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
-        break;
+            iLength = lprc->bottom - lprc->top;
+            iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
+            break;
         case WMSZ_RIGHT:
         case WMSZ_LEFT:
-        iLength = lprc->right - lprc->left;
-        iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEX - NES_SCREENSIZEX / 2) / NES_SCREENSIZEX;
-        break;
+            iLength = lprc->right - lprc->left;
+            iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEX - NES_SCREENSIZEX / 2) / NES_SCREENSIZEX;
+            break;
         case WMSZ_TOPLEFT:
         case WMSZ_TOPRIGHT:
         case WMSZ_BOTTOMLEFT:
         case WMSZ_BOTTOMRIGHT:
-        iLength = lprc->bottom - lprc->top;
-        iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
-        break;
+            iLength = lprc->bottom - lprc->top;
+            iSizeRate = (iLength - EMULATOR_WINDOWFRAMESIZEY - NES_VISIBLESIZEY / 2) / NES_VISIBLESIZEY;
+            break;
         }
         if (iSizeRate < 0)
             iSizeRate = 0;

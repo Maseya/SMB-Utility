@@ -127,30 +127,30 @@ static int GetMapAssistBmpDataIndex(LPBYTE lpbBuf)
     case 0x0D:
     case 0x0E:
     case 0x0F:
-    break;
+        break;
     default:
-    if (!(lpbBuf[1] & 0x70))
-    {
-        BYTE bType = lpbBuf[1] & 0x0F;
-        int iItemBlocks[] = {
-            MAPASSISTBMPDATAINDEX_QBLOCKPOWERMUSH,
-            MAPASSISTBMPDATAINDEX_QBLOCKCOIN,
-            MAPASSISTBMPDATAINDEX_HIDDENCOIN,
-            MAPASSISTBMPDATAINDEX_HIDDEN1UPMUSH,
-            MAPASSISTBMPDATAINDEX_BRICKPOWERMUSH,
-            MAPASSISTBMPDATAINDEX_BRICKIVY,
-            MAPASSISTBMPDATAINDEX_BRICKSTAR,
-            MAPASSISTBMPDATAINDEX_BRICK10COINS,
-            MAPASSISTBMPDATAINDEX_BRICK1UPMUSH};
+        if (!(lpbBuf[1] & 0x70))
+        {
+            BYTE bType = lpbBuf[1] & 0x0F;
+            int iItemBlocks[] = {
+                MAPASSISTBMPDATAINDEX_QBLOCKPOWERMUSH,
+                MAPASSISTBMPDATAINDEX_QBLOCKCOIN,
+                MAPASSISTBMPDATAINDEX_HIDDENCOIN,
+                MAPASSISTBMPDATAINDEX_HIDDEN1UPMUSH,
+                MAPASSISTBMPDATAINDEX_BRICKPOWERMUSH,
+                MAPASSISTBMPDATAINDEX_BRICKIVY,
+                MAPASSISTBMPDATAINDEX_BRICKSTAR,
+                MAPASSISTBMPDATAINDEX_BRICK10COINS,
+                MAPASSISTBMPDATAINDEX_BRICK1UPMUSH};
 
-        if (bType < 0x09)
-            iRet = iItemBlocks[bType];
-    }
-    else if (lpbBuf[1] & 0x08)
-    {
-        iRet = MAPASSISTBMPDATAINDEX_ARROWDOWN;
-    }
-    break;
+            if (bType < 0x09)
+                iRet = iItemBlocks[bType];
+        }
+        else if (lpbBuf[1] & 0x08)
+        {
+            iRet = MAPASSISTBMPDATAINDEX_ARROWDOWN;
+        }
+        break;
     }
 
     return iRet;
@@ -198,10 +198,10 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
     {
     case 0x0E:
     case 0x0F:
-    break;
+        break;
 
-    //（敵キャラコマンド）
-    // (Enemy character command)
+        //（敵キャラコマンド）
+        // (Enemy character command)
     default:
     {
         BYTE bType = lpbBuf[1] & 0x3F;
@@ -240,25 +240,25 @@ static int GetBadGuysAssistBmpDataIndex(LPBYTE lpbBuf)
             switch (bType)
             {
             case 0x03:
-            iRet = BADGUYSASSISTBMPDATAINDEX_REDNOKONOKO;
-            break;
+                iRet = BADGUYSASSISTBMPDATAINDEX_REDNOKONOKO;
+                break;
             case 0x0E:
-            iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAJUMP;
-            break;
+                iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAJUMP;
+                break;
             case 0x0F:
-            iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATATOSS;
-            break;
+                iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATATOSS;
+                break;
             case 0x10:
-            iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAROLL;
-            break;
+                iRet = BADGUYSASSISTBMPDATAINDEX_PATAPATAROLL;
+                break;
             case 0x14:
             case 0x17:
-            iRet = BADGUYSASSISTBMPDATAINDEX_CONTINUEOUS;
-            break;
+                iRet = BADGUYSASSISTBMPDATAINDEX_CONTINUEOUS;
+                break;
             case 0x04:
             case 0x09:
             case 0x12:
-            iRet = BADGUYSASSISTBMPDATAINDEX_NOMOVE;
+                iRet = BADGUYSASSISTBMPDATAINDEX_NOMOVE;
             }
         }
     }

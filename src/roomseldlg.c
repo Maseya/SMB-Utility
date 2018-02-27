@@ -93,50 +93,50 @@ LRESULT CALLBACK RoomSelectDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARA
     }
     break;
     case WM_PAINT:
-    UpdatePreview(hDlg, FALSE);
-    break;
+        UpdatePreview(hDlg, FALSE);
+        break;
     case WM_COMMAND:
-    switch (LOWORD(wParam))
-    {
-    case IDOK:
-    {
-        TCHAR cBuf[20];
-        BOOL blSuccess;
-        BYTE bRoomID;
-        UINT iPage;
-        LPROOMSELECT lpRoomSelect;
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+        {
+            TCHAR cBuf[20];
+            BOOL blSuccess;
+            BYTE bRoomID;
+            UINT iPage;
+            LPROOMSELECT lpRoomSelect;
 
-        GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
-        if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
-        if (!IsRoomIDValid(bRoomID)) return TRUE;
-        iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
-        if (!blSuccess) return TRUE;
+            GetDlgItemText(hDlg, IDC_DATA, cBuf, 20);
+            if (1 != _stscanf(cBuf, __T("%hhx"), &bRoomID)) return TRUE;
+            if (!IsRoomIDValid(bRoomID)) return TRUE;
+            iPage = GetDlgItemInt(hDlg, IDC_PAGEEDIT2, &blSuccess, FALSE);
+            if (!blSuccess) return TRUE;
 
-        lpRoomSelect = (LPROOMSELECT)GetWindowLongPtr(hDlg, GWLP_USERDATA);
-        lpRoomSelect->bNewRoomID = bRoomID;
-        lpRoomSelect->uNewPage = (UINT)iPage;
+            lpRoomSelect = (LPROOMSELECT)GetWindowLongPtr(hDlg, GWLP_USERDATA);
+            lpRoomSelect->bNewRoomID = bRoomID;
+            lpRoomSelect->uNewPage = (UINT)iPage;
 
-        EndDialog(hDlg, TRUE);
-        return TRUE;
-    }
-    case IDCANCEL:
-    {
-        EndDialog(hDlg, FALSE);
-        return TRUE;
-    }
-    case IDC_DATA:
-    if (HIWORD(wParam) == CBN_EDITCHANGE)
-        UpdatePreview(hDlg, FALSE);
-    else if (HIWORD(wParam) == CBN_SELCHANGE)
-        UpdatePreview(hDlg, TRUE);
-    return TRUE;
-    case IDC_PAGEEDIT2:
-    if (HIWORD(wParam) == EN_CHANGE)
-    {
-        UpdatePreview(hDlg, FALSE);
-        return TRUE;
-    }
-    }
+            EndDialog(hDlg, TRUE);
+            return TRUE;
+        }
+        case IDCANCEL:
+        {
+            EndDialog(hDlg, FALSE);
+            return TRUE;
+        }
+        case IDC_DATA:
+            if (HIWORD(wParam) == CBN_EDITCHANGE)
+                UpdatePreview(hDlg, FALSE);
+            else if (HIWORD(wParam) == CBN_SELCHANGE)
+                UpdatePreview(hDlg, TRUE);
+            return TRUE;
+        case IDC_PAGEEDIT2:
+            if (HIWORD(wParam) == EN_CHANGE)
+            {
+                UpdatePreview(hDlg, FALSE);
+                return TRUE;
+            }
+        }
     }
 
     return FALSE;

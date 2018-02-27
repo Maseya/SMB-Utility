@@ -118,17 +118,17 @@ static void TestPlay(int iPage, LPPOINT lpPt)
     switch (giMarioState)
     {
     case 1:
-    sTPS.bMarioSize = 0x00;
-    sTPS.bMarioCap = 0x01;
-    break;
+        sTPS.bMarioSize = 0x00;
+        sTPS.bMarioCap = 0x01;
+        break;
     case 2:
-    sTPS.bMarioSize = 0x00;
-    sTPS.bMarioCap = 0x02;
-    break;
+        sTPS.bMarioSize = 0x00;
+        sTPS.bMarioCap = 0x02;
+        break;
     default:
-    sTPS.bMarioSize = 0x01;
-    sTPS.bMarioCap = 0x00;
-    break;
+        sTPS.bMarioSize = 0x01;
+        sTPS.bMarioCap = 0x00;
+        break;
     }
 
     if (g_bl0PageBadGuyHack)
@@ -786,13 +786,13 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
         switch (g_fUseStartPosXHack)
         {
         case NONE:
-        n = 0;
-        break;
+            n = 0;
+            break;
         case POS:
-        n = g_bStartPosX / 16;
-        break;
+            n = g_bStartPosX / 16;
+            break;
         case DOT:
-        n = g_bStartPosX;
+            n = g_bStartPosX;
         }
         SetDlgItemInt(hDlg, IDC_XPOS, n, TRUE);
         for (n = 0; n < 3; n++)
@@ -806,13 +806,13 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
         switch (g_fUseStartPosYHack)
         {
         case NONE:
-        n = -1;
-        break;
+            n = -1;
+            break;
         case POS:
-        n = (g_bStartPosY / 16) - 1;
-        break;
+            n = (g_bStartPosY / 16) - 1;
+            break;
         case DOT:
-        n = g_bStartPosY;
+            n = g_bStartPosY;
         }
         SetDlgItemInt(hDlg, IDC_YPOS, n, TRUE);
         for (n = 0; n < 3; n++)
@@ -838,231 +838,231 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, 
         return TRUE;
     }
     case WM_COMMAND:
-    switch (LOWORD(wParam))
-    {
-    case IDC_PAGE:
-    {
-        switch (HIWORD(wParam))
+        switch (LOWORD(wParam))
         {
-        case EN_CHANGE:
-        CheckRadioButton(hDlg, IDC_FROMCURPAGE, IDC_FROMDESTPAGE, IDC_FROMDESTPAGE);
-        break;
-        }
-    }
-    break;
-    case IDC_XPOSHACK:
-    {
-        switch (HIWORD(wParam))
+        case IDC_PAGE:
         {
-        case CBN_SELCHANGE:
-        {
-            BOOL fEditEnable, fTraslated;
-            WORD wSpinMin, wSpinMax;
-            int iNewValue;
-            STARTPOSHACK iRet = SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
-
-            if (iRet == CB_ERR) break;
-            iNewValue = GetDlgItemInt(hDlg, IDC_XPOS, &fTraslated, TRUE);
-            switch (iRet)
+            switch (HIWORD(wParam))
             {
-            case NONE:
-            fEditEnable = FALSE;
-            wSpinMin = 0;
-            wSpinMax = 0;
-            break;
-            case POS:
-            if (fTraslated
-                && sphPrevX == DOT)
-                iNewValue /= 16;
-            if (iNewValue < 0)
-                iNewValue = 0;
-            else if (iNewValue > 15)
-                iNewValue = 15;
-            fEditEnable = TRUE;
-            wSpinMin = 0;
-            wSpinMax = 15;
-            break;
-            case DOT:
-            if (fTraslated
-                && sphPrevX == POS)
-                iNewValue *= 16;
-            if (iNewValue < 0)
-                iNewValue = 0;
-            else if (iNewValue > TESTPLAY_STARTPOS_MAXDOTX)
-                iNewValue = TESTPLAY_STARTPOS_MAXDOTX;
-            fEditEnable = TRUE;
-            wSpinMin = 0;
-            wSpinMax = TESTPLAY_STARTPOS_MAXDOTX;
-            break;
+            case EN_CHANGE:
+                CheckRadioButton(hDlg, IDC_FROMCURPAGE, IDC_FROMDESTPAGE, IDC_FROMDESTPAGE);
+                break;
             }
-            EnableWindow(GetDlgItem(hDlg, IDC_XPOS), fEditEnable);
-            SetDlgItemInt(hDlg, IDC_XPOS, iNewValue, TRUE);
-            SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(wSpinMax, wSpinMin));
+        }
+        break;
+        case IDC_XPOSHACK:
+        {
+            switch (HIWORD(wParam))
+            {
+            case CBN_SELCHANGE:
+            {
+                BOOL fEditEnable, fTraslated;
+                WORD wSpinMin, wSpinMax;
+                int iNewValue;
+                STARTPOSHACK iRet = SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
 
-            sphPrevX = iRet;
+                if (iRet == CB_ERR) break;
+                iNewValue = GetDlgItemInt(hDlg, IDC_XPOS, &fTraslated, TRUE);
+                switch (iRet)
+                {
+                case NONE:
+                    fEditEnable = FALSE;
+                    wSpinMin = 0;
+                    wSpinMax = 0;
+                    break;
+                case POS:
+                    if (fTraslated
+                        && sphPrevX == DOT)
+                        iNewValue /= 16;
+                    if (iNewValue < 0)
+                        iNewValue = 0;
+                    else if (iNewValue > 15)
+                        iNewValue = 15;
+                    fEditEnable = TRUE;
+                    wSpinMin = 0;
+                    wSpinMax = 15;
+                    break;
+                case DOT:
+                    if (fTraslated
+                        && sphPrevX == POS)
+                        iNewValue *= 16;
+                    if (iNewValue < 0)
+                        iNewValue = 0;
+                    else if (iNewValue > TESTPLAY_STARTPOS_MAXDOTX)
+                        iNewValue = TESTPLAY_STARTPOS_MAXDOTX;
+                    fEditEnable = TRUE;
+                    wSpinMin = 0;
+                    wSpinMax = TESTPLAY_STARTPOS_MAXDOTX;
+                    break;
+                }
+                EnableWindow(GetDlgItem(hDlg, IDC_XPOS), fEditEnable);
+                SetDlgItemInt(hDlg, IDC_XPOS, iNewValue, TRUE);
+                SendDlgItemMessage(hDlg, IDC_XPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(wSpinMax, wSpinMin));
+
+                sphPrevX = iRet;
+                return TRUE;
+            }
+            }
+        }
+        break;
+        case IDC_YPOSHACK:
+        {
+            switch (HIWORD(wParam))
+            {
+            case CBN_SELCHANGE:
+            {
+                BOOL fEditEnable, fTraslated;
+                WORD wSpinMin, wSpinMax;
+                int iNewValue;
+                STARTPOSHACK iRet = SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
+
+                if (iRet == CB_ERR) break;
+                iNewValue = GetDlgItemInt(hDlg, IDC_YPOS, &fTraslated, TRUE);
+                switch (iRet)
+                {
+                case NONE:
+                    wSpinMin = 0;
+                    wSpinMax = 0;
+                    fEditEnable = FALSE;
+                    break;
+                case POS:
+                    if (fTraslated
+                        && sphPrevY == DOT)
+                    {
+                        iNewValue /= 16;
+                        iNewValue--;
+                    }
+                    if (iNewValue < -1)
+                        iNewValue = -1;
+                    else if (iNewValue > TESTPLAY_SETTINGS_MAXYPOS)
+                        iNewValue = TESTPLAY_SETTINGS_MAXYPOS;
+                    fEditEnable = TRUE;
+                    wSpinMin = -1;
+                    wSpinMax = TESTPLAY_SETTINGS_MAXYPOS;
+                    break;
+                case DOT:
+                    if (fTraslated
+                        && sphPrevY == POS)
+                    {
+                        iNewValue++;
+                        iNewValue *= 16;
+                    }
+                    if (iNewValue < 0)
+                        iNewValue = 0;
+                    else if (iNewValue > (TESTPLAY_SETTINGS_MAXYPOS + 1) * 16)
+                        iNewValue = (TESTPLAY_SETTINGS_MAXYPOS + 1) * 16;
+                    fEditEnable = TRUE;
+                    wSpinMin = 0;
+                    wSpinMax = (TESTPLAY_SETTINGS_MAXYPOS + 1) * 16;
+                    break;
+                }
+                EnableWindow(GetDlgItem(hDlg, IDC_YPOS), fEditEnable);
+                SetDlgItemInt(hDlg, IDC_YPOS, iNewValue, TRUE);
+                SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(wSpinMin, wSpinMax));
+
+                sphPrevY = iRet;
+                return TRUE;
+            }
+            }
+        }
+        break;
+        case IDC_HALFPAGE:
+        {
+            switch (HIWORD(wParam))
+            {
+            case BN_CLICKED:
+                SetDlgItemInt(hDlg, IDC_PAGE, GetHalfPointPage(rm_GetWorld(), rm_GetArea()), FALSE);
+                break;
+            }
+        }
+        break;
+        case IDOK:
+        {
+            int iRet;
+            BOOL fTranslated;
+            STARTPOSHACK iSPH;
+
+            gbIsCleared = 0x00;
+            if (IsDlgButtonChecked(hDlg, IDC_ISCLEARED) == BST_CHECKED)
+                gbIsCleared = 0x01;
+
+            iSPH = SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
+            if (iSPH == CB_ERR)
+                return FALSE;
+            if (iSPH)
+            {
+                iRet = GetDlgItemInt(hDlg, IDC_XPOS, &fTranslated, TRUE);
+                switch (iSPH)
+                {
+                case POS:
+                    if (!fTranslated
+                        || iRet < 0
+                        || iRet > 15)
+                        return FALSE;
+                    g_bStartPosX = iRet * 16;
+                    break;
+                case DOT:
+                    if (!fTranslated
+                        || iRet < 0
+                        || iRet > TESTPLAY_STARTPOS_MAXDOTX)
+                        return FALSE;
+                    g_bStartPosX = iRet;
+                    break;
+                }
+            }
+            g_fUseStartPosXHack = iSPH;
+
+            iSPH = SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
+            if (iSPH == CB_ERR)
+                return FALSE;
+            if (iSPH)
+            {
+                iRet = GetDlgItemInt(hDlg, IDC_YPOS, &fTranslated, TRUE);
+                switch (iSPH)
+                {
+                case POS:
+                    if (!fTranslated
+                        || iRet < -1
+                        || iRet > TESTPLAY_SETTINGS_MAXYPOS)
+                        return FALSE;
+                    g_bStartPosY = (iRet + 1) * 16;
+                    break;
+                case DOT:
+                    if (!fTranslated
+                        || iRet < 0
+                        || iRet >(TESTPLAY_SETTINGS_MAXYPOS + 1) * 16)
+                        return FALSE;
+                    g_bStartPosY = iRet;
+                    break;
+                }
+            }
+            g_fUseStartPosYHack = iSPH;
+
+            iRet = (int)SendDlgItemMessage(hDlg, IDC_MARIOSTATE, CB_GETCURSEL, 0, 0);
+            if (iRet == CB_ERR) return TRUE;
+            giMarioState = iRet;
+
+            g_blUseTestPlayPage = FALSE;
+            if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_FROMDESTPAGE))
+            {
+                iRet = GetDlgItemInt(hDlg, IDC_PAGE, &fTranslated, FALSE);
+                if (!fTranslated) return TRUE;
+                g_bTestPlayPage = iRet;
+                g_blUseTestPlayPage = TRUE;
+            }
+
+            g_bl0PageBadGuyHack = FALSE;
+            if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_0PAGEBADGUYS))
+                g_bl0PageBadGuyHack = TRUE;
+
+            g_bInvincible = FALSE;
+            if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_INVINCIBLE))
+                g_bInvincible = TRUE;
+        }
+        case IDCANCEL:
+            EndDialog(hDlg, TRUE);
             return TRUE;
         }
-        }
-    }
-    break;
-    case IDC_YPOSHACK:
-    {
-        switch (HIWORD(wParam))
-        {
-        case CBN_SELCHANGE:
-        {
-            BOOL fEditEnable, fTraslated;
-            WORD wSpinMin, wSpinMax;
-            int iNewValue;
-            STARTPOSHACK iRet = SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
-
-            if (iRet == CB_ERR) break;
-            iNewValue = GetDlgItemInt(hDlg, IDC_YPOS, &fTraslated, TRUE);
-            switch (iRet)
-            {
-            case NONE:
-            wSpinMin = 0;
-            wSpinMax = 0;
-            fEditEnable = FALSE;
-            break;
-            case POS:
-            if (fTraslated
-                && sphPrevY == DOT)
-            {
-                iNewValue /= 16;
-                iNewValue--;
-            }
-            if (iNewValue < -1)
-                iNewValue = -1;
-            else if (iNewValue > TESTPLAY_SETTINGS_MAXYPOS)
-                iNewValue = TESTPLAY_SETTINGS_MAXYPOS;
-            fEditEnable = TRUE;
-            wSpinMin = -1;
-            wSpinMax = TESTPLAY_SETTINGS_MAXYPOS;
-            break;
-            case DOT:
-            if (fTraslated
-                && sphPrevY == POS)
-            {
-                iNewValue++;
-                iNewValue *= 16;
-            }
-            if (iNewValue < 0)
-                iNewValue = 0;
-            else if (iNewValue > (TESTPLAY_SETTINGS_MAXYPOS + 1) * 16)
-                iNewValue = (TESTPLAY_SETTINGS_MAXYPOS + 1) * 16;
-            fEditEnable = TRUE;
-            wSpinMin = 0;
-            wSpinMax = (TESTPLAY_SETTINGS_MAXYPOS + 1) * 16;
-            break;
-            }
-            EnableWindow(GetDlgItem(hDlg, IDC_YPOS), fEditEnable);
-            SetDlgItemInt(hDlg, IDC_YPOS, iNewValue, TRUE);
-            SendDlgItemMessage(hDlg, IDC_YPOSSPIN, UDM_SETRANGE, 0, MAKEWPARAM(wSpinMin, wSpinMax));
-
-            sphPrevY = iRet;
-            return TRUE;
-        }
-        }
-    }
-    break;
-    case IDC_HALFPAGE:
-    {
-        switch (HIWORD(wParam))
-        {
-        case BN_CLICKED:
-        SetDlgItemInt(hDlg, IDC_PAGE, GetHalfPointPage(rm_GetWorld(), rm_GetArea()), FALSE);
-        break;
-        }
-    }
-    break;
-    case IDOK:
-    {
-        int iRet;
-        BOOL fTranslated;
-        STARTPOSHACK iSPH;
-
-        gbIsCleared = 0x00;
-        if (IsDlgButtonChecked(hDlg, IDC_ISCLEARED) == BST_CHECKED)
-            gbIsCleared = 0x01;
-
-        iSPH = SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
-        if (iSPH == CB_ERR)
-            return FALSE;
-        if (iSPH)
-        {
-            iRet = GetDlgItemInt(hDlg, IDC_XPOS, &fTranslated, TRUE);
-            switch (iSPH)
-            {
-            case POS:
-            if (!fTranslated
-                || iRet < 0
-                || iRet > 15)
-                return FALSE;
-            g_bStartPosX = iRet * 16;
-            break;
-            case DOT:
-            if (!fTranslated
-                || iRet < 0
-                || iRet > TESTPLAY_STARTPOS_MAXDOTX)
-                return FALSE;
-            g_bStartPosX = iRet;
-            break;
-            }
-        }
-        g_fUseStartPosXHack = iSPH;
-
-        iSPH = SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
-        if (iSPH == CB_ERR)
-            return FALSE;
-        if (iSPH)
-        {
-            iRet = GetDlgItemInt(hDlg, IDC_YPOS, &fTranslated, TRUE);
-            switch (iSPH)
-            {
-            case POS:
-            if (!fTranslated
-                || iRet < -1
-                || iRet > TESTPLAY_SETTINGS_MAXYPOS)
-                return FALSE;
-            g_bStartPosY = (iRet + 1) * 16;
-            break;
-            case DOT:
-            if (!fTranslated
-                || iRet < 0
-                || iRet >(TESTPLAY_SETTINGS_MAXYPOS + 1) * 16)
-                return FALSE;
-            g_bStartPosY = iRet;
-            break;
-            }
-        }
-        g_fUseStartPosYHack = iSPH;
-
-        iRet = (int)SendDlgItemMessage(hDlg, IDC_MARIOSTATE, CB_GETCURSEL, 0, 0);
-        if (iRet == CB_ERR) return TRUE;
-        giMarioState = iRet;
-
-        g_blUseTestPlayPage = FALSE;
-        if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_FROMDESTPAGE))
-        {
-            iRet = GetDlgItemInt(hDlg, IDC_PAGE, &fTranslated, FALSE);
-            if (!fTranslated) return TRUE;
-            g_bTestPlayPage = iRet;
-            g_blUseTestPlayPage = TRUE;
-        }
-
-        g_bl0PageBadGuyHack = FALSE;
-        if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_0PAGEBADGUYS))
-            g_bl0PageBadGuyHack = TRUE;
-
-        g_bInvincible = FALSE;
-        if (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_INVINCIBLE))
-            g_bInvincible = TRUE;
-    }
-    case IDCANCEL:
-    EndDialog(hDlg, TRUE);
-    return TRUE;
-    }
     }
     return FALSE;
 }

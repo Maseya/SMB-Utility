@@ -1065,9 +1065,9 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             switch (HIWORD(wParam))
             {
             case BN_CLICKED:
-            SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_NEXTPAGE, 0), 0);
-            SetFocus(hWnd);
-            break;
+                SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_NEXTPAGE, 0), 0);
+                SetFocus(hWnd);
+                break;
             }
         }
         break;
@@ -1076,9 +1076,9 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             switch (HIWORD(wParam))
             {
             case BN_CLICKED:
-            SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_PREVPAGE, 0), 0);
-            SetFocus(hWnd);
-            break;
+                SendMessage(hWnd, WM_COMMAND, MAKEWPARAM(IDM_MAPVIEW_PREVPAGE, 0), 0);
+                SetFocus(hWnd);
+                break;
             }
         }
         break;
@@ -1095,12 +1095,12 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         }
         break;
         case IDM_MAPVIEW_SHOWEDITDIALOG:
-        if (!gblIsROMLoaded) break;
-        if (GetMapEditMode())
-            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-        else
-            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-        break;
+            if (!gblIsROMLoaded) break;
+            if (GetMapEditMode())
+                DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
+            else
+                DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
+            break;
         case IDM_MAPVIEW_SENDOBJECT:
         {
             if (!gblIsROMLoaded) break;
@@ -1239,12 +1239,12 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     }
     break;
     case WM_LBUTTONDBLCLK:
-    if (!gblIsROMLoaded) break;
-    if (GetMapEditMode())
-        DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-    else
-        DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-    break;
+        if (!gblIsROMLoaded) break;
+        if (GetMapEditMode())
+            DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
+        else
+            DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
+        break;
     case WM_MDIACTIVATE:
     {
         HWND hwndChildDeact = (HWND)wParam;        // child being deactivated
@@ -1253,14 +1253,14 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     }
     break;
     case WM_LBUTTONUP:
-    if (fObjectIsGrabed && !fObjViewActive)
-    {
-        ObjviewInvertObject(hWnd, &GrabedObject);
-        fObjectIsGrabed = FALSE;
-        ReleaseCapture();
-    }
-    fObjViewActive = FALSE;
-    break;
+        if (fObjectIsGrabed && !fObjViewActive)
+        {
+            ObjviewInvertObject(hWnd, &GrabedObject);
+            fObjectIsGrabed = FALSE;
+            ReleaseCapture();
+        }
+        fObjViewActive = FALSE;
+        break;
     case WM_LBUTTONDOWN:
     {
         WPARAM fwKeys = wParam;        // key flags
