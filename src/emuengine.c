@@ -994,6 +994,144 @@ UINT8 RdNESReg(UINT32 Addr, struct MemoryReadByte *psMemRead)
     return 0;
 }
 
+extern CONTEXTM6502 context;
+int Mmc1Sr = 0x10;
+int Mmc1Pb = 0;
+int Mmc1Control = 0;
+byte Mmc1Regs[4];
+int ChrRomBankMode = 0;
+int PrgRomBankMode = 3;
+int Mirroring = 2;
+
+void SwitchPrg(int index, int dest, int size)
+{
+    int srcAddress = sizeof(INESHEADER) + (0x4000 * index);
+    memcpy(
+        context.m6502Base + dest,
+        bpROM + srcAddress,
+        size);
+}
+
+void Switch32KbPrg(int index, int dest)
+{
+    SwitchPrg(index & ~1, dest, 0x8000);
+}
+
+void Switch16KbPrg(int index, int dest)
+{
+    SwitchPrg(index, dest, 0x4000);
+}
+
+void SwitchChr(int index, int dest, int size)
+{
+    int srcAddress = sizeof(INESHEADER) + 0x10000 + (0x1000 * index);
+    memcpy(
+        bCHRROM + dest,
+        bpROM + srcAddress,
+        size);
+}
+
+void Switch8KbChr(int index, int dest)
+{
+    SwitchChr(index & ~1, dest, 0x2000);
+}
+
+void Switch4KbChr(int index, int dest)
+{
+    SwitchChr(index, dest, 0x1000);
+}
+
+void UpdatePrg()
+{
+    if (PrgRomBankMode < 2)
+    {
+        Switch32KbPrg(Mmc1Regs[3], 0x8000);
+        return;
+    }
+
+    int dest = (PrgRomBankMode & 1) ? 0x8000 : 0xC000;
+    Switch16KbPrg(Mmc1Regs[3], dest);
+}
+
+void UpdateChr()
+{
+    if (!ChrRomBankMode)
+    {
+        Switch8KbChr(Mmc1Regs[1] & ~1, 0x0000);
+        return;
+    }
+
+    Switch4KbChr(Mmc1Regs[1], 0x0000);
+    Switch4KbChr(Mmc1Regs[2], 0x1000);
+}
+
+void SetMmc1State(UINT32 Addr)
+{
+    int index = (Addr >> 13) & 3;
+    Mmc1Regs[index] = Mmc1Pb;
+    switch (index)
+    {
+        // 0x8000 - 0x9FFF
+    case 0:
+        Mirroring = Mmc1Pb & 3;
+        PrgRomBankMode = (Mmc1Pb >> 2) & 3;
+        ChrRomBankMode = (Mmc1Pb >> 4) & 1;
+        UpdatePrg();
+        UpdateChr();
+        break;
+
+        // 0xA000 - 0xBFFF
+    case 1:
+        if (!ChrRomBankMode)
+        {
+            Switch8KbChr(Mmc1Regs[1] & ~1, 0x0000);
+        }
+        else
+        {
+            Switch4KbChr(Mmc1Regs[1], 0x0000);
+        }
+
+        break;
+
+        // 0xC000 - 0xDFFF
+    case 2:
+        if (ChrRomBankMode)
+        {
+            Switch4KbChr(Mmc1Regs[2], 0x1000);
+        }
+
+        break;
+
+    case 3:
+        UpdatePrg();
+        break;
+    }
+}
+
+void WrNESMap(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
+{
+    if (Value & 0x80)
+    {
+        Mmc1Regs[0] &= 0x0C;
+        Mmc1Pb = 0;
+        Mmc1Sr = 0x10;
+        return;
+    }
+
+    int bit = (Value & 1) << 4;
+    if (Mmc1Sr & 1)
+    {
+        Mmc1Pb = (Mmc1Sr >> 1) | bit;
+        Mmc1Sr = 0x10;
+        SetMmc1State(Addr);
+    }
+    else
+    {
+        Mmc1Sr >>= 1;
+        Mmc1Sr |= bit;
+    }
+}
+
 void WrNESReg(UINT32 Addr, UINT8 Value, struct MemoryWriteByte *psMemWrite)
 {
     switch (Addr)
@@ -1242,6 +1380,7 @@ void DrawAllScanline()
 ***********************/
 struct MemoryWriteByte NESWrite[] =
 {
+    {0x8000,        0xFFFF,             WrNESMap},
     {0x2000,        0x6FFF,             WrNESReg},
     {(UINT32)-1,	(UINT32)-1,		NULL}
 };

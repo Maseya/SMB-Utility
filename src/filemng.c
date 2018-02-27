@@ -68,6 +68,26 @@ BOOL CheckROMFileTime()
     return FALSE;
 }
 
+void LoadPrgRom(int prgNumber)
+{
+    int offset = sizeof(INESHEADER);
+    memcpy(
+        bPRGROM + 0x8000,
+        bpROM + offset,
+        0x4000);
+    
+    offset += (prgNumber * 0x8000);
+    memcpy(
+        bPRGROM + 0xC000,
+        bpROM + 0x4000 + offset,
+        0x4000);
+
+    memcpy(
+        bCHRROM,
+        bpROM + iROMSize - SMB_CHR_SIZE,
+        SMB_CHR_SIZE);
+}
+
 BOOL LoadROM(LPTSTR pFilename)
 {
     FILE *fp;
@@ -81,25 +101,41 @@ BOOL LoadROM(LPTSTR pFilename)
         return FALSE;
     }
 
-    fread(&Head, 1, sizeof(INESHEADER), fp);
-    if (memcmp(Head.cType, "NES\x1a", 4) || (Head.bNum_CHARs != SMB_NUM_CHARS || Head.bNum_PRGs != SMB_NUM_PRGS) || ((Head.bROM_Type & 0x01) != 0x01))
+    fseek(fp, 0, SEEK_END);
+    iROMSize = ftell(fp);
+
+    // Remove old ROM allocation in case we get a new size.
+    if (bpROM)
+    {
+        free(bpROM);
+    }
+
+    bpROM = (BYTE*)malloc(iROMSize * sizeof(BYTE));
+
+    rewind(fp);
+    fread(bpROM, iROMSize, 1, fp);
+
+    fclose(fp);
+
+    memcpy(&Head, bpROM, sizeof(INESHEADER));
+    if (memcmp(Head.cType, "NES\x1a", 4) ||
+        Head.bNum_CHARs != SMB_NUM_CHARS ||
+        (Head.bNum_PRGs != SMB_NUM_PRGS && Head.bNum_PRGs != SMB_NUM_PRGS * 2) ||
+        (Head.bROM_Type & 0x01) != 0x01)
     {
         Msg(STRING_FILEERROR_FILEFORMAT, MB_OK | MB_ICONWARNING);
-        fclose(fp);
         return FALSE;
     }
 
+    // What is this?
     if (Head.bROM_Type & 0x4)
     {
         iTrainer = INES_TRAINERSIZE;
         fread(bPRGROM + 0x7000, INES_TRAINERSIZE, 1, fp);
     }
 
-    fread(bPRGROM + 0x8000, SMB_PRG_SIZE, 1, fp);
-
-    fread(bCHRROM, SMB_CHR_SIZE, 1, fp);
-
-    fclose(fp);
+    int prgNum = (iROMSize - 0xA010) / 0x8000;
+    LoadPrgRom(prgNum);
 
     gblIsROMLoaded = TRUE;
     SetROMFileTime();
