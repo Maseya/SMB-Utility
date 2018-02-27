@@ -1,4 +1,4 @@
-﻿/************************************************************************************
+﻿/**********************************************************************
 
                                   smb Utility
 
@@ -6,7 +6,7 @@
   Description:
   History:
 
- ************************************************************************************/
+ *********************************************************************/
 #ifndef EMUUTIL_H
 #define EMUUTIL_H
 
@@ -40,7 +40,7 @@ BOOL RunEmulatorViewPage(UINT uRoomID,int iPage);
 *******************************************************************/
 BOOL RunEmulatorViewPage(UINT uRoomID, int iPage);
 
-/***********************************************************************************************************
+/*********************************************************************************************
 
 void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int iHeight,BOOL blIsStretch)
 
@@ -54,7 +54,7 @@ void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int 
 
   BitBlt from the back buffer of the emulator window to the device context specified by hDCDest
 
-************************************************************************************************************/
+*********************************************************************************************/
 void TransferFromEmuBackBuffer(HDC hDCDest, int iDestX, int iDestY, int iWidth, int iHeight, BOOL blIsStretch);
 
 void InstallEmulatorPalette(HDC hdc);

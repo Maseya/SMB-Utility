@@ -13,7 +13,7 @@
       <UniqueIdentifier>{969a7c44-2219-4633-a9f3-37c96ad8e0b3}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="Document Files">
+    <Filter Include="Header Files\Document Files">
       <UniqueIdentifier>{b3e40271-3991-458c-97f6-3230fc8b4c26}</UniqueIdentifier>
       <Extensions>txt</Extensions>
     </Filter>
@@ -239,22 +239,22 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="misc\history.ja-JP.txt">
-      <Filter>Document Files</Filter>
+      <Filter>Header Files\Document Files</Filter>
     </Text>
     <Text Include="misc\history.en-US.txt">
-      <Filter>Document Files</Filter>
+      <Filter>Header Files\Document Files</Filter>
     </Text>
     <Text Include="misc\readme.en-US.txt">
-      <Filter>Document Files</Filter>
+      <Filter>Header Files\Document Files</Filter>
     </Text>
     <Text Include="misc\readme.ja-JP.txt">
-      <Filter>Document Files</Filter>
+      <Filter>Header Files\Document Files</Filter>
     </Text>
     <Text Include="document\todo.en-US.txt">
-      <Filter>Document Files</Filter>
+      <Filter>Header Files\Document Files</Filter>
     </Text>
     <Text Include="document\todo.ja-JP.txt">
-      <Filter>Document Files</Filter>
+      <Filter>Header Files\Document Files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

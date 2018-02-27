@@ -1,3 +1,18 @@
+/**********************************************************************
+
+smb Utility
+
+File: M6502.c
+Description: A "bare essentials" 6502 emulator for SMB1. Do not trust
+    for other emulation purposes.
+History: This M6502 library was originally written in 32-bit ASM by
+    Neil Bradley. I wanted to understand how the emulator work and also
+    port it to 64-bit and possibly other machines. All of this would be
+    impossible in Assembly, so I rewrote it in C. I make no claims to
+    the accuracy or reliability of this emulator beyond it being able
+    to at least run Super Mario Bros. 1 with or without MMC1 support.
+
+*********************************************************************/
 #include "M6502.h"
 #include <stdio.h>
 #include <stdlib.h>
