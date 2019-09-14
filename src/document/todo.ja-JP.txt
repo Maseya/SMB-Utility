@@ -1,9 +1,12 @@
 ﻿・変更したファイルをタイトルバーにアスタリスクを付けるなど分かるように。（済）
 　※ 無変更から一回編集して、アンドューした場合、アスタリスクは消えない。
-・マウスやキーボード編集入力時に不可能な操作をキャンセルした場合のエラーをログウィンドウに出力。
-・マウス入力によるオブジェクトの移動で、ウィンドウに表示されていないページにオブジェクトを移動
+・マウスやキーボード編集入力時に不可能な操作をキャンセルした場合のエラーをログウィンドウ
+  に出力。
+・マウス入力によるオブジェクトの移動で、ウィンドウに表示されていないページにオブジェクト
+  を移動
 させることができない。
-・メニューにキーボードアクセレレータの対応するキーを表示（カスタマイズで割り当てを変更できるの
+・メニューにキーボードアクセレレータの対応するキーを表示（カスタマイズで割り当てを変更で
+  きるの
 で、動的に変更する必要あり）。
 ・より良いレベル作成の為のレポート機能。
 　ルーム内で獲得可能なコインの最大枚数。
@@ -11,9 +14,9 @@
 ・keys.cのg_VKeyInfoの文字列をstring_?.hに定数として定義する。
 
 NOTE :
---------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 emuengine.cのExecuteCPU()関数で、カットされるスキャンラインの本数が1～7の7本しかない。
---------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ・RefreshLine()関数の引数は0起算。
 ・テストプレイ用のセーブデータを書き換えなければならない
 ・オブジェクトビュー描画用のExecuteCPUNoRefreshScreen()
@@ -25,7 +28,8 @@ emuengine.cのExecuteCPU()関数で、カットされるスキャンラインの
 // 232 - 239   the bottom eight lines are cut off
 // 240 - 242   an additional 3 scanlines worth of CPU cycles to enter V-Blank.
 // 243         V-Blank flag, NMI
-// 243 - 262   V-Blank period takes a further 20 scanlines worth before the next frame can be drawn.
+// 243 - 262   V-Blank period takes a further 20 scanlines worth before the next
+//               frame can be drawn.
 static WORD ExecuteCPU()
 {
 	// Execute CPU
@@ -41,7 +45,8 @@ static WORD ExecuteCPU()
 		return ++wScanline;
 	}
 	else if(wScanline == NES_SCANLINE_VBLANK) {
-		PostMessage(GETFRAMEWNDHANDLE(ghEmuWnd), WM_UPDATEFRAME, 0, 0); //g_fUpdate = TRUE;
+		PostMessage(GETFRAMEWNDHANDLE(ghEmuWnd), WM_UPDATEFRAME, 0, 0);
+		//g_fUpdate = TRUE;
 		// VBlank begins
 		g_bInVBlank = TRUE;
 		// Set vblank flag

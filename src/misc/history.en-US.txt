@@ -43,7 +43,8 @@
 · Added function to change area starting room.
 · Speed ​​up the emulator.
 · Added speed limiting function of the emulator.
-· Added specification function by index (tile number) of character string editing.
+· Added specification function by index (tile number) of character string
+  editing.
 · Added items that can be set to general settings.
 · Fixed some bugs and defects.
 0.61
@@ -70,7 +71,8 @@
 · Other, fine improvement.
 0.81
 · Enrich the manual.
-· Improved to prevent the auxiliary line of the scale from being flushed when updating in the object view.
+· Improved to prevent the auxiliary line of the scale from being flushed when
+  updating in the object view.
 · Added items that can be set to "World" in other settings.
 · Organization of source code.
 0.85
@@ -85,7 +87,8 @@
 0.88
 · Default values ​​such as test play settings can be changed.
 · Canceled distribution by installer
-· Fixed a bug related to horizontal position when entering in the enemy's edit dialog.
+· Fixed a bug related to horizontal position when entering in the enemy's edit
+  dialog.
 · Fixed a bug that vertical rope of object list becomes castle.
 · Difficult to use mouse editing (moving) is abolished.
 · In the object view, you can see the starting page on the way.
@@ -93,12 +96,15 @@
 · Fixed a bug related to page feed command of enemy keyboard input.
 · Added a move edit key (NUMPAD 7/1) to the next / previous object.
 · Key assignment of emulator and keyboard accelerator can be customized.
-· By improving the method of limiting the execution speed of the emulator, the extra load on the system is considerably reduced.
+· By improving the method of limiting the execution speed of the emulator, the
+  extra load on the system is considerably reduced.
 · Corrected GDI related bug of emulator
 0.89(Official version beta 1)
-· Corrected that there is a possibility that reading of initialization file may fail.
+· Corrected that there is a possibility that reading of initialization file may
+  fail.
 · Fixed a bug related to startup by drag & drop.
-· After editing the starting room of the area, the update tool of the division of the world is automatically executed.
+· After editing the starting room of the area, the update tool of the division
+  of the world is automatically executed.
 · Invalidate "undo" function of general setting
 · Sample level (M.K.H's work) added
 0.90(Official version beta 1)
@@ -106,67 +112,117 @@
 · Correspond to change of type by wheel mouse.
 · Added preset key function to customize keyboard.
 0.91(Official version beta 1)
-· When duplicate settings were made by customizing the keyboard, it was made to inform which key overlaps.
+· When duplicate settings were made by customizing the keyboard, it was made to
+  inform which key overlaps.
 1.00(November 29, 2001, the official version)
 · No change
 1.01(August 12, 2004)
 · Added notes on the length of the stairs, Ax · Koopa's bridge.
-· In the object view, when multiple objects are in the same position, they are displayed in the tooltip so that they are all displayed.
-· When selecting an object square with multiple objects in the same position in the object view, added a function to display a popup window and select it.
-· Supports bitmap display that allows you to check details of objects in the object view.
+· In the object view, when multiple objects are in the same position, they are
+  displayed in the tooltip so that they are all displayed.
+· When selecting an object square with multiple objects in the same position in
+  the object view, added a function to display a popup window and select it.
+· Supports bitmap display that allows you to check details of objects in the
+  object view.
 · The enemies appearing after 5-3 on object view are inverted and displayed.
-· Express the start page in the object view by displaying the right arrow in the upper left corner, making it easy to understand.
-· When mouse wheel operation of object view is wheeled without pressing any keys, move active object by page unit, if wheel is wheeled while holding shift key, change type one by one Change. While holding down Ctrl, you change the type by 16 as usual. Also, when you click the wheel button in the object view, you can switch enemy / terrain mode.
-· Implemented an option to display confirmation message when overwriting is saved.
-· Fixed a bug that movement crosshairs would remain when selecting object square at the same time as activating the object view.
+· Express the start page in the object view by displaying the right arrow in the
+  upper left corner, making it easy to understand.
+· When mouse wheel operation of object view is wheeled without pressing any
+  keys, move active object by page unit, if wheel is wheeled while holding shift
+  key, change type one by one Change. While holding down Ctrl, you change the
+  type by 16 as usual. Also, when you click the wheel button in the object view,
+  you can switch enemy / terrain mode.
+· Implemented an option to display confirmation message when overwriting is
+  saved.
+· Fixed a bug that movement crosshairs would remain when selecting object square
+  at the same time as activating the object view.
 · Change sample level to "Mario fan reloaded".
 1.02(August 25, 2004)
 · Supports display / non-display setting of auxiliary bitmap of object view.
-· When changing the enemy / terrain object edit mode, if the page with the active object exceeds the maximum page in the new edit mode, conventionally the first object was in the selected state as the last object Improved to put the selection state.
+· When changing the enemy / terrain object edit mode, if the page with the
+  active object exceeds the maximum page in the new edit mode, conventionally
+  the first object was in the selected state as the last object Improved to put
+  the selection state.
 · Improved to display page and position information on tooltip in object view.
-· In the object view, in the vertical grid, change the color of the page boundary to a dashed line that is easy to see.
+· In the object view, in the vertical grid, change the color of the page
+  boundary to a dashed line that is easy to see.
 · Improved to memorize grid display / non-display of object view.
-· Added a button that allows you to set an intermediate page in the start fixed page setting in the test play setting.
-· By setting the test play, it is possible to set the vertical position and horizontal position of the appearance position of Mario. Along with this, delete the setting of the initial position.
-· Added test play "point test play" function that can start Mario from any position selected in object view.
+· Added a button that allows you to set an intermediate page in the start fixed
+  page setting in the test play setting.
+· By setting the test play, it is possible to set the vertical position and
+  horizontal position of the appearance position of Mario. Along with this,
+  delete the setting of the initial position.
+· Added test play "point test play" function that can start Mario from any
+  position selected in object view.
 · Fixed a bug that the order of move command between rooms may be wrong.
-· The page feed command of the enemy object corrects a problem related to being 6 bits.
-· When room protection function is effective, only objects in the range that can be processed in one room can be edited and displayed.
-· Added a check on the maximum number of objects in one room in the destination room to send the object to another room.
-· If there is no object in the object view, invalidate items that can not be executed in the right-click popup menu.
-· Depending on the Windows specification that the pop-up window does not disappear with the wheel click, it is possible that problems may arise if the edit mode can be changed with the wheel click while displaying the pop-up, so changing of the edit mode by the wheel click is canceled . Instead, a menu item of equivalent function is added to the popup window displayed by right click.
+· The page feed command of the enemy object corrects a problem related to being
+  6 bits.
+· When room protection function is effective, only objects in the range that can
+  be processed in one room can be edited and displayed.
+· Added a check on the maximum number of objects in one room in the destination
+  room to send the object to another room.
+· If there is no object in the object view, invalidate items that can not be
+  executed in the right-click popup menu.
+· Depending on the Windows specification that the pop-up window does not
+  disappear with the wheel click, it is possible that problems may arise if the
+  edit mode can be changed with the wheel click while displaying the pop-up, so
+  changing of the edit mode by the wheel click is canceled . Instead, a menu
+  item of equivalent function is added to the popup window displayed by right
+  click.
 1.03 (October 1, 2004)
 · Fixed to perform processing when opening the room after option change.
 · Demo so that you hear a beep when recording ends.
 · Implemented "Load entire character ROM" function as CHROMOM reading option.
 · Remove memory leaks that were in "Other settings".
-· Change the assignment of functions to the operation of the wheel, Shift + wheel, Ctrl + wheel without pressing the key.
+· Change the assignment of functions to the operation of the wheel,
+  Shift + wheel, Ctrl + wheel without pressing the key.
 · Added "Disable Damage Detection" option to "Test Play Settings".
 · Added a preview to "Edit Area Start Room" dialog.
 1.04 (March 1, 2005)
-· It changed to call the joystick initialization function to the emulator initialization function, and it corresponds to some PS2 controller converters.
-· Added pop-up hide option displayed when clicking object square with multiple objects in object view.
-· Fixed a bug in which an abnormal numerical value is displayed when the lateral position is a negative value in the tool tip of the object view.
+· It changed to call the joystick initialization function to the emulator
+  initialization function, and it corresponds to some PS2 controller converters.
+· Added pop-up hide option displayed when clicking object square with multiple
+  objects in object view.
+· Fixed a bug in which an abnormal numerical value is displayed when the lateral
+  position is a negative value in the tool tip of the object view.
 1.05
-· In the object view, change the object selection pop-up so that it appears only when you hold down the control key and click on the object square with multiple objects.
+· In the object view, change the object selection pop-up so that it appears only
+  when you hold down the control key and click on the object square with
+  multiple objects.
 1.06
 · There is no change in contents.
 · This version is a final release, which is a version of handling source code.
 1.061
-· In the auxiliary image of the object view,? Increase the visibility of items in the block.
+· In the auxiliary image of the object view,? Increase the visibility of items
+  in the block.
 · For files that you edited, add an asterisk to the name of the title bar.
 (· Fixed a bug that 1.06 is final release.)
 1.08
-· The assignment of the buttons of the joystick used in the emulator can be changed.
+· The assignment of the buttons of the joystick used in the emulator can be
+  changed.
 · Joystick direction key reading corresponds to analog stick.
 · POV of joystick can be assigned as controller direction key.
-· Fixed a bug that failed to obtain directory acquisition processing when reading initialization file when starting from the command prompt.
+· Fixed a bug that failed to obtain directory acquisition processing when
+  reading initialization file when starting from the command prompt.
 1.08 Republish
 · Fixed a problem that the demo recorder was not working properly.
-· Changed the invocation of the joystick state acquisition API to reflect the valid / invalid setting of POV.
-· Change the menu key of the emulator in the main window from E (duplicated in edit) to M, add menu key for midway page test play.
+· Changed the invocation of the joystick state acquisition API to reflect the
+  valid / invalid setting of POV.
+· Change the menu key of the emulator in the main window from E (duplicated in
+  edit) to M, add menu key for midway page test play.
 · Changed font of International version log from "Arial" to "MS Sans Serif".
-· Changed to enclose the name following "Undo" in the main window with double quotes.
-· Fixed a bug that the error string of the message box could not be displayed correctly when keys were duplicated by changing Alt · Shift · Ctrl in the customize dialog.
-· In editing a character string, change it so that writing can also be done by pressing the Enter key.
+· Changed to enclose the name following "Undo" in the main window with double
+  quotes.
+· Fixed a bug that the error string of the message box could not be displayed
+  correctly when keys were duplicated by changing Alt · Shift · Ctrl in the
+  customize dialog.
+· In editing a character string, change it so that writing can also be done by
+  pressing the Enter key.
 · Other, fix the details.
+1.09 SWR takeover
+* The program has been internationalized and will display either English order
+  Japanese depending on the runtime environment.
+* Program now available in 64-bit mode. This involved removing the NASM emulator
+  code written by Neil Bradley. His licensing requirements have been removed
+  since his code is no longer featured in the program, but he shall remain
+  marked as a contributor.
