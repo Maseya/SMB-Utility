@@ -46,6 +46,9 @@ HWND g_hEditToolDlg = NULL;
 
 TCHAR gFilePath[MAX_PATH] = {0};
 
+int iROMSize = -1;
+BYTE* bpROM = NULL;
+
 INESHEADER Head;
 BYTE bPRGROM[PRG_SIZE];
 BYTE bCHRROM[SMB_CHR_SIZE];
