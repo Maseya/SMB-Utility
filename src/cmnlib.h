@@ -10,6 +10,8 @@
 #ifndef CMNLIB_H
 #define CMNLIB_H
 
+#include <Windows.h>
+
 #define COMCTRL_ERROR 0
 #define COMCTRL_V400 1
 #define COMCTRL_V470 2

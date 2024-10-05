@@ -3,21 +3,10 @@
 #ifndef _M6502_H_
 #define _M6502_H_
 
-#ifndef UINT32
-#define UINT32 unsigned long int
-#endif
-
-#ifndef UINT16
-#define UINT16 unsigned short int
-#endif
-
-#ifndef UINT8
-#define UINT8 unsigned char
-#endif
-
-#ifndef INT8
-#define INT8 char
-#endif
+// TODO(swr): This is BAD. But the data types are interfering with Windows integral
+// types, so this is the only solution for now. I'll have to fix the typing when I get
+// time.
+#include <Windows.h>
 
 #define M6502_STATUS_OK 0x80000000
 

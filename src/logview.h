@@ -1,6 +1,8 @@
 ﻿#ifndef LOGVIEW_H
 #define LOGVIEW_H
 
+#include <Windows.h>
+
 #define LOGVIEW_DEFAULTHEIGHT 512
 #define LOGVIEW_BORDERWIDTH 5
 

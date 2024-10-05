@@ -10,6 +10,8 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <Windows.h>
+
 #define SMBADDRESS_LOOP_WORLD 0xC06B
 #define SMBADDRESS_LOOP_PAGE 0xC076
 #define SMBADDRESS_LOOP_YPOS 0xC081

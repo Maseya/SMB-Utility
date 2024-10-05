@@ -10,6 +10,8 @@
 #ifndef OBJ_MNG
 #define OBJ_MNG
 
+#include <Windows.h>
+
 #define INVALID_OBJECT_INDEX -1
 
 #define CHANGEEDITMODE_ASITIS -2

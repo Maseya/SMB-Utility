@@ -10,6 +10,8 @@
 #ifndef ROOMSELDLG_H
 #define ROOMSELDLG_H
 
+#include <Windows.h>
+
 // struct and function
 typedef struct _tagROOMSELECT {
     LPTSTR lpszTitle;

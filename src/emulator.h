@@ -12,6 +12,8 @@
 
 #include "M6502.h"
 
+#include <Windows.h>
+
 typedef struct {
     BYTE* pbPRGROM;
     BYTE* pbCHRROM;

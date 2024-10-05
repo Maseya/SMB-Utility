@@ -10,6 +10,8 @@
 #ifndef OBJLIB_H
 #define OBJLIB_H
 
+#include <Windows.h>
+
 /**************************************
 
   オブジェクトのアドレスに関する定数

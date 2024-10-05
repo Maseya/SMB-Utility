@@ -10,6 +10,8 @@
 #ifndef KEYACCEL_H
 #define KEYACCEL_H
 
+#include <Windows.h>
+
 #define CTRLBIT 0x0100
 #define ALTBIT 0x0200
 #define SHIFTBIT 0x0400

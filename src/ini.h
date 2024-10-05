@@ -10,6 +10,7 @@
 #ifndef INI_H
 #define INI_H
 
+#include <Windows.h>
 #include <tchar.h>
 
 #define REGROOTPATH __T("Software\\smbUtil")

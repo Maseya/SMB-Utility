@@ -10,6 +10,8 @@
 #ifndef OBJLIST_H
 #define OBJLIST_H
 
+#include <Windows.h>
+
 /********************
 
   マップエディト関数

@@ -10,6 +10,8 @@
 #ifndef EMUUTIL_H
 #define EMUUTIL_H
 
+#include <Windows.h>
+
 #define TESTPLAY_SETTINGS_MAXYPOS 12
 
 void LoadTestPlaySettings();

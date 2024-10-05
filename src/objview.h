@@ -10,6 +10,8 @@
 #ifndef OBJVIEW_H
 #define OBJVIEW_H
 
+#include <Windows.h>
+
 BOOL RegisterMapViewWndClass(HINSTANCE hInstance);
 HWND CreateMapViewWnd(HINSTANCE hInstance, HWND hWndMDIClient);
 void ClearObjectViewBackBuffer();

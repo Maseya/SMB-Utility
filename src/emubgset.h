@@ -10,6 +10,8 @@
 #ifndef EMUBGSET_H
 #define EMUBGSET_H
 
+#include <Windows.h>
+
 typedef struct {
     BOOL blIsLiftSmall;
     BOOL blIsLiftCloud;

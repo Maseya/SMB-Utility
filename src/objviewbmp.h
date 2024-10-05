@@ -1,6 +1,10 @@
 ﻿#ifndef OBJVIEWBMP_H
 #define OBJVIEWBMP_H
 
+#include "objlib.h"
+
+#include <Windows.h>
+
 typedef struct _tagASSISTBMPDATA {
     int iPosDeltaX;
     int iPosDeltaY;

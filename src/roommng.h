@@ -10,6 +10,8 @@
 #ifndef ROOMMNG_H
 #define ROOMMNG_H
 
+#include <Windows.h>
+
 #define SMB_NUM_ADDRESSDATA 34
 #define SMB_NUM_AREAS 36
 #define SMB_NUM_WORLDS 8
