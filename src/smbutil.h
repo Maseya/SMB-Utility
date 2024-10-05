@@ -10,7 +10,6 @@
 #ifndef SMBUTIL_H
 #define SMBUTIL_H
 
-#define _WIN32_IE 0x200
 #include "cmnlib.h"
 #include "common.h"
 #include "frame.h"
