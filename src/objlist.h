@@ -34,7 +34,7 @@ void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf);
 void ObjectListSetCursor(int iIndex);
 void ObjectListClear();
 void ObjectListShowCursor();
-void UpdateObjectList();
+void UpdateObjectList(DWORD dwUpdateFlag);
 
 HWND CreateMapEditWnd(HINSTANCE hInstance, HWND hWndMDIClient);
 BOOL RegisterMapEditWndClass(HINSTANCE hInstance);
