@@ -10,19 +10,18 @@
 #ifndef FILEMNG_H
 #define FILEMNG_H
 
-typedef struct _tagINESHEADER
-{
+typedef struct _tagINESHEADER {
     BYTE cType[4];
     BYTE bNum_PRGs;
     BYTE bNum_CHRs;
     BYTE bROM_CTRL1;
     BYTE bROM_CTRL2;
     BYTE cReserved[8];
-}iNES_HEADER;
+} iNES_HEADER;
 
-#define INES_ROMBANKSIZE   0x4000
-#define INES_VROMBANKSIZE  0x2000
-#define INES_TRAINERSIZE   0x200
+#define INES_ROMBANKSIZE 0x4000
+#define INES_VROMBANKSIZE 0x2000
+#define INES_TRAINERSIZE 0x200
 
 BOOL SaveAsFile(LPTSTR pFilename);
 

@@ -1,0 +1,22 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+ColumnLimit: 88
+IncludeCategories:
+  - Regex: '<Windows.h>'
+    Priority: 2
+    SortPriority: 1
+    CaseSensitive: false
+  - Regex: '<.*>'
+    Priority: 2
+    SortPriority: 2
+  - Regex: '.*'
+    Priority: 1
+IndentWidth: 4
+AccessModifierOffset: -4
+SortIncludes: true
+ConstructorInitializerIndentWidth: 8
+ContinuationIndentWidth: 8
+DerivePointerAlignment: false
+MaxEmptyLinesToKeep: 2
+...

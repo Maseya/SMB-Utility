@@ -7,11 +7,11 @@
   History:
 
  *********************************************************************/
-#include "smbutil.h"
-#include "roommng.h"
-#include "objview.h"
-#include "objlist.h"
 #include "emulator.h"
+#include "objlist.h"
+#include "objview.h"
+#include "roommng.h"
+#include "smbutil.h"
 
 INESHEADER Head_undo;
 BYTE bPRGROM_undo[PRG_SIZE];
@@ -26,15 +26,14 @@ BOOL g_blUndoEnable = FALSE;
 // Whether to save a copy for UNDO for key input
 BOOL g_blKeyCommandUndo = TRUE;
 
-void undoPrepare(LPCTSTR lpUndoName)
-{
-    //PRG
+void undoPrepare(LPCTSTR lpUndoName) {
+    // PRG
     memcpy(bPRGROM_undo, bPRGROM, PRG_SIZE);
 
-    //CHR
+    // CHR
     memcpy(bCHRROM_undo, bCHRROM, SMB_CHR_SIZE);
 
-    //Trainer Present?
+    // Trainer Present?
     iTrainer_undo = iTrainer;
 
     // store undo name
@@ -43,17 +42,15 @@ void undoPrepare(LPCTSTR lpUndoName)
     g_blUndoEnable = TRUE;
 }
 
-void undoRestore()
-{
-    if (g_blUndoEnable)
-    {
-        //PRG
+void undoRestore() {
+    if (g_blUndoEnable) {
+        // PRG
         memcpy(bPRGROM, bPRGROM_undo, PRG_SIZE);
 
-        //CHR
+        // CHR
         memcpy(bCHRROM, bCHRROM_undo, SMB_CHR_SIZE);
 
-        //Trainer Present?
+        // Trainer Present?
         iTrainer = iTrainer_undo;
 
         g_tcUndoName[0] = __T('\0');
@@ -65,8 +62,7 @@ void undoRestore()
         // Pre-processing of CHR ROM
         PrepareVROMData(bCHRROM);
 
-        if (!UpdateObjectViewCursole())
-        {
+        if (!UpdateObjectViewCursole()) {
             EnsureMapViewCursoleVisible();
             OpenNewRoomProcess();
         }
@@ -80,19 +76,12 @@ void undoRestore()
     }
 }
 
-void undoReset()
-{
+void undoReset() {
     g_blUndoEnable = FALSE;
     g_tcUndoName[0] = __T('\0');
     g_blKeyCommandUndo = TRUE;
 }
 
-BOOL undoIsEnabled()
-{
-    return (gblIsROMLoaded) ? g_blUndoEnable : FALSE;
-}
+BOOL undoIsEnabled() { return (gblIsROMLoaded) ? g_blUndoEnable : FALSE; }
 
-LPTSTR undoGetNameBuffer()
-{
-    return g_tcUndoName;
-}
+LPTSTR undoGetNameBuffer() { return g_tcUndoName; }

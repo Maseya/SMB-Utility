@@ -12,133 +12,124 @@
 
 #include "M6502.h"
 
-typedef struct
-{
-    BYTE *pbPRGROM;
-    BYTE *pbCHRROM;
-    BYTE *pbTRAINER;
-    BYTE *pbVRAM;
-    struct
-    {
+typedef struct {
+    BYTE* pbPRGROM;
+    BYTE* pbCHRROM;
+    BYTE* pbTRAINER;
+    BYTE* pbVRAM;
+    struct {
         BOOL blValid;
-        struct
-        {
+        struct {
             WORD wAF;
             WORD wPC;
             BYTE wX;
             BYTE wY;
             BYTE wS;
-        }Reg;
-    }CPUReg;
-}EMULATORSETUP;
+        } Reg;
+    } CPUReg;
+} EMULATORSETUP;
 
-typedef struct
-{
-    union
-    {
-        struct
-        {
+typedef struct {
+    union {
+        struct {
             BYTE bLower;
             BYTE bUpper;
-        }byte;
+        } byte;
         WORD word;
-    }BadGuysAddress;
-    union
-    {
-        struct
-        {
+    } BadGuysAddress;
+    union {
+        struct {
             BYTE bLower;
             BYTE bUpper;
-        }byte;
+        } byte;
         WORD word;
-    }MapAddress;
+    } MapAddress;
     BYTE bRoomID;
     BYTE bPage;
     BYTE bBackView;
     BYTE bBasicBlock;
-    BYTE bBackObject1;//$741
-    BYTE bBackObject2;//$744
+    BYTE bBackObject1;  //$741
+    BYTE bBackObject2;  //$744
     BYTE bLeftObjOfs[3];
     BYTE bLeftObjNum[3];
-    BYTE bLeftObjData1;//階段$734 (stairs)
-    BYTE bLeftObjData2[3];//キノコの島$737 (mushroom island)
-    BYTE bMapOfs;//$072C
-    BYTE bMapPage;//$072A
-    BYTE bMapPageFlag;//$072B
-    BYTE bBadGuysOfs;//$0739
-    BYTE bBadGuysPage;//$073A
-    BYTE bBadGuysPageFlag;//$073B
-    BYTE bBadGuysPage2;//$071B
+    BYTE bLeftObjData1;     // 階段$734 (stairs)
+    BYTE bLeftObjData2[3];  // キノコの島$737 (mushroom island)
+    BYTE bMapOfs;           //$072C
+    BYTE bMapPage;          //$072A
+    BYTE bMapPageFlag;      //$072B
+    BYTE bBadGuysOfs;       //$0739
+    BYTE bBadGuysPage;      //$073A
+    BYTE bBadGuysPageFlag;  //$073B
+    BYTE bBadGuysPage2;     //$071B
     BYTE bWorld;
-    BYTE bArea;//$075C 通常のもの (written value for level number)
-    BYTE bArea2;//$0760 導入面も１つのエリアに数える (level number)
-    BYTE bIsCleared;//0 -NO, 1 -YES
+    BYTE bArea;       //$075C 通常のもの (written value for level number)
+    BYTE bArea2;      //$0760 導入面も１つのエリアに数える (level number)
+    BYTE bIsCleared;  // 0 -NO, 1 -YES
     BYTE bIsDifficult;
-    BYTE bMarioSize;//$0756 0-large 1-small
-    BYTE bMarioCap;//$0754 0-normal 1-super 2-fire
+    BYTE bMarioSize;  //$0756 0-large 1-small
+    BYTE bMarioCap;   //$0754 0-normal 1-super 2-fire
     BOOL blIsStatusDraw;
-}TESTPLAYSETUP;
+} TESTPLAYSETUP;
 
-typedef struct
-{
+typedef struct {
     BYTE bRoomID;
     BYTE bPage;
     BYTE bWorld;
-    BYTE bArea;//$075C 通常のもの (written value for level number)
-    BYTE bArea2;//$0760 導入面も１つのエリアに数える (level number)
-    BYTE bIsCleared;//0 -NO, 1 -YES
+    BYTE bArea;       //$075C 通常のもの (written value for level number)
+    BYTE bArea2;      //$0760 導入面も１つのエリアに数える (level number)
+    BYTE bIsCleared;  // 0 -NO, 1 -YES
     BYTE bIsDifficult;
-    BYTE bMarioSize;//$0756 0-large 1-small
-    BYTE bMarioCap;//$0754 0-normal 1-super 2-fire
+    BYTE bMarioSize;  //$0756 0-large 1-small
+    BYTE bMarioCap;   //$0754 0-normal 1-super 2-fire
     BYTE bBadGuyHack;
     BYTE fPosXHack;
     BYTE bPosX;
     BYTE fPosYHack;
     BYTE bPosY;
     BYTE bInvincible;
-}TESTPLAYSETUPEX;
+} TESTPLAYSETUPEX;
 
-typedef struct _tagNESCONTEXT
-{
-    CONTEXTM6502 *psM6502;
-    BYTE *pb6502CPUMemory;
+typedef struct _tagNESCONTEXT {
+    CONTEXTM6502* psM6502;
+    BYTE* pb6502CPUMemory;
 
-    //PPU Reg
+    // PPU Reg
     BYTE bPPUCtrlReg1;
     BYTE bPPUCtrlReg2;
     BYTE bPPUStaReg;
 
-    //back ground scroll
+    // back ground scroll
     BOOL blBGIsVertical;
     BYTE bBGScrlH;
     BYTE bBGScrlV;
 
-    //vram
+    // vram
     WORD wVRAMAddr;
-    BYTE *pbVRAM;
+    BYTE* pbVRAM;
     BOOL blVRAMFirstRead;
     BYTE bBGColor;
 
-    //sprite
+    // sprite
     BYTE bSPRRAMAddr;
-    BYTE *pbSPRRAM;
+    BYTE* pbSPRRAM;
 
     BYTE bJoy1Read;
     BYTE bJoy2Read;
 
-    //current scanline
+    // current scanline
     WORD wScanline;
-}NESCONTEXT, FAR *LPNESCONTEXT;
+} NESCONTEXT, FAR* LPNESCONTEXT;
 
 BOOL RegisterEmuWndClass(HINSTANCE hInstance);
 HWND CreateEmulatorWnd(HINSTANCE hInstance, HWND hWndMDIClient);
-BOOL PrepareVROMData(BYTE *pbSource);
+BOOL PrepareVROMData(BYTE* pbSource);
 
 // ｴﾐｭﾚｰﾀ ｳｲﾝﾄﾞｳの基本制御
 // Basic control of the emulator window
 void StartEmulator(void);
 void StopEmulator(void);
-BOOL SuspendEmulator(BOOL blState);//blState == TRUE ->suspend, blState == FALSE ->start
+BOOL SuspendEmulator(
+        BOOL blState);  // blState == TRUE ->suspend, blState == FALSE ->start
 void ResetEmulator(void);
 BOOL SetupEmulator(EMULATORSETUP* psEmuSetup);
 
@@ -158,11 +149,12 @@ void Run6502Ex(int iFrames);
 
 HWND GetEmuWndHandle(void);
 
-void TestPlaySetup(TESTPLAYSETUP *psTPS);
-void TestPlaySetupEx(TESTPLAYSETUPEX *psTPS);
+void TestPlaySetup(TESTPLAYSETUP* psTPS);
+void TestPlaySetupEx(TESTPLAYSETUPEX* psTPS);
 void DirectWriteToEmulatorRAM(WORD wAddr, LPBYTE lpBuf, WORD wSize);
 
-LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK EmulatorOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam,
+                                       LPARAM lParam);
 
 BOOL LoadEmuKeySetting();
 
@@ -180,7 +172,8 @@ BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[]);
 #define EMULATOR_NUM_BUTTONS 8
 
 // 方向キーを除いたジョイスティックでボタンの入力として受け取るA, B, Select, Startの4つ
-// Four A, B, Select, and Start received as button input with joystick excluding direction key
+// Four A, B, Select, and Start received as button input with joystick excluding
+// direction key
 #define EMULATOR_NUM_JOYBUTTONS 4
 
 // Win32 API joyGetPosEx()関数で取得可能なボタンの最大数
@@ -188,7 +181,8 @@ BOOL GetEmulatorJoyButtons(DWORD aEmuJoyButtons[]);
 #define JOYSTICK_MAX_BUTTONS 32
 
 // gblDemoRecordがTRUEの場合、ジョイステイックのルーチンから呼び出される。emuutil.cに実装されている。
-// If gblDemoRecord is TRUE, it is called from a joystick routine. It is implemented in emuutil.c.
+// If gblDemoRecord is TRUE, it is called from a joystick routine. It is implemented in
+// emuutil.c.
 void DemoRecorderHandler(BYTE bJoy1Read, BYTE bRet);
 
 #define EMULATOR_NES_COLORS 64

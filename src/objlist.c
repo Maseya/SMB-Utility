@@ -7,33 +7,34 @@
   History:
 
  *********************************************************************/
-#include "smbutil.h"
-#include "roommng.h"
 #include "objlist.h"
+
+#include "ini.h"
 #include "objlib.h"
 #include "objmng.h"
 #include "objview.h"
-#include "ini.h"
 #include "objwndcmn.h"
- /************************
+#include "roommng.h"
+#include "smbutil.h"
+/************************
 
-   ユーザー定義メッセージ
+  ユーザー定義メッセージ
 
-   User defined message
+  User defined message
 
- *************************/
+*************************/
 #define WM_LVSELCHANGE (WM_USER + 100)
 
- /******************
+/******************
 
-   グローバル変数
+  グローバル変数
 
-   Global variables
+  Global variables
 
- *******************/
+*******************/
 
- // リストビューのハンドル
- // List view handle
+// リストビューのハンドル
+// List view handle
 HWND g_hWndListView;
 
 /***************
@@ -46,31 +47,25 @@ Auxiliary function
 
 // リストボックス
 // list box
-void ObjectListClear()
-{
-    ListView_DeleteAllItems(g_hWndListView);
-}
+void ObjectListClear() { ListView_DeleteAllItems(g_hWndListView); }
 
-void ObjectListSetCursor(int iIndex)
-{
+void ObjectListSetCursor(int iIndex) {
     // clear cursor
-    ListView_SetItemState(g_hWndListView, -1, ~(LVIS_SELECTED | LVIS_FOCUSED), LVIS_SELECTED | LVIS_FOCUSED);
+    ListView_SetItemState(g_hWndListView, -1, ~(LVIS_SELECTED | LVIS_FOCUSED),
+                          LVIS_SELECTED | LVIS_FOCUSED);
 
     // set cursor
-    ListView_SetItemState(g_hWndListView, iIndex, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+    ListView_SetItemState(g_hWndListView, iIndex, LVIS_SELECTED | LVIS_FOCUSED,
+                          LVIS_SELECTED | LVIS_FOCUSED);
 }
 
-void ObjectListShowCursor()
-{
+void ObjectListShowCursor() {
     ListView_EnsureVisible(g_hWndListView, GetSelectedIndex(), FALSE);
 }
 
 // グローバルな変数の初期化
 // Initialization of global variables
-void InitMapEditGlobalValue()
-{
-    SetSelectedItem(0, TRUE);
-}
+void InitMapEditGlobalValue() { SetSelectedItem(0, TRUE); }
 
 /*************************************************
 
@@ -81,112 +76,108 @@ void InitMapEditGlobalValue()
 ***************************************************/
 #include "objdata.h"
 
-void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf)
-{
-    switch ((lpbBuf[0] & 0x0f))
-    {
-    case 0x0C:
-        wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoC[(lpbBuf[1] >> 4) & 0x07].Name);
-        break;
-    case 0x0D:
-        if (!(lpbBuf[1] & 0x40))
-            wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name, lpbBuf[1] & 0x3F);
-        else
-        {
-            if ((lpbBuf[1] & 0x70) == 0x40)
-                wsprintf(lpszBuf, __T("%s"), smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
-            else
-                wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
-        }
-        break;
-    case 0x0E:
-        if (lpbBuf[1] & 0x40)
-            wsprintf(lpszBuf, STRING_OBJLIST_BACK, smbMapHeadBackColor[lpbBuf[1] & 0x07]);
-        else
-            wsprintf(lpszBuf, STRING_OBJLIST_VIEWBLOCK, smbMapHeadView[(lpbBuf[1] >> 4) & 0x03], smbMapBasicBlock[lpbBuf[1] & 0x0F].Name);
-        break;
-    case 0x0F:
-    {
-        switch ((lpbBuf[1] >> 4) & 0x07)
-        {
-        case 0:
-            wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
+void FormatMapString(LPBYTE lpbBuf, LPTSTR lpszBuf) {
+    switch ((lpbBuf[0] & 0x0f)) {
+        case 0x0C:
+            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1,
+                     smbMapObjectInfoC[(lpbBuf[1] >> 4) & 0x07].Name);
             break;
-
-            // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
-            // 1と4,5は違う処理
-            // Depending on the convenience of the object's database (1, 4, 5, because there is one additional element)
-            // 1, 4 and 5 are different processes
-        case 1:
-            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
-            break;
-        case 4:
-        case 5:
-            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07) + 1].Name);
-            break;
-        case 2:
-        {
-            BYTE bHeight;
-            bHeight = lpbBuf[1] & 0x0F;
-            if (0x00 <= bHeight && bHeight <= 0x0B)
-                wsprintf(lpszBuf, STRING_OBJLIST_LENCASTLE, 0x0B - bHeight + 1);
-            else
-                wsprintf(lpszBuf, STRING_OBJLIST_CRASH);
-        }
-        break;
-        case 3:
-            if (!((lpbBuf[1] >> 3) & 0x01))
-                wsprintf(lpszBuf, STRING_OBJLIST_STEP, (lpbBuf[1] & 0x07) + 1, (lpbBuf[1] & 0x07) + 1);
-            else
-            {
-                BYTE bLower;
-                bLower = (lpbBuf[1] & 0x07);
-                if (0 <= bLower && bLower <= 0x03)
-                    wsprintf(lpszBuf, STRING_OBJLIST_STEP98);
-                else if (0x04 <= bLower && bLower <= 0x06)
-                    wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
-                else if (0x07 == bLower)
-                    wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
+        case 0x0D:
+            if (!(lpbBuf[1] & 0x40))
+                wsprintf(lpszBuf, __T("%s:%.2d"), smbMapObjectInfoD[0].Name,
+                         lpbBuf[1] & 0x3F);
+            else {
+                if ((lpbBuf[1] & 0x70) == 0x40)
+                    wsprintf(lpszBuf, __T("%s"),
+                             smbMapObjectInfoD[(lpbBuf[1] & 0x0F) + 1].Name);
+                else
+                    wsprintf(lpszBuf, STRING_OBJLIST_UNKNOWN);
             }
             break;
-        case 6:
-        case 7:
-            wsprintf(lpszBuf, STRING_OBJLIST_NONE);
-            break;
-        }
-    }
-    break;
-    default:
-        if (!(lpbBuf[1] & 0x70))
-        {
-            wsprintf(lpszBuf, __T("%s"), smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
-        }
-        else if ((lpbBuf[1] & 0x70) != 0x70)
-        {
-            wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
-        }
-        else
-        {
-            // 土管
-            // Pipe
-            if (lpbBuf[1] & 0x08)
-                wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x07) + 1, smbMapObjectInfo0B[0x17].Name);
+        case 0x0E:
+            if (lpbBuf[1] & 0x40)
+                wsprintf(lpszBuf, STRING_OBJLIST_BACK,
+                         smbMapHeadBackColor[lpbBuf[1] & 0x07]);
             else
-                wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1, smbMapObjectInfo0B[0x16].Name);
-        }
-        break;
+                wsprintf(lpszBuf, STRING_OBJLIST_VIEWBLOCK,
+                         smbMapHeadView[(lpbBuf[1] >> 4) & 0x03],
+                         smbMapBasicBlock[lpbBuf[1] & 0x0F].Name);
+            break;
+        case 0x0F: {
+            switch ((lpbBuf[1] >> 4) & 0x07) {
+                case 0:
+                    wsprintf(lpszBuf, STRING_OBJLIST_ROPE);
+                    break;
+
+                    // オブジェクトのデータベースの都合(1と4,5との間には、追加の要素が1つ入っているため)により、
+                    // 1と4,5は違う処理
+                    // Depending on the convenience of the object's database (1, 4, 5,
+                    // because there is one additional element) 1, 4 and 5 are different
+                    // processes
+                case 1:
+                    wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1,
+                             smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07)].Name);
+                    break;
+                case 4:
+                case 5:
+                    wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1,
+                             smbMapObjectInfoF[((lpbBuf[1] >> 4) & 0x07) + 1].Name);
+                    break;
+                case 2: {
+                    BYTE bHeight;
+                    bHeight = lpbBuf[1] & 0x0F;
+                    if (0x00 <= bHeight && bHeight <= 0x0B)
+                        wsprintf(lpszBuf, STRING_OBJLIST_LENCASTLE, 0x0B - bHeight + 1);
+                    else
+                        wsprintf(lpszBuf, STRING_OBJLIST_CRASH);
+                } break;
+                case 3:
+                    if (!((lpbBuf[1] >> 3) & 0x01))
+                        wsprintf(lpszBuf, STRING_OBJLIST_STEP, (lpbBuf[1] & 0x07) + 1,
+                                 (lpbBuf[1] & 0x07) + 1);
+                    else {
+                        BYTE bLower;
+                        bLower = (lpbBuf[1] & 0x07);
+                        if (0 <= bLower && bLower <= 0x03)
+                            wsprintf(lpszBuf, STRING_OBJLIST_STEP98);
+                        else if (0x04 <= bLower && bLower <= 0x06)
+                            wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
+                        else if (0x07 == bLower)
+                            wsprintf(lpszBuf, STRING_OBJLIST_STEP98_2);
+                    }
+                    break;
+                case 6:
+                case 7:
+                    wsprintf(lpszBuf, STRING_OBJLIST_NONE);
+                    break;
+            }
+        } break;
+        default:
+            if (!(lpbBuf[1] & 0x70)) {
+                wsprintf(lpszBuf, __T("%s"), smbMapObjectInfo0B[lpbBuf[1] & 0x0F].Name);
+            } else if ((lpbBuf[1] & 0x70) != 0x70) {
+                wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1,
+                         smbMapObjectInfo0B[0x0F + ((lpbBuf[1] >> 4) & 0x07)].Name);
+            } else {
+                // 土管
+                // Pipe
+                if (lpbBuf[1] & 0x08)
+                    wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x07) + 1,
+                             smbMapObjectInfo0B[0x17].Name);
+                else
+                    wsprintf(lpszBuf, STRING_OBJLIST_LENNAME, (lpbBuf[1] & 0x0F) + 1,
+                             smbMapObjectInfo0B[0x16].Name);
+            }
+            break;
     }
 }
 
-static BOOL smbMapCommand(BOOL blQuietUpdate)
-{
+static BOOL smbMapCommand(BOOL blQuietUpdate) {
     OBJECTSEEKINFO ObjSeek;
     int n;
 
-    if (MapSeekFirst(&ObjSeek, GETADDRESS_CURRENT_EDITTING))
-    {
-        for (n = 0;; n++)
-        {
+    if (MapSeekFirst(&ObjSeek, GETADDRESS_CURRENT_EDITTING)) {
+        for (n = 0;; n++) {
             LPTSTR cBuf = GetTempStringBuffer();
             LVITEM lvItem;
 
@@ -194,8 +185,7 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
             // binary
             wsprintf(cBuf, __T("%.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1]);
 
-            if (blQuietUpdate)
-            {
+            if (blQuietUpdate) {
                 BYTE bBuf[2];
                 LPTSTR cCurText = GetTempStringBuffer2();
                 lvItem.iItem = n;
@@ -203,16 +193,12 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
                 lvItem.mask = LVIF_TEXT;
                 lvItem.pszText = cCurText;
                 lvItem.cchTextMax = TMPSTRBUFSIZ;
-                if (ListView_GetItem(g_hWndListView, &lvItem))
-                {
+                if (ListView_GetItem(g_hWndListView, &lvItem)) {
                     _stscanf(cCurText, __T("%hhx %hhx"), &bBuf[0], &bBuf[1]);
-                    if (!memcmp(bBuf, ObjSeek.pbData, 2))
-                        goto CANCEL_SET_ITEM_TEXT;
+                    if (!memcmp(bBuf, ObjSeek.pbData, 2)) goto CANCEL_SET_ITEM_TEXT;
                 }
                 ListView_SetItemText(g_hWndListView, n, 0, cBuf);
-            }
-            else
-            {
+            } else {
                 memset(&lvItem, 0, sizeof(LVITEM));
                 lvItem.mask = LVIF_TEXT;
                 lvItem.iItem = n;
@@ -228,7 +214,8 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
 
             // 位置
             // position
-            wsprintf(cBuf, __T("(%d,%d)"), GetMapXPos(ObjSeek.pbData), GetMapYPos(ObjSeek.pbData));
+            wsprintf(cBuf, __T("(%d,%d)"), GetMapXPos(ObjSeek.pbData),
+                     GetMapYPos(ObjSeek.pbData));
             ListView_SetItemText(g_hWndListView, n, 2, cBuf);
 
             // 種類
@@ -251,44 +238,41 @@ static BOOL smbMapCommand(BOOL blQuietUpdate)
   Display enemy information
 
 ***************************************************/
-void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf)
-{
+void FormatBadGuysString(LPBYTE lpbBuf, LPTSTR lpszBuf) {
     LPTSTR bit6[] = {STRING_EMPTY, STRING_OBJLIST_HARD};
 
-    switch (lpbBuf[0] & 0x0F)
-    {
-        // ルーム間移動の命令（３バイト）
-        // Room transfer instruction (3 bytes)
-    case 0x0E:
-    {
-        LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND, STRING_CASTLE};
-        wsprintf(lpszBuf, STRING_OBJLIST_ROOM, lpbBuf[1] & 0x7F, lpAttr[(lpbBuf[1] >> 5) & 0x03], ((lpbBuf[2] >> 5) & 0x07) + 1, lpbBuf[2] & 0x1F);
-    }
-    break;
+    switch (lpbBuf[0] & 0x0F) {
+            // ルーム間移動の命令（３バイト）
+            // Room transfer instruction (3 bytes)
+        case 0x0E: {
+            LPTSTR lpAttr[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND,
+                               STRING_CASTLE};
+            wsprintf(lpszBuf, STRING_OBJLIST_ROOM, lpbBuf[1] & 0x7F,
+                     lpAttr[(lpbBuf[1] >> 5) & 0x03], ((lpbBuf[2] >> 5) & 0x07) + 1,
+                     lpbBuf[2] & 0x1F);
+        } break;
 
-    // 送りコマンド（２バイト）
-    // Feed command (2 bytes)
-    case 0x0F:
-        wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1] & 0x3F);
-        break;
-    default:
+        // 送りコマンド（２バイト）
+        // Feed command (2 bytes)
+        case 0x0F:
+            wsprintf(lpszBuf, STRING_OBJLIST_PAGECOMMAND, lpbBuf[1] & 0x3F);
+            break;
+        default:
 
-        //（敵キャラコマンド）
-        // (Enemy character command)
-    {
-        wsprintf(lpszBuf, __T("%s%s"), smbBadGuysInfo[lpbBuf[1] & 0x3f].Name, bit6[(lpbBuf[1] >> 6) & 0x01]);
-    }
+            // （敵キャラコマンド）
+            //  (Enemy character command)
+            {
+                wsprintf(lpszBuf, __T("%s%s"), smbBadGuysInfo[lpbBuf[1] & 0x3f].Name,
+                         bit6[(lpbBuf[1] >> 6) & 0x01]);
+            }
     }
 }
-static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
-{
+static BOOL smbBadGuysCommand(BOOL blQuietUpdate) {
     OBJECTSEEKINFO ObjSeek;
     int n;
 
-    if (BadGuysSeekFirst(&ObjSeek, GETADDRESS_CURRENT_EDITTING))
-    {
-        for (n = 0;; n++)
-        {
+    if (BadGuysSeekFirst(&ObjSeek, GETADDRESS_CURRENT_EDITTING)) {
+        for (n = 0;; n++) {
             LPTSTR cBuf = GetTempStringBuffer();
             LVITEM lvItem;
 
@@ -297,10 +281,10 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
             if (ObjSeek.dwObjLen == 2)
                 wsprintf(cBuf, __T("%.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1]);
             else
-                wsprintf(cBuf, __T("%.2x %.2x %.2x"), ObjSeek.pbData[0], ObjSeek.pbData[1], ObjSeek.pbData[2]);
+                wsprintf(cBuf, __T("%.2x %.2x %.2x"), ObjSeek.pbData[0],
+                         ObjSeek.pbData[1], ObjSeek.pbData[2]);
 
-            if (blQuietUpdate)
-            {
+            if (blQuietUpdate) {
                 BYTE bBuf[3];
                 LPTSTR cCurText = GetTempStringBuffer2();
                 int iSizeLV, iSizeSrc;
@@ -309,17 +293,15 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
                 lvItem.mask = LVIF_TEXT;
                 lvItem.pszText = cCurText;
                 lvItem.cchTextMax = TMPSTRBUFSIZ;
-                if (ListView_GetItem(g_hWndListView, &lvItem))
-                {
-                    iSizeLV = _stscanf(cCurText, __T("%hhx %hhx %hhx"), &bBuf[0], &bBuf[1], &bBuf[2]);
+                if (ListView_GetItem(g_hWndListView, &lvItem)) {
+                    iSizeLV = _stscanf(cCurText, __T("%hhx %hhx %hhx"), &bBuf[0],
+                                       &bBuf[1], &bBuf[2]);
                     iSizeSrc = BadGuysGetDataLength(ObjSeek.pbData);
                     if (iSizeLV == iSizeSrc && !memcmp(bBuf, ObjSeek.pbData, iSizeSrc))
                         goto CANCEL_SET_ITEM_TEXT;
                     ListView_SetItemText(g_hWndListView, n, 0, cBuf);
                 }
-            }
-            else
-            {
+            } else {
                 memset(&lvItem, 0, sizeof(LVITEM));
                 lvItem.mask = LVIF_TEXT;
                 lvItem.iItem = n;
@@ -335,7 +317,8 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
 
             // 位置
             // position
-            wsprintf(cBuf, __T("(%d,%d)"), GetBadGuysXPos(ObjSeek.pbData), GetBadGuysYPos(ObjSeek.pbData));
+            wsprintf(cBuf, __T("(%d,%d)"), GetBadGuysXPos(ObjSeek.pbData),
+                     GetBadGuysYPos(ObjSeek.pbData));
             ListView_SetItemText(g_hWndListView, n, 2, cBuf);
 
             // 種類
@@ -356,14 +339,12 @@ static BOOL smbBadGuysCommand(BOOL blQuietUpdate)
   Update list box
 
 ***************************************************/
-void UpdateObjectList(DWORD dwUpdateFlag)
-{
+void UpdateObjectList(DWORD dwUpdateFlag) {
     if (!gblIsROMLoaded) return;
 
-    //Set redraw mode and delete all items
+    // Set redraw mode and delete all items
     SendMessage(g_hWndListView, WM_SETREDRAW, (WPARAM)FALSE, 0);
-    if (!(dwUpdateFlag & 1))
-        ListView_DeleteAllItems(g_hWndListView);
+    if (!(dwUpdateFlag & 1)) ListView_DeleteAllItems(g_hWndListView);
 
     if (GetMapEditMode())
         smbBadGuysCommand(dwUpdateFlag & 1);
@@ -385,176 +366,188 @@ void UpdateObjectList(DWORD dwUpdateFlag)
 
 #define RESTART_PAGE_ADDRESS 0x91F7
 
-int GetHalfPointPage(int w, int a)
-{
+int GetHalfPointPage(int w, int a) {
     BYTE bTmp;
     ADDRESSDATA adRestartPageAddress;
 
     ADDRESSDATA_LOAD(adRestartPageAddress, RESTART_PAGE_ADDRESS);
 
-    bTmp = *(bPRGROM + ADDRESSDATA_GET(adRestartPageAddress) + w * 2 + ((a >> 1) & 0x01));
+    bTmp = *(bPRGROM + ADDRESSDATA_GET(adRestartPageAddress) + w * 2 +
+             ((a >> 1) & 0x01));
     bTmp >>= (!(a & 0x01)) * 4;
     bTmp &= 0x0F;
 
     return bTmp;
 }
 
-LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    case WM_INITDIALOG:
-    {
-        register int n;
-        BYTE bRoomID;
-        BYTE bBuf[2];
-        LPTSTR AttrName[] = {STRING_SEA,STRING_SKY,STRING_UNDERGROUND,STRING_CASTLE};
+LRESULT CALLBACK MapComHeadEditDlgProc(HWND hDlg, UINT message, WPARAM wParam,
+                                       LPARAM lParam) {
+    switch (message) {
+        case WM_INITDIALOG: {
+            register int n;
+            BYTE bRoomID;
+            BYTE bBuf[2];
+            LPTSTR AttrName[] = {STRING_SEA, STRING_SKY, STRING_UNDERGROUND,
+                                 STRING_CASTLE};
 
-        // ルームの属性
-        // Room attributes
-        for (n = 0; n < 4; n++)
-            SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_ADDSTRING, 0, (LPARAM)AttrName[n]);
-        bRoomID = GetRoomID();
-        SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_SETCURSEL, (bRoomID >> 5) & 0x03, 0);
+            // ルームの属性
+            // Room attributes
+            for (n = 0; n < 4; n++)
+                SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_ADDSTRING, 0,
+                                   (LPARAM)AttrName[n]);
+            bRoomID = GetRoomID();
+            SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_SETCURSEL, (bRoomID >> 5) & 0x03,
+                               0);
 
-        // 途中からのページ
-        // Page from halfway
-        for (n = 0; n < 16; n++)
-        {
-            TCHAR cTmp[3];
-            wsprintf(cTmp, __T("%d"), n);
-            SendDlgItemMessage(hDlg, IDC_PAGE, CB_ADDSTRING, 0, (LPARAM)cTmp);
-        }
-
-        if (!rm_IsSubRoom())
-        {
-            SendDlgItemMessage(hDlg, IDC_PAGE, CB_SETCURSEL, GetHalfPointPage(g_iWorld, g_iArea), 0);
-        }
-        else
-        {
-            EnableWindow(GetDlgItem(hDlg, IDC_PAGE), FALSE);
-            EnableWindow(GetDlgItem(hDlg, IDC_STATIC_PAGE), FALSE);
-        }
-
-        GetMapHeadData(GETADDRESS_CURRENT_EDITTING, bBuf);
-        for (n = 0; n < 4; n++)
-            SendDlgItemMessage(hDlg, IDC_TIME, CB_ADDSTRING, 0, (LPARAM)smbMapHeadTime[n]);
-        SendDlgItemMessage(hDlg, IDC_TIME, CB_SETCURSEL, (WPARAM)((bBuf[0] >> 6) & 0x03), 0);
-        for (n = 0; n < 8; n++)
-            SendDlgItemMessage(hDlg, IDC_POSITION, CB_ADDSTRING, 0, (LPARAM)smbMapHeadPosition[n]);
-        SendDlgItemMessage(hDlg, IDC_POSITION, CB_SETCURSEL, (WPARAM)((bBuf[0] >> 3) & 0x07), 0);
-        for (n = 0; n < 8; n++)
-            SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_ADDSTRING, 0, (LPARAM)smbMapHeadBackColor[n]);
-        SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_SETCURSEL, bBuf[0] & 0x07, 0);
-        for (n = 0; n < 4; n++)
-            SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_ADDSTRING, 0, (LPARAM)smbMapHeadMapType[n]);
-        SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_SETCURSEL, (bBuf[1] >> 6) & 0x03, 0);
-        for (n = 0; n < 4; n++)
-            SendDlgItemMessage(hDlg, IDC_VIEW, CB_ADDSTRING, 0, (LPARAM)smbMapHeadView[n]);
-        SendDlgItemMessage(hDlg, IDC_VIEW, CB_SETCURSEL, (bBuf[1] >> 4) & 0x03, 0);
-        for (n = 0; n < 16; n++)
-            SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_ADDSTRING, 0, (LPARAM)smbMapBasicBlock[n].Name);
-        SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_SETCURSEL, bBuf[1] & 0x0F, 0);
-
-        return TRUE;
-    }
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDOK:
-        {
-            BYTE bBuf[2] = {0};
-            BYTE bTmp;
-            int iNewAttr;
-
-            undoPrepare(UNDONAME_HEADDLG);
-
-            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_TIME, CB_GETCURSEL, 0, 0);
-            bBuf[0] |= ((bTmp & 0x3) << 6);
-            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_POSITION, CB_GETCURSEL, 0, 0);
-            bBuf[0] |= ((bTmp & 0x7) << 3);
-            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_GETCURSEL, 0, 0);
-            bBuf[0] |= (bTmp & 0x07);
-            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_GETCURSEL, 0, 0);
-            bBuf[1] |= ((bTmp & 0x3) << 6);
-            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_VIEW, CB_GETCURSEL, 0, 0);
-            bBuf[1] |= ((bTmp & 0x3) << 4);
-            bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_GETCURSEL, 0, 0);
-            bBuf[1] |= (bTmp & 0x0F);
-
-            memcpy(bPRGROM + GetMapAddress(GETADDRESS_CURRENT_EDITTING), bBuf, 2);
-
-            iNewAttr = (int)SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_GETCURSEL, 0, 0);
-
-            ChangeRoomAttribute(GetRoomID(), iNewAttr & 0x03);
-
-            // 途中から
-            // On the way
-            if (!rm_IsSubRoom())
-            {
-                BYTE bTmp;
-                BYTE bMask = 0xF0;
-                BYTE bSel;
-                ADDRESSDATA adRestartPageAddress;
-
-                ADDRESSDATA_LOAD(adRestartPageAddress, RESTART_PAGE_ADDRESS);
-
-                bSel = (BYTE)SendDlgItemMessage(hDlg, IDC_PAGE, CB_GETCURSEL, 0, 0);
-                bSel <<= (!(g_iArea & 0x01)) * 4;
-                bMask >>= (!(g_iArea & 0x01)) * 4;
-                bTmp = bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)];
-
-                bTmp &= bMask;
-                bTmp |= bSel;
-
-                // ROMの保護のために絶対に必要
-                // Absolutely necessary for ROM protection
-                if (g_iWorld >= 0 && g_iWorld < GetNumWorlds())
-                    bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) + g_iWorld * 2 + ((g_iArea >> 1) & 0x01)] = bTmp;
+            // 途中からのページ
+            // Page from halfway
+            for (n = 0; n < 16; n++) {
+                TCHAR cTmp[3];
+                wsprintf(cTmp, __T("%d"), n);
+                SendDlgItemMessage(hDlg, IDC_PAGE, CB_ADDSTRING, 0, (LPARAM)cTmp);
             }
 
-            fr_SetDataChanged(TRUE);
+            if (!rm_IsSubRoom()) {
+                SendDlgItemMessage(hDlg, IDC_PAGE, CB_SETCURSEL,
+                                   GetHalfPointPage(g_iWorld, g_iArea), 0);
+            } else {
+                EnableWindow(GetDlgItem(hDlg, IDC_PAGE), FALSE);
+                EnableWindow(GetDlgItem(hDlg, IDC_STATIC_PAGE), FALSE);
+            }
 
-            UpdateObjectList(0);
-            UpdateObjectView(0);
-            UpdateStatusBarRoomInfoText(NULL);
-        }
-        case IDCANCEL:
-            EndDialog(hDlg, TRUE);
+            GetMapHeadData(GETADDRESS_CURRENT_EDITTING, bBuf);
+            for (n = 0; n < 4; n++)
+                SendDlgItemMessage(hDlg, IDC_TIME, CB_ADDSTRING, 0,
+                                   (LPARAM)smbMapHeadTime[n]);
+            SendDlgItemMessage(hDlg, IDC_TIME, CB_SETCURSEL,
+                               (WPARAM)((bBuf[0] >> 6) & 0x03), 0);
+            for (n = 0; n < 8; n++)
+                SendDlgItemMessage(hDlg, IDC_POSITION, CB_ADDSTRING, 0,
+                                   (LPARAM)smbMapHeadPosition[n]);
+            SendDlgItemMessage(hDlg, IDC_POSITION, CB_SETCURSEL,
+                               (WPARAM)((bBuf[0] >> 3) & 0x07), 0);
+            for (n = 0; n < 8; n++)
+                SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_ADDSTRING, 0,
+                                   (LPARAM)smbMapHeadBackColor[n]);
+            SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_SETCURSEL, bBuf[0] & 0x07, 0);
+            for (n = 0; n < 4; n++)
+                SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_ADDSTRING, 0,
+                                   (LPARAM)smbMapHeadMapType[n]);
+            SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_SETCURSEL, (bBuf[1] >> 6) & 0x03,
+                               0);
+            for (n = 0; n < 4; n++)
+                SendDlgItemMessage(hDlg, IDC_VIEW, CB_ADDSTRING, 0,
+                                   (LPARAM)smbMapHeadView[n]);
+            SendDlgItemMessage(hDlg, IDC_VIEW, CB_SETCURSEL, (bBuf[1] >> 4) & 0x03, 0);
+            for (n = 0; n < 16; n++)
+                SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_ADDSTRING, 0,
+                                   (LPARAM)smbMapBasicBlock[n].Name);
+            SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_SETCURSEL, bBuf[1] & 0x0F, 0);
+
             return TRUE;
         }
+        case WM_COMMAND:
+            switch (LOWORD(wParam)) {
+                case IDOK: {
+                    BYTE bBuf[2] = {0};
+                    BYTE bTmp;
+                    int iNewAttr;
+
+                    undoPrepare(UNDONAME_HEADDLG);
+
+                    bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_TIME, CB_GETCURSEL, 0, 0);
+                    bBuf[0] |= ((bTmp & 0x3) << 6);
+                    bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_POSITION, CB_GETCURSEL, 0,
+                                                    0);
+                    bBuf[0] |= ((bTmp & 0x7) << 3);
+                    bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_BACKCOLOR, CB_GETCURSEL,
+                                                    0, 0);
+                    bBuf[0] |= (bTmp & 0x07);
+                    bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_MAPTYPE, CB_GETCURSEL, 0,
+                                                    0);
+                    bBuf[1] |= ((bTmp & 0x3) << 6);
+                    bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_VIEW, CB_GETCURSEL, 0, 0);
+                    bBuf[1] |= ((bTmp & 0x3) << 4);
+                    bTmp = (BYTE)SendDlgItemMessage(hDlg, IDC_FIRSTBLOCK, CB_GETCURSEL,
+                                                    0, 0);
+                    bBuf[1] |= (bTmp & 0x0F);
+
+                    memcpy(bPRGROM + GetMapAddress(GETADDRESS_CURRENT_EDITTING), bBuf,
+                           2);
+
+                    iNewAttr = (int)SendDlgItemMessage(hDlg, IDC_MAPATTR, CB_GETCURSEL,
+                                                       0, 0);
+
+                    ChangeRoomAttribute(GetRoomID(), iNewAttr & 0x03);
+
+                    // 途中から
+                    // On the way
+                    if (!rm_IsSubRoom()) {
+                        BYTE bTmp;
+                        BYTE bMask = 0xF0;
+                        BYTE bSel;
+                        ADDRESSDATA adRestartPageAddress;
+
+                        ADDRESSDATA_LOAD(adRestartPageAddress, RESTART_PAGE_ADDRESS);
+
+                        bSel = (BYTE)SendDlgItemMessage(hDlg, IDC_PAGE, CB_GETCURSEL, 0,
+                                                        0);
+                        bSel <<= (!(g_iArea & 0x01)) * 4;
+                        bMask >>= (!(g_iArea & 0x01)) * 4;
+                        bTmp = bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) +
+                                       g_iWorld * 2 + ((g_iArea >> 1) & 0x01)];
+
+                        bTmp &= bMask;
+                        bTmp |= bSel;
+
+                        // ROMの保護のために絶対に必要
+                        // Absolutely necessary for ROM protection
+                        if (g_iWorld >= 0 && g_iWorld < GetNumWorlds())
+                            bPRGROM[ADDRESSDATA_GET(adRestartPageAddress) +
+                                    g_iWorld * 2 + ((g_iArea >> 1) & 0x01)] = bTmp;
+                    }
+
+                    fr_SetDataChanged(TRUE);
+
+                    UpdateObjectList(0);
+                    UpdateObjectView(0);
+                    UpdateStatusBarRoomInfoText(NULL);
+                }
+                case IDCANCEL:
+                    EndDialog(hDlg, TRUE);
+                    return TRUE;
+            }
     }
     return FALSE;
 }
 
-static void ResizeListView(HWND hwndListView, HWND hwndParent)
-{
-    RECT  rc;
+static void ResizeListView(HWND hwndListView, HWND hwndParent) {
+    RECT rc;
 
     GetClientRect(hwndParent, &rc);
 
-    MoveWindow(hwndListView, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, TRUE);
+    MoveWindow(hwndListView, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top,
+               TRUE);
 }
 
-static HWND CreateListView(HWND hwndParent)
-{
-    HWND        hwndListView;
-    BOOL        bSuccess = TRUE;
+static HWND CreateListView(HWND hwndParent) {
+    HWND hwndListView;
+    BOOL bSuccess = TRUE;
 
-    hwndListView = CreateWindowEx(0,          // ex style
-                                  WC_LISTVIEW,               // class name - defined in commctrl.h
-                                  STRING_EMPTY,                        // dummy text
-                                  WS_TABSTOP | WS_CHILD | WS_VISIBLE |
-                                  LVS_AUTOARRANGE | LVS_REPORT |
-                                  LVS_SHOWSELALWAYS | LVS_SINGLESEL,                   // style
-                                  0,                         // x position
-                                  0,                         // y position
-                                  0,                         // width
-                                  0,                         // height
-                                  hwndParent,                // parent
-                                  (HMENU)IDW_LISTVIEW,        // ID
-                                  GetModuleHandle(NULL),                   // instance
-                                  NULL);                     // no extra data
+    hwndListView = CreateWindowEx(0,             // ex style
+                                  WC_LISTVIEW,   // class name - defined in commctrl.h
+                                  STRING_EMPTY,  // dummy text
+                                  WS_TABSTOP | WS_CHILD | WS_VISIBLE | LVS_AUTOARRANGE |
+                                          LVS_REPORT | LVS_SHOWSELALWAYS |
+                                          LVS_SINGLESEL,  // style
+                                  0,                      // x position
+                                  0,                      // y position
+                                  0,                      // width
+                                  0,                      // height
+                                  hwndParent,             // parent
+                                  (HMENU)IDW_LISTVIEW,    // ID
+                                  GetModuleHandle(NULL),  // instance
+                                  NULL);                  // no extra data
 
     if (!hwndListView) return NULL;
 
@@ -565,44 +558,37 @@ static HWND CreateListView(HWND hwndParent)
 
 #define LISTVIEW_COLUMNS 4
 
-static void LoadListViewColumnWidth(int *piWidth)
-{
+static void LoadListViewColumnWidth(int* piWidth) {
     int n;
     DWORD dwWidth;
-    LPTSTR lpRegKey[LISTVIEW_COLUMNS] = {INI_OBJECTLIST_COLUMNWIDTH0,
-                                       INI_OBJECTLIST_COLUMNWIDTH1,
-                                       INI_OBJECTLIST_COLUMNWIDTH2,
-                                       INI_OBJECTLIST_COLUMNWIDTH3};
-    for (n = 0; n < 4; n++)
-    {
-        if (ReadFromRegistry(lpRegKey[n], REG_DWORD, &dwWidth, sizeof(DWORD)))
-        {
+    LPTSTR lpRegKey[LISTVIEW_COLUMNS] = {
+            INI_OBJECTLIST_COLUMNWIDTH0, INI_OBJECTLIST_COLUMNWIDTH1,
+            INI_OBJECTLIST_COLUMNWIDTH2, INI_OBJECTLIST_COLUMNWIDTH3};
+    for (n = 0; n < 4; n++) {
+        if (ReadFromRegistry(lpRegKey[n], REG_DWORD, &dwWidth, sizeof(DWORD))) {
             piWidth[n] = dwWidth;
         }
     }
 }
 
-static BOOL InitListView(HWND hwndListView)
-{
+static BOOL InitListView(HWND hwndListView) {
     LV_COLUMN lvColumn;
     int i;
-    LPTSTR szString[LISTVIEW_COLUMNS] = {STRING_OBJLIST_COLUMN_BIN,
-                                            STRING_OBJLIST_COLUMN_PAGE,
-                                            STRING_OBJLIST_COLUMN_POS,
-                                            STRING_OBJLIST_COLUMN_TYPE};
-    int iWidth[LISTVIEW_COLUMNS] = {50,45,55,200};
+    LPTSTR szString[LISTVIEW_COLUMNS] = {
+            STRING_OBJLIST_COLUMN_BIN, STRING_OBJLIST_COLUMN_PAGE,
+            STRING_OBJLIST_COLUMN_POS, STRING_OBJLIST_COLUMN_TYPE};
+    int iWidth[LISTVIEW_COLUMNS] = {50, 45, 55, 200};
 
-    //empty the list
+    // empty the list
     ListView_DeleteAllItems(hwndListView);
 
     LoadListViewColumnWidth(iWidth);
 
-    //initialize the columns
+    // initialize the columns
     lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
     lvColumn.fmt = LVCFMT_LEFT;
 
-    for (i = 0; i < LISTVIEW_COLUMNS; i++)
-    {
+    for (i = 0; i < LISTVIEW_COLUMNS; i++) {
         lvColumn.cx = iWidth[i];
         lvColumn.pszText = szString[i];
         ListView_InsertColumn(hwndListView, i, &lvColumn);
@@ -610,17 +596,14 @@ static BOOL InitListView(HWND hwndListView)
     return TRUE;
 }
 
-static void SaveListViewColumnWidth()
-{
+static void SaveListViewColumnWidth() {
     int n;
     DWORD dwWidth;
-    LPTSTR lpRegKey[LISTVIEW_COLUMNS] = {INI_OBJECTLIST_COLUMNWIDTH0,
-                                        INI_OBJECTLIST_COLUMNWIDTH1,
-                                        INI_OBJECTLIST_COLUMNWIDTH2,
-                                        INI_OBJECTLIST_COLUMNWIDTH3};
+    LPTSTR lpRegKey[LISTVIEW_COLUMNS] = {
+            INI_OBJECTLIST_COLUMNWIDTH0, INI_OBJECTLIST_COLUMNWIDTH1,
+            INI_OBJECTLIST_COLUMNWIDTH2, INI_OBJECTLIST_COLUMNWIDTH3};
 
-    for (n = 0; n < 4; n++)
-    {
+    for (n = 0; n < 4; n++) {
         dwWidth = (DWORD)ListView_GetColumnWidth(g_hWndListView, n);
         WriteToRegistry(lpRegKey[n], REG_DWORD, &dwWidth, sizeof(DWORD));
     }
@@ -633,109 +616,94 @@ static void SaveListViewColumnWidth()
   Main Window
 
 *********************/
-LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    case WM_SIZE:
-    {
-        ResizeListView(g_hWndListView, hWnd);
-    }
-    break;
-    case WM_LVSELCHANGE:
-    {
-        int iRet;
-
-        iRet = ListView_GetNextItem(g_hWndListView, -1, LVNI_SELECTED);
-        if (iRet == -1) break;
-        SetSelectedItem(iRet, TRUE);
-        UpdateObjectViewCursole();
-        UpdateObjectView(0);
-    }
-    break;
-    case WM_NOTIFY:
-    {
-        LPNMHDR  lpnmh = (LPNMHDR)lParam;
-        switch (lpnmh->code)
-        {
-        case NM_RDBLCLK:
-        case NM_DBLCLK:
-        case NM_RETURN:
-        {
+LRESULT FAR PASCAL MapEditWndProc(HWND hWnd, UINT message, WPARAM wParam,
+                                  LPARAM lParam) {
+    switch (message) {
+        case WM_SIZE: {
+            ResizeListView(g_hWndListView, hWnd);
+        } break;
+        case WM_LVSELCHANGE: {
             int iRet;
+
             iRet = ListView_GetNextItem(g_hWndListView, -1, LVNI_SELECTED);
             if (iRet == -1) break;
-            iRet = GetSelectedIndex();
-            if (GetMapEditMode())
-                DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd, BadGuysComEditDlgProc);
-            else
-                DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd, MapComEditDlgProc);
-        }
-        break;
-        case NM_RCLICK:
-            if (!gblIsROMLoaded) break;
-            DialogBox(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd, SendObjectDlgProc);
-            break;
-        case NM_CLICK:
-        case LVN_KEYDOWN:
-        {
-            PostMessage(hWnd, WM_LVSELCHANGE, 0, 0);
-        }
-        break;
-        case NM_SETFOCUS:
+            SetSelectedItem(iRet, TRUE);
+            UpdateObjectViewCursole();
+            UpdateObjectView(0);
+        } break;
+        case WM_NOTIFY: {
+            LPNMHDR lpnmh = (LPNMHDR)lParam;
+            switch (lpnmh->code) {
+                case NM_RDBLCLK:
+                case NM_DBLCLK:
+                case NM_RETURN: {
+                    int iRet;
+                    iRet = ListView_GetNextItem(g_hWndListView, -1, LVNI_SELECTED);
+                    if (iRet == -1) break;
+                    iRet = GetSelectedIndex();
+                    if (GetMapEditMode())
+                        DialogBox(GetModuleHandle(NULL), __T("BADGUYSCOMEDITDLG"), hWnd,
+                                  BadGuysComEditDlgProc);
+                    else
+                        DialogBox(GetModuleHandle(NULL), __T("MAPCOMEDITDLG"), hWnd,
+                                  MapComEditDlgProc);
+                } break;
+                case NM_RCLICK:
+                    if (!gblIsROMLoaded) break;
+                    DialogBox(GetModuleHandle(NULL), __T("SENDOBJECTDLG"), hWnd,
+                              SendObjectDlgProc);
+                    break;
+                case NM_CLICK:
+                case LVN_KEYDOWN: {
+                    PostMessage(hWnd, WM_LVSELCHANGE, 0, 0);
+                } break;
+                case NM_SETFOCUS:
 
-            //			case NM_KILLFOCUS:
-        {
-            if (gblIsROMLoaded)
-            {
-                // set a scroll bar ensureing cursole is visible
-                ListView_EnsureVisible(g_hWndListView, GetSelectedIndex(), FALSE);
+                    //			case NM_KILLFOCUS:
+                    {
+                        if (gblIsROMLoaded) {
+                            // set a scroll bar ensureing cursole is visible
+                            ListView_EnsureVisible(g_hWndListView, GetSelectedIndex(),
+                                                   FALSE);
+                        }
+                    }
+                    break;
             }
-        }
-        break;
-        }
-    }
-    break;
-    case WM_SETFOCUS:
+        } break;
+        case WM_SETFOCUS:
 
-        // キーボードフォーカスをリストボックスへ
-        // Keyboard focus to list box
-        SetFocus(g_hWndListView);
-        break;
-    case WM_CREATE:
-    {
-        g_hWndListView = CreateListView(hWnd);
-        InitListView(g_hWndListView);
+            // キーボードフォーカスをリストボックスへ
+            // Keyboard focus to list box
+            SetFocus(g_hWndListView);
+            break;
+        case WM_CREATE: {
+            g_hWndListView = CreateListView(hWnd);
+            InitListView(g_hWndListView);
 
-        //DisableIME
-        ImmAssociateContext(g_hWndListView, (HIMC)NULL);
-        UpdateObjectList(0);
-        return 0;
-    }
-    case WM_DESTROY:
-    {
-        SaveListViewColumnWidth();
-        DestroyWindow(g_hWndListView);
-        g_hWndListView = NULL;
-    }
-    break;
-    case WM_SYSCOMMAND:
-    {
-        if (wParam == SC_CLOSE) return 0;
-    }
-    break;
-    default:
-        return DefMDIChildProc(hWnd, message, wParam, lParam);
+            // DisableIME
+            ImmAssociateContext(g_hWndListView, (HIMC)NULL);
+            UpdateObjectList(0);
+            return 0;
+        }
+        case WM_DESTROY: {
+            SaveListViewColumnWidth();
+            DestroyWindow(g_hWndListView);
+            g_hWndListView = NULL;
+        } break;
+        case WM_SYSCOMMAND: {
+            if (wParam == SC_CLOSE) return 0;
+        } break;
+        default:
+            return DefMDIChildProc(hWnd, message, wParam, lParam);
     }
     return DefMDIChildProc(hWnd, message, wParam, lParam);
 }
 
-#define MAPEDITWNDCLASSNAME  __T("MAPEDITWND")
+#define MAPEDITWNDCLASSNAME __T("MAPEDITWND")
 
-BOOL RegisterMapEditWndClass(HINSTANCE hInstance)
-{
-    WNDCLASS            wc;
-#define CBWNDEXTRA      12
+BOOL RegisterMapEditWndClass(HINSTANCE hInstance) {
+    WNDCLASS wc;
+#define CBWNDEXTRA 12
     wc.style = CS_HREDRAW | CS_VREDRAW | CS_NOCLOSE;
     wc.lpfnWndProc = MapEditWndProc;
     wc.cbClsExtra = 0;
@@ -747,26 +715,24 @@ BOOL RegisterMapEditWndClass(HINSTANCE hInstance)
     wc.lpszMenuName = NULL;
     wc.lpszClassName = MAPEDITWNDCLASSNAME;
 
-    if (!RegisterClass(&wc))return FALSE;
+    if (!RegisterClass(&wc)) return FALSE;
 
     return TRUE;
 }
 
-HWND CreateMapEditWnd(HINSTANCE hInstance, HWND hWndMDIClient)
-{
+HWND CreateMapEditWnd(HINSTANCE hInstance, HWND hWndMDIClient) {
     HWND hWnd;
 
     // WS_VISIBLEを指定して作成しないと、Windowﾒﾆｭｰにｳｲﾝﾄﾞｳが追加されない。
-    // If you do not create it with WS_VISIBLE specified, no window is added to the Window menu.
-    hWnd = CreateMDIWindow(MAPEDITWNDCLASSNAME,
-                           STRING_WINDOW_OBJLIST,
+    // If you do not create it with WS_VISIBLE specified, no window is added to the
+    // Window menu.
+    hWnd = CreateMDIWindow(MAPEDITWNDCLASSNAME, STRING_WINDOW_OBJLIST,
                            WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE,
-                           90,//CW_USEDEFAULT,
-                           60,//CW_USEDEFAULT,
+                           90,  // CW_USEDEFAULT,
+                           60,  // CW_USEDEFAULT,
                            GetSystemMetrics(SM_CXSCREEN) / 2,
                            GetSystemMetrics(SM_CYSCREEN) / 2,
-                           hWndMDIClient,//
-                           hInstance,
-                           0);
+                           hWndMDIClient,  //
+                           hInstance, 0);
     return hWnd;
 }

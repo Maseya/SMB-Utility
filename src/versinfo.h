@@ -13,6 +13,6 @@
 #define MAJORVERSION 1
 #define MINORVERSION 8
 
-#define THISYEAR     2013
+#define THISYEAR 2013
 
 #endif

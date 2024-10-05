@@ -14,8 +14,9 @@ Contributors: Chezzman1, Insectduel, MirracleMXX, Yy, spel werdz rite
 #ifndef STRINGS_H
 #define STRINGS_H
 
-#include <Windows.h>
 #include "resrc1.h"
+
+#include <Windows.h>
 
 void InitResourceStrings();
 

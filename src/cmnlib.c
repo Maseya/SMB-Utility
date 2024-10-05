@@ -7,44 +7,40 @@
   History:
 
  *********************************************************************/
-#include <windows.h>
-#include <shlwapi.h>
-#include <intrin.h>
-#include <tchar.h>
 #include "cmnlib.h"
+
+#include <windows.h>
+#include <intrin.h>
+#include <shlwapi.h>
+#include <tchar.h>
 
 TCHAR g_szTempStringBuffer[TMPSTRBUFSIZ];
 TCHAR g_szTempStringBuffer2[TMPSTRBUFSIZ];
 
-BOOL IsMMXAvailable()
-{
+BOOL IsMMXAvailable() {
     SYSTEM_INFO si;
     BOOL blReturn = FALSE;
 
     GetSystemInfo(&si);
 
-    if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
-    {
+    if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL) {
         int cpuid[4];
         __cpuid(cpuid, 1);
 
-        if (cpuid[3] & 0x00800000)
-            blReturn = TRUE;
+        if (cpuid[3] & 0x00800000) blReturn = TRUE;
     }
     return blReturn;
 }
 
-BOOL IsCommonControlSupported(DWORD dwVersion)
-{
+BOOL IsCommonControlSupported(DWORD dwVersion) {
     HINSTANCE hComCtl;
     BOOL fRet;
     DWORD dwInstalledVersion = 0;
 
-    //load the DLL
+    // load the DLL
     hComCtl = LoadLibrary(__T("comctl32.dll"));
-    if (hComCtl)
-    {
-        HRESULT           hr = S_OK;
+    if (hComCtl) {
+        HRESULT hr = S_OK;
         DLLGETVERSIONPROC pDllGetVersion;
         /*
         You must get this function explicitly because earlier versions of the DLL
@@ -52,32 +48,29 @@ BOOL IsCommonControlSupported(DWORD dwVersion)
         function a version marker in itself.
         */
         pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hComCtl, "DllGetVersion");
-        if (pDllGetVersion)
-        {
-            DLLVERSIONINFO    dvi;
+        if (pDllGetVersion) {
+            DLLVERSIONINFO dvi;
             ZeroMemory(&dvi, sizeof(dvi));
             dvi.cbSize = sizeof(dvi);
             hr = (*pDllGetVersion)(&dvi);
-            if (SUCCEEDED(hr))
-            {
-                if (dvi.dwMajorVersion == 4)
-                {
-                    switch (dvi.dwMinorVersion)
-                    {
-                    case 70: dwInstalledVersion = COMCTRL_V470; break;
-                    case 71: dwInstalledVersion = COMCTRL_V471; break;
-                    case 72: dwInstalledVersion = COMCTRL_V472; break;
+            if (SUCCEEDED(hr)) {
+                if (dvi.dwMajorVersion == 4) {
+                    switch (dvi.dwMinorVersion) {
+                        case 70:
+                            dwInstalledVersion = COMCTRL_V470;
+                            break;
+                        case 71:
+                            dwInstalledVersion = COMCTRL_V471;
+                            break;
+                        case 72:
+                            dwInstalledVersion = COMCTRL_V472;
+                            break;
                     }
-                }
-                else
-                {
-                    if (dvi.dwMajorVersion > 4)
-                        dwInstalledVersion = COMCTRL_LATER;
+                } else {
+                    if (dvi.dwMajorVersion > 4) dwInstalledVersion = COMCTRL_LATER;
                 }
             }
-        }
-        else
-        {
+        } else {
             /*
             If GetProcAddress failed, then the DLL is a version previous to the one
             shipped with IE 3.x.
@@ -93,8 +86,7 @@ BOOL IsCommonControlSupported(DWORD dwVersion)
     return FALSE;
 }
 
-void MyCheckMenuItem(HWND hWnd, UINT uItemID, UINT uCheck)
-{
+void MyCheckMenuItem(HWND hWnd, UINT uItemID, UINT uCheck) {
     MENUITEMINFO mii;
 
     memset(&mii, 0, sizeof(MENUITEMINFO));
@@ -107,8 +99,7 @@ void MyCheckMenuItem(HWND hWnd, UINT uItemID, UINT uCheck)
     SetMenuItemInfo(GetMenu(hWnd), uItemID, FALSE, &mii);
 }
 
-void MySetMenuItemText(HWND hWnd, UINT uItemID, LPTSTR lpText)
-{
+void MySetMenuItemText(HWND hWnd, UINT uItemID, LPTSTR lpText) {
     MENUITEMINFO mii;
 
     memset(&mii, 0, sizeof(MENUITEMINFO));
@@ -119,12 +110,12 @@ void MySetMenuItemText(HWND hWnd, UINT uItemID, LPTSTR lpText)
     SetMenuItemInfo(GetMenu(hWnd), uItemID, FALSE, &mii);
 }
 
-LPTSTR GetTempStringBuffer()
-{
-    g_szTempStringBuffer[0] = 0; return g_szTempStringBuffer;
+LPTSTR GetTempStringBuffer() {
+    g_szTempStringBuffer[0] = 0;
+    return g_szTempStringBuffer;
 }
 
-LPTSTR GetTempStringBuffer2()
-{
-    g_szTempStringBuffer2[0] = 0; return g_szTempStringBuffer2;
+LPTSTR GetTempStringBuffer2() {
+    g_szTempStringBuffer2[0] = 0;
+    return g_szTempStringBuffer2;
 }

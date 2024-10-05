@@ -11,20 +11,21 @@
 #define SMBUTIL_H
 
 #define _WIN32_IE 0x200
-#include <windows.h>//imm32.lib
-#include <windowsx.h>
-#include <commctrl.h>//Comctl32.lib
+#include "cmnlib.h"
+#include "common.h"
+#include "frame.h"
+#include "logview.h"
+#include "resource.h"
+#include "strings.h"
+#include "undo.h"
+
+#include <windows.h>   //imm32.lib
+#include <commctrl.h>  //Comctl32.lib
+#include <ctype.h>
 #include <process.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <tchar.h>
-#include "resource.h"
-#include "common.h"
-#include "frame.h"
-#include "undo.h"
-#include "cmnlib.h"
-#include "strings.h"
-#include "logview.h"
+#include <windowsx.h>
 
 #endif /* SMBUTIL_H */

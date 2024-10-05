@@ -21,7 +21,8 @@ void LoadTestPlaySettings();
   Test play setting dialog function
 
 **********************************/
-LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam,
+                                        LPARAM lParam);
 
 /*****************************************************************
 
@@ -42,7 +43,8 @@ BOOL RunEmulatorViewPage(UINT uRoomID, int iPage);
 
 /*********************************************************************************************
 
-void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int iHeight,BOOL blIsStretch)
+void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int
+iHeight,BOOL blIsStretch)
 
   blIsStretch TRUE  iDestX,iDestY,iWidth,iHeightへ１画面分、StretchBlt()行う
               FALSE iDestX,iDestYへiWidth,iHeight分、BitBlt()行う
@@ -52,10 +54,12 @@ void TransferFromEmuBackBuffer(HDC hDCDest,int iDestX,int iDestY,int iWidth,int 
   blIsStretch TRUE Perform one StretchBlt() for iDestX, iDestY, iWidth, iHeight
   FALSE iDestX, to iDestY iWidth, iHeight minutes, BitBlt() done
 
-  BitBlt from the back buffer of the emulator window to the device context specified by hDCDest
+  BitBlt from the back buffer of the emulator window to the device context specified by
+hDCDest
 
 *********************************************************************************************/
-void TransferFromEmuBackBuffer(HDC hDCDest, int iDestX, int iDestY, int iWidth, int iHeight, BOOL blIsStretch);
+void TransferFromEmuBackBuffer(HDC hDCDest, int iDestX, int iDestY, int iWidth,
+                               int iHeight, BOOL blIsStretch);
 
 void InstallEmulatorPalette(HDC hdc);
 /********************************************************************
@@ -64,7 +68,8 @@ void InstallEmulatorPalette(HDC hdc);
 
   現在エディトしているルームのテストプレイをルームのはじめから行う。
 
-  Perform a test play of the room you are currently editing from the beginning of the room.
+  Perform a test play of the room you are currently editing from the beginning of the
+room.
 
 *********************************************************************/
 void RunEmulatorTestPlay();

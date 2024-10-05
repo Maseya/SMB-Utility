@@ -11,7 +11,7 @@
 #ifndef OBJWNDCMN_H
 #define OBJWNDCMN_H
 
-#define GETFRAMEWNDHANDLE(H)  GetParent(GetParent(H))
+#define GETFRAMEWNDHANDLE(H) GetParent(GetParent(H))
 #define GETCLIENTWNDHANDLE(H) GetParent(H)
 
 int ObjwndSwitchEditMode(HWND hWnd);
