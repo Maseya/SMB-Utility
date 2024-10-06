@@ -823,7 +823,7 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam,
                             BOOL fEditEnable, fTraslated;
                             WORD wSpinMin, wSpinMax;
                             int iNewValue;
-                            STARTPOSHACK iRet = SendDlgItemMessage(hDlg, IDC_XPOSHACK,
+                            STARTPOSHACK iRet = (STARTPOSHACK)SendDlgItemMessage(hDlg, IDC_XPOSHACK,
                                                                    CB_GETCURSEL, 0, 0);
 
                             if (iRet == CB_ERR) break;
@@ -872,7 +872,7 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam,
                             BOOL fEditEnable, fTraslated;
                             WORD wSpinMin, wSpinMax;
                             int iNewValue;
-                            STARTPOSHACK iRet = SendDlgItemMessage(hDlg, IDC_YPOSHACK,
+                            STARTPOSHACK iRet = (STARTPOSHACK)SendDlgItemMessage(hDlg, IDC_YPOSHACK,
                                                                    CB_GETCURSEL, 0, 0);
 
                             if (iRet == CB_ERR) break;
@@ -941,7 +941,7 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam,
                     if (IsDlgButtonChecked(hDlg, IDC_ISCLEARED) == BST_CHECKED)
                         gbIsCleared = 0x01;
 
-                    iSPH = SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
+                    iSPH = (STARTPOSHACK)SendDlgItemMessage(hDlg, IDC_XPOSHACK, CB_GETCURSEL, 0, 0);
                     if (iSPH == CB_ERR) return FALSE;
                     if (iSPH) {
                         iRet = GetDlgItemInt(hDlg, IDC_XPOS, &fTranslated, TRUE);
@@ -960,7 +960,7 @@ LRESULT CALLBACK TestPlaySettingDlgProc(HWND hDlg, UINT message, WPARAM wParam,
                     }
                     g_fUseStartPosXHack = iSPH;
 
-                    iSPH = SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
+                    iSPH = (STARTPOSHACK)SendDlgItemMessage(hDlg, IDC_YPOSHACK, CB_GETCURSEL, 0, 0);
                     if (iSPH == CB_ERR) return FALSE;
                     if (iSPH) {
                         iRet = GetDlgItemInt(hDlg, IDC_YPOS, &fTranslated, TRUE);

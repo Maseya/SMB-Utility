@@ -471,13 +471,13 @@ static HTREEITEM InsertRoomDependencyTreeViewItem(LPROOMINFO* lpRoomInfo,
                 }
 
                 iNumParentRooms++;
-                (*pbParentRoom) = Mrealloc(*pbParentRoom, iNumParentRooms);
+                (*pbParentRoom) = (BYTE*)Mrealloc(*pbParentRoom, iNumParentRooms);
                 if (!(*pbParentRoom)) break;
                 (*pbParentRoom)[iNumParentRooms - 1] = (*lpRoomInfo)[nCurRoom].bRoomID;
 
                 (*piCurRoom) += 1;
                 (*lpRoomInfo) =
-                        Mrealloc((*lpRoomInfo), ((*piCurRoom) + 1) * sizeof(ROOMINFO));
+                        (LPROOMINFO)Mrealloc((*lpRoomInfo), ((*piCurRoom) + 1) * sizeof(ROOMINFO));
                 if (!(*lpRoomInfo)) break;
                 (*lpRoomInfo)[(*piCurRoom)].bRoomID = (BYTE)(sObjSeek.pbData[1] & 0x7F);
                 (*lpRoomInfo)[(*piCurRoom)].iWorld =
@@ -586,7 +586,7 @@ static LPVOID UpdateRoomDepedencyTreeView(HWND hDlg) {
         int iWorld, iArea, iArea2;
         BYTE* pbParentRoom;
 
-        pbParentRoom = Malloc(1);
+        pbParentRoom = (BYTE*)Malloc(1);
         if (!pbParentRoom) return (LPVOID)lpRoomInfo;
 
         lpRoomInfo = (LPROOMINFO)Mrealloc(lpRoomInfo, sizeof(ROOMINFO) * (r + 1));

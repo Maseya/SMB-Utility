@@ -12,6 +12,22 @@ int Num0DMapObject;
 int Num0EMapObject;
 int Num0FMapObject;
 
+SMBMAPOBJECTINFO* smbMapObjectInfo0B;
+SMBMAPOBJECTINFO* smbMapObjectInfoC;
+SMBMAPOBJECTINFO* smbMapObjectInfoD;
+SMBMAPOBJECTINFO* smbMapObjectInfoE;
+SMBMAPOBJECTINFO* smbMapObjectInfoF;
+
+SMBMAPBASICBLOCK* smbMapBasicBlock;
+
+LPTSTR* smbMapHeadTime;
+LPTSTR* smbMapHeadPosition;
+LPTSTR* smbMapHeadBackColor;
+LPTSTR* smbMapHeadMapType;
+LPTSTR* smbMapHeadView;
+
+SMBBADGUYSINFO* smbBadGuysInfo;
+
 int GetNum0BMapObject() { return Num0BMapObject; }
 int GetNumCMapObject() { return Num0CMapObject; }
 int GetNumDMapObject() { return Num0DMapObject; }
@@ -374,7 +390,7 @@ void InitSmbMapBasicBlock() {
                     STRING_OBJDATA_BB_13, STRING_OBJDATA_BB_14, STRING_OBJDATA_BB_15,
                     STRING_OBJDATA_BB_16};
 
-    smbMapBasicBlock = malloc(sizeof(tmp));
+    smbMapBasicBlock = (SMBMAPBASICBLOCK*)malloc(sizeof(tmp));
     memcpy(smbMapBasicBlock, tmp, sizeof(tmp));
 }
 

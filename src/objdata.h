@@ -14,23 +14,24 @@
 
 void InitObjectData();
 
-SMBMAPOBJECTINFO* smbMapObjectInfo0B;
-SMBMAPOBJECTINFO* smbMapObjectInfoC;
-SMBMAPOBJECTINFO* smbMapObjectInfoD;
-SMBMAPOBJECTINFO* smbMapObjectInfoE;
-SMBMAPOBJECTINFO* smbMapObjectInfoF;
+extern SMBMAPOBJECTINFO* smbMapObjectInfo0B;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoC;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoD;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoE;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoF;
 
-struct {
+typedef struct {
     LPTSTR Name;
-}* smbMapBasicBlock;
+}SMBMAPBASICBLOCK;
+extern SMBMAPBASICBLOCK* smbMapBasicBlock;
 
-LPTSTR* smbMapHeadTime;
-LPTSTR* smbMapHeadPosition;
-LPTSTR* smbMapHeadBackColor;
-LPTSTR* smbMapHeadMapType;
-LPTSTR* smbMapHeadView;
+extern LPTSTR* smbMapHeadTime;
+extern LPTSTR* smbMapHeadPosition;
+extern LPTSTR* smbMapHeadBackColor;
+extern LPTSTR* smbMapHeadMapType;
+extern LPTSTR* smbMapHeadView;
 
-SMBBADGUYSINFO* smbBadGuysInfo;
+extern SMBBADGUYSINFO* smbBadGuysInfo;
 
 int GetNum0BMapObject();
 int GetNumCMapObject();

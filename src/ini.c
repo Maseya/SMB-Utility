@@ -39,7 +39,7 @@ BOOL WriteToRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwSi
     RegCreateKeyEx(HKEY_CURRENT_USER, REGROOTPATH, 0, NULL, REG_OPTION_NON_VOLATILE,
                    KEY_ALL_ACCESS, NULL, &hRegKey, NULL);
     if (!hRegKey) return FALSE;
-    if (ERROR_SUCCESS != RegSetValueEx(hRegKey, lpValueName, 0, dwType, lpData, dwSize))
+    if (ERROR_SUCCESS != RegSetValueEx(hRegKey, lpValueName, 0, dwType, (BYTE*)lpData, dwSize))
         blRet = FALSE;
     RegCloseKey(hRegKey);
     return blRet;
@@ -64,7 +64,7 @@ BOOL ReadFromRegistry(LPTSTR lpValueName, DWORD dwType, LPVOID lpData, DWORD dwS
     RegCreateKeyEx(HKEY_CURRENT_USER, REGROOTPATH, 0, NULL, REG_OPTION_NON_VOLATILE,
                    KEY_ALL_ACCESS, NULL, &hRegKey, NULL);
     if (!hRegKey) return FALSE;
-    lResult = RegQueryValueEx(hRegKey, lpValueName, NULL, &dwTypeRet, lpData, &dwSize);
+    lResult = RegQueryValueEx(hRegKey, lpValueName, NULL, &dwTypeRet, (LPBYTE)lpData, &dwSize);
     if (lResult != ERROR_SUCCESS || dwType != dwTypeRet) blRet = FALSE;
     RegCloseKey(hRegKey);
     return blRet;

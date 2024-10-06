@@ -11,7 +11,9 @@
 #include "emubgset.h"
 
 #include "M6502.h"
+#include "common.h"
 #include "emulator.h"
+#include "objdata.h"
 #include "objlib.h"
 #include "roommng.h"
 #include "smbutil.h"
@@ -519,12 +521,7 @@ static int SetMapDataToSpriteRAM(int iPosX, int iPosY,
     return iRAMIndex;
 }
 
-extern struct {
-    LPTSTR Name;
-    int YDelta;
-    BYTE bFixedYPos;
-    int XDelta;
-}* smbBadGuysInfo;
+extern SMBBADGUYSINFO* smbBadGuysInfo;
 
 static int GetBadGuysYPosPSRAM(BYTE* pbBuf) {
     int iRet;

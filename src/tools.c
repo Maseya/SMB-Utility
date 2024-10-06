@@ -9,6 +9,8 @@
  *********************************************************************/
 #include "tools.h"
 
+#include "common.h"
+#include "objdata.h"
 #include "objlib.h"
 #include "objlist.h"
 #include "objview.h"
@@ -870,12 +872,7 @@ LRESULT CALLBACK GameSettingKoopaDlgProc(HWND hDlg, UINT message, WPARAM wParam,
             TCHAR cBuf[50];
             int n;
             ADDRESSDATA adKoopa;
-            extern struct {
-                LPTSTR Name;
-                int YDelta;
-                BYTE bFixedYPos;
-                int XDelta;
-            }* smbBadGuysInfo;
+            extern SMBBADGUYSINFO* smbBadGuysInfo;
 
             ADDRESSDATA_LOAD(adKoopa, SMB_KOOPAREALCHARCTER_ADDRESS);
 
@@ -1101,10 +1098,10 @@ int InitSmbStringData() {
 }
 
 int InitPoleGfxInfo() {
-    POLEGFXDATAINFO tmp[] = {STRING_POLEGFX_DEFAULT, "\x24\x2F\x24\x3D",
-                             STRING_POLEGFX_ROPE,    "\xA2\xA2\xA3\xA3",
-                             STRING_POLEGFX_TREE,    "\xBE\xBE\xBF\xBF",
-                             STRING_POLEGFX_OTHER,   "\xFF\xFF\xFF\xFF"};
+    POLEGFXDATAINFO tmp[] = {STRING_POLEGFX_DEFAULT, {0x24, 0x2F, 0x24, 0x3D},
+                             STRING_POLEGFX_ROPE,    {0xA2, 0xA2, 0xA3, 0xA3},
+                             STRING_POLEGFX_TREE,    {0xBE, 0xBE, 0xBF, 0xBF},
+                             STRING_POLEGFX_OTHER,   {0xFF, 0xFF, 0xFF, 0xFF}};
 
     PoleGfxInfo = (POLEGFXDATAINFO*)malloc(sizeof(tmp));
     memcpy(PoleGfxInfo, tmp, sizeof(tmp));

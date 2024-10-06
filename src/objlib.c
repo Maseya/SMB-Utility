@@ -9,7 +9,9 @@
  *********************************************************************/
 #include "objlib.h"
 
+#include "common.h"
 #include "ini.h"
+#include "objdata.h"
 #include "objlist.h"
 #include "objmng.h"
 #include "objview.h"
@@ -602,11 +604,11 @@ static BOOL MemorySwap(BYTE* pbBuf1, int iBuf1Size, BYTE* pbBuf2, int iBuf2Size)
         iSizeLarge = iBuf2Size;
     }
 
-    pbTmpSmall = Malloc(iSizeSmall);
+    pbTmpSmall = (BYTE*)Malloc(iSizeSmall);
     if (!pbTmpSmall) return FALSE;
     memcpy(pbTmpSmall, pbBufSmall, iSizeSmall);
 
-    pbTmpLarge = Malloc(iSizeLarge);
+    pbTmpLarge = (BYTE*)Malloc(iSizeLarge);
     if (!pbTmpSmall) {
         Mfree(pbTmpSmall);
         return FALSE;

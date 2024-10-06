@@ -390,7 +390,8 @@ HPALETTE CreateNESPalette(HDC hdc) {
 
     // GetDeviceCaps(hdc,NUMRESERVED);
 
-    plogpal = Malloc(sizeof(LOGPALETTE) + EMULATOR_NES_COLORS * sizeof(PALETTEENTRY));
+    plogpal = (LOGPALETTE*)Malloc(sizeof(LOGPALETTE) +
+                                  EMULATOR_NES_COLORS * sizeof(PALETTEENTRY));
     if (!plogpal) return NULL;
 
     plogpal->palVersion = 0x300;
@@ -441,7 +442,7 @@ BOOL InitGraphics(HWND hWnd) {
 
     ReleaseDC(hWnd, hdc);
 
-    g_lpBmInfo = Malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
+    g_lpBmInfo = (LPBITMAPINFO)Malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
     if (!g_lpBmInfo) return FALSE;
 
     memset(g_lpBmInfo, 0, sizeof(BITMAPINFO));
@@ -456,12 +457,13 @@ BOOL InitGraphics(HWND hWnd) {
     ghMemdcOffScreen = CreateCompatibleDC(NULL);
     if (!ghMemdcOffScreen) return FALSE;
 
-    ghBmOffScreen = CreateDIBSection(ghMemdcOffScreen, (LPBITMAPINFO)g_lpBmInfo,
-                                     DIB_RGB_COLORS, &gpbBmBufOffScreen, NULL, 0);
+    ghBmOffScreen =
+            CreateDIBSection(ghMemdcOffScreen, (LPBITMAPINFO)g_lpBmInfo, DIB_RGB_COLORS,
+                             (void**)&gpbBmBufOffScreen, NULL, 0);
 
     if (!ghBmOffScreen) return FALSE;
 
-    ghOldBmOffScreen = SelectObject(ghMemdcOffScreen, ghBmOffScreen);
+    ghOldBmOffScreen = (HBITMAP)SelectObject(ghMemdcOffScreen, ghBmOffScreen);
     if (!ghOldBmOffScreen) return FALSE;
 
     ClearEmuBackBuffer();
@@ -1139,11 +1141,11 @@ void DestoryNester() {
 }
 
 BOOL CreateNester() {
-    psM6502 = Malloc(sizeof(CONTEXTM6502));
+    psM6502 = (CONTEXTM6502*)Malloc(sizeof(CONTEXTM6502));
     if (!psM6502) return FALSE;
     memset(psM6502, 0, sizeof(CONTEXTM6502));
 
-    pb6502CPUMemory = Malloc(0x10000);
+    pb6502CPUMemory = (BYTE*)Malloc(0x10000);
     if (!pb6502CPUMemory) return FALSE;
 
     psM6502->m6502Base = pb6502CPUMemory;
@@ -1600,7 +1602,7 @@ void FreeEmulatorSaveBuffer() {
 BOOL SaveEmulatorState() {
     if (!g_nTimerID) return FALSE;
 
-    if (!g_psSRS && (g_psSRS = Malloc(sizeof(SAVERAMSTRUCT))) == NULL) return FALSE;
+    if (!g_psSRS && (g_psSRS = (SAVERAMSTRUCT*)Malloc(sizeof(SAVERAMSTRUCT))) == NULL) return FALSE;
 
     StopEmulator();
     memcpy(g_psSRS->pbRAM, pb6502CPUMemory, 0x800);

@@ -73,13 +73,13 @@ BOOL InitAssistBmp(HWND hWnd) {
     BOOL blRet = FALSE;
     HDC hDC;
 
-    hBitmap = LoadImage(GetModuleHandle(NULL), __T("ASSIST_IMG"), IMAGE_BITMAP, 0, 0,
+    hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), __T("ASSIST_IMG"), IMAGE_BITMAP, 0, 0,
                         LR_DEFAULTSIZE | LR_SHARED);
     if (!hBitmap) return FALSE;
 
     hDC = GetDC(hWnd);
     if (g_hAssistBmpDC = CreateCompatibleDC(hDC)) {
-        if (g_hOldBmp = SelectObject(g_hAssistBmpDC, hBitmap)) {
+        if (g_hOldBmp = (HBITMAP)SelectObject(g_hAssistBmpDC, hBitmap)) {
             blRet = TRUE;
         }
     }

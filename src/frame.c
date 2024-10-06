@@ -1220,11 +1220,11 @@ LRESULT APIENTRY MDIFrameWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPar
         } break;
         case WM_DROPFILES: {
             if (ConfirmOnExit()) {
-                DragQueryFile((HANDLE)wParam, 0, gFilePath, MAX_PATH);
+                DragQueryFile((HDROP)wParam, 0, gFilePath, MAX_PATH);
                 LoadROMFromFile();
             }
 
-            DragFinish((HANDLE)wParam);
+            DragFinish((HDROP)wParam);
         } break;
         case WM_CREATE: {
             CLIENTCREATESTRUCT ccs;
@@ -1428,7 +1428,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 
     LoadTestPlaySettings();
 
-    hAccel = ky_Initialize();
+    hAccel = (HACCEL)ky_Initialize();
 
     LoadEditorOption();
 

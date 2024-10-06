@@ -323,7 +323,7 @@ static void DrawPosLines() {
     GetClientRect(ghMapViewWnd, &rc);
     hdc = ghMemdcMapViewWnd;
 
-    hOldPen = SelectObject(hdc, hPen);
+    hOldPen = (HPEN)SelectObject(hdc, hPen);
     crPrevBk = SetBkColor(hdc, GetSysColor(POSLINE_COLOR_NORMAL));
     iPrevBkMode = SetBkMode(hdc, OPAQUE);
     iPrevRop = SetROP2(hdc, R2_COPYPEN);
@@ -394,7 +394,7 @@ static BOOL BitmapBltToDC(HBITMAP hBitmap, HDC hDestMemDC, HWND hWnd, int x, int
 
     hDC = GetDC(hWnd);
     if (hMemdc = CreateCompatibleDC(hDC)) {
-        if (hOldBm = SelectObject(hMemdc, hBitmap)) {
+        if (hOldBm = (HBITMAP)SelectObject(hMemdc, hBitmap)) {
             SetColorToGauge(hMemdc);
 
             BitBlt(hDestMemDC, x, y, nWidth, nHeight, hMemdc, 0, 0, SRCCOPY);
@@ -417,7 +417,7 @@ void DrawXPosGauge() {
     rc.bottom = XPOSLABEL_HEIGHT;
     rc.right = XPOSLABEL_WIDTH;
 
-    hBmp = LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_XGAUGE_IMG),
+    hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_XGAUGE_IMG),
                      IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR | LR_LOADMAP3DCOLORS);
     BitmapBltToDC(hBmp, ghMemdcXPos, ghXPosWnd, 0, 0);
     DeleteObject(hBmp);
@@ -431,7 +431,7 @@ void DrawYPosGauge() {
     rc.bottom = MAPVIEW_CLIENTHEIGHT;
     rc.right = YPOSLABEL_WIDTH;
 
-    hBmp = LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_YGAUGE_IMG),
+    hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_YGAUGE_IMG),
                      IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR | LR_LOADMAP3DCOLORS);
     BitmapBltToDC(hBmp, ghMemdcYPos, ghYPosWnd, 0, 0);
     DeleteObject(hBmp);
@@ -444,7 +444,7 @@ BOOL PrepareGauge(HWND hWnd, HDC* lphDC, HBITMAP* lphBmp, UINT X, UINT Y,
     hdc = GetDC(hWnd);
     *lphDC = CreateCompatibleDC(hdc);
     *lphBmp = CreateCompatibleBitmap(hdc, X, Y);
-    *lphPrevBmp = SelectObject(*lphDC, *lphBmp);
+    *lphPrevBmp = (HBITMAP)SelectObject(*lphDC, *lphBmp);
     ReleaseDC(hWnd, hdc);
 
     return TRUE;
@@ -1326,7 +1326,7 @@ LRESULT FAR PASCAL MapViewWndProc(HWND hWnd, UINT message, WPARAM wParam,
             ghBitmapMapViewWnd = CreateCompatibleBitmap(
                     hdc, GetSystemMetrics(SM_CXSCREEN), MAPVIEW_CLIENTHEIGHT);
             ghPrevBitmapMapViewWnd =
-                    SelectObject(ghMemdcMapViewWnd, ghBitmapMapViewWnd);
+                    (HBITMAP)SelectObject(ghMemdcMapViewWnd, ghBitmapMapViewWnd);
             ReleaseDC(hWnd, hdc);
 
             ClearObjectViewBackBuffer();

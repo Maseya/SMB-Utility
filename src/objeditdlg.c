@@ -9,6 +9,7 @@
  *********************************************************************/
 #include "emulator.h"
 #include "emuutil.h"
+#include "objdata.h"
 #include "objlib.h"
 #include "objlist.h"
 #include "objmng.h"
@@ -22,9 +23,7 @@ extern SMBMAPOBJECTINFO* smbMapObjectInfoC;
 extern SMBMAPOBJECTINFO* smbMapObjectInfoD;
 extern SMBMAPOBJECTINFO* smbMapObjectInfoE;
 extern SMBMAPOBJECTINFO* smbMapObjectInfoF;
-extern struct {
-    LPTSTR Name;
-}* smbMapBasicBlock;
+extern SMBMAPBASICBLOCK* smbMapBasicBlock;
 extern LPTSTR* smbMapHeadTime;
 extern LPTSTR* smbMapHeadPosition;
 extern LPTSTR* smbMapHeadBackColor;

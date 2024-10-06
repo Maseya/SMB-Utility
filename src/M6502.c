@@ -228,12 +228,12 @@ UINT16 IndirectY(UINT16 addr) {
     void _name##IndirectX() { _name(Memory + IndirectX(PC++)); } \
     void _name##IndirectY() { _name(Memory + IndirectY(PC++)); }
 
-static const UINT8 OpSize[0x100];
-static const UINT8 CycleCost[0x100];
+extern const UINT8 OpSize[0x100];
+extern const UINT8 CycleCost[0x100];
 
 typedef void (*Instruction)();
 
-static const Instruction Instructions[0x100];
+extern const Instruction Instructions[0x100];
 
 void Push(UINT8 value) { Memory[0x100 | S--] = value; }
 
