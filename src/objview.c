@@ -94,6 +94,8 @@ BOOL g_blIsYPosLineDraw = FALSE;
 
 BOOL g_fNotDrawAssistBmp = FALSE;
 
+extern BOOL gblIsROMLoaded;
+
 LRESULT CALLBACK ObjectViewOptionDlgProc(HWND hDlg, UINT message, WPARAM wParam,
                                          LPARAM lParam) {
     switch (message) {

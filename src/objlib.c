@@ -20,6 +20,8 @@
 
 BOOL g_blIsLengthValid = TRUE;
 
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
+
 BOOL ObjectSeekGetIsLengthValid() { return g_blIsLengthValid; }
 void ObjectSeekSetIsLengthValid(BOOL blIsValid) { g_blIsLengthValid = blIsValid; }
 

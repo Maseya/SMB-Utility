@@ -23,6 +23,9 @@ int giEditMode = 0;
 // Save the index of the currently edited object
 int giSelectedItem = 0;
 
+extern BOOL g_blKeyCommandUndo;
+extern BOOL gblIsROMLoaded;
+
 void SetSelectedItem(int iItem, BOOL blInitKeyUndo) {
     if (giSelectedItem == iItem || iItem < 0) return;
 

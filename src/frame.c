@@ -55,6 +55,9 @@ BOOL gblDataChanged = FALSE;
 
 BOOL g_fShowMsgOnSave = TRUE;
 
+extern int g_iWorld;
+extern int g_iArea;
+
 HWND fr_GetStatusBar() { return g_hSbWnd; }
 
 int Msg(LPCTSTR lpText, UINT uType) {

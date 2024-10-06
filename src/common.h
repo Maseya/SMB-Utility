@@ -70,13 +70,4 @@ typedef struct _tagSMBBADGUYSINFO {
     int XDelta;
 } SMBBADGUYSINFO;
 
-extern INESHEADER Head;
-extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
-extern BYTE bCHRROM[INES_CHRROMBANKSIZE * SMB_NUM_CHARS];
-extern int iTrainer;
-
-extern BOOL gblIsROMLoaded;
-
-// extern BOOL gblDataChanged;
-
 #endif /* COMMON_H */

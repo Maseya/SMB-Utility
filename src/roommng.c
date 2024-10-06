@@ -82,6 +82,7 @@ BYTE addrHeadMap[4];
 ADDRESSDATA addrDataMap[SMB_NUM_ADDRESSDATA];
 BYTE addrHeadBadGuys[4];
 ADDRESSDATA addrDataBadGuys[SMB_NUM_ADDRESSDATA];
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
 
 static void LoadCommandAddrData() {
     int i;

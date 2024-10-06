@@ -26,6 +26,11 @@ BOOL g_blUndoEnable = FALSE;
 // Whether to save a copy for UNDO for key input
 BOOL g_blKeyCommandUndo = TRUE;
 
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
+extern BYTE bCHRROM[INES_CHRROMBANKSIZE * SMB_NUM_CHARS];
+extern int iTrainer;
+extern BOOL gblIsROMLoaded;
+
 void undoPrepare(LPCTSTR lpUndoName) {
     // PRG
     memcpy(bPRGROM_undo, bPRGROM, PRG_SIZE);

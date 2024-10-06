@@ -475,6 +475,8 @@ typedef struct {
     DWORD dwYFlip;
 } BADGUYSSPRITEINFOEX;
 
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
+
 static int SetMapDataToSpriteRAM(int iPosX, int iPosY,
                                  BADGUYSSPRITEINFOEX* psBGSPRInfoEx, int iRAMIndex,
                                  int iPageDelta) {

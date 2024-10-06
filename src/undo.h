@@ -32,6 +32,4 @@ void undoReset();
 BOOL undoIsEnabled();
 LPTSTR undoGetNameBuffer();
 
-extern BOOL g_blKeyCommandUndo;
-
 #endif

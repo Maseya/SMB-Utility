@@ -35,6 +35,15 @@ int g_bStartPosX = 0;
 STARTPOSHACK g_fUseStartPosYHack = NONE;
 int g_bStartPosY = 0;
 
+extern int g_iPage;
+extern int g_iWorld;
+extern int g_iArea;
+extern int g_iArea2;
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
+extern BYTE bCHRROM[INES_CHRROMBANKSIZE * SMB_NUM_CHARS];
+extern int iTrainer;
+extern BOOL gblIsROMLoaded;
+
 void LoadTestPlaySettings() {
     UINT uData;
 

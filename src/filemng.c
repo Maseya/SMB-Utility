@@ -15,6 +15,11 @@
 FILETIME gFileTime;
 BOOL gblFileCmpEnable;
 extern TCHAR gFilePath[MAX_PATH];
+extern INESHEADER Head;
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
+extern BYTE bCHRROM[INES_CHRROMBANKSIZE * SMB_NUM_CHARS];
+extern int iTrainer;
+extern BOOL gblIsROMLoaded;
 
 static BOOL GetFileLastWrite(LPFILETIME lpFileTime) {
     HANDLE hFile;

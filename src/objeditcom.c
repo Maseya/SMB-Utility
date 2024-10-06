@@ -17,6 +17,8 @@
 #include "roommng.h"
 #include "smbutil.h"
 
+extern BOOL g_blKeyCommandUndo;
+
 /***********************
 
   キーボード入力ハンドラ

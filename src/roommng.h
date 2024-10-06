@@ -33,11 +33,6 @@
 #define MOVEOBJ_ERR_DSTPAGE 2
 #define MOVEOBJ_ERR_OBJOVER 4
 
-extern int g_iPage;
-extern int g_iWorld;
-extern int g_iArea;
-extern int g_iArea2;
-
 // uRoomIDとして指定すると現在エディットしているアドレスが返ってくる旧
 // If specified as uRoomID, the address currently being edited will be returned old
 #define GETADDRESS_CURRENT_EDITTING 0x100

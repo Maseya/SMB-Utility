@@ -10,6 +10,7 @@
 #include "objlist.h"
 
 #include "ini.h"
+#include "objdata.h"
 #include "objlib.h"
 #include "objmng.h"
 #include "objview.h"
@@ -36,6 +37,27 @@
 // リストビューのハンドル
 // List view handle
 HWND g_hWndListView;
+
+extern int g_iWorld;
+extern int g_iArea;
+extern BYTE bPRGROM[INES_PRGROMBANKSIZE * SMB_NUM_PRGS + 0x8000];
+extern BOOL gblIsROMLoaded;
+
+extern SMBMAPOBJECTINFO* smbMapObjectInfo0B;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoC;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoD;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoE;
+extern SMBMAPOBJECTINFO* smbMapObjectInfoF;
+
+extern SMBMAPBASICBLOCK* smbMapBasicBlock;
+
+extern LPTSTR* smbMapHeadTime;
+extern LPTSTR* smbMapHeadPosition;
+extern LPTSTR* smbMapHeadBackColor;
+extern LPTSTR* smbMapHeadMapType;
+extern LPTSTR* smbMapHeadView;
+
+extern SMBBADGUYSINFO* smbBadGuysInfo;
 
 /***************
 
